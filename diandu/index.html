@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <title>点读</title>
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="js/lib/jcrop/css/jquery.Jcrop.css" type="text/css" />
+</head>
+
+<body>
+    <div class="main">
+        <!-- Header start -->
+        <header>
+            <a href="http://web.catics.org/edu/index-login.php" class="header-logo">
+            </a>
+            <div class="header-title">
+                创建点读页
+            </div>
+            <div class="header-close" id="close"><span>X</span></div>
+        </header>
+        <!-- Header end -->
+        <!-- baseinfo start -->
+        <section class="baseinfo">
+            <div class="baseinfo-title">基本信息</div>
+            <div class="form-group">
+                <label for="name">点图页名称</label>
+                <input type="email" class="form-control" id="name" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="intro">简介(选填)</label>
+                <textarea class="form-control" id="intro" rows="5" placeholder="介绍测试的相关内容、注意点等,简洁不能超过100字"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    缩略图
+                    <span>(缩略图像素要求为205x205,1号图为封面图,
+                        <span style="color:red;">出现在考试页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
+                    </span>
+                </label>
+                <div class="upload-img">
+                    <ul class="upload-ul" id="ulImgs">
+                        <li class="upload-li"><img src="imgs/upload_bg_150.png" alt=""></li>
+                        <li class="upload-li"><img src="imgs/upload_bg_150.png" alt=""></li>
+                        <li class="upload-li"><img src="imgs/upload_bg_150.png" alt=""></li>
+                        <li class="upload-li"><img src="imgs/upload_bg_150.png" alt=""></li>
+                        <li class="upload-li"><img src="imgs/upload_bg_150.png" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- baseinfo end -->
+        <!-- setting start-->
+        <section class="setting">
+            <div class="setting-charge">
+                <div class="setting-title">收费设置(可选)</div>
+                <div class="form-group">
+                    <label for="">收费设置</label>
+                    <div class="riado-group">
+                        <div>
+                            <label style="width:300px">
+                                <input type="radio" name="chargeType" value="free" checked> 免费(或由视频收费)
+                            </label>
+                            <label style="width:300px">
+                                <input type="radio" name="chargeType" value="freevip"> 收费单对VIP免费
+                            </label>
+                        </div>
+                        <div>
+                            <label style="width:300px">
+                                <input type="radio" name="chargeType" value="halfvip"> 收费但对VIP半价
+                            </label>
+                            <label style="width:300px">
+                                <input type="radio" name="chargeType" value="allfree"> 全部免费
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="chargeStandard">收费标准</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="chargeStandard">
+                        <div class="input-group-addon">元</div>
+                        <div class="input-group-addon" style="background: none;border: 0;">
+                            <span class="note">(免费模式无需设置)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="setting-diandu">
+                <div class="baseinfo-title">点读页设置</div>
+                <!-- setting  bigimg  start-->
+                <div class="setting-bigimg">
+                    <div class="setting-bigimg-header">
+                        <input type="file" name="file_bg" id="file_bg" class="filehide" /> 
+                        <span>点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
+                    </div>
+                    <div class="setting-bigimg-img" id="id_bg">
+                        <div id="btn_start" class="diandu-img" style="display:none;"></div>
+                    </div>
+                    <!-- setting  bigimg  end-->
+                </div>
+                <!-- setting upload start -->
+                <ul class="setting-upload" id="uploadSetting">
+                </ul>
+                <!-- setting upload end -->
+                <!-- setting btns start -->
+                <div class="setting-btns">
+                    <div class="setting-btn" id="btnAdd">新增点击页</div>
+                    <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
+                </div>
+                <!-- setting btns end -->
+            </div>
+        </section>
+        <!-- setting end -->
+        <!-- cut image start -->
+        <div class="row">
+            <input type="file" name="file_upload" id="file_upload" />
+            <p>
+                <button id="btn_upload">上传</button>
+                <a href="javascript:$('#file_upload').uploadify('cancel','*')">重置上传队列</a>
+            </p>
+            <input type="hidden" value="1215154" name="tmpdir" id="id_file">
+        </div>
+        <!-- cut image end -->
+    </div>
+    <!--Handlebars.js模版-->
+    <script id="tpl_uploadSetting" type="text/x-handlebars-template">
+        <li class="upload-item" data-index={{index}}>
+            <div class="radius">
+                <div class="radius_in" id="item{{id}}">{{index}}</div>
+            </div>
+            <div class="upload-type">
+                <ul data-id={{id}}>
+                    <li title="视频" class="video" data-type="uploadType" data-file-type="video" data-text="点击上传MP4格式的视频文件"></li>
+                    <li title="音频" class="audio" data-type="uploadType" data-file-type="audio" data-text="点击上传MP3格式的音频文件"></li>
+                    <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext" data-text="点击上传图片文件"></li>
+                    <li title="音画" class="audioimg" data-type="uploadType" data-file-type="audioimg" data-text="点击上传音画文件"></li>
+                    <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
+                </ul>
+            </div>
+            <div class="upload-right">
+                <div class="upload-right-name notselect">
+                    <span>{{fileName}}</span>
+                    <img class="download" src="imgs/download.png" alt="download">
+                </div>
+                <div class="upload-right-btn">
+                    <ul data-id={{id}}>
+                        <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+                        <li title="删除" class="img-delete" data-type="delete"></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script src="js/lib/jcrop/js/jquery.min.js"></script>
+    <script src="js/lib/handlebars.min.js"></script>
+    <script src="js/lib/jcrop/js/jquery.Jcrop.js"></script>
+    <script type="text/javascript" src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css" />
+    <script src="js/createDianDu.js"></script>
+</body>
+
+</html>
