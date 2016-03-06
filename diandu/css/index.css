@@ -32,6 +32,12 @@ ul, li {
     font-size: 18px;
 }
 
+/*uploadify 上传队列颜色*/
+
+.uploadify-queue {
+    color: #000;
+}
+
 /*注释*/
 
 .note {
@@ -199,7 +205,7 @@ header {
     color: #FFF;
     border-radius: 50%;
     /*只有在选中上传类型，或者已经上传才设置这个颜色*/
-    background: #66CCCC; 
+    background: #66CCCC;
 }
 .upload-type {
     position: relative;
@@ -271,17 +277,44 @@ header {
     height: 100%;
     background: #FF7C80;
 }
+.upload-right-name .div-file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 505px;
+    height: 100%;
+}
+.div-file .uploadify-button {
+    display: none;
+}
 
 /*未选中上传类型*/
 
 .notselect {
     background: #7F7F7F;
 }
+.notselect>span {
+    display: none;
+}
+.notselect .uploadify, .notselect input[type="file"] {
+    display: none;
+}
 
 /*已选中上传类型*/
 
 .upload {
     cursor: pointer;
+    position: relative;
+}
+.upload .uploadify {
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /*上传成功*/
@@ -289,6 +322,9 @@ header {
 .uploaded {
     background: #7F7F7F;
     position: relative;
+}
+.uploaded .uploadify {
+    left: -9999px;
 }
 
 /*上传成功，有下载图标*/
@@ -354,6 +390,7 @@ header {
     width: 200px;
     top: 0px;
     right: 0;
+    z-index: 99999;
 }
 .filehide {
     position: absolute;
