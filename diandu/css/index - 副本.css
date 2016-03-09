@@ -131,9 +131,7 @@ header {
  * index.html big img css
  * show.html css
 ************************************************************/
-.diandupages hr:first-child{
-    display: none;
-}
+
 .setting-bigimg-header {
     height: 50px;
     line-height: 50px;
@@ -144,12 +142,12 @@ header {
     background: #66CCCC;
     position: relative;
 }
-.setting-bigimg-header .uploadify {
+#file_bg {
     position: absolute;
     top: 10px;
     left: 10px;
 }
-.setting-bigimg-header .uploadify .swfupload {
+#file_bg .swfupload {
     left: 0;
 }
 .setting-bigimg-img {

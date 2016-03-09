@@ -16,7 +16,7 @@ var PREFIX_DIANDU = "__diandu";
 /*==========================程序入口 START==================================*/
 $(function () {
     // 添加一个点读页
-    addDianDuPageTpl();
+    addDianDuPageTpl()
     bindEvent();
 });
 
@@ -50,11 +50,7 @@ function addDianDuPageTpl() {
     setUploadControl(dianduPageCount);
 
     //没每添加一个点读页，就在这里添加一个数组
-    window.DD.items.push({
-        pic: '', //背景图地址
-        name: '', //名称
-        data: [] //点读位数组
-    });
+    window.DD.items.push([]);
     dianduPageCount++;
 }
 
@@ -103,7 +99,7 @@ function addDianDu(pageIndex, dianduItemid, index) {
 function setDDItems(id, config) {
     //点读背景默认从1开始，所以，这里减1
     var index = parseInt(id.split('_')[0]);
-    var arr = window.DD.items[index - 1]['data'];
+    var arr = window.DD.items[index - 1];
     for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) {
             arr[i] = $.extend({}, arr[i], config);
@@ -121,15 +117,12 @@ function getValidItems() {
     var destArr = [];
     var srcArr = window.DD.items;
     for (var i = 0; i < srcArr.length; i++) {
-        destArr[i] = srcArr[i];
-        var destItems = [];
-        var items = srcArr[i]['data'];
-        for (var j = 0; j < items.length; j++) {
-            if (!items[j].isRemove) {
-                destItems.push(items[j]);
+        destArr[i] = [];
+        for (var j = 0; j < srcArr[i].length; j++) {
+            if (!srcArr[i][j].isRemove) {
+                destArr[i].push(srcArr[i][j]);
             }
         };
-        destArr[i]['data'] = destItems;
     };
     return destArr;
 }
@@ -140,19 +133,15 @@ function getValidItems() {
  * 初始化上传控件
  * @return {[type]} [description]
  */
-function setUploadControl(index) {
-    //index 从 1 开始
-    var id_bg = "#id_bg" + index;
-    var file_bg = "#file_bg" + index;
+function setUploadControl(i) {
+    var id_bg = "#id_bg" + i;
+    var file_bg = "#file_bg" + i;
     setUploadify($(file_bg), {
         onUploadSuccess: function (file, data, response) {
             // TODO：上传文件的路径
             var src = "js/lib/uploadify/uploads/" + file.name;
             $(id_bg).css('backgroundImage', 'url("' + src + '")');
             $('.btn_start').show();
-
-            window.DD.items[index - 1]['name'] = file.name;
-            window.DD.items[index - 1]['pic'] = src;
 
             //点击背景，添加点读位
             $(id_bg).off('click', addDianDuLocation).on('click', addDianDuLocation);
@@ -289,16 +278,16 @@ function addDianDuLocation(e) {
         var y = xy.y;
 
         // 获取当前点读页的数据
-        var DDPageItems = window.DD.items[pageIndex - 1]['data'];
+        var DDPageItems = window.DD.items[pageIndex - 1];
         //唯一标识该点读位
         var dataid = pageIndex + "_" + (DDPageItems.length + 1);
         //存放位置信息在全部变量里面，使用按比例的方式存放
         //
         DDPageItems.push({
-            x: x / maxWidth,   //坐标的比例
-            y: y / maxHeight,
-            // w: maxWidth,
-            // h: maxHeight,
+            x: x,
+            y: y,
+            w: maxWidth,
+            h: maxHeight,
             id: dataid
         });
 
@@ -348,6 +337,7 @@ function handleUploadItem(e) {
             break;
             // 删除按钮
         case "delete":
+            debugger;
             var itemdata = $target.parent().data();
             $('#' + itemdata.id).parent().remove();
             $currentTarget.remove();
@@ -449,12 +439,10 @@ function hideDDLocation(e) {
     var data = $target.data();
     setHoverImgSrcx($target);
 
-    var itemdata = $target.parent().data();
-    var __dataid = itemdata.id.replace(PREFIX_DIANDU, '');
-
     // 隐藏点读位
     if ($target.attr('data-show') === "0") {
         $target.attr('data-show', "1");
+        var itemdata = $target.parent().data();
 
         var style = {
             'background': '#7F7F7F',
@@ -462,7 +450,7 @@ function hideDDLocation(e) {
         };
         $('#' + itemdata.id).css(style);
         $('#item' + itemdata.id).css(style);
-        setDDItems(__dataid, { hide: true });
+        setDDItems(index, { hide: true });
 
         // TODO:理论上，隐藏之后，文件类型的点击事件是不可以用的，还没有做
         //记录旧的样式，等显示在赋值上去
@@ -482,7 +470,7 @@ function hideDDLocation(e) {
             'textDecoration': 'none'
         };
         $target.attr('data-show', "0");
-
+        var itemdata = $target.parent().data();
         $('#' + itemdata.id).css(style);
         $('#item' + itemdata.id).css(style);
 
@@ -492,7 +480,7 @@ function hideDDLocation(e) {
         };
         // 还原
         $rightName.removeClass().addClass($rightName.attr('data-class'));
-        setDDItems(__dataid, { hide: false });
+        setDDItems(index, { hide: false });
     }
 }
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>点读</title>
-    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/bootstrap.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="js/lib/jcrop/css/jquery.Jcrop.css" type="text/css" />
 </head>
@@ -90,24 +90,14 @@
             </div>
             <div class="setting-diandu">
                 <div class="baseinfo-title">点读页设置</div>
-                <!-- setting  bigimg  start-->
-                <div class="setting-bigimg">
-                    <div class="setting-bigimg-header">
-                        <input type="file" name="file_bg" id="file_bg" class="filehide" />
-                        <span>点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
-                    </div>
-                    <div class="setting-bigimg-img" id="id_bg">
-                        <div id="btn_start" class="diandu-img" style="display:none;"></div>
-                    </div>
-                    <!-- setting  bigimg  end-->
+                <!-- TODO:多个点读页 -->
+                <!-- 点读页集合 START -->
+                <div id="id_diandupages" class="diandupages">
                 </div>
-                <!-- setting upload start -->
-                <ul class="setting-upload" id="uploadSetting">
-                </ul>
-                <!-- setting upload end -->
+                <!-- 点读页集合 END -->
                 <!-- setting btns start -->
                 <div class="setting-btns">
-                    <div class="setting-btn" id="btnAdd">新增点击页</div>
+                    <div class="setting-btn" id="btnAdd">新增点读页</div>
                     <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
                 </div>
                 <!-- setting btns end -->
@@ -115,14 +105,16 @@
         </section>
         <!-- setting end -->
     </div>
-    <!--Handlebars.js模版-->
+
+
+    <!--上传文件类型选择，显示隐藏，删除 模版 START-->
     <script id="tpl_uploadSetting" type="text/x-handlebars-template">
-        <li class="upload-item item{{index}}" data-index={{index}}>
+        <li class="upload-item item{{index}}" data-index="{{index}}">
             <div class="radius">
                 <div class="radius_in" id="item{{id}}">{{index}}</div>
             </div>
             <div class="upload-type">
-                <ul data-id={{id}}>
+                <ul data-id="{{id}}">
                     <li title="视频" class="video" data-type="uploadType" data-file-type="video" data-text="点击上传MP4格式的视频文件"></li>
                     <li title="音频" class="audio" data-type="uploadType" data-file-type="audio" data-text="点击上传MP3格式的音频文件"></li>
                     <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext" data-text="点击上传图片文件"></li>
@@ -139,7 +131,7 @@
                     <img class="download" src="imgs/download.png" alt="download">
                 </div>
                 <div class="upload-right-btn">
-                    <ul data-id={{id}} data-index={{index}}>
+                    <ul data-id="{{id}}" data-index="{{index}}">
                         <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
                         <li title="删除" class="img-delete" data-type="delete"></li>
                     </ul>
@@ -147,11 +139,36 @@
             </div>
         </li>
     </script>
+    <!--上传文件类型选择，显示隐藏，删除 模版 START-->
+    <!--背景图模板 START-->
+    <script id="tpl_bg" type="text/x-handlebars-template">
+       <hr style="margin: 50px 7px;border: 5px solid #E9E9E9;border-radius: 10px;"/>
+       <div class="diandupageitem">
+            <div class="setting-bigimg">
+                <div class="setting-bigimg-header">
+                    <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg" />
+                    <span>点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
+                </div>
+                <div class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
+                    <div class="diandu-img btn_start" style="display:none;"></div>
+                </div>
+            </div>
+            <ul class="setting-upload" id="uploadSetting{{index}}">
+            </ul>
+        </div>
+    </script>
+    <!--背景图模板 END -->
+
+
+
+    <!--第三方库-->
     <script src="js/lib/jcrop/js/jquery.min.js"></script>
     <script src="js/lib/handlebars.min.js"></script>
     <script src="js/lib/jcrop/js/jquery.Jcrop.js"></script>
     <script type="text/javascript" src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css" />
+    <!--自己写的类库-->
+    <script src="js/drag.js"></script>
     <script src="js/createDianDu.js"></script>
 </body>
 

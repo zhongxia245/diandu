@@ -5,60 +5,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <title>点读</title>
-    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/mobile.css">
 </head>
 
 <body>
-    <div class="main">
-        <!-- upload setting -->
-        <div class="setting">
-            <!-- setting  bigimg  start-->
-            <div class="setting-bigimg">
-                <div class="setting-bigimg-header">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</div>
-                <div class="setting-bigimg-img">
+    <div id="main" class="m-bgs">
+        <div class="m-bg">
+            <div class="m-dd-start"></div>
+            <div id="all-radius" data-hide="all-radius-hide">
+                <div class="radius" style="left:100px; top:10px;">
+                    <div class="radius-in">1</div>
                 </div>
-                <!-- setting  bigimg  end-->
-            </div>
-            <!-- setting upload start -->
-            <div class="setting-upload">
-                <div class="upload-item">
-                    <div class="radius">
-                        <div class="radius_in">1</div>
-                    </div>
-                    <div class="upload-type">
-                        <div class="upload-type-item"></div>
-                        <div class="upload-type-item"></div>
-                        <div class="upload-type-item"></div>
-                        <div class="upload-type-item"></div>
-                        <div class="upload-type-item"></div>
-                    </div>
-                    <div class="upload-right">
-                        <div class="upload-right-name">
-                            点击上传MP4格式的视频文件
-                        </div>
-                        <div class="upload-right-btn">
-                            <div class="upload-type-item"></div>
-                            <div class="upload-type-item"></div>
-                        </div>
-                    </div>
+                <div class="radius">
+                    <div class="radius-in">2</div>
                 </div>
             </div>
-            <!-- setting upload end -->
-            <!-- setting btns start -->
-            <div class="setting-btns">
-                <div class="setting-btn">新增点击页</div>
-                <div class="setting-btn setting-btn-last">提交</div>
-            </div>
-            <!-- setting btns end -->
         </div>
-        <!-- upload setting -->
     </div>
+    <script type="text/javascript" src="js/lib/zepto.min.js">
+    </script>
     <script type="text/javascript">
-    console.log('document.body.clientWidth:', document.body.clientWidth)
-    console.log('window.innerWidth:', window.innerWidth)
-    console.log('screen.width:', screen.width)
-    console.log('scale:', window.innerWidth / document.body.clientWidth)
+    var click = IsPC ? 'click' : 'tap';
+    $(function() {
+        init();
+        bindEvent();
+    });
+
+    function init() {
+        var height = screen.width / 1200 * 675;
+        console.log('width', screen.width, '==>height', height);
+        $('#main').css({
+            height: height
+        });
+    }
+
+    function bindEvent() {
+        // 启动开关
+        $('.m-dd-start').on(click, function(e) {
+            e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
+            setHoverImgSrcx($(e.target));
+
+            var $allRadius = $('#all-radius');
+            var hideClassName = $allRadius.attr('data-hide');
+            if ($allRadius.hasClass(hideClassName)) {
+                $allRadius.removeClass();
+            } else {
+                $allRadius.addClass(hideClassName);
+            }
+        });
+
+        
+    }
+
+    /**
+     * 设置图标选中的图片地址
+     * @param {[type]} $target [点击图标的Jquery对象]
+     */
+    function setHoverImgSrcx($target) {
+        var imgSrc = $target.css('background-image') || $target.css('backgroundImage');
+        if (imgSrc.indexOf("_on") === -1) {
+            var srcs = imgSrc.split('.');
+            var hoverImgSrc = srcs[0] + '_on.' + srcs[1];
+            $target.css('backgroundImage', hoverImgSrc);
+        } else {
+            var srcs = imgSrc.split('_on');
+            var hoverImgSrc = srcs[0] + srcs[1];
+            $target.css('backgroundImage', hoverImgSrc);
+        }
+    }
+
+    function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
     </script>
 </body>
 
