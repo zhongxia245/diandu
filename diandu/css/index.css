@@ -131,7 +131,8 @@ header {
  * index.html big img css
  * show.html css
 ************************************************************/
-.diandupages hr:first-child{
+
+.diandupages hr:first-child {
     display: none;
 }
 .setting-bigimg-header {

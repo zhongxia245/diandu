@@ -1,26 +1,26 @@
 {
-    "name": "",  //点读页名称
-    "intro": "", //简介
-    "chargeType": "", //收费设置
-    "chargeStandard": 100,  //收费标准
-    "dianduItems": [ //点读页数组
+    "name": "",
+    "intro": "",
+    "chargeType": "",
+    "chargeStandard": 100,
+    "dianduItems": [
         {
-            "pic": "背景图片地址", //点读页背景图片地址
+            "pic": "imgs/bg.png",
             "data": [
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" }, //点读位置的坐标，文件类型，文件地址，文件名称
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-    		]
-	 },
+                { "x": 150, "y": 100, "type": 1, "filename": "文件名", "url": "http://vjs.zencdn.net/v/oceans.mp4" },
+                { "x": 200, "y": 150, "type": 2, "filename": "文件名", "url": "assets/audio/demo.mp3" },
+                { "x": 100, "y": 200, "type": 2, "filename": "文件名", "url": "assets/audio/demo1.mp3" },
+                { "x": 100, "y": 300, "type": 1, "filename": "文件名", "url": "assets/video/demo.mp4" }
+            ]
+        },
         {
-            "pic": "背景图片地址",
+            "pic": "imgs/bg.png",
             "data": [
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" }, //点读位置的坐标，文件类型，文件地址，文件名称
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-                { "x": 100, "y": 100, "type": 1, "filename": "文件名", "url": "文件的地址" },
-    		]
-	 }
+                { "x": 191, "y": 80, "type": 2, "filename": "文件名", "url": "assets/audio/demo1.mp3" },
+                { "x": 150, "y": 90, "type": 2, "filename": "文件名", "url": "assets/audio/demo.mp3" },
+                { "x": 350, "y": 230, "type": 1, "filename": "文件名", "url": "http://vjs.zencdn.net/v/oceans.mp4" },
+                { "x": 600, "y": 150, "type": 1, "filename": "文件名", "url": "assets/video/demo.mp4" }
+            ]
+     }
     ]
 }

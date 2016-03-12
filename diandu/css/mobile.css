@@ -17,8 +17,9 @@ ul, li {
     height: 100%;
     background-size: 100%;
     background-repeat: no-repeat;
-    background-image: url(../imgs/bg.png);
     position: relative;
+    /*拉伸适应DIV大小*/
+    background-size: cover;
 }
 .m-dd-start {
     height: 72px;
@@ -33,7 +34,27 @@ ul, li {
 .all-radius-hide {
     display: none;
 }
-.radius {
+.m-video, .m-audio {
+    height: 72px;
+    width: 72px;
+    position: absolute;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.m-video-size {
+    width: 100px;
+    height: 100px;
+    z-index: 9999;
+}
+.m-video {
+    background-image: url('../imgs/video.png');
+}
+.m-audio {
+    background-image: url('../imgs/audio.png');
+    background-size: 100%;
+}
+
+/*.radius {
     width: 72px;
     height: 72px;
     border-radius: 50%;
@@ -53,3 +74,4 @@ ul, li {
     background: #66CCCC;
     cursor: pointer;
 }
+*/
