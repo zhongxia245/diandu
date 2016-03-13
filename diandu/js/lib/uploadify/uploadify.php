@@ -15,7 +15,7 @@ if (!empty($_FILES)) {
 	$tempFile = $_FILES['Filedata']['tmp_name'];
 	
 	//允许的文件后缀
-	$fileTypes = array('jpg','jpeg','gif','png'); 
+	$fileTypes = array('jpg','jpeg','gif','png','mp3','mp4'); 
 	
 	//得到文件原名
 	$fileName = iconv("UTF-8","GB2312",$_FILES["Filedata"]["name"]);
@@ -30,7 +30,7 @@ if (!empty($_FILES)) {
 	if (move_uploaded_file($tempFile, $path.$fileName)){
 			echo getcwd()."/uploads/".$fileName; 
 	}else{
-			echo $fileName."上传失败！";
+			echo $fileName."--upload error!";
 	}
 }
 ?>

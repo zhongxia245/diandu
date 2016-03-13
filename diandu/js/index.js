@@ -13,6 +13,11 @@ var dianduPageCount = 1;
 // 点读位文件类型列表的ID前缀
 var PREFIX_DIANDU = "__diandu";
 
+//接口地址
+var URL = {
+    base: 'http://dev.catics.org/edu/course/api.php',
+    save: 'save_touch_page'
+};
 /*==========================程序入口 START==================================*/
 $(function () {
     // 添加一个点读页
@@ -121,17 +126,43 @@ function getValidItems() {
     var destArr = [];
     var srcArr = window.DD.items;
     for (var i = 0; i < srcArr.length; i++) {
-        destArr[i] = srcArr[i];
+        destArr[i] = {
+            pic: srcArr[i].pic
+        };
+        // destArr[i] = srcArr[i];
         var destItems = [];
         var items = srcArr[i]['data'];
         for (var j = 0; j < items.length; j++) {
             if (!items[j].isRemove) {
-                destItems.push(items[j]);
+                var obj = {
+                        x: items[j].x,
+                        y: items[j].y,
+                        filename: items[j].filename,
+                        url: items[j].url,
+                        type: getTypeByName(items[j].type)
+                    }
+                destItems.push(obj);
             }
         };
-        destArr[i]['data'] = destItems;
+        destArr[i]['points'] = destItems;
     };
     return destArr;
+}
+
+/**
+ * 根据类型名字，获取类型的ID
+ * @return {[type]} [description]
+ */
+function getTypeByName(typeName) {
+    // TODO：有其他类型，在添加
+    switch (typeName) {
+    case 'video':
+        return 1;
+    case 'audio':
+        return 2;
+    default:
+        return 1;
+    }
 }
 
 /*==========================uploadify控件设置  START==================================*/
@@ -180,7 +211,7 @@ function setUploadify($file, config, success, error) {
         uploadLimit: 10, //一次最多只允许上传10张图片
         fileTypeDesc: 'Image Files',
         fileTypeExts: '*.gif;*.jpg;*.png',
-        fileSizeLimit: '200000KB', //限制上传的图片不得超过20000KB 
+        fileSizeLimit: '20000000KB', //限制上传的图片不得超过约等于2G
         onUploadSuccess: function (file, data, response) { //每次成功上传后执行的回调函数，从服务端返回数据到前端
             if (success) {
                 success(file, data, response);
@@ -295,7 +326,7 @@ function addDianDuLocation(e) {
         //存放位置信息在全部变量里面，使用按比例的方式存放
         //
         DDPageItems.push({
-            x: x / maxWidth,   //坐标的比例
+            x: x / maxWidth, //坐标的比例
             y: y / maxHeight,
             // w: maxWidth,
             // h: maxHeight,
@@ -388,7 +419,10 @@ function fileTypeItemClick(e) {
     // 设置右边上传位置文字，以及背景颜色
     var $rightName = $currentTarget.find('.upload-right-name');
     $rightName.find('span').html(data.text);
+    //未上传文件，设置上传文件的样式
     $rightName.removeClass('notselect').addClass('upload');
+    //已经上传文件，修改成 需要上传新的文件
+    $rightName.removeClass('uploaded').addClass('upload');
 
     var fileTypeDesc, fileTypeExts;
 
@@ -419,7 +453,7 @@ function fileTypeItemClick(e) {
         fileTypeDesc: fileTypeDesc,
         onUploadSuccess: function (file, data, response) {
             var $rightName = $('#__file' + id).parent().parent();
-
+            debugger;
             //TODO:该下载地址，从后端返回，目前适应硬编码
             var fileSrc = 'http://files.cnblogs.com/files/zhongxia/AppSettingHelper.zip';
             $rightName.attr('data-src', fileSrc);
@@ -517,16 +551,22 @@ function addDianDuPage() {
 function handleSubmit(e) {
     var data = {
         name: $('#name').val(),
-        intro: $('#intro').val(),
-        chargeType: $('input[type="radio"][name="chargeType"]:checked').val(),
-        chargeStandard: $('#chargeStandard').val(),
-        dianduItems: getValidItems()
+        saytext: $('#intro').val(),
+        charge: $('input[type="radio"][name="chargeType"]:checked').val(),
+        cost: $('#chargeStandard').val(),
+        pages: getValidItems()
     }
 
-    // 提交数据
-    var url = "";
-    $.post(url, data, function (data, textStatus, xhr) {
+    //小组ID，开发用3000
+    data.teamid = 3000;
 
+    var dataStr = JSON.stringify(data);
+    // 提交数据
+    var url = URL.base;
+    $.post(url, {
+        action: URL.save,
+        data: dataStr
+    }, function (result, textStatus, xhr) {
+        console.log('result', result);
     });
-    console.log('data', data)
 }
