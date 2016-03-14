@@ -39,7 +39,7 @@ function init() {
     // });
 
     // 点读页的ID,保存的时候会返回ID
-    var id = 961;
+    var id = 969;
     $.post(URL.base, { action: URL.get, id: id }, function (result, textStatus, xhr) {
         var data = JSON.parse(result);
         initPage('pages', data);
@@ -78,7 +78,6 @@ function initSwipe() {
  * @return {[type]}      [description]
  */
 function initPage(id, data) {
-    console.log('data', data)
     var html = '';
     if (data || data.pages) {
         var pages = data.pages;
@@ -112,7 +111,6 @@ function initPagePosition(length) {
  * @return {[type]}      [description]
  */
 function initDianDuPage(data) {
-    console.log('data', data);
     var bgPath = data.pic;
     var cicleHtml = initCircle(data.points);
     var html = "";

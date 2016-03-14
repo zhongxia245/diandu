@@ -23,12 +23,12 @@ if (!empty($_FILES)) {
 	
 	//接受动态传值
 	// $files=$_POST['typeCode'];
-	
+	header("Content-Type: text/html; charset=utf-8");
 	//最后保存服务器地址
 	if(!is_dir($path))
 	   mkdir($path);
 	if (move_uploaded_file($tempFile, $path.$fileName)){
-			echo getcwd()."/uploads/".$fileName; 
+			echo $path.$fileName; 
 	}else{
 			echo $fileName."--upload error!";
 	}

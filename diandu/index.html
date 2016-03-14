@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>点读</title>
     <link rel="stylesheet" type="text/css" href="css/lib/bootstrap.css">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="js/lib/jcrop/css/jquery.Jcrop.css" type="text/css" />
 </head>
 
 <body>
@@ -105,8 +105,6 @@
         </section>
         <!-- setting end -->
     </div>
-
-
     <!--上传文件类型选择，显示隐藏，删除 模版 START-->
     <script id="tpl_uploadSetting" type="text/x-handlebars-template">
         <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -142,8 +140,8 @@
     <!--上传文件类型选择，显示隐藏，删除 模版 START-->
     <!--背景图模板 START-->
     <script id="tpl_bg" type="text/x-handlebars-template">
-       <hr style="margin: 50px 7px;border: 5px solid #E9E9E9;border-radius: 10px;"/>
-       <div class="diandupageitem">
+        <hr style="margin: 50px 7px;border: 5px solid #E9E9E9;border-radius: 10px;" />
+        <div class="diandupageitem">
             <div class="setting-bigimg">
                 <div class="setting-bigimg-header">
                     <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg" />
@@ -158,9 +156,6 @@
         </div>
     </script>
     <!--背景图模板 END -->
-
-
-
     <!--第三方库-->
     <script src="js/lib/jcrop/js/jquery.min.js"></script>
     <script src="js/lib/handlebars.min.js"></script>

@@ -135,12 +135,12 @@ function getValidItems() {
         for (var j = 0; j < items.length; j++) {
             if (!items[j].isRemove) {
                 var obj = {
-                        x: items[j].x,
-                        y: items[j].y,
-                        filename: items[j].filename,
-                        url: items[j].url,
-                        type: getTypeByName(items[j].type)
-                    }
+                    x: items[j].x,
+                    y: items[j].y,
+                    filename: items[j].filename,
+                    url: items[j].url,
+                    type: getTypeByName(items[j].type)
+                }
                 destItems.push(obj);
             }
         };
@@ -211,7 +211,7 @@ function setUploadify($file, config, success, error) {
         uploadLimit: 10, //一次最多只允许上传10张图片
         fileTypeDesc: 'Image Files',
         fileTypeExts: '*.gif;*.jpg;*.png',
-        fileSizeLimit: '20000000KB', //限制上传的图片不得超过约等于2G
+        // fileSizeLimit: 2048 * 10, //限制上传的图片不得超过约等于2G
         onUploadSuccess: function (file, data, response) { //每次成功上传后执行的回调函数，从服务端返回数据到前端
             if (success) {
                 success(file, data, response);
@@ -455,7 +455,8 @@ function fileTypeItemClick(e) {
             var $rightName = $('#__file' + id).parent().parent();
             debugger;
             //TODO:该下载地址，从后端返回，目前适应硬编码
-            var fileSrc = 'http://files.cnblogs.com/files/zhongxia/AppSettingHelper.zip';
+            // var fileSrc = 'http://files.cnblogs.com/files/zhongxia/AppSettingHelper.zip';
+            var fileSrc = 'js/lib/uploadify/uploads/' + file.name;
             $rightName.attr('data-src', fileSrc);
 
             $rightName.removeClass('upload').addClass('uploaded');
@@ -568,5 +569,6 @@ function handleSubmit(e) {
         data: dataStr
     }, function (result, textStatus, xhr) {
         console.log('result', result);
+        alert('保存成功！');
     });
 }
