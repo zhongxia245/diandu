@@ -48,6 +48,7 @@ ul, li {
 }
 .m-video {
     background-image: url('../imgs/video.png');
+    background-size: 100%;
 }
 .m-audio {
     background-image: url('../imgs/audio.png');
@@ -75,3 +76,5 @@ ul, li {
     cursor: pointer;
 }
 */
+
+

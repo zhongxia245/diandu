@@ -168,6 +168,7 @@ function getTypeByName(typeName) {
 /*==========================uploadify控件设置  START==================================*/
 
 /**
+ * 【上传背景图】
  * 初始化上传控件
  * @return {[type]} [description]
  */
@@ -178,8 +179,15 @@ function setUploadControl(index) {
     setUploadify($(file_bg), {
         onUploadSuccess: function (file, data, response) {
             // TODO：上传文件的路径
+
+            var $bg = $(id_bg);
             var src = "js/lib/uploadify/uploads/" + file.name;
-            $(id_bg).css('backgroundImage', 'url("' + src + '")');
+            $bg.css('backgroundImage', 'url("' + src + '")');
+
+            $bg.parent().find('.setting-bigimg-header>span').eq(0).hide();
+            $bg.parent().find('.setting-bigimg-header>span').eq(1).show();
+
+
             $('.btn_start').show();
 
             window.DD.items[index - 1]['name'] = file.name;
@@ -238,8 +246,8 @@ function setUploadify($file, config, success, error) {
 function setHoverImgSrcx($target) {
     var imgSrc = $target.css('backgroundImage');
     if (imgSrc.indexOf("_on") === -1) {
-        var srcs = imgSrc.split('.');
-        var hoverImgSrc = srcs[0] + '_on.' + srcs[1];
+        var srcs = imgSrc.split('.png');
+        var hoverImgSrc = srcs[0] + '_on.png' + srcs[1];
         $target.css('backgroundImage', hoverImgSrc);
     } else {
         var srcs = imgSrc.split('_on');
@@ -324,12 +332,11 @@ function addDianDuLocation(e) {
         //唯一标识该点读位
         var dataid = pageIndex + "_" + (DDPageItems.length + 1);
         //存放位置信息在全部变量里面，使用按比例的方式存放
-        //
         DDPageItems.push({
             x: x / maxWidth, //坐标的比例
             y: y / maxHeight,
-            // w: maxWidth,
-            // h: maxHeight,
+            w: maxWidth,
+            h: maxHeight,
             id: dataid
         });
 
@@ -350,7 +357,7 @@ function addDianDuLocation(e) {
         new Drag($pdiv[0], function (x, y) {
             //把移动之后的位置，赋值到window变量里面
             var newxy = getValidXY(x, y);
-            setDDItems(dataid, { x: newxy.x, y: newxy.y });
+            setDDItems(dataid, { x: newxy.x / maxWidth, y: newxy.y / maxHeight });
         });
         //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 END】
     }
@@ -453,7 +460,6 @@ function fileTypeItemClick(e) {
         fileTypeDesc: fileTypeDesc,
         onUploadSuccess: function (file, data, response) {
             var $rightName = $('#__file' + id).parent().parent();
-            debugger;
             //TODO:该下载地址，从后端返回，目前适应硬编码
             // var fileSrc = 'http://files.cnblogs.com/files/zhongxia/AppSettingHelper.zip';
             var fileSrc = 'js/lib/uploadify/uploads/' + file.name;
@@ -562,13 +568,14 @@ function handleSubmit(e) {
     data.teamid = 3000;
 
     var dataStr = JSON.stringify(data);
-    // 提交数据
+    console.log('data', data)
+        // 提交数据
     var url = URL.base;
     $.post(url, {
         action: URL.save,
         data: dataStr
     }, function (result, textStatus, xhr) {
         console.log('result', result);
-        alert('保存成功！');
+        alert('保存成功！' + result);
     });
 }

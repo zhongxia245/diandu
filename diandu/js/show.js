@@ -3,6 +3,13 @@ var click = IsPC ? 'click' : 'tap';
 var audio, video;
 var _pagePositionId = 'position';
 
+//创建点读页的背景图大小【本该传到数据库，在传回来，这里就先写死了】
+var OLDWIDTH = 1200;
+var OLDHEIGHT = 675;
+
+var SCALE = 1; //缩放的比例
+var SIZE = 72; //点读位置默认大小
+
 var URL = {
     base: 'http://dev.catics.org/edu/course/api.php',
     get: 'get_touch_page_data'
@@ -18,38 +25,57 @@ function init() {
     // var height = screen.width / 1200 * 675;
     window.W = $(window).width();
     window.H = $(window).height();
+
+    SCALE = window.W / OLDWIDTH;
+    //点读位置大小
+    SIZE = SCALE * 72;
+
     console.log('width', $(window).width(), '==>height', $(window).height());
     $('#main').css({
         height: window.H
     });
 
-    //本地测试用的
-    // $.ajax({
-    //     type: 'GET',
-    //     url: 'data.json',
-    //     dataType: 'json',
-    //     success: function (data) {
-    //         initPage('pages', data);
-    //         initSwipe();
-    //         bindEvent();
-    //     },
-    //     error: function (xhr, type) {
-    //         console.log('Ajax error!', xhr, type)
-    //     }
-    // });
 
     // 点读页的ID,保存的时候会返回ID
-    var id = 969;
+    var id = getQueryStringByName('id') || 969;
     $.post(URL.base, { action: URL.get, id: id }, function (result, textStatus, xhr) {
         var data = JSON.parse(result);
         initPage('pages', data);
+        console.log('data', data)
         initSwipe();
         bindEvent();
+        initScale();
     });
 
     //初始化播放器，页面里面只有一个视频播放器和一个音频播放器
     initAudio();
     initVideo();
+}
+
+/**
+ * 按比例缩放图标
+ * @return {[type]} [description]
+ */
+function initScale() {
+    setScale('.m-dd-start', SIZE);
+    setScale('.m-audio', SIZE);
+    setScale('.m-audio img', SIZE);
+    setScale('.m-video', SIZE);
+    setScale('.m-video img', SIZE);
+    var $div_video = $('#div_video');
+    $div_video.css('marginTop', ((window.H - $div_video.height()) / 2))
+}
+
+/**
+ * 设置大小
+ * @param {[type]} selector [description]
+ * @param {[type]} size     [description]
+ */
+function setScale(selector, size) {
+    $(selector).css({
+        width: size,
+        height: size
+    })
 }
 
 /**
@@ -134,6 +160,10 @@ function initCircle(data) {
     for (var i = 0; i < data.length; i++) {
         var left = parseFloat(data[i].x) * window.W;
         var top = parseFloat(data[i].y) * window.H;
+
+
+        var style = 'left:' + left + 'px; top:' + top + 'px; width:' + SIZE + 'px; height:' + SIZE + 'px';
+
         var type = data[i].type;
         var url = data[i].url;
         var filename = data[i].filename;
@@ -152,7 +182,7 @@ function initCircle(data) {
             className = 'm-video';
             break;
         };
-        html += '<div class="' + className + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="left:' + left + 'px; top:' + top + 'px;">'
+        html += '<div class="' + className + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
         html += mediaImg;
         html += '</div>'
     };
@@ -306,8 +336,8 @@ function bindEvent() {
 function setHoverImgSrcx($target) {
     var imgSrc = $target.css('background-image') || $target.css('backgroundImage');
     if (imgSrc.indexOf("_on") === -1) {
-        var srcs = imgSrc.split('.');
-        var hoverImgSrc = srcs[0] + '_on.' + srcs[1];
+        var srcs = imgSrc.split('.png');
+        var hoverImgSrc = srcs[0] + '_on.png' + srcs[1];
         $target.css('backgroundImage', hoverImgSrc);
     } else {
         var srcs = imgSrc.split('_on');
@@ -330,4 +360,18 @@ function IsPC() {
         }
     }
     return flag;
+}
+
+
+/**
+ * 根据QueryString参数名称获取值
+ * @param  {[type]} key [key]
+ * @return {[type]}      [description]
+ */
+function getQueryStringByName(key) {
+    var result = location.search.match(new RegExp("[\?\&]" + key + "=([^\&]+)", "i"));
+    if (result == null || result.length < 1) {
+        return "";
+    }
+    return result[1];
 }
