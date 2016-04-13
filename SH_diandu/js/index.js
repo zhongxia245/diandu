@@ -499,6 +499,8 @@ function addDianDuLocation(e) {
         });
 
         new Drag($pdiv[0], function (x, y) {
+            x += 50;
+            y += 50;
             //把移动之后的位置，赋值到window变量里面
             var newxy = getValidXY(x, y, w, h);
             __data.setDDItems(dataid, {x: newxy.x / w, y: newxy.y / h});

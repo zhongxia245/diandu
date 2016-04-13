@@ -13,12 +13,17 @@ var OLDHEIGHT = 675;
  };
  */
 var OLDDIANDUSIZE = 100; //创建时的点读位置大小为100px
+var POINTPOINTSIZE = 72; //点读位置默认大小
 
-var SCALEH = 0.6;  //高度的比例是宽度的0.8
+/*
+ * 计算点读位从100变成72的圆心位置偏移
+ * */
+var DIFFR = (OLDDIANDUSIZE - POINTPOINTSIZE) / 2;
+var DIFF = Math.sqrt(Math.pow(DIFFR, 2) / 2);
+
 
 var POINTSIZE;
 var SCALE = 1; //缩放的比例
-var POINTPOINTSIZE = 72; //点读位置默认大小
 var STARTSIZE = 100; //启动位大小
 var isVertical = false;  //是否为竖屏
 
@@ -340,12 +345,13 @@ function initCircle(data) {
     var html = "";
     html += '<div data-id="all-radius" data-hide="all-radius-hide">'
     for (var i = 0; i < data.length; i++) {
-        console.log("POINTSIZE", POINTSIZE)
-        //点读为知缩小,需要保证的是圆心的位置不变,而不是保证 left ,top 的比例不变
-        var diffR = (OLDDIANDUSIZE - POINTSIZE) / 1.75;   //理论上应该是除以2,但是发现除以1.75更精确
-        var left = parseFloat(data[i].x) * $(window).width() + diffR;
-        var top = parseFloat(data[i].y) * $(window).height() + diffR;
 
+        //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
+        var diff = DIFF * SCALE;
+        var left = parseFloat(data[i].x) * $(window).width() + diff;
+        var top = parseFloat(data[i].y) * $(window).height() + diff;
+        console.log("parseFloat(data[i].x)", parseFloat(data[i].x), parseFloat(data[i].y), $(window).width(), $(window).height())
+        console.log("left", left, 'top', top)
         var style = 'left:' + left + 'px; top:' + top + 'px; width:' + POINTSIZE + 'px; height:' + POINTSIZE + 'px';
         var type = data[i]['type'];
         var url = data[i]['url'];
