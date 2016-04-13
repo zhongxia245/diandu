@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包测试</title>
+</head>
+<body>
+<button onclick="init();">初始化</button>
+<button id="change" onclick="changeHandler();">改变data数据</button>
+<button id="btn" onclick="clickHandler();">输出data数据</button>
+<script>
+    function init() {
+        var data = 1;
+        document.getElementById('btn').onclick = function clickHandler() {
+            console.log(data);
+        }
+        document.getElementById('change').onclick = function changeHandler() {
+            data++;
+        }
+    }
+</script>
+</body>
+</html>

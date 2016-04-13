@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数组测试</title>
+</head>
+
+<body>
+    <h1>数组偏移测试</h1>
+    <script type="text/javascript" src="../js/arrayUtil.js"></script>
+    <script type="text/javascript">
+    var arr = [{
+        id: 1,
+        index: 1,
+        name: 'zhongxia1111'
+    }, {
+        id: 2,
+        index: 2,
+        name: 'zhongxia2222'
+    }, {
+        id: 3,
+        index: 3,
+        name: 'zhongxia33333'
+    }]
+
+    ArrayUtil.prevItem(arr, 'index', 1);
+    console.log('prev  1')
+    show(arr, 'index');
+    ArrayUtil.nextItem(arr, 'index', 3);
+    console.log('next  3')
+    show(arr, 'index');
+    ArrayUtil.nextItem(arr, 'index', 2);
+    console.log('next  2')
+    show(arr, 'index');
+    ArrayUtil.prevItem(arr, 'index', 2);
+    console.log('pre  2')
+    show(arr, 'index');
+
+    ArrayUtil.sortByKey(arr, 'index');
+    console.log('sort by index')
+    show(arr, 'index');
+
+    function show(arr, key) {
+        for (var i = 0; i < arr.length; i++) {
+            console.log('id: ', arr[i].id, 'index: ', arr[i][key]);
+        };
+        console.log('------------------------------------')
+    }
+    </script>
+</body>
+
+</html>

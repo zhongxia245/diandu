@@ -1,0 +1,69 @@
+<style type="text/css">
+    @charset "utf-8";
+    /* CSS Document */
+    body, h6, h5, h4, h3, h2, h1 {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial, Helvetica, sans-serif";
+        line-height: 23px;
+        font-size: 13px;
+    }
+
+    #con {
+        border: 1px solid #009933;
+        margin: 0px;
+        width: 180px;
+        height: 200px;
+        position: absolute;
+        left: 30px;
+        top: 40px;
+    }
+
+    #title, #main {
+        margin: 10px;
+        text-align: center;
+    }
+
+    #title {
+        background: #009933;
+        height: 30px;
+        line-height: 30px;
+        font-size: 16px;
+        color: #fff;
+    }
+
+    #main {
+        height: 140px;
+        font-size: 14px;
+        line-height: 20px;
+        color: #0058d2;
+    }
+</style>
+<div id="con">
+    <div id="title">title</div>
+    <div id="main">??title,?????</div>
+</div>
+
+<script type="text/javascript" src="../lib/zepto.min.js"></script>
+<script type="text/javascript">
+    ;
+    (function ($) {
+        /*touchstart the title and drag the con moving*/
+        var moveX, moveY, startX, startY;
+        $(document).on("touchstart", "#title", function (event) {
+            if ($(event.target).attr('id') == 'title') {
+                var touchPros = event.touches[0];
+                startX = touchPros.pageX - event.target.parentNode.offsetLeft;
+                startY = touchPros.pageY - event.target.parentNode.offsetTop;
+            }
+            return false;
+        }).on("touchmove", "#title", function (event) {
+            if ($(event.target).attr('id') == 'title') {
+                var touchPros = event.touches[0];
+                moveX = touchPros.pageX - startX;
+                moveY = touchPros.pageY - startY;
+                $('#con').css('left', moveX).css('top', moveY);
+            }
+        });
+    })(Zepto);
+</script>

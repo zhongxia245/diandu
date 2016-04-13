@@ -1,0 +1,44 @@
+.scroll-bar {
+    height: 100%;
+    width: 900px;;
+    position: relative;
+    margin-top: 10px;
+}
+
+.entire-bar {
+    width: 900px;
+    height: 46px;
+    left: 0;
+    position: absolute;
+    background: url(./imgs/bar.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.action-bar {
+    top: 12px;
+    height: 4px;
+    position: absolute;
+    background: #4F94CD;
+    opacity: 0;
+}
+
+.action-block {
+    cursor: pointer;
+    position: absolute;
+    background: url(imgs/block.png);
+    background-size: 100% 100%;
+    width: 122px;
+    height: 122px;
+    line-height: 122px;
+    text-align: center;
+    font-size: 24px;
+    color: #FFF;
+}
+
+.open {
+    background-image: url(./imgs/block.png);
+}
+
+.close {
+    background-image: url(./imgs/close.png);
+}

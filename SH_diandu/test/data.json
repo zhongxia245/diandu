@@ -1,0 +1,25 @@
+{
+    "name": "",
+    "saytext": "",
+    "charge": "",
+    "cost": 100,
+    "pages": [
+        {
+            "pic": "imgs/bg.png",
+            "points": [
+                { "x": 0.15, "y": 0.75, "type": "1", "filename": "文件名", "url": "http://vjs.zencdn.net/v/oceans.mp4" },
+                { "x": 0.15, "y": 0.35, "type": "2", "filename": "文件名", "url": "assets/audio/demo.mp3" },
+                { "x": 0.25, "y": 0.35, "type": "2", "filename": "文件名", "url": "assets/audio/demo1.mp3" },
+                { "x": 0.35, "y": 0.35, "type": "1", "filename": "文件名", "url": "assets/video/demo.mp4" }
+            ]
+        },
+        {
+            "pic": "imgs/bg.png",
+            "points": [
+                { "x": 0.45, "y": 0.15, "type": "2", "filename": "文件名", "url": "assets/audio/demo1.mp3" },
+                { "x": 0.75, "y": 0.25, "type": "1", "filename": "文件名", "url": "http://vjs.zencdn.net/v/oceans.mp4" },
+                { "x": 0.65, "y": 0.35, "type": "1", "filename": "文件名", "url": "assets/video/demo.mp4" }
+            ]
+     }
+    ]
+}

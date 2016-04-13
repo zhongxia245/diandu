@@ -1,0 +1,32 @@
+﻿​1.先在html文件中编写如下代码:
+<div class="scroll-bar" id="scroll-bar">
+	<div class="entire-bar" id="entire-bar"></div>
+	<div class="action-bar" id="action-bar"></div>
+	<div class="action-block" id="action-block"></div>
+</div>
+
+<input type="text" id="showArea"/>
+
+其中类名class和id根据自己喜欢的命名.css也是根据自己的喜欢.
+
+但必要的样式要求为:"scroll-bar"的position必须为relative,而里面包裹的三个div的position都必须为absolute,此外外层的"scroll-bar"最好设置一定数值的margin-top,里面包裹的div设置一定数值的top,具体的css在附件中有可以参考.
+
+
+2. 在html文件的head部分引入js文件.
+<script src="slide.js"></script>
+
+
+3.在</body>标签前添加script标签并写入如下的代码
+new SlideBar({
+	actionBlock : 'action-block',
+	actionBar : 'action-bar',
+	slideBar : 'scroll-bar',
+	barLength : 500,
+	interval : 50,
+	maxNumber : 200,
+	showArea : 'showArea',
+	callback:function(value){
+	   //返回当前的刻度值
+	}
+});
+actionBlock对应滑块的id, actionBar对应滑动多少的显示条的id, slideBar对应外层的div的id, barLength对应整个滑动条的宽度(像素值), interval对应你想要的滑动条的单位间隔, maxNumber对应你想要滑动的最大数值, showArea对应显示数值的输入框的id(可选, 如果不要就去掉).

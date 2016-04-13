@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>点读</title>
+    <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="js/lib/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css">
+    <!--<link rel="stylesheet" href="js/lib/swipe/main.css">-->
+    <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
+    <link rel="stylesheet" href="js/lib/modal/css/style.css">
+    <link rel="stylesheet" href="css/show.css">
+</head>
+
+<body>
+<div id="main" class="m-bgs page-swipe">
+    <div class="swiper-container gallery-top">
+        <div id="pages" class="swiper-wrapper">
+        </div>
+    </div>
+    <div class="gallery-main" style="opacity: 0">
+        <div class="gallery-main-switch row">
+            <div class="switch switch-mini col-sm-4" id="size_switch">
+                <input id="cbk_auto" type="checkbox" data-off-text="关闭" data-on-text="开启" data-label-text="自动播放">
+            </div>
+            <div class="col-sm-8" id="size_progressAll">
+                <div class="row">
+                    <div class="col-sm-5" id="size_time">
+                        <span style="height: 34px; line-height: 34px;font-size: 14px;">
+                            间隔时间
+                            <span class="intervalTime">(20秒)</span>
+                        </span>
+                    </div>
+                    <div class="col-sm-7" id="size_progress">
+                        <div class="progress slider">
+                            <div role="progressbar" class="progress-bar">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-container gallery-thumbs">
+            <div id="thumbs" class="swiper-wrapper">
+            </div>
+        </div>
+    </div>
+</div>
+<section class="sec-audio">
+    <audio id="audio"></audio>
+</section>
+<section class="sec-video">
+    <div class="cd-bouncy-nav-modal" style="text-align:center;">
+        <div id="div_video" style="width:100%;height:75%; margin:0 auto; padding:0 10px;">
+            <video style="width:100%;height:100%;" id="video" controls="controls">
+                your browser does not support the video tag
+            </video>
+        </div>
+        <a href="javascript:void(0);" class="cd-close">Close modal</a>
+    </div>
+</section>
+<section class="sec-imgtext">
+    <div class="sec-imgtext-main">
+        <div class="sec-imgtext-title"></div>
+        <div class="sec-imgtext-box">
+            <div class="sec-imgtext-content"></div>
+            <img class="sec-imgtext-img" src="" alt="">
+        </div>
+    </div>
+</section>
+
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/zepto.min.js"></script>
+<script src="css/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/lib/bootstrap-slider/jquery-ui-1.10.3.mouse_core.js"></script>
+<script src="js/lib/bootstrap-slider/jquery.ui.touch-punch.js"></script>
+<script src="js/lib/bootstrap-slider/bootstrapslider.min.js"></script>
+
+<script src="js/lib/swipe/js/swiper.js"></script>
+<script src="js/lib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="js/show.js"></script>
+</body>
+
+</html>

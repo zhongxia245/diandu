@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>点读</title>
+    <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
+    <link rel="stylesheet" href="js/lib/modal/css/style.css">
+    <link rel="stylesheet" href="css/show.css">
+    <link rel="stylesheet" href="js/slide/slide.css">
+</head>
+
+<body>
+<div id="main" class="m-bgs page-swipe">
+    <div class="swiper-container gallery-top">
+        <div id="pages" class="swiper-wrapper">
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="gallery-main" style="opacity: 0; overflow: hidden;">
+        <!--自动播放时间进度条  START-->
+        <div class="gallery-main-switch">
+            <div id="txtTip" style="width:30%; float: left; font-size: 12px; text-align: center;">
+                <div>自动播放设置</div>
+                <div>(方格中的数字为间隔时间)</div>
+            </div>
+            <div class="scroll-bar" id="scroll-bar" style="width: 40%; float: left;">
+                <div class="entire-bar" id="entire-bar"></div>
+                <div class="action-block close" id="action-block">关</div>
+            </div>
+            <div id="btn-close"
+                 style="position: absolute; right: 10px; top: 5px; font-size: 26px; font-weight: bold; color: red; cursor: pointer;">
+                X
+            </div>
+        </div>
+        <!--自动播放时间进度条 END-->
+        <!--缩略图 START-->
+        <div class="swiper-container gallery-thumbs">
+            <div id="thumbs" class="swiper-wrapper">
+            </div>
+            <div class="swiper-pagination-thumbs"></div>
+        </div>
+        <!--缩略图 END-->
+    </div>
+</div>
+<section class="sec-audio">
+    <audio id="audio"></audio>
+</section>
+<section class="sec-video">
+    <div class="cd-bouncy-nav-modal" style="text-align:center;">
+        <div id="div_video" style="width:100%; margin:0 auto; padding:0 10px;">
+            <video style="width:100%;height:100%;" id="video" controls="controls">
+                your browser does not support the video tag
+            </video>
+        </div>
+        <a href="javascript:void(0);" class="cd-close">Close modal</a>
+    </div>
+</section>
+<section class="sec-imgtext">
+    <div class="sec-imgtext-main">
+        <div class="sec-imgtext-title"></div>
+        <div class="sec-imgtext-box">
+            <div class="sec-imgtext-content"></div>
+            <img class="sec-imgtext-img" src="" alt="">
+        </div>
+    </div>
+</section>
+<script src="js/lib/zepto.min.js"></script>
+<!--<script type="text/javascript" src="js/touch.js"></script>-->
+<!--<script type="text/javascript" src="js/lib/touch.min.js"></script>-->
+<script src="js/util.js"></script>
+<script src="js/lib/swipe/js/swiper.js"></script>
+<script type="text/javascript" src="js/slide/touchslide.js"></script>
+<script type="text/javascript" src="js/show.js"></script>
+</body>
+
+</html>
