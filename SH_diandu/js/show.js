@@ -1,7 +1,7 @@
 /*=============================定义变量 START===========================*/
 var click = IsPC() ? 'click' : 'tap';
 var audio, video;
-var _pagePositionId = 'position';
+var _pagePositionId = 'position'; //背景图列表的列表小圆点
 
 //上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
 var OLDWIDTH = 1200;
@@ -46,17 +46,21 @@ $(function () {
  * 初始化
  */
 function init() {
+    if (!DATA) {
+        fn_onResize();
+    }
     // 点读页的ID,保存的时候会返回ID
     var id = getQueryStringByName('id') || 1080;
-    $.post(URL.base, {action: URL.get, id: id}, function (result, textStatus, xhr) {
+
+    $.post(URL.base, {action: URL.get, id: id}, function (result) {
         var data = JSON.parse(result);
         DATA = data;
+
         var strw = data && data.pages.length && data.pages[0].w || "1200";
         var strh = data && data.pages.length && data.pages[0].h || "675";
         OLDWIDTH = parseFloat(strw);
         OLDHEIGHT = parseFloat(strh);
-        console.log("OLDWIDTH", OLDWIDTH, "OLDHEIGHT", OLDHEIGHT)
-        fn_onResize();
+
         initPoint(data);
     });
 
@@ -71,7 +75,6 @@ function init() {
  */
 window.onresize = function () {
     fn_onResize();
-    initSlide();
 }
 
 /**
@@ -81,6 +84,10 @@ window.onresize = function () {
 function fn_onResize() {
     window.W = $(window).width();
     window.H = $(window).height();
+    $('#main').css({
+        height: window.H,
+        width: window.W
+    });
     var _size;
     if (W > H) {
         //横屏
@@ -94,7 +101,8 @@ function fn_onResize() {
         })
         _size = window.W * 0.28;
         isVertical = false;
-    } else {
+    }
+    else {
         //竖屏
         SCALE = (window.H / OLDWIDTH);
         $('.cd-close').addClass('cd-close-v')
@@ -107,20 +115,19 @@ function fn_onResize() {
         _size = window.W * 0.5;
         isVertical = true;
     }
+
     $('.sec-imgtext-main').css({width: _size, height: _size});
 
-    //设置点图为，最大 72 【不符合实际需求，修改成按比例设置大小】
-    //POINTSIZE = SCALE * POINTPOINTSIZE > 72 ? 72 : SCALE * POINTPOINTSIZE;
     POINTSIZE = SCALE * POINTPOINTSIZE;
 
-    $('#main').css({
-        height: window.H,
-        width: window.W
-    });
+    //设置顶部进度条的宽高
+    styleHandler();
+
     if (DATA) {
+        $('.gallery-main').css('opacity', 0).show();
         initPoint(DATA);
     }
-    styleHandler();
+
 }
 
 /**
@@ -142,7 +149,7 @@ function styleHandler() {
         })
     } else {
         $scrollBar.css({
-            width: '40%'
+            width: '50%'
         })
         $tip.css({
             width: '30%',
@@ -152,8 +159,6 @@ function styleHandler() {
             float: 'none'
         })
     }
-    console.log("$scrollBar", $scrollBar.width(), $scrollBar.height())
-
 }
 
 
@@ -163,7 +168,6 @@ function styleHandler() {
  * @return {[type]}      [description]
  */
 function initPoint(data) {
-    $('#pages').html('');
     initPage('pages', data);
     initThumbs('thumbs', data.pages);
     initSwipe();
@@ -201,16 +205,24 @@ function setScale(selector, size) {
  * @return {[type]} [description]
  */
 function initSwipe() {
+
+    //判断是否已经设置了分页的点,如何没有设置,则设置分页
+    var pagination = ".swiper-pagination";
+    var paginationHTML = $(pagination).html();
+    if (paginationHTML) {
+        pagination = null;
+    }
     window.galleryTop = new Swiper('.gallery-top', {
         //continuous: false,
-        //paginationClickable: true,
-        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        pagination: pagination,
         onTouchEnd: function (pos) {
             //closeVideoOrAudio();
         }
     });
 
     var startX, endX, long;
+
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 5,
         centeredSlides: true,
@@ -225,9 +237,9 @@ function initSwipe() {
         onTouchEnd: function (pos, e) {
             endX = e.changedTouches && e.changedTouches[0].clientX;
             //closeVideoOrAudio();
+            //缩略图滑动位置小于20,认为是点击事件
             long = Math.abs(endX - startX)
             if (long < 20) {
-                console.log("tap", pos)
                 galleryThumbs.slideTo(pos.clickedIndex);
                 galleryTop.slideTo(pos.clickedIndex);
             }
@@ -269,7 +281,7 @@ function initSlide() {
 
 /*************************************根据数据生成页面 START********************************/
 /**
- * 根据返回的数据，动态生成页面
+ * 根据返回的数据，动态生成页面(多个)
  * @param  {[type]} id [点读页容器id]
  * @param  {[type]} data [description]
  * @return {[type]}      [description]
@@ -281,26 +293,8 @@ function initPage(id, data) {
         for (var i = 0; i < pages.length; i++) {
             html += initDianDuPage(pages[i]);
         }
-        initPagePosition(data['pages'].length);
     }
-    $('#' + id).html(html);
-}
-
-/**
- * 左右滑动，底部的小圆点
- * @return {[type]} [description]
- */
-function initPagePosition(length) {
-    var html = "";
-    for (var i = 0; i < length; i++) {
-        if (i === 0) {
-            html += '<li class="on"></li>';
-        } else {
-            html += '<li></li>';
-        }
-    }
-    ;
-    $('#' + _pagePositionId).html(html);
+    $('#' + id).html('').html(html);
 }
 
 /**
@@ -314,20 +308,31 @@ function initThumbs(id, pages) {
         html += '<div class="swiper-slide" style="background-image: url(' + bgPath + ');">'
         html += '</div>'
     }
-    $('#' + id).html(html)
-
+    var $thumbs = $('#' + id);
+    $thumbs.html('').html(html);
+    var $swiperSlide = $thumbs.find('.swiper-slide');
+    
+    if (isVertical) {
+        $swiperSlide.css({
+            width: $('#thumbs').height() * 9 / 16
+        })
+    } else {
+        $swiperSlide.css({
+            width: $('#thumbs').height() * 16 / 9
+        })
+    }
 }
 
 /**
  * 生成点读页
- * @param  {[type]} data [description]
- * @return {[type]}      [description]
+ * @param  {[type]} data [根据数据生成点读页]
  */
 function initDianDuPage(data) {
     var bgPath = data['pic'];
     var cicleHtml = initCircle(data['points']);
+    var h = $(window).height()
     var html = "";
-    html += '<div class="m-bg swiper-slide" style="background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+    html += '<div class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
     html += '    <div class="wrap">'
     html += '        <div class="m-dd-start"></div>'
     html += cicleHtml;
@@ -337,9 +342,8 @@ function initDianDuPage(data) {
 }
 
 /**
- * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】 TODO
- * @param  {[type]} data [description]
- * @return {[type]} [description]
+ * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
+ * @param  {[type]} data [根据数据生成点读位]
  */
 function initCircle(data) {
     var html = "";
@@ -350,8 +354,6 @@ function initCircle(data) {
         var diff = DIFF * SCALE;
         var left = parseFloat(data[i].x) * $(window).width() + diff;
         var top = parseFloat(data[i].y) * $(window).height() + diff;
-        console.log("parseFloat(data[i].x)", parseFloat(data[i].x), parseFloat(data[i].y), $(window).width(), $(window).height())
-        console.log("left", left, 'top', top)
         var style = 'left:' + left + 'px; top:' + top + 'px; width:' + POINTSIZE + 'px; height:' + POINTSIZE + 'px';
         var type = data[i]['type'];
         var url = data[i]['url'];
@@ -396,13 +398,11 @@ function initAudio() {
 /**
  * 播放或者暂停 音频
  * @param  {[type]} flag [true ，则播放， false 则暂停]
- * @return {[type]}      [description]
  */
 function playOrPaused(flag) {
     if (flag) {
         if (audio.paused) {
             audio.play();
-            console.log('播放')
         }
     } else {
         audio.pause();
@@ -416,7 +416,6 @@ function initVideo() {
 
 /**
  * 弹出模态框
- * @return {[type]} [description]
  */
 function triggerBouncyNav($bool) {
     if (!$bool) {
@@ -441,7 +440,6 @@ function triggerBouncyNav($bool) {
 
 /**
  * 隐藏音频和视频，并且关闭播放
- * @return {[type]} [description]
  */
 function closeVideoOrAudio() {
     $('.m-audio img').hide(); //隐藏所有的播放GIF图
@@ -486,7 +484,6 @@ function bindEvent() {
      * 点击空白处,关闭视频播放窗口
      */
     $('.cd-bouncy-nav-modal').off(click).on(click, function (event) {
-        console.log($(event.target).attr('class'))
         if ($(event.target).hasClass('cd-bouncy-nav-modal')) {
             triggerBouncyNav(false);
             $('#video').hide();
@@ -496,7 +493,6 @@ function bindEvent() {
     // 视频
     $('.m-video').off(click).on(click, function (e) {
         closeVideoOrAudio();
-
         var $cTar = $(e.currentTarget);
         var $tar = $(e.target);
         var className = 'm-video-size';
@@ -515,7 +511,6 @@ function bindEvent() {
             }
             $cTar.addClass(className)
             $tar.find('img').show();
-            console.log('video', url, filename)
         }
 
         return false;
@@ -529,13 +524,11 @@ function bindEvent() {
         closeVideoOrAudio();
         var timer = setInterval(function () {
             if (audio.ended) {
-                console.log("play ended")
                 $cTar.find('img').hide();
                 playOrPaused(false);
                 window.clearInterval(timer);
 
                 if (AUTOPLAYINTERVAL !== 0) {
-                    console.log("start autoplay")
                     window.galleryTop.startAutoplay();
                 }
             }
@@ -553,7 +546,6 @@ function bindEvent() {
             }
             $tar.find('img').show();
             playOrPaused(true);
-            console.log('audio info:', url, filename)
         }
 
         return false;
@@ -594,37 +586,18 @@ function bindEvent() {
         }
     })
 
-    /*
-     * 批量添加引入的功能
-     * */
     /*上下滑动,展示缩略图和自动播放控制轴*/
-    //向上滑动
     $('body').off('swipeUp').on('swipeUp', function (ev) {
         if ($(ev.target).hasClass('swiper-slide-active')) {
             ev.preventDefault();
-            console.log("show timeControl")
             $(".gallery-main").show();
             $(".gallery-main").css('opacity', 1);
         }
         return false;
     });
 
-    //touch.config.swipeTime = 200;
-    //touch.on('body', 'swipeup', '#main', function (ev) {
-    //    if ($(ev.target).hasClass('swiper-slide-active')) {
-    //        ev.preventDefault();
-    //        ev.stopPropagation();
-    //        console.log("show timeControl")
-    //        $(".gallery-main").show();
-    //        $(".gallery-main").css('opacity', 1);
-    //    }
-    //    return false;
-    //});
-
-
     //关闭时间进度条
     $('#btn-close').off(click).on(click, function (ev) {
-        console.log("hide timeControl")
         $(".gallery-main").hide();
         return false;
     });
@@ -633,7 +606,6 @@ function bindEvent() {
     $('#pages').off(click).on(click, function (ev) {
         window.galleryTop.stopAutoplay();
         //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
-        console.log("stop autoplay")
         return false;
     })
 
@@ -664,7 +636,6 @@ function setImgTextLocation($tar, $secImgTextMain) {
     //左下点读位的角
     var _lbx = left - imgTextW - gap;
     var _lby = top + rH + gap;
-    console.log(left, _lbx)
     //右下点读位的角
     var _rbx = left + rW + gap;
     var _rby = top + rH + gap;
@@ -704,15 +675,10 @@ function setImgTextLocation($tar, $secImgTextMain) {
         }
     }
 }
-/**
- * 从 样式  10px  变成 数字 10
- */
-function css2Float(cssProp) {
-    cssProp = cssProp || "";
-    return parseFloat(cssProp.replace('px', ''));
-}
+
 
 /*=======================点击事件相关 END====================*/
+
 
 /**
  * 设置图标选中的图片地址
@@ -747,6 +713,14 @@ function IsPC() {
     return flag;
 }
 
+
+/**
+ * 从 样式  10px  变成 数字 10
+ */
+function css2Float(cssProp) {
+    cssProp = cssProp || "";
+    return parseFloat(cssProp.replace('px', ''));
+}
 
 /**
  * 根据QueryString参数名称获取值

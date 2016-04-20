@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list id="90fea430-009e-432d-af6e-6e498abc9897" name="Default" comment="" />
+    <list default="true" id="e97150c7-31da-4a69-885a-df051d0cded5" name="uploads" comment="微信兼容性已经修改完成, 目前微信刚打开页面,点读位有点大,其他没有问题">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/imgtext.css" afterPath="$PROJECT_DIR$/SH_diandu/css/imgtext.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/index.css" afterPath="$PROJECT_DIR$/SH_diandu/css/index.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap.css" afterPath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/show.css" afterPath="$PROJECT_DIR$/SH_diandu/css/show.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/index.html" afterPath="$PROJECT_DIR$/SH_diandu/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/arrayUtil.js" afterPath="$PROJECT_DIR$/SH_diandu/js/arrayUtil.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/class/ImgText.js" afterPath="$PROJECT_DIR$/SH_diandu/js/class/ImgText.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/drag.js" afterPath="$PROJECT_DIR$/SH_diandu/js/drag.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/index.js" afterPath="$PROJECT_DIR$/SH_diandu/js/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/index_single.js" afterPath="$PROJECT_DIR$/SH_diandu/js/index_single.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/handlebars.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/handlebars.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/cut.php" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/cut.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/modal/img/cd-category-icons.svg" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/modal/img/cd-category-icons.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/modal/img/cd-icon-close.svg" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/modal/img/cd-icon-close.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/modal/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/modal/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/main.css" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.css" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.php" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/show.js" afterPath="$PROJECT_DIR$/SH_diandu/js/show.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/show_bootstrap.js" afterPath="$PROJECT_DIR$/SH_diandu/js/show_bootstrap.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/show_single.js" afterPath="$PROJECT_DIR$/SH_diandu/js/show_single.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/slide.css" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/slide.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/slide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/slide.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/touchclickslide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/touchclickslide.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/touchslide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/touchslide.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/使用方法.txt" afterPath="$PROJECT_DIR$/SH_diandu/js/slide/使用方法.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/php/uploadify.php" afterPath="$PROJECT_DIR$/SH_diandu/php/uploadify.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/show.html" afterPath="$PROJECT_DIR$/SH_diandu/show.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/show_bootstrap.html" afterPath="$PROJECT_DIR$/SH_diandu/show_bootstrap.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/show_single.html" afterPath="$PROJECT_DIR$/SH_diandu/show_single.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/arraydemo.html" afterPath="$PROJECT_DIR$/SH_diandu/test/arraydemo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/data.json" afterPath="$PROJECT_DIR$/SH_diandu/test/data.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/dataTest.html" afterPath="$PROJECT_DIR$/SH_diandu/test/dataTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/index1.0.html" afterPath="$PROJECT_DIR$/SH_diandu/test/index1.0.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/uploadImgText.html" afterPath="$PROJECT_DIR$/SH_diandu/test/uploadImgText.html" />
+    </list>
+    <ignored path="diandu.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="diandu" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="show.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="40" column="27" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="27" />
+              <folding>
+                <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="show.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="75.46154">
+              <caret line="107" column="16" selection-start-line="107" selection-start-column="16" selection-end-line="107" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="show.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.024937656">
+              <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+                <element signature="n#!!block;n#initSlide#0" expanded="false" />
+                <element signature="n#!!block;n#initAudio#0" expanded="false" />
+                <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+                <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+                <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+                <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+                <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+                <element signature="n#!!block;n#IsPC#0" expanded="false" />
+                <element signature="n#!!block;n#css2Float#0" expanded="false" />
+                <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+                <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+                <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+                <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+                <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/SH_diandu/js/index.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/index.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/log/log.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/show.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/show.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/css/show.css" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1440" />
+    <option name="height" value="900" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../zhongxia245.github.com" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="true" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="90fea430-009e-432d-af6e-6e498abc9897" name="Default" comment="" />
+      <changelist id="e97150c7-31da-4a69-885a-df051d0cded5" name="uploads" comment="上传的资源,测试用,不上传" />
+      <created>1460584304594</created>
+      <option name="number" value="Default" />
+      <updated>1460584304594</updated>
+    </task>
+    <task id="LOCAL-00001" summary="初始化版本,">
+      <created>1460584556561</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1460584556561</updated>
+    </task>
+    <task id="LOCAL-00002" summary="初始化版本,">
+      <created>1460584876067</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1460584876067</updated>
+    </task>
+    <task id="LOCAL-00003" summary="修复了点读位置的BUG&#10;1. 100px 的 点读位变成 72px 的偏差&#10;2. 移动点读位之后,有50px半径的偏差">
+      <created>1460590776503</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1460590776503</updated>
+    </task>
+    <task id="LOCAL-00004" summary="上传的资源,测试用,不上传">
+      <created>1461168047339</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1461168047339</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19943622" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32891566" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.50277996" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19277108" sideWeight="0.49722" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
+    <MESSAGE value="初始化版本," />
+    <MESSAGE value="修复了点读位置的BUG&#10;1. 100px 的 点读位变成 72px 的偏差&#10;2. 移动点读位之后,有50px半径的偏差" />
+    <MESSAGE value="上传的资源,测试用,不上传" />
+    <MESSAGE value="微信兼容性已经修改完成, 目前微信刚打开页面,点读位有点大,其他没有问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="微信兼容性已经修改完成, 目前微信刚打开页面,点读位有点大,其他没有问题" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="27" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="27" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="37" />
+          <folding>
+            <element signature="n#section#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#script#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/log/log.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/drag.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3323077">
+          <caret line="71" column="40" selection-start-line="71" selection-start-column="32" selection-end-line="71" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/slide/使用方法.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/log/log.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53977275">
+          <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.029542098">
+          <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.028409092">
+          <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.269231">
+          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="37" />
+          <folding>
+            <element signature="n#section#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#script#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="27" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="27" />
+          <folding>
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="75.46154">
+          <caret line="107" column="16" selection-start-line="107" selection-start-column="16" selection-end-line="107" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.024937656">
+          <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#bindEvent#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461167221000" expanded="true" signature="7475:7513" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="8156:8240" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9398:9411" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9586:9618" placeholder="..." />
+            <marker date="1461167221000" expanded="true" signature="9792:9824" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

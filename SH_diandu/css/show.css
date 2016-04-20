@@ -10,11 +10,11 @@ ul, li {
 
 /*========================================================*/
 /*body {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    /*right: 0;*/
+/*position: absolute;*/
+/*top: 0;*/
+/*bottom: 0;*/
+/*left: 0;*/
+/*right: 0;*/
 /*}*/
 
 .m-bgs {
@@ -203,6 +203,9 @@ ul, li {
 
 .gallery-thumbs .swiper-slide-active {
     opacity: 1;
+    box-shadow: 0 0 15px;
+    margin-top: -5px;
+    height: 105%;
 }
 
 /*============使用swiper3.0的样式  END==========*/
