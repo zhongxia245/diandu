@@ -164,6 +164,7 @@ ul, li {
 }
 
 .swiper-slide {
+    background-size: 100% 100%;
     background-size: cover;
     background-position: center;
 }
@@ -194,6 +195,11 @@ ul, li {
     padding: 10px 0;
 }
 
+.gallery-thumbs .swiper-wrapper {
+    align-items: center;
+    justify-content: center;
+}
+
 .gallery-thumbs .swiper-slide {
     width: 20%;
     height: 100%;
@@ -204,7 +210,7 @@ ul, li {
 .gallery-thumbs .swiper-slide-active {
     opacity: 1;
     box-shadow: 0 0 15px;
-    margin-top: -5px;
+    margin-top: -2px;
     height: 105%;
 }
 

@@ -46,9 +46,7 @@ $(function () {
  * 初始化
  */
 function init() {
-    if (!DATA) {
-        fn_onResize();
-    }
+    fn_onResize();
     // 点读页的ID,保存的时候会返回ID
     var id = getQueryStringByName('id') || 1080;
 
@@ -88,6 +86,7 @@ function fn_onResize() {
         height: window.H,
         width: window.W
     });
+    console.log('window.W:', window.W, "window.H", window.H)
     var _size;
     if (W > H) {
         //横屏
@@ -127,7 +126,6 @@ function fn_onResize() {
         $('.gallery-main').css('opacity', 0).show();
         initPoint(DATA);
     }
-
 }
 
 /**
@@ -225,25 +223,25 @@ function initSwipe() {
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 5,
-        centeredSlides: true,
+        centeredSlides: false,
         freeMode: true,
         freeModeSticky: true,
         slidesPerView: 'auto',
         touchRatio: 0.2,
         slideToClickedSlide: false,
-        onTouchStart: function (pos, e) {
-            startX = e.changedTouches && e.changedTouches[0].clientX;
-        },
-        onTouchEnd: function (pos, e) {
-            endX = e.changedTouches && e.changedTouches[0].clientX;
-            //closeVideoOrAudio();
-            //缩略图滑动位置小于20,认为是点击事件
-            long = Math.abs(endX - startX)
-            if (long < 20) {
-                galleryThumbs.slideTo(pos.clickedIndex);
-                galleryTop.slideTo(pos.clickedIndex);
-            }
-        }
+        //onTouchStart: function (pos, e) {
+        //    startX = e.changedTouches && e.changedTouches[0].clientX;
+        //},
+        //onTouchEnd: function (pos, e) {
+        //    endX = e.changedTouches && e.changedTouches[0].clientX;
+        //    //closeVideoOrAudio();
+        //    //缩略图滑动位置小于20,认为是点击事件
+        //    long = Math.abs(endX - startX)
+        //    if (long < 20) {
+        //        galleryThumbs.slideTo(pos.clickedIndex);
+        //        galleryTop.slideTo(pos.clickedIndex);
+        //    }
+        //}
     });
     //window.galleryTop.params.control = window.galleryThumbs;
     //window.galleryThumbs.params.control = window.galleryTop;
@@ -305,13 +303,13 @@ function initThumbs(id, pages) {
     for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
         var bgPath = page['pic'];
-        html += '<div class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+        html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
         html += '</div>'
     }
     var $thumbs = $('#' + id);
     $thumbs.html('').html(html);
     var $swiperSlide = $thumbs.find('.swiper-slide');
-    
+    $swiperSlide.eq(0).addClass('swiper-slide-active');
     if (isVertical) {
         $swiperSlide.css({
             width: $('#thumbs').height() * 9 / 16
@@ -349,7 +347,6 @@ function initCircle(data) {
     var html = "";
     html += '<div data-id="all-radius" data-hide="all-radius-hide">'
     for (var i = 0; i < data.length; i++) {
-
         //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
         var diff = DIFF * SCALE;
         var left = parseFloat(data[i].x) * $(window).width() + diff;
@@ -607,6 +604,13 @@ function bindEvent() {
         window.galleryTop.stopAutoplay();
         //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
         return false;
+    })
+
+    $('#thumbs .swiper-slide').off(click).on(click, function (e) {
+        var $tar = $(e.target)
+        $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active');
+        $tar.addClass('swiper-slide-active');
+        window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
     })
 
 }
