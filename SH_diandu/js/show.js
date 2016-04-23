@@ -303,7 +303,7 @@ function initThumbs(id, pages) {
     for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
         var bgPath = page['pic'];
-        html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+        html += '<div data-id="' + i + '" components="swiper-slide" style="background-image: url(' + bgPath + ');">'
         html += '</div>'
     }
     var $thumbs = $('#' + id);
@@ -330,9 +330,9 @@ function initDianDuPage(data) {
     var cicleHtml = initCircle(data['points']);
     var h = $(window).height()
     var html = "";
-    html += '<div class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
-    html += '    <div class="wrap">'
-    html += '        <div class="m-dd-start"></div>'
+    html += '<div components="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+    html += '    <div components="wrap">'
+    html += '        <div components="m-dd-start"></div>'
     html += cicleHtml;
     html += '    </div>'
     html += '</div>'
@@ -377,7 +377,7 @@ function initCircle(data) {
                 className = 'm-video';
                 break;
         }
-        html += '<div class="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+        html += '<div components="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
         html += mediaImg;
         html += '</div>'
     }

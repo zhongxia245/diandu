@@ -127,8 +127,8 @@ function createCircle(pageIndex, circleid, index, left, top) {
     var pid = "#id_bg" + pageIndex;
     var style = "style='position:absolute; left:" + left + "px; top :" + top + "px;'";
     var html = "";
-    html += '<div class="radius" ' + style + '>';
-    html += '    <div id="' + circleid + '" class="radius_in">' + index + '</div>';
+    html += '<div components="radius" ' + style + '>';
+    html += '    <div id="' + circleid + '" components="radius_in">' + index + '</div>';
     html += '</div>';
     $(pid).append(html);
 }
@@ -723,7 +723,7 @@ function hideDDLocation(e) {
         }
         ;
         //设置右侧名称【上传文件按钮】
-        $rightName.attr('data-class', $rightName.attr('class'));
+        $rightName.attr('data-components', $rightName.attr('class'));
         $rightName.removeClass().addClass('upload-right-name notselect');
     }
     //显示点读位 
@@ -745,7 +745,7 @@ function hideDDLocation(e) {
         }
         ;
         // 还原
-        $rightName.removeClass().addClass($rightName.attr('data-class'));
+        $rightName.removeClass().addClass($rightName.attr('data-components'));
         __data.setDDItems(__dataid, {hide: false});
     }
 }

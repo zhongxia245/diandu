@@ -1033,7 +1033,7 @@
                             paginationHTML += s.params.paginationBulletRender(i, s.params.bulletClass);
                         }
                         else {
-                            paginationHTML += '<' + s.params.paginationElement+' class="' + s.params.bulletClass + '"></' + s.params.paginationElement + '>';
+                            paginationHTML += '<' + s.params.paginationElement+' components="' + s.params.bulletClass + '"></' + s.params.paginationElement + '>';
                         }
                     }
                     s.paginationContainer.html(paginationHTML);
@@ -1048,9 +1048,9 @@
                     }
                     else {
                         paginationHTML =
-                            '<span class="' + s.params.paginationCurrentClass + '"></span>' +
+                            '<span components="' + s.params.paginationCurrentClass + '"></span>' +
                             ' / ' +
-                            '<span class="' + s.params.paginationTotalClass+'"></span>';
+                            '<span components="' + s.params.paginationTotalClass+'"></span>';
                     }
                     s.paginationContainer.html(paginationHTML);
                 }
@@ -1059,7 +1059,7 @@
                         paginationHTML = s.params.paginationProgressRender(s, s.params.paginationProgressbarClass);
                     }
                     else {
-                        paginationHTML = '<span class="' + s.params.paginationProgressbarClass + '"></span>';
+                        paginationHTML = '<span components="' + s.params.paginationProgressbarClass + '"></span>';
                     }
                     s.paginationContainer.html(paginationHTML);
                 }
@@ -2387,11 +2387,11 @@
                             var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
                             var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                             if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                shadowBefore = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                                 slide.append(shadowBefore);
                             }
                             if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                shadowAfter = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
                                 slide.append(shadowAfter);
                             }
                             if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
@@ -2427,7 +2427,7 @@
                         if (s.isHorizontal()) {
                             cubeShadow = s.wrapper.find('.swiper-cube-shadow');
                             if (cubeShadow.length === 0) {
-                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
+                                cubeShadow = $('<div components="swiper-cube-shadow"></div>');
                                 s.wrapper.append(cubeShadow);
                             }
                             cubeShadow.css({height: s.width + 'px'});
@@ -2435,7 +2435,7 @@
                         else {
                             cubeShadow = s.container.find('.swiper-cube-shadow');
                             if (cubeShadow.length === 0) {
-                                cubeShadow = $('<div class="swiper-cube-shadow"></div>');
+                                cubeShadow = $('<div components="swiper-cube-shadow"></div>');
                                 s.container.append(cubeShadow);
                             }
                         }
@@ -2486,11 +2486,11 @@
                             var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
                             var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                             if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                shadowBefore = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                                 slide.append(shadowBefore);
                             }
                             if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                shadowAfter = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
                                 slide.append(shadowAfter);
                             }
                             if (shadowBefore.length) shadowBefore[0].style.opacity = Math.max(-progress, 0);
@@ -2564,11 +2564,11 @@
                             var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
                             var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                             if (shadowBefore.length === 0) {
-                                shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
+                                shadowBefore = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                                 slide.append(shadowBefore);
                             }
                             if (shadowAfter.length === 0) {
-                                shadowAfter = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
+                                shadowAfter = $('<div components="swiper-slide-shadow-' + (s.isHorizontal() ? 'right' : 'bottom') + '"></div>');
                                 slide.append(shadowAfter);
                             }
                             if (shadowBefore.length) shadowBefore[0].style.opacity = offsetMultiplier > 0 ? offsetMultiplier : 0;
@@ -2797,7 +2797,7 @@
                 }
                 sb.drag = sb.track.find('.swiper-scrollbar-drag');
                 if (sb.drag.length === 0) {
-                    sb.drag = $('<div class="swiper-scrollbar-drag"></div>');
+                    sb.drag = $('<div components="swiper-scrollbar-drag"></div>');
                     sb.track.append(sb.drag);
                 }
                 sb.drag[0].style.width = '';
@@ -3439,7 +3439,7 @@
                 }
             },
 
-            liveRegion: $('<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>'),
+            liveRegion: $('<span components="swiper-notification" aria-live="assertive" aria-atomic="true"></span>'),
 
             notify: function (message) {
                 var notification = s.a11y.liveRegion;
