@@ -22,16 +22,29 @@ var SCREENSIZE = {
     v: {width: 540, height: 960}
 };
 
-//接口地址
-var URL = {
-    base: 'http://dev.catics.org/edu/course/api.php',
-    save: 'save_touch_page'
-};
 /*==========================程序入口 START==================================*/
 $(function () {
-    // 添加一个点读页
-    addDianDuPageTpl();
-    bindEvent();
+    var id = Util.getQueryStringByName('id');
+    //编辑
+    if (id) {
+        Model.getList(id, function (data) {
+            DATA = data;
+
+            var strw = data && data.pages.length && data.pages[0].w || "1200";
+            var strh = data && data.pages.length && data.pages[0].h || "675";
+            OLDWIDTH = parseFloat(strw);
+            OLDHEIGHT = parseFloat(strh);
+
+            initPoint(data);
+        })
+    }
+    //新增
+    else {
+        // 添加一个点读页
+        addDianDuPageTpl();
+        bindEvent();
+    }
+
 });
 
 /**
@@ -127,8 +140,8 @@ function createCircle(pageIndex, circleid, index, left, top) {
     var pid = "#id_bg" + pageIndex;
     var style = "style='position:absolute; left:" + left + "px; top :" + top + "px;'";
     var html = "";
-    html += '<div components="radius" ' + style + '>';
-    html += '    <div id="' + circleid + '" components="radius_in">' + index + '</div>';
+    html += '<div class="radius" ' + style + '>';
+    html += '    <div id="' + circleid + '" class="radius_in">' + index + '</div>';
     html += '</div>';
     $(pid).append(html);
 }
@@ -723,7 +736,7 @@ function hideDDLocation(e) {
         }
         ;
         //设置右侧名称【上传文件按钮】
-        $rightName.attr('data-components', $rightName.attr('class'));
+        $rightName.attr('data-class', $rightName.attr('class'));
         $rightName.removeClass().addClass('upload-right-name notselect');
     }
     //显示点读位 
@@ -745,7 +758,7 @@ function hideDDLocation(e) {
         }
         ;
         // 还原
-        $rightName.removeClass().addClass($rightName.attr('data-components'));
+        $rightName.removeClass().addClass($rightName.attr('data-class'));
         __data.setDDItems(__dataid, {hide: false});
     }
 }
@@ -854,18 +867,7 @@ function handleSubmit(e) {
         pages: __data.getValidItems()
     }
 
-    //小组ID，开发用3000
-    data.teamid = 3000;
-
-    var dataStr = JSON.stringify(data);
-    console.log('data', data)
-    // 提交数据
-    var url = URL.base;
-    $.post(url, {
-        action: URL.save,
-        data: dataStr
-    }, function (result, textStatus, xhr) {
-        console.log('result', result);
+    Model.addDianduPage(data, function (result) {
         alert('保存成功！' + result);
     });
 }

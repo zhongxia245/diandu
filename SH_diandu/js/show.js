@@ -32,6 +32,7 @@ window.AUTOPLAYINTERVAL = 0;  //自动播放时间 ,0 为关闭
 var DATA; //用来保存请求回来的变量
 var URL = {
     base: 'http://dev.catics.org/edu/course/api.php',
+    save: 'save_touch_page',
     get: 'get_touch_page_data'
 };
 
@@ -48,10 +49,9 @@ $(function () {
 function init() {
     fn_onResize();
     // 点读页的ID,保存的时候会返回ID
-    var id = getQueryStringByName('id') || 1080;
+    var id = Util.getQueryStringByName('id') || 1080;
 
-    $.post(URL.base, {action: URL.get, id: id}, function (result) {
-        var data = JSON.parse(result);
+    Model.getList(id, function (data) {
         DATA = data;
 
         var strw = data && data.pages.length && data.pages[0].w || "1200";
@@ -60,7 +60,7 @@ function init() {
         OLDHEIGHT = parseFloat(strh);
 
         initPoint(data);
-    });
+    })
 
     //初始化播放器，页面里面只有一个视频播放器和一个音频播放器
     initAudio();
@@ -303,7 +303,7 @@ function initThumbs(id, pages) {
     for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
         var bgPath = page['pic'];
-        html += '<div data-id="' + i + '" components="swiper-slide" style="background-image: url(' + bgPath + ');">'
+        html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
         html += '</div>'
     }
     var $thumbs = $('#' + id);
@@ -330,9 +330,9 @@ function initDianDuPage(data) {
     var cicleHtml = initCircle(data['points']);
     var h = $(window).height()
     var html = "";
-    html += '<div components="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
-    html += '    <div components="wrap">'
-    html += '        <div components="m-dd-start"></div>'
+    html += '<div class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+    html += '    <div class="wrap">'
+    html += '        <div class="m-dd-start"></div>'
     html += cicleHtml;
     html += '    </div>'
     html += '</div>'
@@ -377,7 +377,7 @@ function initCircle(data) {
                 className = 'm-video';
                 break;
         }
-        html += '<div components="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+        html += '<div class="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
         html += mediaImg;
         html += '</div>'
     }
@@ -726,15 +726,4 @@ function css2Float(cssProp) {
     return parseFloat(cssProp.replace('px', ''));
 }
 
-/**
- * 根据QueryString参数名称获取值
- * @param  {[type]} key [key]
- * @return {[type]}      [description]
- */
-function getQueryStringByName(key) {
-    var result = location.search.match(new RegExp("[\?\&]" + key + "=([^\&]+)", "i"));
-    if (result == null || result.length < 1) {
-        return "";
-    }
-    return result[1];
-}
+
