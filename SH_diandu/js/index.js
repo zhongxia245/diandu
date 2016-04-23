@@ -28,23 +28,26 @@ $(function () {
     //编辑
     if (id) {
         Model.getList(id, function (data) {
-            DATA = data;
-
-            var strw = data && data.pages.length && data.pages[0].w || "1200";
-            var strh = data && data.pages.length && data.pages[0].h || "675";
-            OLDWIDTH = parseFloat(strw);
-            OLDHEIGHT = parseFloat(strh);
-
-            initPoint(data);
+            console.log("data", data)
+            var dianduList = data.pages;
+            debugger;
+            for (var i = 0; i < dianduList.length; i++) {
+                isSelectedScreenType = true;  //已经选中点读页的类型
+                addDianDuPageTpl();
+                addDianduPageByUpload(i + 1, '', dianduList[i].pic);
+                //设置上传的图片信息,以及修改提示信息
+                $('.sort-info').show();
+                var _$fileBg = $("#file_bg" + i + 1);
+                _$fileBg.parent().find('.filename').text('文件名称');
+            }
         })
     }
     //新增
     else {
         // 添加一个点读页
         addDianDuPageTpl();
-        bindEvent();
     }
-
+    bindEvent();
 });
 
 /**
@@ -54,9 +57,7 @@ function bindEvent() {
     // 提交
     $('#btnSubmit').on('click', handleSubmit);
     // 添加点读页
-    $('#btnAdd').on('click', addDianDuPage);
-    // header的关闭按钮
-    $('#close').on('click', closePage);
+    $('#btnAdd').on('click', addDianDuPageTpl);
 }
 
 
@@ -307,21 +308,19 @@ function setUploadControl(index) {
             if (this.queueData.filesSelected > 1) {
                 //first image not add DianduPage
                 if (newIndex !== index) {
-                    addDianDuPage();
+                    addDianDuPageTpl();
                 }
                 console.log('resultPath:' + newIndex, resultPath, this)
-                addDianduPageByUpload(newIndex, file, resultPath);
+                addDianduPageByUpload(newIndex, file.name, resultPath);
                 newIndex++;
             }
             else {
-                addDianduPageByUpload(index, file, resultPath);
+                addDianduPageByUpload(index, file.name, resultPath);
             }
+
             //设置上传的图片信息,以及修改提示信息
             $('.sort-info').show();
             var _$fileBg = $("#file_bg" + oldIndex);
-            var text = "在图片上点击设置点读";
-            //$('.v-tip').text(text).css('padding-left', 500);
-            //$('.h-tip').text(text).css('padding-left', 500);
             _$fileBg.parent().find('.filename').text(file.name);
         }
     });
@@ -331,10 +330,10 @@ function setUploadControl(index) {
  * 根据上次的图片,快速生成点读背景
  * @param index 点读页的下标
  * @param id_bg 点读页的id
- * @param file
- * @param resultPath
+ * @param fileName 文件名
+ * @param resultPath 文件路径
  */
-function addDianduPageByUpload(index, file, resultPath) {
+function addDianduPageByUpload(index, fileName, resultPath) {
     if (resultPath.indexOf('error') === -1) {
         SCREENTYPE = SCREENTYPE || "h"; //默认横屏
 
@@ -361,7 +360,7 @@ function addDianduPageByUpload(index, file, resultPath) {
         $('.btn_start').show();
         $('.bigimg-tip').hide();
 
-        window.DD.items[index - 1]['name'] = file.name;
+        window.DD.items[index - 1]['name'] = fileName;
         window.DD.items[index - 1]['pic'] = src;
         window.DD.items[index - 1]['w'] = $bg.width();
         window.DD.items[index - 1]['h'] = $bg.height();
@@ -841,20 +840,6 @@ function delDDItem(id) {
 
 
 /*=====================二期，点读页上下移动，显示删除隐藏 END==========================*/
-
-/**
- * 关闭按钮
- */
-function closePage(e) {
-    alert('close')
-}
-
-
-// 添加点图页
-function addDianDuPage() {
-    addDianDuPageTpl();
-}
-
 /**
  * 提交
  */

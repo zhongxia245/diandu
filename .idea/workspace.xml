@@ -2,186 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="90fea430-009e-432d-af6e-6e498abc9897" name="Default" comment="" />
-    <list default="true" id="e97150c7-31da-4a69-885a-df051d0cded5" name="uploads" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/swipe/explorations1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/swipe/explorations2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/swipe/explorations3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/swipe/fiftyandtwothirds3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/index_bak.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/index_single.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-slider" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/css/bootstrap2/bootstrap-switch.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/css/bootstrap2/bootstrap-switch.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/css/bootstrap3/bootstrap-switch.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/js/bootstrap-switch.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-switch/js/bootstrap-switch.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/bootstrapslider.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/hammer-time.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/MIT-LICENSE.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/css/Jcrop.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/css/jquery.Jcrop.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/css/jquery.Jcrop.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/crop.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/cut.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/demos.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/pool.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/sago.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/sagomod.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/demo_files/sagomod.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/non-image.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/styling.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/tutorial1.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/tutorial2.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/tutorial3.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/tutorial4.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/demos/tutorial5.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/js/jquery.Jcrop.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/js/jquery.Jcrop.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/js/jquery.color.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/jcrop/js/jquery.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/show_bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/show_single.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/show_bootstrap.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/show_single.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/0af87c7e711e5afe17add35659ad463d.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/0cf1c439ee0bc7eb5ce19efcbc67e5c3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/0d7463e50a41f9d4f022ed20fa9586c2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/0e464eb9bcea79b666f3a8ce52f34dc7.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/14d945508f1de5ca77f4d5b1e91a7a14.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/16d819a220fad2cc520e3b9266b90eeb.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/1a13273e799613a2441bea85d5d3089d.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/1d4bc0277c2633c279e6b009bb36fa0e.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/24bf6e34425ba428d4ef3aaec112b85a.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/267a34805a31992a80cbb235af95befb.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/277f00483bbac28e4068b7475bf709c9.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/280cbe5aaceb73a3903b5aaa2bf424ce.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/29ebc20101eb230c9860039dc7b7af33.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/2a29bd73bc1a0fab341c7137c0dbd25f.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/2a2af8a1fa251d2d842482a57822eafc.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/2b2f3525832ad1c7d23a3f25d388b4b7.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/2f089a99217bfa392cfc49bb958325b2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/3006a889815111886569479d4c8d213b.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/328cde2741dbaac72453595a7c5e9ba9.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/33348efb6ec7336520181f17383221f6.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/351226462f6de07861eae9c365a02f41.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/3b1dc0b4821a3687881fb931cdf341f0.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/40af48e866e72770b4dcc0807fd7fc50.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/449d933a2dc68d0ab3298f2891b2555c.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/48abcfc1f9e4ffae9f4149a73a0c766a.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/4910b8d6740435fab222c08c815e4d9e.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/4a09aa83b8b26ae6366c48afede822c2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5705328b6e8bb46c8ffaaebd71a1d9df.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5789397c5969f826be6e7918b4d19aef.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/58abc69001024243e513d54c11b42f6d.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5aa49ebdb2e88e781e0f0e6e06f9f759.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5aba6f65949f8c17d0038f24385df3d7.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5b15574b1a46b8fef8fa4e8e535707fd.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5b950e98c4d59a3ae3d569bec5520e7d.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/5f7642d946397b8bb391c79a3d403fb9.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/644d4c280b60d8e333d8c2f179dfdea3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/681632c5bfa5ed8f824cf6c587fb920a.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/68d624dd2107627d27846d7f0af5e892.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/69db29df610c59c1fbd1b35a58944784.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/6a005d217507ed7e463416c8c125fb53.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/6dd8e54923f6eb7551ec47d08f655443.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/6f200edf3d3296b72a0df4a8c1c7c353.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/72ba5936145bcfaa0ac82fa18a111034.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/76b54a0a3a34988ee7989ee70640a8de.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/7e0d068d5378a276fbfe8056512819d2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/7e9a380b17d382ab371804f418cab5c0.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/7fb4a9c85a3bef0584b0a28487bb9ae6.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/803db84d87b779741a2d463c8d04d7ac.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/827e93a670908437b9294c69872f3517.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/83638548881945f73f22d1ce0a699b78.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/8403f600677ce728294ded5733c12bfc.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/84301bdb4f7dfda42524eb6502125a1f.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/88507055b9caa7a394785f940a736c4a.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/8a07265031c47af6c3d403abafee982b.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/8a78dfbd762e11875e98eed4a6ecb9a8.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/9021a6f5ee6fd51fa26e58384fbe80eb.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/909528373770e7875eeb032aa80aa35c.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/93d3d132a4e41abea3f163b8c31274fc.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/96384c35f3a6c8e5f6ed093a2602fcb6.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/97c0a7f8ce374b84cee00b30bb00acee.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a12e9c5127710a7d9586fd37b51a1b60.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a15461911fa02c654ade3499fc4d2df6.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a33d2254e025be15dfef83228ec9ddcb.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a5c8bf053bf0b10ef553340cd2ab3480.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a5d7e3e4089053381fd581f2fe1b15ce.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a63b5d5aea35bb230c98416dc08d2319.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a63e53c678a9251ea3179f87a0577799.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a7ab0c858bd4caca41433076993e8c1c.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/a88ae94066f1d1eeb5b3f74c225ee747.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/aa4a9fc9aa422880aedbf12220d95a26.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/af6e757830969cde174bba1e15fc4388.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/afc52182c2740f723ced053179d812eb.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b2df115bfa1f9eed6cec747fceaab182.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b3f9ed23114354aeaf53efb2c32abcd1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b47ce741455133954ae593701aa0e6c2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b6a6ee6fdb3f96e315c64f3163c12161.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b8704935c8a86ed6ec2d2be5ee6a5506.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/b8e875f140abd0da17ade2bb5ded7292.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/beabe6ce799fc5ebd21d7da33d20f345.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/bf79b52e8ee2930638af559a5f362493.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/c239868230ff4f6d33d8fbba3673487c.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/c5094168fab45e249b25a46c2bdc60c8.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/cc95a3164329ebf7c548bffaa4488d22.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/cdacb4ecc211e54a0fb1bea551150bd4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/cdf91225aac6f47635a061ce00bc13c8.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/ce0d12a9f741a6881e3d23430b825c08.mp3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/d4dcabd5f67f203d8c85813b0e5c9fa3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/d94fcd1509cdceacde3e6b3b3096bab9.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e0c96f7b67004f8299456f00f6594cf8.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e1e07a77044c41a8a929e750c09f2b9f.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e24d358656b6670834b22db00f1852da.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e2dcb390f73eae8b0459ba80072e1376.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e475dcf51678c5a63560088f8d2ad022.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/e8a2102daccd1ff064bb486b62bb2daa.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/ec0d360562845967545491b39f3d77bf.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/ee98dbed26dffccbdf41cf3de2907fce.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/f0f72ee23a3be811215621617c3f105e.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/f2d92babd228a4f5f6e39f40bae9e935.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/f4d041220a428a4b57bed496661e2f5b.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/f7f0fd8f7cb7ba62a0ea606729c164ca.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/f89a82c131a2e7a4f44a7fd7e2f9cb61.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/uploads/fe60b0c30f9689aa62e44126da660b19.jpg" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/arrayUtil.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/arrayUtil.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/class/ImgText.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/ImgText.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/drag.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/drag.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/log/log.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/log.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/demo.html" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/demo.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/imgs/bar.png" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/imgs/bar.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/imgs/block.png" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/imgs/block.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/imgs/close.png" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/imgs/close.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/index.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/slide.css" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/slide.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/slide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/slide.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/touchclickslide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/touchclickslide.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/touchslide.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/touchslide.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/slide/使用方法.txt" afterPath="$PROJECT_DIR$/SH_diandu/js/components/slide/使用方法.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/js/util.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
+    <list default="true" id="e97150c7-31da-4a69-885a-df051d0cded5" name="uploads" comment="整理了代码,删除了一些没有用的文件和类库,规范了JS文件命名">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap/js/bootstrap.js" afterPath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap/js/bootstrap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/SH_diandu/css/lib/bootstrap/js/bootstrap.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/index.html" afterPath="$PROJECT_DIR$/SH_diandu/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/index.js" afterPath="$PROJECT_DIR$/SH_diandu/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/handlebars.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/handlebars.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/modal/js/jquery-2.1.1.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/modal/js/jquery-2.1.1.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.min.js" />
+    </list>
+    <list id="c0deb888-57f8-4675-a4d8-1c7acdcacc17" name="Failed commit: uploads" comment="add way.js  uploadify">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/way.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/way.js" />
+    </list>
+    <list id="3d1e1208-f981-4865-b31b-1daf19124af1" name="Failed commit: Failed commit: uploads" comment="add way.js  uploadify">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/index.html" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.min.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/jquery.uploadify-3.1.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/way.js" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/way.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/show.js" afterPath="$PROJECT_DIR$/SH_diandu/js/show.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/show.html" afterPath="$PROJECT_DIR$/SH_diandu/show.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/arraydemo.html" afterPath="$PROJECT_DIR$/SH_diandu/test/arraydemo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/test/uploadImgText.html" afterPath="$PROJECT_DIR$/SH_diandu/test/uploadImgText.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.css" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.php" afterPath="$PROJECT_DIR$/SH_diandu/js/lib/uploadify/uploadify.php" />
     </list>
     <ignored path="diandu.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -202,65 +35,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="touchclickslide.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/slide/touchclickslide.js">
+      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="drag.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/drag.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="55" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="util.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+            <state vertical-scroll-proportion="-13.115385">
+              <caret line="99" column="23" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="arrayUtil.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/arrayUtil.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="log.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/log.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6213018">
-              <caret line="207" column="0" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.275">
+              <caret line="215" column="26" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="26" />
               <folding>
                 <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#script#0;n#body#0;n#html#0;n#!!top" expanded="false" />
@@ -270,12 +59,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="506" column="11" selection-start-line="500" selection-start-column="8" selection-end-line="506" selection-end-column="11" />
-              <folding />
+            <state vertical-scroll-proportion="1.7013575">
+              <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+              <folding>
+                <element signature="n#!!block;n#createCircle#0" expanded="false" />
+                <element signature="n#!!block;n#addDianDu#0" expanded="false" />
+                <element signature="e#4833#7150#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -288,17 +81,22 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/SH_diandu/js/index.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/log/log.js" />
         <option value="$PROJECT_DIR$/SH_diandu/css/show.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/show.js" />
         <option value="$PROJECT_DIR$/SH_diandu/css/imgtext.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/show.html" />
         <option value="$PROJECT_DIR$/SH_diandu/js/util/drag.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/util/arrayUtil.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/model/URL.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/show.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/model/model.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/show.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/ImgText.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/class/ImgText.js" />
         <option value="$PROJECT_DIR$/SH_diandu/index.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/index_bak.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/index.js" />
       </list>
     </option>
   </component>
@@ -397,9 +195,25 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.File Status" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="FullScreen" value="true" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+    <property name="FullScreen" value="true" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="101" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="213" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="116" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="799" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="101" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="111" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="116" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="901" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -499,21 +313,33 @@
       <option name="project" value="LOCAL" />
       <updated>1461419423485</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="整理了代码,删除了一些没有用的文件和类库,规范了JS文件命名">
+      <created>1461421361612</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1461421361612</updated>
+    </task>
+    <task id="LOCAL-00009" summary="重命名了文件夹之后,webstrom 自动改了很多地方的 class==&gt; components 导致有BUG&#10;已经修改&#10;&#10;zepto.min.js 禁用 touchmove 之后,微信兼容了,但是会导致页面 滚动条不能用的BUG, 目前已经修改 zepto">
+      <created>1461427788518</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1461427788518</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26290706" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21366164" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.50277996" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49563146" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33835617" sideWeight="0.5059571" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19277108" sideWeight="0.49722" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5027397" sideWeight="0.4940429" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5849315" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5849315" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -544,6 +370,14 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -557,7 +391,11 @@
     <MESSAGE value="bak" />
     <MESSAGE value="commit all" />
     <MESSAGE value="新增双向数据绑定类库 way.js" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增双向数据绑定类库 way.js" />
+    <MESSAGE value="整理了代码,删除了一些没有用的文件和类库,规范了JS文件命名" />
+    <MESSAGE value="重命名了文件夹之后,webstrom 自动改了很多地方的 class==&gt; components 导致有BUG&#10;已经修改&#10;&#10;zepto.min.js 禁用 touchmove 之后,微信兼容了,但是会导致页面 滚动条不能用的BUG, 目前已经修改 zepto" />
+    <MESSAGE value="add 双向绑定类库 way.js" />
+    <MESSAGE value="add way.js  uploadify" />
+    <option name="LAST_COMMIT_MESSAGE" value="add way.js  uploadify" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -566,31 +404,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="27" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="27" />
-          <folding>
-            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="28" selection-start-line="199" selection-start-column="28" selection-end-line="199" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="243" column="11" selection-start-line="231" selection-start-column="8" selection-end-line="243" selection-end-column="11" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
             <element signature="n#!!block;n#styleHandler#0" expanded="false" />
             <element signature="n#!!block;n#initSlide#0" expanded="false" />
             <element signature="n#!!block;n#initAudio#0" expanded="false" />
@@ -600,11 +418,11 @@
             <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
             <element signature="n#!!block;n#IsPC#0" expanded="false" />
             <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -642,6 +460,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="40" column="27" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="27" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
@@ -661,7 +480,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
             <element signature="n#!!block;n#styleHandler#0" expanded="false" />
             <element signature="n#!!block;n#initSlide#0" expanded="false" />
             <element signature="n#!!block;n#initAudio#0" expanded="false" />
@@ -671,11 +489,11 @@
             <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
             <element signature="n#!!block;n#IsPC#0" expanded="false" />
             <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -685,6 +503,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
@@ -696,7 +515,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
             <element signature="n#!!block;n#styleHandler#0" expanded="false" />
             <element signature="n#!!block;n#initSlide#0" expanded="false" />
             <element signature="n#!!block;n#initAudio#0" expanded="false" />
@@ -706,11 +524,11 @@
             <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
             <element signature="n#!!block;n#IsPC#0" expanded="false" />
             <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -746,7 +564,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="n#!!block;n#createCircle#0" expanded="false" />
+            <element signature="n#!!block;n#addDianDu#0" expanded="false" />
+            <element signature="e#4833#7150#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -763,6 +585,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
@@ -774,7 +597,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
             <element signature="n#!!block;n#styleHandler#0" expanded="false" />
             <element signature="n#!!block;n#initSlide#0" expanded="false" />
             <element signature="n#!!block;n#initAudio#0" expanded="false" />
@@ -784,11 +606,11 @@
             <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
             <element signature="n#!!block;n#IsPC#0" expanded="false" />
             <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -797,7 +619,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="n#!!block;n#createCircle#0" expanded="false" />
+            <element signature="n#!!block;n#addDianDu#0" expanded="false" />
+            <element signature="e#4833#7150#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -814,6 +640,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
@@ -825,7 +652,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
             <element signature="n#!!block;n#styleHandler#0" expanded="false" />
             <element signature="n#!!block;n#initSlide#0" expanded="false" />
             <element signature="n#!!block;n#initAudio#0" expanded="false" />
@@ -835,11 +661,11 @@
             <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
             <element signature="n#!!block;n#IsPC#0" expanded="false" />
             <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -848,7 +674,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="502" column="20" selection-start-line="502" selection-start-column="20" selection-end-line="502" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="n#!!block;n#createCircle#0" expanded="false" />
+            <element signature="n#!!block;n#addDianDu#0" expanded="false" />
+            <element signature="e#4833#7150#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -865,25 +695,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.029542098">
-          <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,62 +710,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="243" column="11" selection-start-line="231" selection-start-column="8" selection-end-line="243" selection-end-column="11" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
-            <element signature="n#!!block;n#initSlide#0" expanded="false" />
-            <element signature="n#!!block;n#initAudio#0" expanded="false" />
-            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
-            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
-            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
-            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
-            <element signature="n#!!block;n#IsPC#0" expanded="false" />
-            <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1461421063000" expanded="true" signature="7560:7598" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="8297:8381" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9548:9561" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9736:9768" placeholder="..." />
-            <marker date="1461421063000" expanded="true" signature="9942:9974" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/css/imgtext.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5384616">
-          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/index_old.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21937323">
-          <caret line="230" column="20" selection-start-line="230" selection-start-column="20" selection-end-line="230" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/modal/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.230769">
           <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.923077">
-          <caret line="9" column="45" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="45" />
-          <folding>
-            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -974,7 +738,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1016,7 +780,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1026,24 +790,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="506" column="11" selection-start-line="500" selection-start-column="8" selection-end-line="506" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,7 +800,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="55" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1073,14 +821,135 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="11" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="6" selection-start-line="53" selection-start-column="4" selection-end-line="62" selection-end-column="6" />
+          <folding>
+            <element signature="n#!!block;n#styleHandler#0" expanded="false" />
+            <element signature="n#!!block;n#initSlide#0" expanded="false" />
+            <element signature="n#!!block;n#initAudio#0" expanded="false" />
+            <element signature="n#!!block;n#playOrPaused#0" expanded="false" />
+            <element signature="n#!!block;n#triggerBouncyNav#0" expanded="false" />
+            <element signature="n#!!block;n#setImgTextLocation#0" expanded="false" />
+            <element signature="n#!!block;n#setHoverImgSrcx#0" expanded="false" />
+            <element signature="n#!!block;n#IsPC#0" expanded="false" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1461425032000" expanded="true" signature="7521:7559" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="8253:8337" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9494:9507" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9682:9714" placeholder="..." />
+            <marker date="1461425032000" expanded="true" signature="9888:9920" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/model/model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.461538">
+          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+          <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#section#2;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MultiMarkdownPreviewEditor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.053547524">
+            <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="MultiMarkdownFxPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/index_old.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="229" column="35" selection-start-line="229" selection-start-column="29" selection-end-line="229" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/ImgText.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.0">
+          <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/imgtext.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-52.307693">
+          <caret line="68" column="6" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.115385">
+          <caret line="99" column="23" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6213018">
-          <caret line="207" column="0" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+        <state vertical-scroll-proportion="-5.275">
+          <caret line="215" column="26" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="26" />
           <folding>
             <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#script#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#script#1;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11851852">
+          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.7013575">
+          <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+          <folding>
+            <element signature="n#!!block;n#createCircle#0" expanded="false" />
+            <element signature="n#!!block;n#addDianDu#0" expanded="false" />
+            <element signature="e#4833#7150#0" expanded="false" />
           </folding>
         </state>
       </provider>
