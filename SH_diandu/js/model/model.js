@@ -12,14 +12,10 @@ window.Model = (function ($) {
         get: 'get_touch_page_data'
     };
 
-    var teamid = 3000;      //新增点读页的时候,需要传 小组ID,开发用3000
-
     /**
      * 提交点读数据
      */
     function addDianduPage(data, callback) {
-        //小组ID，开发用3000
-        data.teamid = teamid;
         var dataStr = JSON.stringify(data);
         $.post(URL.base, {action: URL.save, data: dataStr}, function (result) {
             console.log('result', result);

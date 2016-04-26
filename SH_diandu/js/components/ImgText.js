@@ -16,7 +16,7 @@
  */
 var ImgText = function (selector, data, fn_upload, fn_submit, setUploadify, basePath) {
     this.basePath = basePath || "uploads/";
-    this.setUploadify = setUploadify || (__upload && __upload.setUploadify);
+    this.setUploadify = setUploadify || (_upload && _upload.setUploadify);
     var that = this;
     this.selector = selector || "body";
     this.tpl = [

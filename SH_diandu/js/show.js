@@ -49,7 +49,7 @@ $(function () {
 function init() {
     fn_onResize();
     // 点读页的ID,保存的时候会返回ID
-    var id = Util.getQueryStringByName('id') || 1080;
+    var id = Util.getQueryStringByName('videoid') || 1080;
 
     Model.getList(id, function (data) {
         DATA = data;
