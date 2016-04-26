@@ -105,7 +105,9 @@ var _data = (function () {
 
     for (var i = 0; i < srcArr.length; i++) {
       if (!srcArr[i].isRemove) { //去掉已经删除的点读页
+        debugger;
         var destPage = {
+          name: srcArr[i].name,
           pic: srcArr[i].pic,
           h: srcArr[i].h,
           w: srcArr[i].w
@@ -1021,7 +1023,7 @@ function handleSubmit(e) {
   //小组ID，开发用3000
   data.teamid = Util.getQueryStringByName('teamid') || 3000;
   data.unitid = Util.getQueryStringByName('unitid') || 405;
-  data.checkid = 1
+  data.checked = 1
 
   //如果是编辑页面,把当前id传给后端
   if (ISEDIT.flag) {
