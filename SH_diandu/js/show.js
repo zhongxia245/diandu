@@ -1,6 +1,6 @@
 /*=============================定义变量 START===========================*/
 var click = IsPC() ? 'click' : 'tap';
-var audio, video;
+var bgAudio, audio, video;
 var _pagePositionId = 'position'; //背景图列表的列表小圆点
 
 //上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
@@ -30,6 +30,7 @@ var isVertical = false;  //是否为竖屏
 window.AUTOPLAYINTERVAL = 0;  //自动播放时间 ,0 为关闭
 
 var DATA; //用来保存请求回来的变量
+var _ISCLICKTHUMBS = false; // 记录是否为点击缩略图进行跳转
 
 /*=============================初始化页面 START===========================*/
 
@@ -57,7 +58,8 @@ function init() {
     initPoint(data);
   })
 
-  //初始化播放器，页面里面只有一个视频播放器和一个音频播放器
+  //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
+  initBgAudio();
   initAudio();
   initVideo();
 }
@@ -198,48 +200,23 @@ function setScale(selector, size) {
  * @return {[type]} [description]
  */
 function initSwipe() {
-
-  //判断是否已经设置了分页的点,如何没有设置,则设置分页
-  var pagination = ".swiper-pagination";
-  var paginationHTML = $(pagination).html();
-  if (paginationHTML) {
-    pagination = null;
-  }
   window.galleryTop = new Swiper('.gallery-top', {
-    //continuous: false,
-    paginationClickable: true,
-    pagination: pagination,
-    onTouchEnd: function (pos) {
+    autoplayStopOnLast: true,
+    onSlideChangeEnd: function (swiper) {
       //closeVideoOrAudio();
+      $('#id_pagination_cur').text(swiper.activeIndex + 1);
+      !_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
+      _ISCLICKTHUMBS = true;
     }
   });
 
-  var startX, endX, long;
-
   window.galleryThumbs = new Swiper('.gallery-thumbs', {
+    slidesPerView: 5,
     spaceBetween: 5,
-    centeredSlides: false,
-    freeMode: true,
-    freeModeSticky: true,
-    slidesPerView: 'auto',
-    touchRatio: 0.2,
-    slideToClickedSlide: false,
-    //onTouchStart: function (pos, e) {
-    //    startX = e.changedTouches && e.changedTouches[0].clientX;
-    //},
-    //onTouchEnd: function (pos, e) {
-    //    endX = e.changedTouches && e.changedTouches[0].clientX;
-    //    //closeVideoOrAudio();
-    //    //缩略图滑动位置小于20,认为是点击事件
-    //    long = Math.abs(endX - startX)
-    //    if (long < 20) {
-    //        galleryThumbs.slideTo(pos.clickedIndex);
-    //        galleryTop.slideTo(pos.clickedIndex);
-    //    }
-    //}
+    freeMode: true
   });
-  //window.galleryTop.params.control = window.galleryThumbs;
-  //window.galleryThumbs.params.control = window.galleryTop;
+
+
   initSlide();
 }
 
@@ -283,6 +260,7 @@ function initPage(id, data) {
   var html = '';
   if (data || data['pages']) {
     var pages = data['pages'];
+    $('#id_pagination_total').text(pages.length);
     for (var i = 0; i < pages.length; i++) {
       html += initDianDuPage(pages[i]);
     }
@@ -299,6 +277,7 @@ function initThumbs(id, pages) {
     var page = pages[i];
     var bgPath = page['pic'];
     html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+    html += '<span style="position: absolute; color: #FFF; font-size: 25px; right: 0; bottom: 0;">' + i + '</span>'
     html += '</div>'
   }
   var $thumbs = $('#' + id);
@@ -383,6 +362,10 @@ function initCircle(data) {
 
 /*************************************根据数据生成页面 END********************************/
 /*=======================音频视频播放相关 START====================*/
+function initBgAudio() {
+  //TODO:设置背景音乐src
+  bgAudio = document.getElementById('bg-audio')
+}
 function initAudio() {
   audio = document.getElementById('audio');
 }
@@ -393,12 +376,15 @@ function initAudio() {
  */
 function playOrPaused(flag) {
   if (flag) {
-    if (audio.paused) {
-      audio.play();
-    }
+    if (audio.paused)  audio.play();
+    bgAudio.pause();
   } else {
     audio.pause();
 
+    //关闭音频的时候,间隔自动播放的时间在启动
+    setTimeout(function () {
+      bgAudio.play();
+    }, window.AUTOPLAYINTERVAL || 3000)
   }
 }
 
@@ -440,6 +426,7 @@ function closeVideoOrAudio() {
   $video.removeClass('m-video-size');
   video.pause();
   audio.pause();
+  bgAudio.pause();  // TODO:是否点击选项就关闭背景音乐
 }
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
@@ -465,11 +452,22 @@ function bindEvent() {
   });
 
   /**
+   * 关闭视频播放
+   */
+  function closeVideo() {
+    triggerBouncyNav(false);
+    $('#video').hide();
+    //关闭音频的时候,间隔自动播放的时间在启动
+    setTimeout(function () {
+      bgAudio.play();
+    }, window.AUTOPLAYINTERVAL || 3000)
+  }
+
+  /**
    * 视频遮罩层关闭菜单
    */
   $('.cd-bouncy-nav-modal .cd-close').off(click).on(click, function () {
-    triggerBouncyNav(false);
-    $('#video').hide();
+    closeVideo();
   });
 
   /**
@@ -477,8 +475,7 @@ function bindEvent() {
    */
   $('.cd-bouncy-nav-modal').off(click).on(click, function (event) {
     if ($(event.target).hasClass('cd-bouncy-nav-modal')) {
-      triggerBouncyNav(false);
-      $('#video').hide();
+      closeVideo();
     }
   });
 
@@ -580,7 +577,8 @@ function bindEvent() {
 
   /*上下滑动,展示缩略图和自动播放控制轴*/
   $('body').off('swipeUp').on('swipeUp', function (ev) {
-    if ($(ev.target).hasClass('swiper-slide-active')) {
+    console.log("swipeUp", $(ev.target).attr('class'))
+    if ($(ev.target).hasClass('swiper-slide')) {
       ev.preventDefault();
       $(".gallery-main").show();
       $(".gallery-main").css('opacity', 1);
@@ -601,11 +599,15 @@ function bindEvent() {
     return false;
   })
 
+  /**
+   * 点击缩略图,跳转到该位置
+   */
   $('#thumbs .swiper-slide').off(click).on(click, function (e) {
     var $tar = $(e.target)
     $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active');
     $tar.addClass('swiper-slide-active');
     window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
+    _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
   })
 
 }

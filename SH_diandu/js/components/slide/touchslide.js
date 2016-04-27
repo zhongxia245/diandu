@@ -66,7 +66,7 @@ SlideBar.prototype = {
         var size = 122 * this.scale;
         var entireW = 900 * this.scale;
         var entireH = 46 * this.scale;
-        var _fontSize = 24 * this.scale;
+        var _fontSize = 50 * this.scale;
 
         var _top = -((size - entireH) / 2);
         $('#' + this.actionBlock).css({

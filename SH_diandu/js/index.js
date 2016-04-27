@@ -105,7 +105,6 @@ var _data = (function () {
 
     for (var i = 0; i < srcArr.length; i++) {
       if (!srcArr[i].isRemove) { //去掉已经删除的点读页
-        debugger;
         var destPage = {
           name: srcArr[i].name,
           pic: srcArr[i].pic,
@@ -182,8 +181,9 @@ var _edit = (function () {
   function initEdit(id) {
     Model.getList(id, function (data) {
       console.log("data", data)
-      var dianduList = data.pages;
+      _initFormData(data);
 
+      var dianduList = data.pages;
       for (var i = 0; i < dianduList.length; i++) {
         var pageIndex = i + 1;
         var picW = parseFloat(dianduList[i]['w']);
@@ -218,6 +218,17 @@ var _edit = (function () {
         id: id
       }
     })
+  }
+
+  /**
+   * 初始化表单
+   * @param data
+   */
+  function _initFormData(data) {
+    $('#name').val(data['title'])
+    $('#intro').val(data['saytext'])
+    $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true);
+    $('#chargeStandard').val(data['cost'])
   }
 
   /**
@@ -309,7 +320,6 @@ var _edit = (function () {
     setUnSelectImgSrc($currentTarget);
     setHoverImgSrcx($target);
     $('#__file' + id).hide();
-    console.log(ids, $target, $currentTarget)
   }
 
   function _data2DDItems(data) {
