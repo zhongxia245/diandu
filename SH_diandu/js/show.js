@@ -207,6 +207,10 @@ function initSwipe() {
       $('#id_pagination_cur').text(swiper.activeIndex + 1);
       !_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
       _ISCLICKTHUMBS = true;
+      //播放到最后一个,停止自动播放
+      if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+        window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+      }
     }
   });
 
@@ -283,7 +287,7 @@ function initThumbs(id, pages) {
   var $thumbs = $('#' + id);
   $thumbs.html('').html(html);
   var $swiperSlide = $thumbs.find('.swiper-slide');
-  $swiperSlide.eq(0).addClass('swiper-slide-active');
+  $swiperSlide.eq(0).addClass('swiper-slide-active-custom');
   if (isVertical) {
     $swiperSlide.css({
       width: $('#thumbs').height() * 9 / 16
@@ -460,7 +464,7 @@ function bindEvent() {
     //关闭音频的时候,间隔自动播放的时间在启动
     setTimeout(function () {
       bgAudio.play();
-    }, window.AUTOPLAYINTERVAL || 3000)
+    }, 3000)
   }
 
   /**
@@ -575,16 +579,6 @@ function bindEvent() {
     }
   })
 
-  /*上下滑动,展示缩略图和自动播放控制轴*/
-  $('body').off('swipeUp').on('swipeUp', function (ev) {
-    console.log("swipeUp", $(ev.target).attr('class'))
-    if ($(ev.target).hasClass('swiper-slide')) {
-      ev.preventDefault();
-      $(".gallery-main").show();
-      $(".gallery-main").css('opacity', 1);
-    }
-    return false;
-  });
 
   //关闭时间进度条
   $('#btn-close').off(click).on(click, function (ev) {
@@ -603,13 +597,37 @@ function bindEvent() {
    * 点击缩略图,跳转到该位置
    */
   $('#thumbs .swiper-slide').off(click).on(click, function (e) {
-    var $tar = $(e.target)
-    $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active');
-    $tar.addClass('swiper-slide-active');
+    var $tar = $(e.currentTarget)
+    $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+    $tar.addClass('swiper-slide-active-custom');
     window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
     _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
   })
 
+  if (IsPC()) {
+    mouseUpOrDown($('body')[0], function (ev, type) {
+      if (type === "up") {
+        console.log("swipeUp", $(ev.target).attr('class'))
+        if ($(ev.target).hasClass('swiper-slide')) {
+          ev.preventDefault();
+          $(".gallery-main").show();
+          $(".gallery-main").css('opacity', 1);
+        }
+        return false;
+      }
+    })
+  } else {
+    /*上下滑动,展示缩略图和自动播放控制轴*/
+    $('body').off('swipeUp').on('swipeUp', function (ev) {
+      console.log("swipeUp", $(ev.target).attr('class'))
+      if ($(ev.target).hasClass('swiper-slide')) {
+        ev.preventDefault();
+        $(".gallery-main").show();
+        $(".gallery-main").css('opacity', 1);
+      }
+      return false;
+    });
+  }
 }
 
 /**
@@ -722,5 +740,32 @@ function css2Float(cssProp) {
   cssProp = cssProp || "";
   return parseFloat(cssProp.replace('px', ''));
 }
+
+/**
+ * 判断鼠标是向上滑动,或者向下滑动[原生JS]
+ */
+window.mouseUpOrDown = (function () {
+  return function (bar, callback) {
+    var oldX, oldY, ev;
+    var distance = 20; //距离大于10有效
+    bar.onmousedown = function (event) {
+      oldX = event.screenX;
+      oldY = event.screenY;
+      ev = event;
+    };
+    bar.onmouseup = function (event) {
+      var newX = event.screenX;
+      var newY = event.screenY;
+
+      if (newY - oldY >= distance) {
+        callback && callback(ev, 'down')
+      } else if (oldY - newY > distance) {
+        callback && callback(ev, 'up')
+      }
+      oldX = 0;
+      oldY = 0;
+    };
+  };
+})();
 
 

@@ -72,7 +72,6 @@ if($id>0)
 
             <div class="upload-img">
                 <ul class="upload-ul" id="ulImgs">
-
                     <li class="upload-li seq0"><img src="<?php echo empty($pic_arr[0])? 'imgs/upload_bg_150.png':$pic_arr[0]; ?>" alt=""></li>
                     <li class="upload-li seq1"><img src="<?php echo empty($pic_arr[1])? 'imgs/upload_bg_150.png':$pic_arr[1]; ?>" alt=""></li>
                     <li class="upload-li seq2"><img src="<?php echo empty($pic_arr[2])? 'imgs/upload_bg_150.png':$pic_arr[2]; ?>" alt=""></li>

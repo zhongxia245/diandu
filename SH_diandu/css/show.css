@@ -207,7 +207,7 @@ ul, li {
   opacity: 0.6;
 }
 
-.gallery-thumbs .swiper-slide-active {
+.gallery-thumbs .swiper-slide-active-custom {
   opacity: 1;
   box-shadow: 0 0 15px;
   margin-top: -2px;

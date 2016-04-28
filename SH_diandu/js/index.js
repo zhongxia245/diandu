@@ -10,23 +10,27 @@
 window.DD = window.DD || {};
 window.DD.items = []; //点读的位置记录
 
+/******************************************
+ * 全局对象
+ ******************************************/
+var GLOBAL = {
+  PAGECOUNT: 1,                        // 点读页数量
+  PREFIX_DIANDU: "__diandu",          // 点读位文件类型列表的ID前缀
+  SCREENTYPE: "",                     //屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
+  ISSELECTEDSCREENTYPE: false,        //是否选中了点读页类型
+  SCREENSIZE: {
+    h: {width: 1200, height: 675},
+    v: {width: 540, height: 960}
+  },
+  ISEDIT: {
+    flag: false                       //是否为编辑页面,默认为false
+  }
+}
 
-var PAGECOUNT = 1;  // 点读页数量
-var ISEDIT = {
-  flag: false
-}; //是否为编辑页面,默认为false
-// 点读位文件类型列表的ID前缀
-var PREFIX_DIANDU = "__diandu";
-var SCREENTYPE; //屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
-var isSelectedScreenType = false; //是否选中了点读页类型
-var SCREENSIZE = {
-  h: {width: 1200, height: 675},
-  v: {width: 540, height: 960}
-};
 
-/*==========================程序入口 START==================================*/
-
-
+/***************************************
+ * 程序入口
+ ***************************************/
 $(function () {
   var id = Util.getQueryStringByName('id');
   id ? _edit.initEdit(id) : _create.initCreate();
@@ -34,6 +38,9 @@ $(function () {
 });
 
 
+/***************************************
+ * uploadify 相关的方法
+ ***************************************/
 var _upload = (function () {
   /**
    * 设置input file 标签，使用 uploadify 插件
@@ -72,9 +79,11 @@ var _upload = (function () {
     setUploadify: setUploadify
   }
 })();
-/**
+
+
+/***************************************
  * window.DD.items 数据对象方法
- */
+ ***************************************/
 var _data = (function () {
   /**
    * 根据id，设置数据仓库的值
@@ -158,10 +167,15 @@ var _data = (function () {
     getTypeByName: getTypeByName
   }
 })();
-/**
- * 创建操作
- */
+
+
+/***************************************
+ * 创建相关操作
+ ***************************************/
 var _create = (function () {
+  /**
+   * 默认创建一个点读背景页
+   */
   function initCreate() {
     addDianDuPageTpl();
   }
@@ -170,9 +184,11 @@ var _create = (function () {
     initCreate: initCreate
   }
 })();
-/**
- * 编辑操作
- */
+
+
+/***************************************
+ * 编辑相关操作
+ ***************************************/
 var _edit = (function () {
   /**
    * 初始化编辑页面
@@ -182,42 +198,48 @@ var _edit = (function () {
     Model.getList(id, function (data) {
       console.log("data", data)
       _initFormData(data);
-
-      var dianduList = data.pages;
-      for (var i = 0; i < dianduList.length; i++) {
-        var pageIndex = i + 1;
-        var picW = parseFloat(dianduList[i]['w']);
-        var picH = parseFloat(dianduList[i]['h']);
-        var picPath = dianduList[i]['pic']
-        var picName = dianduList[i]['name'] || "";
-        var points = dianduList[i]['points'];
-
-        isSelectedScreenType = true;  //已经选中点读页的类型(横屏或者竖屏)
-
-        //生成点读背景图
-        addDianDuPageTpl();
-        addDianduPageByUpload(pageIndex, picName, picPath);
-        //设置上传的图片信息,以及修改提示信息
-        $('.sort-info').show();
-        var _$fileBg = $("#file_bg" + pageIndex);
-        _$fileBg.parent().find('.filename').text(picName);
-
-        //生成点读位
-        for (var j = 0; j < points.length; j++) {
-          var point = points[j];
-
-          //初始化点读位
-          _initPointByData(pageIndex, picW, picH, point);
-        }
-      }
-
+      _initPages(data.pages);
       //把数据解析到window.DD.items里面
       _data2DDItems(data);
-      ISEDIT = {
+      GLOBAL.ISEDIT = {
         flag: true,
         id: id
       }
     })
+  }
+
+  /**
+   * 初始化点读背景页
+   * @param pages
+   * @private
+   */
+  function _initPages(pages) {
+    for (var i = 0; i < pages.length; i++) {
+      var pageIndex = i + 1;
+      var picW = parseFloat(pages[i]['w']);
+      var picH = parseFloat(pages[i]['h']);
+      var picPath = pages[i]['pic']
+      var picName = pages[i]['name'] || "";
+      var points = pages[i]['points'];
+
+      GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型(横屏或者竖屏)
+
+      //生成点读背景图
+      addDianDuPageTpl();
+      addDianduPageByUpload(pageIndex, picName, picPath);
+      //设置上传的图片信息,以及修改提示信息
+      $('.sort-info').show();
+      var _$fileBg = $("#file_bg" + pageIndex);
+      _$fileBg.parent().find('.filename').text(picName);
+
+      //生成点读位
+      for (var j = 0; j < points.length; j++) {
+        var point = points[j];
+
+        //初始化点读位
+        _initPointByData(pageIndex, picW, picH, point);
+      }
+    }
   }
 
   /**
@@ -227,7 +249,8 @@ var _edit = (function () {
   function _initFormData(data) {
     $('#name').val(data['title'])
     $('#intro').val(data['saytext'])
-    $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true);
+    $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true)
+    $('#input[name="pic"]').val(data['pic'])
     $('#chargeStandard').val(data['cost'])
   }
 
@@ -258,7 +281,7 @@ var _edit = (function () {
 
     //创建点图位置小圆圈，以及上传文件的列表
     var index = DDPageItems.length;
-    var id = PREFIX_DIANDU + dataid;
+    var id = GLOBAL.PREFIX_DIANDU + dataid;
 
     createCircle(pageIndex, id, index, x, y);
     addDianDu(pageIndex, id, index);
@@ -350,6 +373,21 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
   // 添加点读页
   $('#btnAdd').on('click', addDianDuPageTpl);
+  //收费标准验证只能输入数字和小数点
+  $('#chargeStandard').on('keyup', function (e) {
+    var $tar = $(e.target);
+    $tar.val($tar.val().replace(/[^\d.]/g, ''))
+  });
+
+  _upload.setUploadify($('#file_btnAutoAudio'), {
+    width: '100%',
+    height: '50',
+    fileTypeDesc: 'Audio Files',
+    fileTypeExts: '*.mp3',
+    onUploadSuccess: function (file, resultPath) {
+      $('#file_btnAutoAudio_path').val(resultPath);
+    }
+  });
 }
 
 
@@ -361,7 +399,7 @@ function bindEvent() {
 function bindH2V() {
   //TODO: 二期：背景图横竖屏切换
   $('.bigimg-h2s-right').on('click', function (e) {
-    if (!isSelectedScreenType) {
+    if (!GLOBAL.ISSELECTEDSCREENTYPE) {
       $tar = $(e.target);
       //切换横竖屏按钮图标
       var src = $tar.attr('src');
@@ -371,20 +409,20 @@ function bindH2V() {
       var $bg = $tar.parent().parent().find('.setting-bigimg-img');
       //背景刚开始是横屏
       if (src.indexOf('h2v') !== -1) {
-        SCREENTYPE = "v";
-        $bg.css(SCREENSIZE[SCREENTYPE])
+        GLOBAL.SCREENTYPE = "v";
+        $bg.css(GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE])
         $('.v-tip').show();
         $('.h-tip').hide();
         $bg.find('.setting-bigimg-tip-h').hide();
         $bg.find('.setting-bigimg-tip-v').show();
       } else { //背景是竖屏
-        SCREENTYPE = "h";
+        GLOBAL.SCREENTYPE = "h";
         $('.v-tip').hide();
         $('.h-tip').show();
         $bg.find('.setting-bigimg-tip-v').hide();
         $bg.find('.setting-bigimg-tip-h').show();
       }
-      $bg.css(SCREENSIZE[SCREENTYPE])
+      $bg.css(GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE])
     }
   })
 }
@@ -394,30 +432,30 @@ function bindH2V() {
  */
 function addDianDuPageTpl() {
   var style;
-  if (SCREENTYPE) {
-    style = {style: "width:" + SCREENSIZE[SCREENTYPE].width + "px; height:" + SCREENSIZE[SCREENTYPE].height + "px"};
+  if (GLOBAL.SCREENTYPE) {
+    style = {style: "width:" + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].width + "px; height:" + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].height + "px"};
   }
   var data = {
-    index: PAGECOUNT,
-    visible: isSelectedScreenType ? 'none' : 'block'
+    index: GLOBAL.PAGECOUNT,
+    visible: GLOBAL.ISSELECTEDSCREENTYPE ? 'none' : 'block'
   };
   data = $.extend(true, data, style);
   var tpls = Handlebars.compile($("#tpl_bg").html());
   $('#id_diandupages').append(tpls(data));
   //初始化上传控件
-  setUploadControl(PAGECOUNT);
+  setUploadControl(GLOBAL.PAGECOUNT);
   // 绑定横竖切换按钮的事件
   bindH2V();
 
   //没每添加一个点读页，就在这里添加一个数组
   window.DD.items.push({
-    id: PAGECOUNT, //id 用来标识该点读页
-    sort: PAGECOUNT, //排序的顺序
+    id: GLOBAL.PAGECOUNT, //id 用来标识该点读页
+    sort: GLOBAL.PAGECOUNT, //排序的顺序
     pic: '', //背景图地址
     name: '', //名称
     data: [] //点读位数组
   });
-  PAGECOUNT++;
+  GLOBAL.PAGECOUNT++;
 }
 
 /**
@@ -473,7 +511,7 @@ function setUploadControl(index) {
 
   _upload.setUploadify($(file_bg), {
     onUploadSuccess: function (file, resultPath, response) {
-      isSelectedScreenType = true;  //已经选中点读页的类型
+      GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
       //移除上传按钮,显示上传的文件信息
       var oldIndex = newIndex;
       //upload muitl image
@@ -507,7 +545,7 @@ function setUploadControl(index) {
  */
 function addDianduPageByUpload(index, fileName, resultPath) {
   if (resultPath.indexOf('error') === -1) {
-    SCREENTYPE = SCREENTYPE || "h"; //默认横屏
+    GLOBAL.SCREENTYPE = GLOBAL.SCREENTYPE || "h"; //默认横屏
 
     var id_bg = "#id_bg" + index;
     var $bg = $(id_bg);
@@ -671,7 +709,7 @@ function addDianDuLocation(e) {
 
     //创建点图位置小圆圈，以及上传文件的列表
     var index = DDPageItems.length;
-    var id = PREFIX_DIANDU + dataid;
+    var id = GLOBAL.PREFIX_DIANDU + dataid;
 
     createCircle(pageIndex, id, index, x, y);
     addDianDu(pageIndex, id, index);
@@ -721,7 +759,7 @@ function handleUploadItem(e) {
         $currentTarget.remove();
 
         //在本地数据变量里面标注，已经删除
-        var _dataid = itemdata.id.replace(PREFIX_DIANDU, '');
+        var _dataid = itemdata.id.replace(GLOBAL.PREFIX_DIANDU, '');
         _data.setDDItems(_dataid, {isRemove: true});
         break;
       // 默认报错，不处理
@@ -748,7 +786,7 @@ function fileTypeItemClick(e) {
   var data = $target.data(); //文件类型，和提示信息（上传什么类型文件）
   var pdata = $target.parent().data(); //点读位文件类型列表data-数据(文件列表的ul)
   var id = pdata.id;
-  var _dataid = id.replace(PREFIX_DIANDU, ''); //在变量里面的唯一标识(eg:1_1)  setItem的数据需要用到这个标识
+  var _dataid = id.replace(GLOBAL.PREFIX_DIANDU, ''); //在变量里面的唯一标识(eg:1_1)  setItem的数据需要用到这个标识
 
   //设置上传类型的默认图标--》设置选中的图片
   setUnSelectImgSrc($currentTarget);
@@ -888,7 +926,7 @@ function hideDDLocation(e) {
   setHoverImgSrcx($target);
 
   var itemdata = $target.parent().data();
-  var _dataid = itemdata.id.replace(PREFIX_DIANDU, '');
+  var _dataid = itemdata.id.replace(GLOBAL.PREFIX_DIANDU, '');
 
   var $itemSortId = $('#item' + itemdata.id);  //序号
   // 隐藏点读位
@@ -1027,7 +1065,9 @@ function handleSubmit(e) {
     saytext: $('#intro').val(),
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
     cost: $('#chargeStandard').val(),
-    pages: _data.getValidItems()
+    pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
+    bgaudio: $('#file_btnAutoAudio_path').val(),
+    pages: _data.getValidItems(),
   }
 
   //小组ID，开发用3000
@@ -1035,14 +1075,24 @@ function handleSubmit(e) {
   data.unitid = Util.getQueryStringByName('unitid') || 405;
   data.checked = 1
 
+
   //如果是编辑页面,把当前id传给后端
-  if (ISEDIT.flag) {
-    data.id = ISEDIT.id
+  if (GLOBAL.ISEDIT.flag) {
+    data.id = GLOBAL.ISEDIT.id
   }
 
   Model.addDianduPage(data, function (result) {
-    console.log("保存成功 id= ", result)
-    alert('创建点读页成功,点击确定返回单元列表!');
-    window.location.href = "/edu/course/unit_video.php?unitid=" + data.unitid;
+    console.log("操作成功,id= ", result)
+
+    var msg = "创建成功,点击确定返回单元列表!";
+    var returnUrl = "/edu/course/unit_video.php?unitid=" + data.unitid;
+
+    if (GLOBAL.ISEDIT.flag) {
+      msg = "保存成功!点击确定返回展示页面!";
+      returnUrl = "/edu/course/diandu.php?id=" + result;
+    }
+
+    alert(msg);
+    window.location.href = returnUrl;
   });
 }

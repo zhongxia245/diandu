@@ -166,92 +166,86 @@ $pic_arr=explode(",",$video['pic']);
     <div class="form-group">
       <label>
         缩略图
-                    <span>(缩略图像素要求为205x205,1号图为封面图,
-                        <span style="color:red;">出现在考试页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
-                    </span>
+        <span>(缩略图像素要求为205x205,1号图为封面图,
+            <span style="color:red;">出现在考试页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
+        </span>
       </label>
 
       <div class="upload-img">
-        <ul class="upload-ul" id="ulImgs">
-
-          <li class="upload-li seq0"><img src="<?php echo empty($pic_arr[0])? 'imgs/upload_bg_150.png':$pic_arr[0]; ?>"
-                                          alt=""><?php if(!empty($pic_arr[0])) echo '<div class="upload_cover_del">删除
-      </div>
-      ';?></li>
-      <li class="upload-li seq1"><img src="<?php echo empty($pic_arr[1])? 'imgs/upload_bg_150.png':$pic_arr[1]; ?>"
-                                      alt=""><?php if(!empty($pic_arr[1])) echo '<div class="upload_cover_del">删除
-    </div>
-    ';?></li>
-    <li class="upload-li seq2"><img src="<?php echo empty($pic_arr[2])? 'imgs/upload_bg_150.png':$pic_arr[2]; ?>"
-                                    alt=""><?php if(!empty($pic_arr[2])) echo '<div class="upload_cover_del">删除
-</div>
-';?></li>
-<li class="upload-li seq3"><img src="<?php echo empty($pic_arr[3])? 'imgs/upload_bg_150.png':$pic_arr[3]; ?>"
-                                alt=""><?php if(!empty($pic_arr[3])) echo '<div class="upload_cover_del">删除</div>';?>
-</li>
-<li class="upload-li seq4"><img src="<?php echo empty($pic_arr[4])? 'imgs/upload_bg_150.png':$pic_arr[4]; ?>"
-                                alt=""><?php if(!empty($pic_arr[4])) echo '<div class="upload_cover_del">删除</div>';?>
-</li>
-</ul>
-</div>
-</div>
-</section>
-<!-- baseinfo end -->
-<!-- setting start-->
-<section class="setting">
-  <div class="setting-charge">
-    <div class="setting-title">收费设置(可选)</div>
-    <div class="form-group">
-      <label for="">收费设置</label>
-      <input name="pic" type="hidden"/>
-      <div class="riado-group">
-        <div>
-          <label style="width:300px">
-            <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
-          </label>
-          <label style="width:300px">
-            <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
-          </label>
-        </div>
-        <div>
-          <label style="width:300px">
-            <input type="radio" name="chargeType" value="2"> 收费但对VIP半价
-          </label>
-          <label style="width:300px">
-            <input type="radio" name="chargeType" value="3"> 全部免费
-          </label>
-        </div>
+          <ul class="upload-ul" id="ulImgs">
+            <li class="upload-li seq0"><img src="<?php echo empty($pic_arr[0])? 'imgs/upload_bg_150.png':$pic_arr[0]; ?>" alt=""></li>
+            <li class="upload-li seq1"><img src="<?php echo empty($pic_arr[1])? 'imgs/upload_bg_150.png':$pic_arr[1]; ?>" alt=""></li>
+            <li class="upload-li seq2"><img src="<?php echo empty($pic_arr[2])? 'imgs/upload_bg_150.png':$pic_arr[2]; ?>" alt=""></li>
+            <li class="upload-li seq3"><img src="<?php echo empty($pic_arr[3])? 'imgs/upload_bg_150.png':$pic_arr[3]; ?>" alt=""></li>
+            <li class="upload-li seq4"><img src="<?php echo empty($pic_arr[4])? 'imgs/upload_bg_150.png':$pic_arr[4]; ?>" alt=""></li>
+          </ul>
       </div>
     </div>
-    <div class="form-group">
-      <label for="chargeStandard">收费标准</label>
+  </section>
+  <!-- baseinfo end -->
+  <!-- setting start-->
+  <section class="setting">
+    <div class="setting-charge">
+      <div class="setting-title">收费设置(可选)</div>
+      <div class="form-group">
+        <label for="">收费设置</label>
+        <input name="pic" type="hidden"/>
+        <div class="riado-group">
+          <div>
+            <label style="width:300px">
+              <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
+            </label>
+            <label style="width:300px">
+              <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
+            </label>
+          </div>
+          <div>
+            <label style="width:300px">
+              <input type="radio" name="chargeType" value="2"> 收费但对VIP半价
+            </label>
+            <label style="width:300px">
+              <input type="radio" name="chargeType" value="3"> 全部免费
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chargeStandard">收费标准</label>
 
-      <div class="input-group">
-        <input type="text" class="form-control" id="chargeStandard">
+        <div class="input-group">
+          <input type="text" class="form-control" id="chargeStandard">
 
-        <div class="input-group-addon">元</div>
-        <div class="input-group-addon" style="background: none;border: 0;">
-          <span class="note">(免费模式无需设置)</span>
+          <div class="input-group-addon">元</div>
+          <div class="input-group-addon" style="background: none;border: 0;">
+            <span class="note">(免费模式无需设置)</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="setting-diandu">
-    <div class="baseinfo-title">点读页设置</div>
-    <!-- TODO:多个点读页 -->
-    <!-- 点读页集合 START -->
-    <div id="id_diandupages" class="diandupages">
+    <div class="setting-diandu">
+      <div class="baseinfo-title">点读页设置</div>
+      <!-- TODO:多个点读页 -->
+      <!-- 点读页集合 START -->
+      <div id="id_diandupages" class="diandupages">
+      </div>
+      <!-- 点读页集合 END -->
+      <!-- setting btns start -->
+      <div class="setting-btns">
+        <div class="setting-btn" id="btnAdd">新增点读页</div>
+        <div style="margin: 25px 0;">
+          <div class="setting-title">自动播放时的音乐设置(可选)</div>
+          <div class="setting-btn-autovideo" id="btnAutoAudio">
+            点击上传自动播放时的背景音乐(MP3格式)
+            <input type="file" id="file_btnAutoAudio" class="filehide"/>
+            <input type="hidden" id="file_btnAutoAudio_path"/>
+          </div>
+        </div>
+        <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
+      </div>
+      <!-- setting btns end -->
     </div>
-    <!-- 点读页集合 END -->
-    <!-- setting btns start -->
-    <div class="setting-btns">
-      <div class="setting-btn" id="btnAdd">新增点读页</div>
-      <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
-    </div>
-    <!-- setting btns end -->
-  </div>
-</section>
-<!-- setting end -->
+  </section>
+  <!-- setting end -->
 </div>
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
