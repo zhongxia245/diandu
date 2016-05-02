@@ -20,7 +20,7 @@ ul, li {
 .m-bgs {
   width: 100%;
   height: 100%;
-  background-color: #f2f2f2;
+  background-color: #000;
   overflow: hidden;
 }
 
@@ -34,6 +34,16 @@ ul, li {
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
+}
+
+.m-bg > .wrap {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /*background-color: red;*/
 }
 
 .m-dd-start {
@@ -119,8 +129,9 @@ ul, li {
   right: 0;
   left: 0;
   color: #000;
-  overflow: hidden;
+  /*overflow: hidden;*/
   z-index: 9999;
+  margin: auto;
 }
 
 .sec-imgtext-main {
@@ -179,6 +190,8 @@ ul, li {
   bottom: 0;
   left: 45%;
   z-index: 2;
+  font-size: 25px;
+  color: #D4D4D4;
 }
 
 .gallery-main {
@@ -204,14 +217,29 @@ ul, li {
 
 .gallery-thumbs .swiper-slide {
   height: 100%;
-  opacity: 0.6;
+  /*opacity: 0.6;*/
 }
 
 .gallery-thumbs .swiper-slide-active-custom {
   opacity: 1;
-  box-shadow: 0 0 15px;
-  margin-top: -2px;
-  height: 105%;
+  box-shadow: 0 0 20px;
+  margin-top: -10px;
+  height: 110%;
+}
+
+.thumbs-sort-id {
+  position: absolute;
+  color: #000;
+  font-size: 25px;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  background: #D4D4D4;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
 }
 
 /*============使用swiper3.0的样式  END==========*/
@@ -236,7 +264,7 @@ ul, li {
 .progress-bar {
   color: #000;
   line-height: 30px;
-  background: #D8D8D8;
+  background-color: #D8D8D8;
 }
 
 .intervalTime {

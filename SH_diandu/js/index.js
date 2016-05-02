@@ -18,15 +18,19 @@ var GLOBAL = {
   PREFIX_DIANDU: "__diandu",          // 点读位文件类型列表的ID前缀
   SCREENTYPE: "",                     //屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
   ISSELECTEDSCREENTYPE: false,        //是否选中了点读页类型
+  H_IMGSCALE: 1920 / 1080,  //横屏比例点
+  V_IMGSCALE: 1080 / 1760,  //竖屏比例点
+  OLDWIDTH: 1200,  //创建页面的横屏宽度
+  OLDHEIGHT: 960,  //创建页面的竖屏高度
   SCREENSIZE: {
     h: {width: 1200, height: 675},
     v: {width: 540, height: 960}
   },
+
   ISEDIT: {
     flag: false                       //是否为编辑页面,默认为false
   }
 }
-
 
 /***************************************
  * 程序入口
@@ -118,7 +122,8 @@ var _data = (function () {
           name: srcArr[i].name,
           pic: srcArr[i].pic,
           h: srcArr[i].h,
-          w: srcArr[i].w
+          w: srcArr[i].w,
+          id: srcArr[i]['oldId']
         };
         var destItems = [];
         var items = srcArr[i]['data'];
@@ -133,6 +138,7 @@ var _data = (function () {
               content: items[j].content,
               type: _data.getTypeByName(items[j].type)
             }
+            if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
             destItems.push(obj);
           }
         }
@@ -141,6 +147,7 @@ var _data = (function () {
       }
     }
     return destArr;
+    console.log("destArr", destArr)
   }
 
   /**
@@ -227,6 +234,7 @@ var _edit = (function () {
       //生成点读背景图
       addDianDuPageTpl();
       addDianduPageByUpload(pageIndex, picName, picPath);
+      setBgImageScale(picPath, "#id_bg" + pageIndex);
       //设置上传的图片信息,以及修改提示信息
       $('.sort-info').show();
       var _$fileBg = $("#file_bg" + pageIndex);
@@ -235,7 +243,6 @@ var _edit = (function () {
       //生成点读位
       for (var j = 0; j < points.length; j++) {
         var point = points[j];
-
         //初始化点读位
         _initPointByData(pageIndex, picW, picH, point);
       }
@@ -348,8 +355,10 @@ var _edit = (function () {
   function _data2DDItems(data) {
     var pages = data.pages;
     for (var i = 0; i < pages.length; i++) {
+      window.DD.items[i]['oldId'] = pages[i]['id'];
       for (var j = 0; j < pages[i]['points'].length; j++) {
         var obj = pages[i]['points'][j];
+        window.DD.items[i]['data'][j]['oldId'] = obj['id'];
         window.DD.items[i]['data'][j]['url'] = obj['url'];
         window.DD.items[i]['data'][j]['filename'] = obj['filename'];
         window.DD.items[i]['data'][j]['title'] = obj['title'];
@@ -363,7 +372,40 @@ var _edit = (function () {
     initEdit: initEdit
   }
 })();
+
+
 /*************************编辑页面 END**************************/
+/**
+ * 设置背景图的缩放
+ * @param path
+ * @param id
+ */
+function setBgImageScale(path, id) {
+  console.log("path", path, id)
+  //获取图片的宽高
+  Util.getImageWH(path, {id: id}, function (obj, param) {
+    var bgSize = '100% auto';
+    var currentScale = obj.w / obj.h;
+
+    if (GLOBAL.SCREENTYPE === 'v') {
+      if (currentScale > GLOBAL.V_IMGSCALE) {
+        bgSize = '100% auto';
+      } else {
+        bgSize = 'auto 100%';
+      }
+    } else {
+      if (currentScale > GLOBAL.H_IMGSCALE) {
+        bgSize = '100% auto';
+      } else {
+        bgSize = 'auto 100%';
+      }
+    }
+    console.log("#id_bg" + param.index)
+    $(id).css('background-size', bgSize);
+  })
+}
+
+/*************************设置背景图的缩放比例 END**************************/
 
 /**
  * 绑定事件
@@ -520,7 +562,6 @@ function setUploadControl(index) {
         if (newIndex !== index) {
           addDianDuPageTpl();
         }
-        console.log('resultPath:' + newIndex, resultPath, this)
         addDianduPageByUpload(newIndex, file.name, resultPath);
         newIndex++;
       }
@@ -532,6 +573,8 @@ function setUploadControl(index) {
       $('.sort-info').show();
       var _$fileBg = $("#file_bg" + oldIndex);
       _$fileBg.parent().find('.filename').text(file.name);
+      console.log("newIndex", newIndex)
+      setBgImageScale(resultPath, "#id_bg" + (newIndex - 1))
     }
   });
 }
@@ -1066,7 +1109,7 @@ function handleSubmit(e) {
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
-    bgaudio: $('#file_btnAutoAudio_path').val(),
+    background: $('#file_btnAutoAudio_path').val(),
     pages: _data.getValidItems(),
   }
 

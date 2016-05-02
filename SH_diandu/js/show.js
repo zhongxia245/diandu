@@ -1,30 +1,34 @@
 /*=============================定义变量 START===========================*/
 var click = IsPC() ? 'click' : 'tap';
 var bgAudio, audio, video;
-var _pagePositionId = 'position'; //背景图列表的列表小圆点
-
+var GLOBAL = {
+  PREBGID: '_diandu',  //每一个背景页的前缀
+  H_IMGSCALE: 1920 / 1080,  //横屏比例点
+  V_IMGSCALE: 1080 / 1760,  //竖屏比例点
+  OLDWIDTH: 1200,  //创建页面的横屏宽度
+  OLDHEIGHT: 960,  //创建页面的竖屏高度
+}
 //上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
 var OLDWIDTH = 1200;
-var OLDHEIGHT = 675;
+var OLDHEIGHT = 960;
 /*
  var SCREENSIZE = {
  h: {width: 1200, height: 675},
  v: {width: 540, height: 960}
  };
  */
-var OLDDIANDUSIZE = 100; //创建时的点读位置大小为100px
+var STARTSIZE = 100; //创建时的点读位置大小为100px
 var POINTPOINTSIZE = 72; //点读位置默认大小
 
 /*
  * 计算点读位从100变成72的圆心位置偏移
  * */
-var DIFFR = (OLDDIANDUSIZE - POINTPOINTSIZE) / 2;
+var DIFFR = (STARTSIZE - POINTPOINTSIZE) / 2;
 var DIFF = Math.sqrt(Math.pow(DIFFR, 2) / 2);
 
 
 var POINTSIZE;
 var SCALE = 1; //缩放的比例
-var STARTSIZE = 100; //启动位大小
 var isVertical = false;  //是否为竖屏
 
 window.AUTOPLAYINTERVAL = 0;  //自动播放时间 ,0 为关闭
@@ -54,7 +58,6 @@ function init() {
     var strh = data && data.pages.length && data.pages[0].h || "675";
     OLDWIDTH = parseFloat(strw);
     OLDHEIGHT = parseFloat(strh);
-
     initPoint(data);
   })
 
@@ -136,7 +139,7 @@ function styleHandler() {
       width: '80%'
     });
     $tip.css({
-      width: '80%',
+      width: '60%',
       marginBottom: '10px'
     })
     $tip.find('div').css({
@@ -144,7 +147,7 @@ function styleHandler() {
     })
   } else {
     $scrollBar.css({
-      width: '50%'
+      width: '45%'
     })
     $tip.css({
       width: '30%',
@@ -166,8 +169,18 @@ function initPoint(data) {
   initPage('pages', data);
   initThumbs('thumbs', data.pages);
   initSwipe();
-  bindEvent();
-  initScale();
+  //bindEvent();
+  //initScale();
+  //data['background'] = "uploads/5c4a5551f2e5a9e38b81d2e37778d007.mp3";
+  console.log("data", data)
+  if (data['background']) {
+    $('#bg-audio').attr('src', data['background']) //设置背景音乐
+    if ($('#cb_bgAudio').val()) {
+      $('#bg-audio')[0].play();
+    }
+  } else {
+    $('#cb_bgAudio').parent().hide();
+  }
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
 
@@ -182,6 +195,21 @@ function initScale() {
   setScale('.m-video', POINTSIZE);
   setScale('.m-video img', POINTSIZE);
 }
+
+/**
+ * 按比例缩放图标
+ * @return {[type]} [description]
+ */
+function initScale_Scale(wrap, scale) {
+  var pointSize = POINTPOINTSIZE * scale;
+  console.log("pointSize", pointSize, "STARTSIZE", STARTSIZE * scale)
+  setScale(wrap + ' .m-dd-start', STARTSIZE * scale);
+  setScale(wrap + ' .m-audio', pointSize);
+  setScale(wrap + ' .m-audio img', pointSize);
+  setScale(wrap + ' .m-video', pointSize);
+  setScale(wrap + ' .m-video img', pointSize);
+}
+
 
 /**
  * 设置大小
@@ -224,6 +252,9 @@ function initSwipe() {
   initSlide();
 }
 
+/**
+ * 初始化时间进度条
+ */
 function initSlide() {
   //因为窗体改变的时候,onresize会调用该方法,这里判断是否已经设置了自动播放的值
   window.silideBar = new SlideBar({
@@ -266,10 +297,75 @@ function initPage(id, data) {
     var pages = data['pages'];
     $('#id_pagination_total').text(pages.length);
     for (var i = 0; i < pages.length; i++) {
-      html += initDianDuPage(pages[i]);
+      var subid = GLOBAL.PREBGID + i;  //每一个页面的id
+      //获取图片的宽高
+      Util.getImageWH(pages[i]['pic'], {subid: subid, data: pages[i], i: i}, function (obj, param) {
+        var bgSize = '100% auto';
+        var currentScale = obj.w / obj.h;
+        var $wrap = $('#' + param.subid).find('.wrap');
+
+        var w = window.W;
+        var h = window.H;
+
+        var scale;
+
+        if (isVertical) {
+          if (currentScale > GLOBAL.V_IMGSCALE) {
+            bgSize = '100% auto';
+            h = window.W * obj.h / obj.w;
+          } else {
+            bgSize = 'auto 100%';
+            w = window.H * obj.w / obj.h;
+          }
+        } else {
+          if (currentScale > GLOBAL.H_IMGSCALE) {
+            bgSize = '100% auto';
+            h = window.W * obj.h / obj.w;
+          } else {
+            bgSize = 'auto 100%';
+            w = window.H * obj.w / obj.h;
+          }
+        }
+
+        if (obj.w > obj.h) {
+          scale = window.W / GLOBAL.OLDWIDTH;
+        } else {
+          scale = window.H / GLOBAL.OLDHEIGHT;
+        }
+        $wrap.css({height: h, width: w});
+        $wrap.append(initCircle_Scale(param.data['points'], w, h, scale))
+        $('#' + param.subid).css('background-size', bgSize);
+        initScale_Scale('#' + param.subid, scale);
+
+        //所有点读位置生成结束
+        if (param.i === pages.length - 1) {
+          bindEvent();
+        }
+      })
+
+      html += initDianDuPage(pages[i], subid);
     }
   }
   $('#' + id).html('').html(html);
+}
+
+/**
+ * 生成点读页
+ * @param data [根据数据生成点读页]
+ * @param id 点读页的id
+ */
+function initDianDuPage(data, id) {
+  var bgPath = data['pic'];
+  //var cicleHtml = initCircle(data['points']);
+  var h = $(window).height()
+  var html = "";
+  html += '<div id="' + id + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+  html += '    <div class="wrap">'
+  html += '        <div class="m-dd-start"></div>'
+  //html += cicleHtml;
+  html += '    </div>'
+  html += '</div>'
+  return html;
 }
 
 /**
@@ -281,7 +377,7 @@ function initThumbs(id, pages) {
     var page = pages[i];
     var bgPath = page['pic'];
     html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
-    html += '<span style="position: absolute; color: #FFF; font-size: 25px; right: 0; bottom: 0;">' + i + '</span>'
+    html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }
   var $thumbs = $('#' + id);
@@ -297,24 +393,6 @@ function initThumbs(id, pages) {
       width: $('#thumbs').height() * 16 / 9
     })
   }
-}
-
-/**
- * 生成点读页
- * @param  {[type]} data [根据数据生成点读页]
- */
-function initDianDuPage(data) {
-  var bgPath = data['pic'];
-  var cicleHtml = initCircle(data['points']);
-  var h = $(window).height()
-  var html = "";
-  html += '<div class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
-  html += '    <div class="wrap">'
-  html += '        <div class="m-dd-start"></div>'
-  html += cicleHtml;
-  html += '    </div>'
-  html += '</div>'
-  return html;
 }
 
 /**
@@ -363,6 +441,52 @@ function initCircle(data) {
   return html;
 }
 
+/**
+ * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
+ * @param  {[type]} data [根据数据生成点读位]
+ */
+function initCircle_Scale(data, w, h, scale) {
+  var html = "";
+  html += '<div data-id="all-radius" data-hide="all-radius-hide">'
+  for (var i = 0; i < data.length; i++) {
+    //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
+    var diff = DIFF * scale;
+    var pointSize = scale * POINTPOINTSIZE;
+    var left = parseFloat(data[i].x) * w + diff;
+    var top = parseFloat(data[i].y) * h + diff;
+    var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
+    var type = data[i]['type'];
+    var url = data[i]['url'];
+    var filename = data[i]['filename'];
+    var title = data[i]['title'];
+    var content = data[i]['content'];
+    var className = '';
+    var mediaImg = "";
+
+    switch (type) {
+      case "1": //视频
+        className = 'm-video';
+        mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
+        break;
+      case "2": //音频
+        className = 'm-audio';
+        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
+        break;
+      case "3": //图文
+        className = 'm-imgtext';
+        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
+        break;
+      default:
+        className = 'm-video';
+        break;
+    }
+    html += '<div class="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+    html += mediaImg;
+    html += '</div>'
+  }
+  html += '</div>'
+  return html;
+}
 
 /*************************************根据数据生成页面 END********************************/
 /*=======================音频视频播放相关 START====================*/
@@ -388,7 +512,7 @@ function playOrPaused(flag) {
     //关闭音频的时候,间隔自动播放的时间在启动
     setTimeout(function () {
       bgAudio.play();
-    }, window.AUTOPLAYINTERVAL || 3000)
+    }, 5000)
   }
 }
 
@@ -422,15 +546,18 @@ function triggerBouncyNav($bool) {
 
 /**
  * 隐藏音频和视频，并且关闭播放
+ * @param flag 是否关闭自动播放
  */
-function closeVideoOrAudio() {
+function closeVideoOrAudio(flag) {
+  if (flag === undefined) flag = true;
   $('.m-audio img').hide(); //隐藏所有的播放GIF图
-  $video = $('.m-video-size');
+  var $video = $('.m-video-size');
   $video.find('img').hide();
   $video.removeClass('m-video-size');
   video.pause();
   audio.pause();
-  bgAudio.pause();  // TODO:是否点击选项就关闭背景音乐
+  if (flag)
+    bgAudio.pause();  // TODO:是否点击选项就关闭背景音乐
 }
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
@@ -450,11 +577,21 @@ function bindEvent() {
       $allRadius.removeClass();
     } else {
       $allRadius.addClass(hideClassName);
-      closeVideoOrAudio();
+      closeVideoOrAudio(false);
     }
     return false;
   });
 
+  /**
+   * 背景音乐开关按钮
+   */
+  $('#cb_bgAudio').off('change').on('change', function (e) {
+    if ($(e.target).attr('checked')) {
+      bgAudio.play();
+    } else {
+      bgAudio.pause();
+    }
+  })
   /**
    * 关闭视频播放
    */
@@ -546,14 +683,14 @@ function bindEvent() {
 
   // 图文
   $('.m-imgtext').off(click).on(click, function (e) {
-    closeVideoOrAudio();
+    closeVideoOrAudio(false);
     var $tar = $(e.target);
     var $secImgText = $('.sec-imgtext');
     $secImgText.css({position: 'absolute'});
     $secImgText.show();
     var $secImgTextMain = $('.sec-imgtext-main');
-    setImgTextLocation($tar, $secImgTextMain);
-
+    //setImgTextLocation($tar, $secImgTextMain, $(e.currentTarget).parent().parent());
+    setImgTextLocation_Scale($tar, $secImgTextMain, $(e.currentTarget).parent().parent());  //设置弹窗的位置
     var _url = $tar.attr('data-url');
     var _title = $tar.attr('data-title');
     var _content = $tar.attr('data-content');
@@ -608,7 +745,7 @@ function bindEvent() {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
         console.log("swipeUp", $(ev.target).attr('class'))
-        if ($(ev.target).hasClass('swiper-slide')) {
+        if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
           $(".gallery-main").css('opacity', 1);
@@ -620,7 +757,7 @@ function bindEvent() {
     /*上下滑动,展示缩略图和自动播放控制轴*/
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       console.log("swipeUp", $(ev.target).attr('class'))
-      if ($(ev.target).hasClass('swiper-slide')) {
+      if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
         ev.preventDefault();
         $(".gallery-main").show();
         $(".gallery-main").css('opacity', 1);
@@ -695,6 +832,73 @@ function setImgTextLocation($tar, $secImgTextMain) {
   }
 }
 
+
+/**
+ * 根据点读位的位置，计算出图文展示的位置[算法]
+ * @param $tar
+ */
+function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
+  $('.sec-imgtext').css({width: $wrap.width(), height: $wrap.height()});
+
+  var gap = 0;  //图文展示坐标，与点读位的距离
+  var rW = $tar.width();
+  var rH = $tar.height();
+  var top = css2Float($tar.css('top'));
+  var left = css2Float($tar.css('left'));
+  var imgTextW = $secImgTextMain.width();
+  var imgTextH = $secImgTextMain.height();
+  var windowW = $(window).width();
+  var windowH = $(window).height();
+  //左上点读位的角
+  var _ltx = left - imgTextW - gap;
+  var _lty = top - imgTextH;
+
+  //右上点读位的角
+  var _rtx = left + rW + gap;
+  var _rty = top - imgTextH;
+
+  //左下点读位的角
+  var _lbx = left - imgTextW - gap;
+  var _lby = top + rH + gap;
+  //右下点读位的角
+  var _rbx = left + rW + gap;
+  var _rby = top + rH + gap;
+  //如果图文展示 超出了顶部，则考虑放下下半部分
+  if (_lty > 10) {
+    //如果图文展示，超出了左边，则考虑右边部分
+    if (_ltx > 10) {
+      $secImgTextMain.css({left: _ltx, top: _lty})
+    }
+    else if ((_rtx + imgTextW) > ( windowW - 10)) {
+      $secImgTextMain.css({left: _rtx - (imgTextW / 2), top: _rty})
+    }
+    else {
+      $secImgTextMain.css({left: _rtx, top: _rty})
+    }
+  }
+  else if ((_lby + imgTextH) > ( windowH - 10)) {
+    if (_lbx > 10) {
+      $secImgTextMain.css({left: _lbx, top: _lby - (imgTextH / 2)})
+    }
+    else if ((_rbx + imgTextW) > ( windowW - 10)) {
+      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby - (imgTextH / 2)})
+    }
+    else {
+      $secImgTextMain.css({left: _rbx, top: _rby - (imgTextH / 2)})
+    }
+  }
+  else {
+    if (_lbx > 10) {
+      $secImgTextMain.css({left: _lbx, top: _lby})
+    }
+    else if ((_rbx + imgTextW) > ( windowW - 10)) {
+      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby})
+    }
+    else {
+      $secImgTextMain.css({left: _rbx, top: _rby})
+    }
+  }
+}
 
 /*=======================点击事件相关 END====================*/
 

@@ -172,13 +172,18 @@ $pic_arr=explode(",",$video['pic']);
       </label>
 
       <div class="upload-img">
-          <ul class="upload-ul" id="ulImgs">
-            <li class="upload-li seq0"><img src="<?php echo empty($pic_arr[0])? 'imgs/upload_bg_150.png':$pic_arr[0]; ?>" alt=""></li>
-            <li class="upload-li seq1"><img src="<?php echo empty($pic_arr[1])? 'imgs/upload_bg_150.png':$pic_arr[1]; ?>" alt=""></li>
-            <li class="upload-li seq2"><img src="<?php echo empty($pic_arr[2])? 'imgs/upload_bg_150.png':$pic_arr[2]; ?>" alt=""></li>
-            <li class="upload-li seq3"><img src="<?php echo empty($pic_arr[3])? 'imgs/upload_bg_150.png':$pic_arr[3]; ?>" alt=""></li>
-            <li class="upload-li seq4"><img src="<?php echo empty($pic_arr[4])? 'imgs/upload_bg_150.png':$pic_arr[4]; ?>" alt=""></li>
-          </ul>
+        <ul class="upload-ul" id="ulImgs">
+          <li class="upload-li seq0"><img src="<?php echo empty($pic_arr[0])? 'imgs/upload_bg_150.png':$pic_arr[0]; ?>"
+                                          alt=""></li>
+          <li class="upload-li seq1"><img src="<?php echo empty($pic_arr[1])? 'imgs/upload_bg_150.png':$pic_arr[1]; ?>"
+                                          alt=""></li>
+          <li class="upload-li seq2"><img src="<?php echo empty($pic_arr[2])? 'imgs/upload_bg_150.png':$pic_arr[2]; ?>"
+                                          alt=""></li>
+          <li class="upload-li seq3"><img src="<?php echo empty($pic_arr[3])? 'imgs/upload_bg_150.png':$pic_arr[3]; ?>"
+                                          alt=""></li>
+          <li class="upload-li seq4"><img src="<?php echo empty($pic_arr[4])? 'imgs/upload_bg_150.png':$pic_arr[4]; ?>"
+                                          alt=""></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -301,7 +306,9 @@ $pic_arr=explode(",",$video['pic']);
         <span class="h-tip">横屏背景图比例 16:9</span>
         <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
         <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
-        <img class="bigimg-h2s-right" src="imgs/h2v.png" data-src="imgs/v2h.png" alt="">
+        <img class="bigimg-h2s-right" style="display:{{visible}}; display:none;" src="imgs/h2v.png"
+             data-src="imgs/v2h.png"
+             alt="">
         <ul class="bigimg-h hide">
           <li class="down"></li>
           <li class="up"></li>
@@ -354,8 +361,20 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/components/ImgText.js"></script>
 
 <script>
-  var teamid=<?php echo $teamid;?>;
-  var unitid=<?php echo $unitid;?>;
+  var teamid =
+  <
+  ? php echo
+  $teamid;
+  ?
+  >
+  ;
+  var unitid =
+  <
+  ? php echo
+  $unitid;
+  ?
+  >
+  ;
   var cover_list = [];
   $("#ulImgs").sortable({
     stop: function (event, ui) {

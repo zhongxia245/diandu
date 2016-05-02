@@ -265,7 +265,6 @@ header {
 .setting-bigimg-img {
   width: 1200px;
   height: 675px;
-  background: #7F7F7F;
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
@@ -273,7 +272,9 @@ header {
   filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
+  background-color: #000;
   background-repeat: no-repeat;
+  background-position: center;
   cursor: pointer;
   position: relative;
 }
