@@ -10,6 +10,7 @@
 window.DD = window.DD || {};
 window.DD.items = []; //点读的位置记录
 
+
 /******************************************
  * 全局对象
  ******************************************/
@@ -26,7 +27,6 @@ var GLOBAL = {
     h: {width: 1200, height: 675},
     v: {width: 540, height: 960}
   },
-
   ISEDIT: {
     flag: false                       //是否为编辑页面,默认为false
   }
@@ -36,7 +36,15 @@ var GLOBAL = {
  * 程序入口
  ***************************************/
 $(function () {
-  var id = Util.getQueryStringByName('id');
+  var id;
+  if (window.location.host.indexOf('localhost') !== -1) {
+    id = Util.getQueryStringByName('id');
+    teamid = 3000;
+    unitid = '' , userid = '';
+  }
+  else {
+    id = videoid;
+  }
   id ? _edit.initEdit(id) : _create.initCreate();
   bindEvent();
 });
@@ -259,6 +267,8 @@ var _edit = (function () {
     $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true)
     $('#input[name="pic"]').val(data['pic'])
     $('#chargeStandard').val(data['cost'])
+    if (data['background'])
+      $('#btnAutoAudio>span').text(data['background'])
   }
 
   /**
@@ -353,6 +363,7 @@ var _edit = (function () {
   }
 
   function _data2DDItems(data) {
+    $('input[name="pic"]').val(data['pic']);
     var pages = data.pages;
     for (var i = 0; i < pages.length; i++) {
       window.DD.items[i]['oldId'] = pages[i]['id'];
@@ -381,9 +392,8 @@ var _edit = (function () {
  * @param id
  */
 function setBgImageScale(path, id) {
-  console.log("path", path, id)
   //获取图片的宽高
-  Util.getImageWH(path, {id: id}, function (obj, param) {
+  Util.getImageWH(path, null, function (obj) {
     var bgSize = '100% auto';
     var currentScale = obj.w / obj.h;
 
@@ -400,7 +410,6 @@ function setBgImageScale(path, id) {
         bgSize = 'auto 100%';
       }
     }
-    console.log("#id_bg" + param.index)
     $(id).css('background-size', bgSize);
   })
 }
@@ -424,10 +433,12 @@ function bindEvent() {
   _upload.setUploadify($('#file_btnAutoAudio'), {
     width: '100%',
     height: '50',
+    multi: false,
     fileTypeDesc: 'Audio Files',
     fileTypeExts: '*.mp3',
     onUploadSuccess: function (file, resultPath) {
       $('#file_btnAutoAudio_path').val(resultPath);
+      $('#btnAutoAudio>span').text(file.name);
     }
   });
 }
@@ -574,7 +585,7 @@ function setUploadControl(index) {
       var _$fileBg = $("#file_bg" + oldIndex);
       _$fileBg.parent().find('.filename').text(file.name);
       console.log("newIndex", newIndex)
-      setBgImageScale(resultPath, "#id_bg" + (newIndex - 1))
+      setBgImageScale(resultPath, "#id_bg" + (newIndex))
     }
   });
 }
@@ -1104,7 +1115,7 @@ function delDDItem(id) {
  */
 function handleSubmit(e) {
   var data = {
-    name: $('#name').val(),
+    title: $('#name').val(),
     saytext: $('#intro').val(),
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
     cost: $('#chargeStandard').val(),
@@ -1114,8 +1125,9 @@ function handleSubmit(e) {
   }
 
   //小组ID，开发用3000
-  data.teamid = Util.getQueryStringByName('teamid') || 3000;
-  data.unitid = Util.getQueryStringByName('unitid') || 405;
+  data.teamid = teamid;  //Util.getQueryStringByName('teamid') || 3000;
+  data.unitid = unitid;  //Util.getQueryStringByName('unitid') || 405;
+  data.userid = userid;
   data.checked = 1
 
 
@@ -1125,14 +1137,15 @@ function handleSubmit(e) {
   }
 
   Model.addDianduPage(data, function (result) {
-    console.log("操作成功,id= ", result)
+    console.log("操作成功,返回点读页的id为(videoid)= ", result)
 
     var msg = "创建成功,点击确定返回单元列表!";
     var returnUrl = "/edu/course/unit_video.php?unitid=" + data.unitid;
 
     if (GLOBAL.ISEDIT.flag) {
       msg = "保存成功!点击确定返回展示页面!";
-      returnUrl = "/edu/course/diandu.php?id=" + result;
+      returnUrl = "/edu/course/diandu.php?id=" + id;
+      //这里的id 是 diandu.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
     }
 
     alert(msg);

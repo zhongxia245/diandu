@@ -8,6 +8,50 @@ var GLOBAL = {
   OLDWIDTH: 1200,  //创建页面的横屏宽度
   OLDHEIGHT: 960,  //创建页面的竖屏高度
 }
+
+/**
+ * 背景音乐相关操作
+ */
+GLOBAL.BGAUDIO = {
+  bgaudio: document.getElementById('bg-audio'),
+  audio: document.getElementById('audio'),
+  $btnBgAudio: $('#btn_bgAudio'),
+  setAudio: function (src) {
+    $(this.bgaudio).attr('src', src);
+  },
+  isOn: function () {
+    if (this.$btnBgAudio.attr('src').indexOf('on') !== -1) {
+      return true;
+    }
+    return false;
+  },
+  play: function () {
+    if (this.audio.paused && this.bgaudio.paused) {
+      this.bgaudio.play();
+      this.$btnBgAudio.attr('src', 'imgs/bg_audio_on.png')
+    }
+  },
+  pause: function () {
+    if (!this.bgaudio.paused) {
+      this.bgaudio.pause();
+      this.$btnBgAudio.attr('src', 'imgs/bg_audio.png')
+    }
+  },
+  hideBtn: function () {
+    this.$btnBgAudio.hide();
+  },
+  setTimePlay: function (duration) {
+    duration = duration || 5000;
+    var that = this;
+    setTimeout(function () {
+      if (that.audio.paused) {
+        that.play()
+      }
+    }, duration)
+  }
+}
+
+
 //上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
 var OLDWIDTH = 1200;
 var OLDHEIGHT = 960;
@@ -134,6 +178,7 @@ function fn_onResize() {
 function styleHandler() {
   var $scrollBar = $('#scroll-bar');
   var $tip = $('#txtTip')
+  var $btn_bgAudio = $('#btn_bgAudio');
   if (isVertical) {
     $scrollBar.css({
       width: '80%'
@@ -145,6 +190,7 @@ function styleHandler() {
     $tip.find('div').css({
       float: 'left'
     })
+    $btn_bgAudio.css({margin: '-4px 0', width: '85px'});
   } else {
     $scrollBar.css({
       width: '45%'
@@ -156,6 +202,7 @@ function styleHandler() {
     $tip.find('div').css({
       float: 'none'
     })
+    $btn_bgAudio.css({margin: '9px 0 0 10px', width: '100px'});
   }
 }
 
@@ -174,15 +221,16 @@ function initPoint(data) {
   //data['background'] = "uploads/5c4a5551f2e5a9e38b81d2e37778d007.mp3";
   console.log("data", data)
   if (data['background']) {
-    $('#bg-audio').attr('src', data['background']) //设置背景音乐
-    if ($('#cb_bgAudio').val()) {
-      $('#bg-audio')[0].play();
+    GLOBAL.BGAUDIO.setAudio(data['background']);
+    if (GLOBAL.BGAUDIO.isOn()) {
+      GLOBAL.BGAUDIO.play();
     }
   } else {
-    $('#cb_bgAudio').parent().hide();
+    GLOBAL.BGAUDIO.hideBtn()
   }
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
+
 
 /**
  * 按比例缩放图标
@@ -281,7 +329,8 @@ function initSlide() {
       }
     }
   });
-  window.galleryTop.stopAutoplay();
+  window.silideBar.setValue(15);
+  //window.galleryTop.stopAutoplay();
 }
 
 /*************************************根据数据生成页面 START********************************/
@@ -505,14 +554,12 @@ function initAudio() {
 function playOrPaused(flag) {
   if (flag) {
     if (audio.paused)  audio.play();
-    bgAudio.pause();
+    GLOBAL.BGAUDIO.pause();
   } else {
     audio.pause();
 
     //关闭音频的时候,间隔自动播放的时间在启动
-    setTimeout(function () {
-      bgAudio.play();
-    }, 5000)
+    GLOBAL.BGAUDIO.setTimePlay()
   }
 }
 
@@ -556,8 +603,9 @@ function closeVideoOrAudio(flag) {
   $video.removeClass('m-video-size');
   video.pause();
   audio.pause();
-  if (flag)
-    bgAudio.pause();  // TODO:是否点击选项就关闭背景音乐
+  if (flag) {
+    GLOBAL.BGAUDIO.pause();
+  }
 }
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
@@ -585,11 +633,11 @@ function bindEvent() {
   /**
    * 背景音乐开关按钮
    */
-  $('#cb_bgAudio').off('change').on('change', function (e) {
-    if ($(e.target).attr('checked')) {
-      bgAudio.play();
+  $('#btn_bgAudio').off('click').on('click', function (e) {
+    if (!GLOBAL.BGAUDIO.isOn()) {
+      GLOBAL.BGAUDIO.play();
     } else {
-      bgAudio.pause();
+      GLOBAL.BGAUDIO.pause();
     }
   })
   /**
@@ -599,9 +647,7 @@ function bindEvent() {
     triggerBouncyNav(false);
     $('#video').hide();
     //关闭音频的时候,间隔自动播放的时间在启动
-    setTimeout(function () {
-      bgAudio.play();
-    }, 3000)
+    GLOBAL.BGAUDIO.setTimePlay()
   }
 
   /**

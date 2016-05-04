@@ -7,11 +7,16 @@
 window.Model = (function ($) {
   //接口地址
   var URL = {
-    //base: '/edu/course/api.php',
-    base: 'http://dev.catics.org/edu/course/api.php',
+    base: '/edu/course/api.php',
+    //base: 'http://dev.catics.org/edu/course/api.php',
     save: 'save_touch_page',
     get: 'get_touch_page_data'
   };
+
+  //如何是本地的测试环境
+  if (window.location.host === "localhost") {
+    URL.base = "http://dev.catics.org/edu/course/api.php";
+  }
 
   /**
    * 提交点读数据

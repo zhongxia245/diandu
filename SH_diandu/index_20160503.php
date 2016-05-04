@@ -3,7 +3,7 @@ session_start();
 include_once('../course_common.php');
 $teamid=$_REQUEST[teamid];//小组id
 $id=$_REQUEST[id];//点读页id team_video_id
-//$unitid=intval($_GET['unitid']);
+$unitid=intval($_GET['unitid']);
 if(get_team_role($teamid)<1)
 {
     exit("invalid");
@@ -156,7 +156,7 @@ $pic_arr=explode(",",$video['pic']);
     <div class="baseinfo-title">基本信息</div>
     <div class="form-group">
       <label for="name">点图页名称</label>
-      <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $video['name'];?>">
+      <input type="email" class="form-control" id="name" placeholder="" value="<?php echo $video['name'];?>">
     </div>
     <div class="form-group">
       <label for="intro">简介(选填)</label>
@@ -167,7 +167,7 @@ $pic_arr=explode(",",$video['pic']);
       <label>
         缩略图
         <span>(缩略图像素要求为205x205,1号图为封面图,
-            <span style="color:red;">出现在点读页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
+            <span style="color:red;">出现在考试页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
         </span>
       </label>
 
@@ -240,7 +240,7 @@ $pic_arr=explode(",",$video['pic']);
         <div style="margin: 25px 0;">
           <div class="setting-title">自动播放时的音乐设置(可选)</div>
           <div class="setting-btn-autovideo" id="btnAutoAudio">
-            <span>点击上传自动播放时的背景音乐(MP3格式)</span>
+            点击上传自动播放时的背景音乐(MP3格式)
             <input type="file" id="file_btnAutoAudio" class="filehide"/>
             <input type="hidden" id="file_btnAutoAudio_path"/>
           </div>
@@ -353,6 +353,7 @@ $pic_arr=explode(",",$video['pic']);
 <script type="text/javascript" src="/edu/course/js/common_tool.js"></script>
 <!--custom-->
 <script src="js/model/model.js"></script>
+<script src="js/util/log.js"></script>
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
@@ -360,11 +361,20 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/components/ImgText.js"></script>
 
 <script>
-  var id=<?php echo intval($id);?>;//team_video id
-  var teamid =  <?php echo intval($team_video['teamid']);?>;
-  var unitid =  <?php echo intval($team_video['unitid']);?>;
-  var videoid=<?php echo intval($team_video['videoid']);?>;
-  var userid=<?php echo intval($_SESSION['G']['userid']);?>;
+  var teamid =
+  <
+  ? php echo
+  $teamid;
+  ?
+  >
+  ;
+  var unitid =
+  <
+  ? php echo
+  $unitid;
+  ?
+  >
+  ;
   var cover_list = [];
   $("#ulImgs").sortable({
     stop: function (event, ui) {
@@ -380,27 +390,27 @@ $pic_arr=explode(",",$video['pic']);
   $("#ulImgs li").each(function () {
 
     var index = $(this).index();
-    cover_list[index] = new Resumable({
+    cover_list[index_20160503] = new Resumable({
       target: '/edu/course/form_submit_cl.php',
       testChunks: false,
       maxFiles: 1,
       query: {action: 'file_upload'}
     });
-    cover_list[index].assignBrowse($(this)[0]);
-    cover_list[index].on('fileAdded', function (file, event) {
-      var ftype = cover_list[index].files[0].file['type'];
+    cover_list[index_20160503].assignBrowse($(this)[0]);
+    cover_list[index_20160503].on('fileAdded', function (file, event) {
+      var ftype = cover_list[index_20160503].files[0].file['type'];
       if (ftype.indexOf('image') != -1) {
         $(".upload_mask").show();
-        cover_list[index].upload();
+        cover_list[index_20160503].upload();
       }
       else
         alert('请上传图片文件！');
 
 
     });
-    cover_list[index].on('complete', function () {
+    cover_list[index_20160503].on('complete', function () {
       var jdata = eval('(' + message_g + ')');
-      window.index = index;
+      window.index = index_20160503;
       if (jdata["cur_pic"].indexOf("bmp") != -1) {
         upload_cover_callback(jdata["cur_pic"]);
       }
