@@ -1,0 +1,138 @@
+textarea, input {
+  padding: 0;
+  margin: 0;
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #D9D9D9;
+}
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+  color: #D9D9D9;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #D9D9D9;
+}
+
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  color: #D9D9D9;
+}
+
+.upload-imgtext {
+  width: 400px;
+  border: 1px solid #BFBFBF;
+  border-radius: 5px;
+  position: fixed;
+  z-index: 1000;
+  top: 75px;
+  left: 50%;
+  margin-left: -200px;
+  float: left;
+  padding-bottom: 5px;
+  background: #E9E9E9;
+}
+
+.upload-imgtext textarea {
+  padding: 0;
+  width: 99%;
+  height: 300px;
+  border-radius: 5px;
+  font-size: 20px;
+  /*overflow-y: visible;*/
+}
+
+.upload-imgtext-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.6;
+  z-index: 100;
+}
+
+.upload-imgtext-top input {
+  width: 100%;
+  height: 50px;
+  font-size: 30px;
+  text-align: center;
+  border: 0;
+  color: #FFF;
+  background: #009999;
+}
+
+.upload-imgtext-close {
+  position: absolute;
+  right: 5px;
+  color: #FF7C80;
+  font-size: 30px;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+.upload-imgtext-content {
+  margin: 10px;
+  /*height: 300px;*/
+  /*overflow-y: auto;*/
+}
+
+.upload-imgtext-img img {
+  width: 100%;
+}
+
+.upload-imgtext-bottom {
+  margin-top: 5px;
+  height: 40px;
+}
+
+.upload-imgtext-bottom img {
+  float: left;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.upload-imgtext-upload {
+  width: 48px;
+  height: 48px;
+  background-image: url(../imgs/imgtext.png);
+  float: left;
+  cursor: pointer;
+}
+
+.upload-imgtext-upload:hover {
+  background-image: url(../imgs/imgtext_on.png);
+}
+
+.upload-imgtext-info {
+  font-size: 30px;
+  height: 48px;
+  line-height: 48px;
+  float: left;
+  color: #000;
+}
+
+.upload-imgtext-btn {
+  width: 150px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  font-size: 25px;
+  float: right;
+  margin: 0;
+  background: #FF7C80;
+  color: #FFF;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.upload-imgtext-top .upload-input {
+  top: -9999px;
+  left: -9999px;
+  position: relative;
+}
+

@@ -386,10 +386,10 @@ function initPage(id, data) {
         $('#' + param.subid).css('background-size', bgSize);
         initScale_Scale('#' + param.subid, scale);
 
+        //window.__count__ = window.__count__ || 1;
+        //window.__count__++;
         //所有点读位置生成结束
-        if (param.i === pages.length - 1) {
-          bindEvent();
-        }
+        bindEvent();
       })
 
       html += initDianDuPage(pages[i], subid);
@@ -611,7 +611,7 @@ function closeVideoOrAudio(flag) {
 /*=======================点击事件相关 START====================*/
 function bindEvent() {
   // 启动开关
-  $('.m-dd-start').off(click).on(click, function (e) {
+  $('.m-dd-start').off().on(click, function (e) {
     e.preventDefault();
     e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
 
@@ -633,7 +633,7 @@ function bindEvent() {
   /**
    * 背景音乐开关按钮
    */
-  $('#btn_bgAudio').off('click').on('click', function (e) {
+  $('#btn_bgAudio').off().on(click, function (e) {
     if (!GLOBAL.BGAUDIO.isOn()) {
       GLOBAL.BGAUDIO.play();
     } else {
@@ -653,21 +653,21 @@ function bindEvent() {
   /**
    * 视频遮罩层关闭菜单
    */
-  $('.cd-bouncy-nav-modal .cd-close').off(click).on(click, function () {
+  $('.cd-bouncy-nav-modal .cd-close').off().on(click, function () {
     closeVideo();
   });
 
   /**
    * 点击空白处,关闭视频播放窗口
    */
-  $('.cd-bouncy-nav-modal').off(click).on(click, function (event) {
+  $('.cd-bouncy-nav-modal').off().on(click, function (event) {
     if ($(event.target).hasClass('cd-bouncy-nav-modal')) {
       closeVideo();
     }
   });
 
   // 视频
-  $('.m-video').off(click).on(click, function (e) {
+  $('.m-video').off().on(click, function (e) {
     closeVideoOrAudio();
     var $cTar = $(e.currentTarget);
     var $tar = $(e.target);
@@ -694,7 +694,7 @@ function bindEvent() {
 
 
   // 音频
-  $('.m-audio').off(click).on(click, function (e) {
+  $('.m-audio').off().on(click, function (e) {
     var $tar = $(e.target);
     var $cTar = $(e.currentTarget);
     closeVideoOrAudio();
@@ -728,7 +728,7 @@ function bindEvent() {
   })
 
   // 图文
-  $('.m-imgtext').off(click).on(click, function (e) {
+  $('.m-imgtext').off().on(click, function (e) {
     closeVideoOrAudio(false);
     var $tar = $(e.target);
     var $secImgText = $('.sec-imgtext');
@@ -754,7 +754,7 @@ function bindEvent() {
   })
 
 
-  $('.sec-imgtext').off(click).on(click, function (e) {
+  $('.sec-imgtext').off().on(click, function (e) {
     var $tar = $(e.target);
     if ($tar.attr('class') === "sec-imgtext") {
       $tar.css({position: 'relative'});
@@ -764,13 +764,13 @@ function bindEvent() {
 
 
   //关闭时间进度条
-  $('#btn-close').off(click).on(click, function (ev) {
+  $('#btn-close').off().on(click, function (ev) {
     $(".gallery-main").hide();
     return false;
   });
 
   //点击背景图,停止自动播放
-  $('#pages').off(click).on(click, function (ev) {
+  $('#pages').off().on(click, function (ev) {
     window.galleryTop.stopAutoplay();
     //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
     return false;
@@ -779,7 +779,7 @@ function bindEvent() {
   /**
    * 点击缩略图,跳转到该位置
    */
-  $('#thumbs .swiper-slide').off(click).on(click, function (e) {
+  $('#thumbs .swiper-slide').off().on(click, function (e) {
     var $tar = $(e.currentTarget)
     $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
     $tar.addClass('swiper-slide-active-custom');

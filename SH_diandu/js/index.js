@@ -98,8 +98,8 @@ var _upload = (function () {
  ***************************************/
 var _data = (function () {
   /**
-   * 根据id，设置数据仓库的值
-   * @param  {[type]} id [description]
+   * 根据id，设置数据仓库点读位置数据
+   * @param  {[type]} id 点读的id ,类似  1_1
    * @return {[type]}    [description]
    */
   function setDDItems(id, config) {
@@ -112,7 +112,20 @@ var _data = (function () {
         break;
       }
     }
+  }
 
+  /**
+   * 根据id 获取 点读位置的数据
+   * @param id  点读位置标识  类似 1_1
+   */
+  function getDDItems(id) {
+    var index = parseInt(id.split('_')[0]);
+    var arr = window.DD.items[index - 1]['data'];
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].id == id) {
+        return arr[i];
+      }
+    }
   }
 
   /**
@@ -177,6 +190,7 @@ var _data = (function () {
   }
 
   return {
+    getDDItems: getDDItems,
     setDDItems: setDDItems,
     getValidItems: getValidItems,
     getTypeByName: getTypeByName
@@ -350,7 +364,7 @@ var _edit = (function () {
         className = ".imgtext";
         point['type'] = 'imgtext';
         $rightName.addClass('uploaded-imgtext').find('span').eq(0).text('图文已上传(点击编辑)');
-        $filemask.show().off('click', fn2_uploadImgText).on('click', fn2_uploadImgText);
+        $filemask.show().off().on('click', fn2_uploadImgText);
         break;
     }
     $target = $currentTarget.find(className).eq(0);
@@ -543,8 +557,7 @@ function addDianDu(pageIndex, dianduItemid, index) {
   var tpls = Handlebars.compile($("#tpl_uploadSetting").html());
   $(settingId).append(tpls(data));
   // 点读设置项
-  //$(settingId + ' .upload-item').off('click', handleUploadItem).on('click', handleUploadItem);
-  $('.upload-item').off('click', handleUploadItem).on('click', handleUploadItem);
+  $('.upload-item').off().on('click', handleUploadItem);
 }
 
 
@@ -638,22 +651,18 @@ function addDianduPageByUpload(index, fileName, resultPath) {
  * @return {[type]} [description]
  */
 function bindDianDuPageEvent() {
-  $('.setting-bigimg-img')
-    .off('click', addDianDuLocation)
+  $('.setting-bigimg-img').off()
     .on('click', addDianDuLocation);
 
   // 点读页上下移动操作
-  $('.setting-bigimg-header ul')
-    .off('click', dianduPageOperator)
+  $('.setting-bigimg-header ul').off()
     .on('click', dianduPageOperator)
 
-  $('.upload-item')
-    .off('click', handleUploadItem)
+  $('.upload-item').off()
     .on('click', handleUploadItem);
 
 
-  $('.div-file-mask')
-    .off('click', fn2_uploadImgText)
+  $('.div-file-mask').off()
     .on('click', fn2_uploadImgText);
 }
 
@@ -858,8 +867,11 @@ function fileTypeItemClick(e) {
 
   var fileTypeDesc, fileTypeExts;
 
+  //用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
   $filemask.hide();
-  // 目前只做视频和音频,图文
+
+  console.log("data.fileType", data.fileType)
+  // 目前只做视频和音频,图文,试卷
   switch (data.fileType) {
     case 'video':
       fileTypeExts = '*.mp4';
@@ -872,8 +884,12 @@ function fileTypeItemClick(e) {
     case 'imgtext':
       fileTypeExts = '*.gif;*.jpg;*.png';
       fileTypeDesc = "Image 文件";
-
-      $filemask.show().off('click', fn2_uploadImgText).on('click', fn2_uploadImgText);
+      $filemask.show().off().on('click', fn2_uploadImgText);
+      break;
+    case 'exam':
+      fileTypeExts = '*.gif;*.jpg;*.png';
+      fileTypeDesc = "Image 文件";
+      $filemask.show().off().on('click', fn2_examCreate);
       break;
     default:
       fileTypeExts = '*.gif;*.jpg;*.png';
@@ -885,13 +901,14 @@ function fileTypeItemClick(e) {
   _data.setDDItems(_dataid, {type: data.fileType});
 
   $('#__file' + id + '-queue').remove();
+
   //设置上传文件用 uploadify插件,并且透明化按钮
   _upload.setUploadify($('#__file' + id), {
     width: '100%',
     height: '100%',
     fileTypeExts: fileTypeExts,
     fileTypeDesc: fileTypeDesc,
-    onUploadSuccess: function (file, resultPath, response) {
+    onUploadSuccess: function (file, resultPath) {
       if (resultPath.indexOf('error') === -1) {
         var $rightName = $('#__file' + id).parent().parent();
         var fileSrc = resultPath;
@@ -904,6 +921,7 @@ function fileTypeItemClick(e) {
       }
     }
   });
+
   $('#__file' + id + ' object').css('left', 0);
 }
 
@@ -912,41 +930,29 @@ function fileTypeItemClick(e) {
  * @return {[type]} [description]
  */
 function fn2_uploadImgText(e) {
-  //计算出当前数据的ID,然后去window.DD.items 里面获取数据 [针对点读页上下移动,重新绑定事件获取数据的方式]
-  var id, _isEdit = false;
-  if ($(e.target).parent().find('.uploadify').attr('id')) {
-    id = $(e.target).parent().find('.uploadify').attr('id');
-  } else {
-    id = $(e.target).parent().find('input').attr('id');  //编辑由于没有初始化uploadify,所有获取id的方式使用这种
-    _isEdit = true;
-  }
-  id = id.replace('__file__diandu', '');
-  var pageId = parseInt(id.split('_')[0]) - 1;
-  var dianduId = parseInt(id.split('_')[1]) - 1;
+  //获取 id
+  var ids = CommonUtil.getIds(e);
+  var _isEdit = ids.isEdit;
+  var pageId = ids.pageId;
+  var dianduId = ids.dianduId;
 
   // 常规操作,获取数据的方式,由点击创建时传过来的
   window.imgText = window.imgText || null;
   var data = window.DD.items[pageId].data[dianduId];
-  //var $tar = $(data.e['target']);
+
   if (!window.imgText) {
-    /**
-     * TODO:这里如果不在ImgText中做传递data数据，则会访问旧的第一次绑定事件的data数据，闭包
-     * 如果在 ImgText 参数中的两个 function 用 data，会有问题，使用的data 是 ImgText第二个参数 data
-     * 这里 回调的result  其实 就是 传进去的 data
-     */
-    window.imgText = new ImgText('body', data, function (result, file, sResult) {
-      //$(result.e['target']).data('url', result.url);
-    }, function (result) {
-      //var _$tar = $(result.e['target']);
-      //_$tar.data('title', result.title);
-      //.data('content', result.content);
-      _data.setDDItems(result.id, result);
-      //这个不能写外面，否则会被缓存起来
-      var ids = result.id.split('_');
-      var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
-      $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
-      $uploadRight.find('.upload-right-name span').text('图文已上传(点击编辑)');
-    }).init();
+    window.imgText = new ImgText('body', data,
+      function (result, file, sResult) {
+        //图文 上传图片之后的回调
+      }, function (result) {
+        _data.setDDItems(result.id, result);
+        //这个不能写外面，否则会被缓存起来
+        var ids = result.id.split('_');
+        var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
+        $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
+        $uploadRight.find('.upload-right-name span').text('图文已上传(点击编辑)');
+      }).init();
+
     //如果是编辑页面,则第一次就需要赋值初始值
     if (_isEdit) {
       window.imgText.data = data;
@@ -954,6 +960,7 @@ function fn2_uploadImgText(e) {
       window.imgText.set(data);
       window.imgText.show();
     }
+
   } else {
     //更新 图文上传组件 上的data，保证所有点读页共用一个 图文上传页面，参数参数是正确的
     window.imgText.data = data;
@@ -962,6 +969,61 @@ function fn2_uploadImgText(e) {
     window.imgText.show();
   }
 }
+
+/**
+ * 上传试卷[20150507]
+ */
+function fn2_examCreate(e) {
+  var ids = CommonUtil.getIds(e);
+  // 试卷数据
+  var examData = _data.getDDItems(ids.id) || {};
+  new ExamCreate('#_examCreate', examData, function (submitData) {
+    layer.close(_layer);
+    _data.setDDItems(ids.id, submitData);
+  })
+  var _layer = layer.open({
+    type: 1,
+    title: '上传试卷',
+    shadeClose: false,
+    content: $('#_examCreate')
+  });
+}
+
+
+/**
+ * [创建于 开发试卷时]公用的一些方法
+ * @type {{getIds}}
+ */
+var CommonUtil = (function () {
+  /**
+   * 点击上传项类型,获取id  [图文,试卷目前在用]
+   * @param e
+   * @returns {{id: (XML|string|void|*), pageId: number, dianduId: number, isEdit: boolean}}
+   */
+  function getIds(e) {
+    //计算出当前数据的ID,然后去window.DD.items 里面获取数据 [针对点读页上下移动,重新绑定事件获取数据的方式]
+    var id, _isEdit = false;
+    if ($(e.target).parent().find('.uploadify').attr('id')) {
+      id = $(e.target).parent().find('.uploadify').attr('id');
+    } else {
+      id = $(e.target).parent().find('input').attr('id');  //编辑由于没有初始化uploadify,所有获取id的方式使用这种
+      _isEdit = true;
+    }
+    id = id.replace('__file__diandu', '');
+    var pageId = parseInt(id.split('_')[0]) - 1;
+    var dianduId = parseInt(id.split('_')[1]) - 1;
+    return {
+      id: id,
+      pageId: pageId,
+      dianduId: dianduId,
+      isEdit: _isEdit
+    }
+  }
+
+  return {
+    getIds: getIds
+  }
+})();
 
 /**
  * 隐藏点读位置

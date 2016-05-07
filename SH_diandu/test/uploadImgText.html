@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>上传图文</title>
-    <link rel="stylesheet" type="text/css" href="../css/lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" type="text/css" href="../css/imgtext.css">
+  <meta charset="UTF-8">
+  <title>上传图文</title>
+  <link rel="stylesheet" type="text/css" href="../css/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" type="text/css" href="../css/imgtext.css">
 </head>
 
 <body>
@@ -16,51 +16,50 @@
 <script src="../js/lib/handlebars.min.js"></script>
 <script type="text/javascript" src="../js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../js/lib/uploadify/uploadify.css"/>
-
 <script src="../js/components/ImgText.js"></script>
 <script type="text/javascript">
-    var __upload = (function () {
-        /**
-         * 设置input file 标签，使用 uploadify 插件
-         * @param {[type]}  $file   [file文件标签的Jquery对象]
-         * @param {Boolean} isSetWH [是否设置寛高，上传MP4，MP3等]
-         * @param {[type]}  success [成功回调函数]
-         * @param {[type]}  error   [失败回调函数]
-         */
-        function setUploadify($file, config) {
-            var defaultConfig = {
-                width: 100,
-                height: 30,
-                auto: true, //关闭自动上传
-                removeTimeout: 1, //文件队列上传完成1秒后删除
-                swf: '../js/lib/uploadify/uploadify.swf',
-                uploader: '../php/uploadify.php',
-                method: 'post', //方法，服务端可以用$_POST数组获取数据
-                buttonText: '', //设置按钮文本
-                multi: true, //允许同时上传多张图片
-                uploadLimit: 100, //一次最多只允许上传100张图片
-                fileTypeDesc: 'Image Files',
-                fileTypeExts: '*.gif;*.jpg;*.png',
-                onError: function (event, queueId, fileObj, errObj) {
-                    console.log('upload error', event)
-                }
-            };
-            // 合并参数
-            config = $.extend({}, defaultConfig, config);
-            $file.uploadify(config);
+  var __upload = (function () {
+    /**
+     * 设置input file 标签，使用 uploadify 插件
+     * @param {[type]}  $file   [file文件标签的Jquery对象]
+     * @param {Boolean} isSetWH [是否设置寛高，上传MP4，MP3等]
+     * @param {[type]}  success [成功回调函数]
+     * @param {[type]}  error   [失败回调函数]
+     */
+    function setUploadify($file, config) {
+      var defaultConfig = {
+        width: 100,
+        height: 30,
+        auto: true, //关闭自动上传
+        removeTimeout: 1, //文件队列上传完成1秒后删除
+        swf: '../js/lib/uploadify/uploadify.swf',
+        uploader: '../php/uploadify.php',
+        method: 'post', //方法，服务端可以用$_POST数组获取数据
+        buttonText: '', //设置按钮文本
+        multi: true, //允许同时上传多张图片
+        uploadLimit: 100, //一次最多只允许上传100张图片
+        fileTypeDesc: 'Image Files',
+        fileTypeExts: '*.gif;*.jpg;*.png',
+        onError: function (event, queueId, fileObj, errObj) {
+          console.log('upload error', event)
         }
+      };
+      // 合并参数
+      config = $.extend({}, defaultConfig, config);
+      $file.uploadify(config);
+    }
 
-        return {
-            setUploadify: setUploadify
-        }
-    })();
+    return {
+      setUploadify: setUploadify
+    }
+  })();
 
-    var imgText = new ImgText('body', {id: 'imgText-1'}, function (file, data) {
-        debugger;
-    }, function (data) {
-        console.log(data);
-        debugger;
-    }).init();
+  var imgText = new ImgText('body', {id: 'imgText-1'}, function (file, data) {
+    debugger;
+  }, function (data) {
+    console.log(data);
+    debugger;
+  }).init();
 </script>
 </body>
 

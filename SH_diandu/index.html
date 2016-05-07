@@ -8,7 +8,8 @@
   <title>点读</title>
   <link rel="stylesheet" type="text/css" href="css/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="css/imgtext.css">
+  <link rel="stylesheet" href="js/components/imgtext/imgtext.css">
+  <link rel="stylesheet" href="js/components/exam/ExamCreate.css">
 </head>
 
 <body>
@@ -119,6 +120,7 @@
   </section>
   <!-- setting end -->
 </div>
+<div id="_examCreate"></div>
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -212,6 +214,7 @@
 <!--lib-->
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/handlebars.min.js"></script>
+<script src="js/lib/layer/layer.js"></script>
 <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
 <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css"/>
@@ -221,7 +224,9 @@
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
 <script src="js/index.js"></script>
-<script src="js/components/ImgText.js"></script>
+<!--组件-->
+<script src="js/components/imgtext/ImgText.js"></script>
+<script src="js/components/exam/ExamCreate.js"></script>
 </body>
 
 </html>

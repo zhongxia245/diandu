@@ -1,0 +1,195 @@
+.exam-create-container {
+  width: 340px;
+  height: 500px;
+  background: #f9f9f9;
+  padding: 5px 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.exam-create-container input {
+  outline: none;
+}
+
+.exam-create-righttop {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  height: 45px;
+  width: 45px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-create-righttop-open {
+  height: 150px;
+}
+
+.exam-create-righttop > img {
+  cursor: pointer;
+}
+
+/*==================TOP START========================*/
+.exam-create-top {
+  height: 40px;
+  min-height: 40px;
+  line-height: 40px;
+  border-bottom: 4px #FECB9B solid;
+  display: flex;
+  flex-direction: row;
+}
+
+.exam-create-pre, .exam-create-next {
+  margin: 8px 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.exam-create-pre {
+  background-image: url(../../../imgs/exam/exam_pre.png);
+}
+
+.exam-create-next {
+  background-image: url(../../../imgs/exam/exam_next.png);
+}
+
+.exam-create-pre:hover {
+  background-image: url(../../../imgs/exam/exam_pre_on.png);
+}
+
+.exam-create-next:hover {
+  background-image: url(../../../imgs/exam/exam_next_on.png);
+}
+
+.exam-create-sortid {
+  height: 40px;
+  line-height: 40px;
+  font-size: 24px;
+  margin: 0 20px;
+}
+
+.exam-create-add, .exam-create-del {
+  width: 32px;
+  height: 32px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.exam-create-add {
+  margin-left: 10px;
+  background-image: url(../../../imgs/exam/exam_add.png);
+}
+
+.exam-create-add:hover {
+  background-image: url(../../../imgs/exam/exam_add_on.png);
+}
+
+.exam-create-del {
+  background-image: url(../../../imgs/exam/exam_del.png);
+}
+
+.exam-create-del:hover {
+  background-image: url(../../../imgs/exam/exam_del_on.png);
+}
+
+/*==================MAIN START========================*/
+.exam-create-main {
+  flex: 1;
+}
+
+.exam-create-main-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-create-question {
+  margin-top: 35px;
+  margin-left: 10px;
+  height: 60px;
+  text-align: center;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.exam-create-answer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-create-answer-item {
+  height: 50px;
+  margin-top: 10px;
+  display: flex;
+}
+
+.exam-create-answer-item-radio, .exam-create-answer-item-bool {
+  margin-top: 2px;
+  margin-left: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 3px #D4D4D4 solid;
+  cursor: pointer;
+}
+
+.exam-create-answer-item-checkbox {
+  margin-top: 7px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  border: 3px #D4D4D4 solid;
+  cursor: pointer;
+}
+
+.exam-create-active {
+  background: #00CC99;
+  border-color: #00CC99;;
+}
+
+.exam-create-answer-item-content {
+  flex: 1;
+}
+
+.exam-create-answer-item-content > input {
+  margin-left: 10px;
+  height: 45px;
+  width: 250px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/*==================BOTTOM START========================*/
+.exam-create-bottom {
+  height: 100px;
+}
+
+.exam-create-addItem, .exam-create-submit {
+  height: 37px;
+  float: right;
+  cursor: pointer;
+}
+
+.exam-create-addItem {
+  width: 250px;
+  margin: 10px 0;
+  background-image: url(../../../imgs/exam/exam_addItem.png);
+}
+
+.exam-create-addItem:hover {
+  background-image: url(../../../imgs/exam/exam_addItem_on.png);
+}
+
+.exam-create-submit {
+  width: 290px;
+  background-image: url(../../../imgs/exam/exam_submit.png);
+}
+
+.exam-create-submit:hover {
+  background-image: url(../../../imgs/exam/exam_submit_on.png);
+}

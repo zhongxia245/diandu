@@ -3,7 +3,7 @@ session_start();
 include_once('../course_common.php');
 $teamid=$_REQUEST[teamid];//小组id
 $id=$_REQUEST[id];//点读页id team_video_id
-$unitid=intval($_GET['unitid']);
+//$unitid=intval($_GET['unitid']);
 if(get_team_role($teamid)<1)
 {
     exit("invalid");
@@ -20,6 +20,7 @@ $video=$_COURSE->GetInfo("video",$team_video['videoid']);
 
 $pic_arr=explode(",",$video['pic']);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -32,8 +33,7 @@ $pic_arr=explode(",",$video['pic']);
   <title>创建点读页</title>
   <link rel="stylesheet" type="text/css" href="css/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="js/components/imgtext/imgtext.css">
-  <link rel="stylesheet" href="js/components/exam/ExamCreate.css">
+  <link rel="stylesheet" href="css/imgtext.css">
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
   <!---add by brian 20160426-->
@@ -252,7 +252,6 @@ $pic_arr=explode(",",$video['pic']);
   </section>
   <!-- setting end -->
 </div>
-<div id="_examCreate"></div>
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -343,9 +342,9 @@ $pic_arr=explode(",",$video['pic']);
 </script>
 <!--背景图模板 END -->
 <!--lib-->
+<!--lib-->
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/handlebars.min.js"></script>
-<script src="js/lib/layer/layer.js"></script>
 <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
 <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css"/>
@@ -358,16 +357,14 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
 <script src="js/index.js"></script>
-<!--组件-->
-<script src="js/components/imgtext/ImgText.js"></script>
-<script src="js/components/exam/ExamCreate.js"></script>
+<script src="js/components/ImgText.js"></script>
 
 <script>
-    var id=<?php echo intval($id);?>;//team_video id
-    var teamid =  <?php echo empty($teamid)?intval($team_video['teamid']):$teamid;?>;
-    var unitid =  <?php echo empty($unitid)?intval($team_video['unitid']):$unitid;?>;
-    var videoid=<?php echo intval($team_video['videoid']);?>;
-    var userid=<?php echo intval($_SESSION['G']['userid']);?>;
+  var id=<?php echo intval($id);?>;//team_video id
+  var teamid =  <?php echo intval($team_video['teamid']);?>;
+  var unitid =  <?php echo intval($team_video['unitid']);?>;
+  var videoid=<?php echo intval($team_video['videoid']);?>;
+  var userid=<?php echo intval($_SESSION['G']['userid']);?>;
   var cover_list = [];
   $("#ulImgs").sortable({
     stop: function (event, ui) {
@@ -383,27 +380,27 @@ $pic_arr=explode(",",$video['pic']);
   $("#ulImgs li").each(function () {
 
     var index = $(this).index();
-    cover_list[index] = new Resumable({
+    cover_list[index_20160505] = new Resumable({
       target: '/edu/course/form_submit_cl.php',
       testChunks: false,
       maxFiles: 1,
       query: {action: 'file_upload'}
     });
-    cover_list[index].assignBrowse($(this)[0]);
-    cover_list[index].on('fileAdded', function (file, event) {
-      var ftype = cover_list[index].files[0].file['type'];
+    cover_list[index_20160505].assignBrowse($(this)[0]);
+    cover_list[index_20160505].on('fileAdded', function (file, event) {
+      var ftype = cover_list[index_20160505].files[0].file['type'];
       if (ftype.indexOf('image') != -1) {
         $(".upload_mask").show();
-        cover_list[index].upload();
+        cover_list[index_20160505].upload();
       }
       else
         alert('请上传图片文件！');
 
 
     });
-    cover_list[index].on('complete', function () {
+    cover_list[index_20160505].on('complete', function () {
       var jdata = eval('(' + message_g + ')');
-      window.index = index;
+      window.index = index_20160505;
       if (jdata["cur_pic"].indexOf("bmp") != -1) {
         upload_cover_callback(jdata["cur_pic"]);
       }
