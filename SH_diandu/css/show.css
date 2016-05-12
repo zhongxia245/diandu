@@ -62,7 +62,7 @@ ul, li {
 }
 
 /*新增一个点读位类型，要在这里添加样式*/
-.m-video, .m-audio, .m-imgtext {
+.m-video, .m-audio, .m-imgtext, .m-exam {
   height: 72px;
   width: 72px;
   position: absolute;
@@ -91,6 +91,11 @@ ul, li {
 
 .m-imgtext {
   background-image: url('../imgs/m_imgtext.png');
+  background-size: 100%;
+}
+
+.m-exam {
+  background-image: url('../imgs/m_exam.png');
   background-size: 100%;
 }
 

@@ -1,0 +1,136 @@
+/*公用使用, 各个类型的颜色*/
+.exam-question-list-do {
+  background: #FE6600;
+}
+
+.exam-question-list-undo {
+  background: #D8D8D8;
+}
+
+.exam-question-list-right {
+  background: #00CC99;
+}
+
+.exam-question-list-error {
+  background: #FE7C80;
+}
+
+/*============================================================*/
+
+/*容器样式 START*/
+.exam-question-list {
+  width: 620px;
+  height: 930px;
+  -ms-zoom: 1;
+  zoom: 1;
+  display: flex;
+  flex-direction: column;
+  background: #FAFAFA;
+  border: 2px solid #F1F1F1;
+  border-radius: 5px;
+  position: relative;
+}
+
+/*顶部 返回按钮,关闭按钮  START*/
+.exam-question-list-top {
+  height: 80px;
+  border-bottom: 10px solid #FECB98;
+  position: relative;
+}
+
+.exam-question-list-return {
+  width: 155px;
+  height: 70px;
+  line-height: 70px;
+  background: #00CC99;
+  margin: auto auto;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  font-size: 40px;
+  text-align: center;
+  color: #FFF;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.exam-question-list-close {
+  color: red;
+  font-weight: bold;
+  font-size: 70px;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 题目列表  START*/
+.exam-question-list-main {
+  padding: 0 34px;
+}
+
+.exam-question-list-item {
+  width: 90px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 17px;
+  margin-top: 17px;
+  font-size: 50px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 答案正确,错误,未做,已做的比例, 显示答案,隐藏答案  START*/
+.exam-question-list-bottom {
+  position: absolute;
+  bottom: 0;
+  padding: 0 34px;
+}
+
+.exam-question-percent {
+  display: flex;
+  width: 290px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  border: 2px solid #A5A5A5;
+  border-radius: 15px;
+  color: #000;
+  font-size: 30px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.exam-question-percent-left {
+  flex: 16.5;
+}
+
+.exam-question-percent-right {
+  flex: 12.5;
+}
+
+.exam-question-list-showAnswer, .exam-question-list-hideAnswer {
+  width: 540px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  color: #7E7E7E;
+  margin: auto auto;
+  border: 5px solid #808080;
+  border-radius: 10px;
+  font-size: 50px;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.exam-question-list-hideAnswer {
+  color: #FFF;
+  background: #7F7F7F;
+}

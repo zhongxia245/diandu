@@ -1,5 +1,5 @@
 /*=============================定义变量 START===========================*/
-var click = IsPC() ? 'click' : 'tap';
+var click = Util.IsPC() ? 'click' : 'tap';
 var bgAudio, audio, video;
 var GLOBAL = {
   PREBGID: '_diandu',  //每一个背景页的前缀
@@ -276,8 +276,17 @@ function setScale(selector, size) {
  * @return {[type]} [description]
  */
 function initSwipe() {
+  if (Util.IsPC()) {
+    $('.swiper-button-next').show();
+    $('.swiper-button-prev').show();
+  } else {
+    $('.swiper-button-next').hide();
+    $('.swiper-button-prev').hide();
+  }
   window.galleryTop = new Swiper('.gallery-top', {
     autoplayStopOnLast: true,
+    nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
     onSlideChangeEnd: function (swiper) {
       //closeVideoOrAudio();
       $('#id_pagination_cur').text(swiper.activeIndex + 1);
@@ -511,19 +520,26 @@ function initCircle_Scale(data, w, h, scale) {
     var content = data[i]['content'];
     var className = '';
     var mediaImg = "";
-
     switch (type) {
+      case 1:
       case "1": //视频
         className = 'm-video';
         mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
         break;
+      case 2:
       case "2": //音频
         className = 'm-audio';
         mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
         break;
+      case 3:
       case "3": //图文
         className = 'm-imgtext';
         mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
+        break;
+      case 4:
+      case "4"://考试
+        className = 'm-exam';
+        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_exam.png" alt="imgtext" />';
         break;
       default:
         className = 'm-video';
@@ -779,15 +795,25 @@ function bindEvent() {
   /**
    * 点击缩略图,跳转到该位置
    */
-  $('#thumbs .swiper-slide').off().on(click, function (e) {
-    var $tar = $(e.currentTarget)
-    $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
-    $tar.addClass('swiper-slide-active-custom');
-    window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
-    _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
-  })
+  if (Util.IsPC()) {
+    $('#thumbs .swiper-slide').off().on(click, function (e) {
+      var $tar = $(e.currentTarget)
+      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+      $tar.addClass('swiper-slide-active-custom');
+      window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
+      _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
+    })
+  } else {
+    Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
+      var $tar = $(e.currentTarget)
+      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+      $tar.addClass('swiper-slide-active-custom');
+      window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
+      _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
+    })
+  }
 
-  if (IsPC()) {
+  if (Util.IsPC()) {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
         console.log("swipeUp", $(ev.target).attr('class'))
@@ -965,23 +991,6 @@ function setHoverImgSrcx($target) {
     $target.css('backgroundImage', hoverImgSrc);
   }
 }
-
-/**
- * 判断是否是ＰＣ端
- */
-function IsPC() {
-  var userAgentInfo = navigator.userAgent;
-  var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
-  var flag = true;
-  for (var v = 0; v < Agents.length; v++) {
-    if (userAgentInfo.indexOf(Agents[v]) > 0) {
-      flag = false;
-      break;
-    }
-  }
-  return flag;
-}
-
 
 /**
  * 从 样式  10px  变成 数字 10

@@ -50,19 +50,19 @@
 }
 
 .exam-create-pre {
-  background-image: url(../../../imgs/exam/exam_pre.png);
+  background-image: url(../../../imgs/exam_create/exam_pre.png);
 }
 
 .exam-create-next {
-  background-image: url(../../../imgs/exam/exam_next.png);
+  background-image: url(../../../imgs/exam_create/exam_next.png);
 }
 
 .exam-create-pre:hover {
-  background-image: url(../../../imgs/exam/exam_pre_on.png);
+  background-image: url(../../../imgs/exam_create/exam_pre_on.png);
 }
 
 .exam-create-next:hover {
-  background-image: url(../../../imgs/exam/exam_next_on.png);
+  background-image: url(../../../imgs/exam_create/exam_next_on.png);
 }
 
 .exam-create-sortid {
@@ -81,19 +81,19 @@
 
 .exam-create-add {
   margin-left: 10px;
-  background-image: url(../../../imgs/exam/exam_add.png);
+  background-image: url(../../../imgs/exam_create/exam_add.png);
 }
 
 .exam-create-add:hover {
-  background-image: url(../../../imgs/exam/exam_add_on.png);
+  background-image: url(../../../imgs/exam_create/exam_add_on.png);
 }
 
 .exam-create-del {
-  background-image: url(../../../imgs/exam/exam_del.png);
+  background-image: url(../../../imgs/exam_create/exam_del.png);
 }
 
 .exam-create-del:hover {
-  background-image: url(../../../imgs/exam/exam_del_on.png);
+  background-image: url(../../../imgs/exam_create/exam_del_on.png);
 }
 
 /*==================MAIN START========================*/
@@ -178,18 +178,18 @@
 .exam-create-addItem {
   width: 250px;
   margin: 10px 0;
-  background-image: url(../../../imgs/exam/exam_addItem.png);
+  background-image: url(../../../imgs/exam_create/exam_addItem.png);
 }
 
 .exam-create-addItem:hover {
-  background-image: url(../../../imgs/exam/exam_addItem_on.png);
+  background-image: url(../../../imgs/exam_create/exam_addItem_on.png);
 }
 
 .exam-create-submit {
   width: 290px;
-  background-image: url(../../../imgs/exam/exam_submit.png);
+  background-image: url(../../../imgs/exam_create/exam_submit.png);
 }
 
 .exam-create-submit:hover {
-  background-image: url(../../../imgs/exam/exam_submit_on.png);
+  background-image: url(../../../imgs/exam_create/exam_submit_on.png);
 }

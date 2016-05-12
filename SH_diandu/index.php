@@ -33,7 +33,7 @@ $pic_arr=explode(",",$video['pic']);
   <link rel="stylesheet" type="text/css" href="css/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="js/components/imgtext/imgtext.css">
-  <link rel="stylesheet" href="js/components/exam/ExamCreate.css">
+  <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css">
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
   <!---add by brian 20160426-->
@@ -360,7 +360,7 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/index.js"></script>
 <!--组件-->
 <script src="js/components/imgtext/ImgText.js"></script>
-<script src="js/components/exam/ExamCreate.js"></script>
+<script src="js/components/examcreate/ExamCreate.js"></script>
 
 <script>
     var id=<?php echo intval($id);?>;//team_video id

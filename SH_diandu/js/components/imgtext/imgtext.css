@@ -97,13 +97,13 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .upload-imgtext-upload {
   width: 48px;
   height: 48px;
-  background-image: url(../imgs/imgtext.png);
+  background-image: url(../../../imgs/imgtext.png);
   float: left;
   cursor: pointer;
 }
 
 .upload-imgtext-upload:hover {
-  background-image: url(../imgs/imgtext_on.png);
+  background-image: url(../../../imgs/imgtext_on.png);
 }
 
 .upload-imgtext-info {

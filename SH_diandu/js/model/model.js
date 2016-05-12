@@ -10,7 +10,8 @@ window.Model = (function ($) {
     base: '/edu/course/api.php',
     //base: 'http://dev.catics.org/edu/course/api.php',
     save: 'save_touch_page',
-    get: 'get_touch_page_data'
+    get: 'get_touch_page_data',
+    del: 'del_touch_page'
   };
 
   //如何是本地的测试环境
@@ -25,7 +26,23 @@ window.Model = (function ($) {
     var dataStr = JSON.stringify(data);
     $.post(URL.base, {action: URL.save, data: dataStr}, function (result) {
       console.log('result', result);
-      callback(result);
+      callback && callback(result);
+    });
+  }
+
+  /**
+   * 提交点读数据 [同步]
+   */
+  function delDianduPage(id, callback) {
+    $.ajax({
+      type: "POST",
+      url: URL.base,
+      async: false,
+      data: {action: URL.del, id: id},
+      success: function (result) {
+        console.log("del success!", id)
+        callback && callback(result);
+      }
     });
   }
 
@@ -43,6 +60,7 @@ window.Model = (function ($) {
 
   return {
     getList: getList,
-    addDianduPage: addDianduPage
+    addDianduPage: addDianduPage,
+    delDianduPage: delDianduPage
   }
 })($);

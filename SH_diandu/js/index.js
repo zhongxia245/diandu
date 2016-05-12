@@ -31,16 +31,17 @@ var GLOBAL = {
     flag: false                       //是否为编辑页面,默认为false
   }
 }
-
+var id;
 /***************************************
  * 程序入口
  ***************************************/
 $(function () {
-  var id;
+  //本地测试[上传FTP注释掉]
   if (window.location.host.indexOf('localhost') !== -1) {
     id = Util.getQueryStringByName('id');
-    teamid = 3000;
-    unitid = '' , userid = '';
+    teamid = 3100;
+    unitid = 184;
+    userid = 92;
   }
   else {
     id = videoid;
@@ -134,9 +135,11 @@ var _data = (function () {
    */
   function getValidItems() {
     var destArr = [];
+    var delPageIds = '';
     var srcArr = window.DD.items;
     ArrayUtil.sortByKey(srcArr, 'sort');
 
+    //点读页
     for (var i = 0; i < srcArr.length; i++) {
       if (!srcArr[i].isRemove) { //去掉已经删除的点读页
         var destPage = {
@@ -146,10 +149,14 @@ var _data = (function () {
           w: srcArr[i].w,
           id: srcArr[i]['oldId']
         };
+
+        //点读位
         var destItems = [];
         var items = srcArr[i]['data'];
+
         for (var j = 0; j < items.length; j++) {
-          if (!items[j].isRemove) {
+
+          if (!items[j].isRemove && !isEmpty(items[j])) {
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -157,18 +164,26 @@ var _data = (function () {
               url: items[j].url,
               title: items[j].title,
               content: items[j].content,
+              questions: JSON.stringify(items[j].questions),
               type: _data.getTypeByName(items[j].type)
             }
             if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
             destItems.push(obj);
           }
         }
+
         destPage['points'] = destItems;
         destArr.push(destPage)
       }
+      else {
+        delPageIds += srcArr[i]['oldId'] + ',';
+      }
     }
-    return destArr;
-    console.log("destArr", destArr)
+    delPageIds = delPageIds.length > 0 ? delPageIds.substr(0, delPageIds.length - 1) : '';
+    return {
+      data: destArr,
+      delPageIds: delPageIds
+    };
   }
 
   /**
@@ -184,9 +199,23 @@ var _data = (function () {
         return 2;
       case 'imgtext':
         return 3;
+      case 'exam':
+        return 4;
       default:
         return 1;
     }
+  }
+
+  /**
+   * 判断创建的点读是否为空[没有上传数据]
+   * @param item 点读位数据
+   */
+  function isEmpty(item) {
+    //如果这些每一项都为空,则表示为空的点读位
+    if (item.content || item.filename || item.questions || item.title || item.url) {
+      return false;
+    }
+    return true;
   }
 
   return {
@@ -411,19 +440,33 @@ function setBgImageScale(path, id) {
     var bgSize = '100% auto';
     var currentScale = obj.w / obj.h;
 
+    //竖屏
     if (GLOBAL.SCREENTYPE === 'v') {
       if (currentScale > GLOBAL.V_IMGSCALE) {
         bgSize = '100% auto';
       } else {
         bgSize = 'auto 100%';
       }
-    } else {
+
+      //竖屏 , 宽度小于 竖屏宽度, 不缩放,不放大
+      if (obj.w < GLOBAL.SCREENSIZE.v.width) {
+        bgSize = "auto auto";
+      }
+    }
+    //横屏
+    else {
       if (currentScale > GLOBAL.H_IMGSCALE) {
         bgSize = '100% auto';
       } else {
         bgSize = 'auto 100%';
       }
+
+      //横屏 , 高度小于 横屏高度, 不缩放,不放大
+      if (obj.h < GLOBAL.SCREENSIZE.h.height) {
+        bgSize = "auto auto";
+      }
     }
+    console.log(id, bgSize)
     $(id).css('background-size', bgSize);
   })
 }
@@ -460,11 +503,10 @@ function bindEvent() {
 
 /**
  * 横竖切换操作
- * TODO：二期
  * @return {[type]} [description]
  */
 function bindH2V() {
-  //TODO: 二期：背景图横竖屏切换
+  //TODO: 二期：背景图横竖屏切换 [已经去掉,可以考虑清除]
   $('.bigimg-h2s-right').on('click', function (e) {
     if (!GLOBAL.ISSELECTEDSCREENTYPE) {
       $tar = $(e.target);
@@ -597,8 +639,8 @@ function setUploadControl(index) {
       $('.sort-info').show();
       var _$fileBg = $("#file_bg" + oldIndex);
       _$fileBg.parent().find('.filename').text(file.name);
-      console.log("newIndex", newIndex)
-      setBgImageScale(resultPath, "#id_bg" + (newIndex))
+      console.log("newIndex", oldIndex)
+      setBgImageScale(resultPath, "#id_bg" + (oldIndex))
     }
   });
 }
@@ -1148,10 +1190,14 @@ function dianduPageOperator(e) {
       $bgItem.find('._mask').hide();
       break;
     case 'del':
-      $bgItem.prev('hr').remove();
-      $bgItem.remove();
-      delDDItem($bgItem.attr('data-index'));
-      // TODO:删除 ,基本完成
+      layer.confirm('确定删除该点读页？', {
+        btn: ['确定', '取消'] //按钮
+      }, function (index) {
+        layer.close(index);
+        $bgItem.prev('hr').remove();
+        $bgItem.remove();
+        delDDItem($bgItem.attr('data-index'));
+      });
       break;
   }
 }
@@ -1176,6 +1222,7 @@ function delDDItem(id) {
  * 提交
  */
 function handleSubmit(e) {
+  var _pagesInfo = _data.getValidItems();
   var data = {
     title: $('#name').val(),
     saytext: $('#intro').val(),
@@ -1183,7 +1230,8 @@ function handleSubmit(e) {
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),
-    pages: _data.getValidItems(),
+    pages: _pagesInfo.data,
+    delPageIds: _pagesInfo.delPageIds
   }
 
   //小组ID，开发用3000
@@ -1192,12 +1240,19 @@ function handleSubmit(e) {
   data.userid = userid;
   data.checked = 1
 
-
   //如果是编辑页面,把当前id传给后端
   if (GLOBAL.ISEDIT.flag) {
     data.id = GLOBAL.ISEDIT.id
   }
 
+  //如果有删除的话
+  if (data.delPageIds.length > 0) {
+    var _ids = data.delPageIds.split(',');
+    for (var i = 0; i < _ids.length; i++) {
+      Model.delDianduPage(_ids[i]);
+    }
+  }
+  
   Model.addDianduPage(data, function (result) {
     console.log("操作成功,返回点读页的id为(videoid)= ", result)
 
