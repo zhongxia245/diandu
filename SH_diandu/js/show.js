@@ -6,7 +6,13 @@ var GLOBAL = {
   H_IMGSCALE: 1920 / 1080,  //横屏比例点
   V_IMGSCALE: 1080 / 1760,  //竖屏比例点
   OLDWIDTH: 1200,  //创建页面的横屏宽度
-  OLDHEIGHT: 960,  //创建页面的竖屏高度
+  OLDHEIGHT: 960,  //创建页面的竖屏高度,
+  EXAM_W: 0,
+  EXAM_H: 0,
+  SEC_EXAM: '.sec-exam',  //考试展示容器
+  SEC_EXAM_LIST: '.sec-exam .exam-list',  //考生页面容器
+  SEC_QUESTION_LIST: '.sec-exam .question-list',  //题干列表容器
+  CURRENTINDEX: 0,
 }
 
 /**
@@ -121,15 +127,16 @@ window.onresize = function () {
 
 /**
  * 窗口变化时展示
- * TODO:需要判断横屏的缩放比例,还有竖屏的缩放比例, 宽高要分开算
  */
 function fn_onResize() {
   window.W = $(window).width();
   window.H = $(window).height();
+
   $('#main').css({
     height: window.H,
     width: window.W
   });
+
   console.log('window.W:', window.W, "window.H", window.H)
   var _size;
   if (W > H) {
@@ -142,6 +149,17 @@ function fn_onResize() {
       position: 'relative',
       top: '20%'
     })
+
+    GLOBAL.EXAM_W = $(window).width() * (1500 / 1920);
+    GLOBAL.EXAM_H = $(window).height() * (800 / 1080);
+
+    $('.sec-exam').css({
+      height: GLOBAL.EXAM_H,
+      width: GLOBAL.EXAM_W,
+      left: (window.W - GLOBAL.EXAM_W) / 2,
+      top: (window.H - GLOBAL.EXAM_H) / 2
+    });
+
     _size = window.W * 0.28;
     isVertical = false;
   }
@@ -155,6 +173,17 @@ function fn_onResize() {
       position: 'relative',
       top: '30%'
     })
+
+    GLOBAL.EXAM_W = $(window).width() * (800 / 1080);
+    GLOBAL.EXAM_H = $(window).height() * (1200 / 1920);
+
+    $('.sec-exam').css({
+      height: GLOBAL.EXAM_H,
+      width: GLOBAL.EXAM_W,
+      left: (window.W - GLOBAL.EXAM_W) / 2,
+      top: (window.H - GLOBAL.EXAM_H) / 2
+    });
+
     _size = window.W * 0.5;
     isVertical = true;
   }
@@ -216,10 +245,7 @@ function initPoint(data) {
   initPage('pages', data);
   initThumbs('thumbs', data.pages);
   initSwipe();
-  //bindEvent();
-  //initScale();
-  //data['background'] = "uploads/5c4a5551f2e5a9e38b81d2e37778d007.mp3";
-  console.log("data", data)
+
   if (data['background']) {
     GLOBAL.BGAUDIO.setAudio(data['background']);
     if (GLOBAL.BGAUDIO.isOn()) {
@@ -231,18 +257,6 @@ function initPoint(data) {
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
 
-
-/**
- * 按比例缩放图标
- * @return {[type]} [description]
- */
-function initScale() {
-  setScale('.m-dd-start', STARTSIZE * SCALE);
-  setScale('.m-audio', POINTSIZE);
-  setScale('.m-audio img', POINTSIZE);
-  setScale('.m-video', POINTSIZE);
-  setScale('.m-video img', POINTSIZE);
-}
 
 /**
  * 按比例缩放图标
@@ -289,6 +303,8 @@ function initSwipe() {
     prevButton: '.swiper-button-prev',
     onSlideChangeEnd: function (swiper) {
       //closeVideoOrAudio();
+      GLOBAL.CURRENTINDEX = swiper.activeIndex;  // 记录当前的点读页
+
       $('#id_pagination_cur').text(swiper.activeIndex + 1);
       !_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
       _ISCLICKTHUMBS = true;
@@ -385,18 +401,21 @@ function initPage(id, data) {
           }
         }
 
+
         if (obj.w > obj.h) {
           scale = window.W / GLOBAL.OLDWIDTH;
         } else {
           scale = window.H / GLOBAL.OLDHEIGHT;
         }
+
         $wrap.css({height: h, width: w});
-        $wrap.append(initCircle_Scale(param.data['points'], w, h, scale))
+
+        $wrap.append(initCircle(param, w, h, scale))
+
         $('#' + param.subid).css('background-size', bgSize);
+
         initScale_Scale('#' + param.subid, scale);
 
-        //window.__count__ = window.__count__ || 1;
-        //window.__count__++;
         //所有点读位置生成结束
         bindEvent();
       })
@@ -457,69 +476,30 @@ function initThumbs(id, pages) {
  * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
  * @param  {[type]} data [根据数据生成点读位]
  */
-function initCircle(data) {
+function initCircle(data, w, h, scale) {
+
+  pointDatas = data.data['points']
+
   var html = "";
   html += '<div data-id="all-radius" data-hide="all-radius-hide">'
-  for (var i = 0; i < data.length; i++) {
-    //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
-    var diff = DIFF * SCALE;
-    var left = parseFloat(data[i].x) * $(window).width() + diff;
-    var top = parseFloat(data[i].y) * $(window).height() + diff;
-    var style = 'left:' + left + 'px; top:' + top + 'px; width:' + POINTSIZE + 'px; height:' + POINTSIZE + 'px';
-    var type = data[i]['type'];
-    var url = data[i]['url'];
-    var filename = data[i]['filename'];
-    var title = data[i]['title'];
-    var content = data[i]['content'];
-    var className = '';
-    var mediaImg = "";
+  for (var i = 0; i < pointDatas.length; i++) {
 
-    switch (type) {
-      case "1": //视频
-        className = 'm-video';
-        mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
-        break;
-      case "2": //音频
-        className = 'm-audio';
-        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
-        break;
-      case "3": //图文
-        className = 'm-imgtext';
-        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
-        break;
-      default:
-        className = 'm-video';
-        break;
-    }
-    html += '<div class="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
-    html += mediaImg;
-    html += '</div>'
-  }
-  html += '</div>'
-  return html;
-}
-
-/**
- * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
- * @param  {[type]} data [根据数据生成点读位]
- */
-function initCircle_Scale(data, w, h, scale) {
-  var html = "";
-  html += '<div data-id="all-radius" data-hide="all-radius-hide">'
-  for (var i = 0; i < data.length; i++) {
     //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
     var diff = DIFF * scale;
     var pointSize = scale * POINTPOINTSIZE;
-    var left = parseFloat(data[i].x) * w + diff;
-    var top = parseFloat(data[i].y) * h + diff;
+    var left = parseFloat(pointDatas[i].x) * w + diff;
+    var top = parseFloat(pointDatas[i].y) * h + diff;
     var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
-    var type = data[i]['type'];
-    var url = data[i]['url'];
-    var filename = data[i]['filename'];
-    var title = data[i]['title'];
-    var content = data[i]['content'];
+    var type = pointDatas[i]['type'];
+    var url = pointDatas[i]['url'];
+    var filename = pointDatas[i]['filename'];
+    var title = pointDatas[i]['title'];
+    var content = pointDatas[i]['content'];
+    var question = pointDatas[i]['questions'];
+
     var className = '';
     var mediaImg = "";
+
     switch (type) {
       case 1:
       case "1": //视频
@@ -545,9 +525,11 @@ function initCircle_Scale(data, w, h, scale) {
         className = 'm-video';
         break;
     }
-    html += '<div class="' + className + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+
+    html += '<div class="' + className + '" data-id="' + (data.i + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
     html += mediaImg;
     html += '</div>'
+
   }
   html += '</div>'
   return html;
@@ -556,7 +538,6 @@ function initCircle_Scale(data, w, h, scale) {
 /*************************************根据数据生成页面 END********************************/
 /*=======================音频视频播放相关 START====================*/
 function initBgAudio() {
-  //TODO:设置背景音乐src
   bgAudio = document.getElementById('bg-audio')
 }
 function initAudio() {
@@ -626,6 +607,7 @@ function closeVideoOrAudio(flag) {
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
 function bindEvent() {
+  console.log("bindEvent")
   // 启动开关
   $('.m-dd-start').off().on(click, function (e) {
     e.preventDefault();
@@ -747,12 +729,13 @@ function bindEvent() {
   $('.m-imgtext').off().on(click, function (e) {
     closeVideoOrAudio(false);
     var $tar = $(e.target);
+
     var $secImgText = $('.sec-imgtext');
     $secImgText.css({position: 'absolute'});
     $secImgText.show();
     var $secImgTextMain = $('.sec-imgtext-main');
-    //setImgTextLocation($tar, $secImgTextMain, $(e.currentTarget).parent().parent());
     setImgTextLocation_Scale($tar, $secImgTextMain, $(e.currentTarget).parent().parent());  //设置弹窗的位置
+
     var _url = $tar.attr('data-url');
     var _title = $tar.attr('data-title');
     var _content = $tar.attr('data-content');
@@ -769,13 +752,22 @@ function bindEvent() {
     $secImgText.find('.sec-imgtext-content').html(_content);
   })
 
-
+  /**
+   * 图文展示框
+   */
   $('.sec-imgtext').off().on(click, function (e) {
     var $tar = $(e.target);
     if ($tar.attr('class') === "sec-imgtext") {
       $tar.css({position: 'relative'});
       $tar.hide();
     }
+  })
+
+  /**
+   * 考试点读位
+   */
+  $('.m-exam').off().on(click, function (e) {
+    fnExamClick(e)
   })
 
 
@@ -840,70 +832,49 @@ function bindEvent() {
 }
 
 /**
- * 根据点读位的位置，计算出图文展示的位置[算法]
- * @param $tar
+ * 点击考试点读位
+ * @param e
  */
-function setImgTextLocation($tar, $secImgTextMain) {
-  var gap = 0;  //图文展示坐标，与点读位的距离
-  var rW = $tar.width();
-  var rH = $tar.height();
-  var top = css2Float($tar.css('top'));
-  var left = css2Float($tar.css('left'));
-  var imgTextW = $secImgTextMain.width();
-  var imgTextH = $secImgTextMain.height();
-  var windowW = $(window).width();
-  var windowH = $(window).height();
-  //左上点读位的角
-  var _ltx = left - imgTextW - gap;
-  var _lty = top - imgTextH;
+function fnExamClick(e) {
+  var $cTar = $(e.currentTarget);
+  var ids = $cTar.attr('data-id');
+  var pointData = Util.getPointDataByIds(DATA, ids);
+  var questions = JSON.parse(pointData.questions);
 
-  //右上点读位的角
-  var _rtx = left + rW + gap;
-  var _rty = top - imgTextH;
+  $(GLOBAL.SEC_EXAM).show()
+  $(GLOBAL.SEC_EXAM_LIST).show();
+  $(GLOBAL.SEC_QUESTION_LIST).hide();
 
-  //左下点读位的角
-  var _lbx = left - imgTextW - gap;
-  var _lby = top + rH + gap;
-  //右下点读位的角
-  var _rbx = left + rW + gap;
-  var _rby = top + rH + gap;
-  //如果图文展示 超出了顶部，则考虑放下下半部分
-  if (_lty > 10) {
-    //如果图文展示，超出了左边，则考虑右边部分
-    if (_ltx > 10) {
-      $secImgTextMain.css({left: _ltx, top: _lty})
+  GLOBAL.examShowList = new ExamShowList(GLOBAL.SEC_EXAM_LIST, {
+    data: {questions: questions},
+    scale: $(GLOBAL.SEC_EXAM).width() / 320,
+    callback: function (questionData) {
+      //点击题干
+      $(GLOBAL.SEC_EXAM_LIST).hide();
+      $(GLOBAL.SEC_QUESTION_LIST).show();
+
+      GLOBAL.questionsList = new QuestionsList(GLOBAL.SEC_QUESTION_LIST, {
+        data: questionData,
+        scale: $(GLOBAL.SEC_EXAM).width() / 620,
+        fnReturn: function () {
+          //题干列表返回到考生页面
+          $(GLOBAL.SEC_EXAM_LIST).show();
+          $(GLOBAL.SEC_QUESTION_LIST).hide();
+        },
+        fnClose: function () {
+          //关闭题干列表
+          $(GLOBAL.SEC_EXAM).hide()
+        },
+        fnQuestionClick: function (questionIndex) {
+          //点击第几题,考生页面跳转到该题目
+          $(GLOBAL.SEC_EXAM_LIST).show();
+          $(GLOBAL.SEC_QUESTION_LIST).hide();
+          GLOBAL.examShowList.swiper.slideTo(questionIndex);
+        }
+      })
     }
-    else if ((_rtx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rtx - (imgTextW / 2), top: _rty})
-    }
-    else {
-      $secImgTextMain.css({left: _rtx, top: _rty})
-    }
-  }
-  else if ((_lby + imgTextH) > ( windowH - 10)) {
-    if (_lbx > 10) {
-      $secImgTextMain.css({left: _lbx, top: _lby - (imgTextH / 2)})
-    }
-    else if ((_rbx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby - (imgTextH / 2)})
-    }
-    else {
-      $secImgTextMain.css({left: _rbx, top: _rby - (imgTextH / 2)})
-    }
-  }
-  else {
-    if (_lbx > 10) {
-      $secImgTextMain.css({left: _lbx, top: _lby})
-    }
-    else if ((_rbx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby})
-    }
-    else {
-      $secImgTextMain.css({left: _rbx, top: _rby})
-    }
-  }
+  })
 }
-
 
 /**
  * 根据点读位的位置，计算出图文展示的位置[算法]
@@ -992,6 +963,7 @@ function setHoverImgSrcx($target) {
   }
 }
 
+
 /**
  * 从 样式  10px  变成 数字 10
  */
@@ -1026,5 +998,4 @@ window.mouseUpOrDown = (function () {
     };
   };
 })();
-
 

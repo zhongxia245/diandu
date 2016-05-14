@@ -363,7 +363,7 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/components/examcreate/ExamCreate.js"></script>
 
 <script>
-    var id=<?php echo intval($id);?>;//team_video id
+    var id = <?php echo intval($id);?>;//team_video id
     var teamid =  <?php echo empty($teamid)?intval($team_video['teamid']):$teamid;?>;
     var unitid =  <?php echo empty($unitid)?intval($team_video['unitid']):$unitid;?>;
     var videoid=<?php echo intval($team_video['videoid']);?>;

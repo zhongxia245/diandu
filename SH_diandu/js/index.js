@@ -31,22 +31,22 @@ var GLOBAL = {
     flag: false                       //是否为编辑页面,默认为false
   }
 }
-var id;
 /***************************************
  * 程序入口
  ***************************************/
 $(function () {
+  var _id;
   //本地测试[上传FTP注释掉]
   if (window.location.host.indexOf('localhost') !== -1) {
-    id = Util.getQueryStringByName('id');
+    _id = Util.getQueryStringByName('id');
     teamid = 3100;
     unitid = 184;
     userid = 92;
   }
   else {
-    id = videoid;
+    _id = videoid;
   }
-  id ? _edit.initEdit(id) : _create.initCreate();
+  _id ? _edit.initEdit(_id) : _create.initCreate();
   bindEvent();
 });
 
@@ -362,7 +362,7 @@ var _edit = (function () {
   }
 
   /**
-   * 初始化视频,音频,图文的数据
+   * 初始化视频,音频,图文的数据  [新增试卷]
    * @param dataid        点读位的唯一标识
    * @param point          点读数据
    * @private
@@ -376,6 +376,7 @@ var _edit = (function () {
     var $currentTarget = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).eq(0);
     var $rightName = $currentTarget.find('.upload-right-name').eq(0);
     var $filemask = $currentTarget.find('.div-file-mask'); //文件上传按钮的遮罩层，用于图文
+    $filemask.attr('data-type', type);
     var $target, className;
     $rightName.removeClass('notselect');
     switch (type) {
@@ -394,6 +395,12 @@ var _edit = (function () {
         point['type'] = 'imgtext';
         $rightName.addClass('uploaded-imgtext').find('span').eq(0).text('图文已上传(点击编辑)');
         $filemask.show().off().on('click', fn2_uploadImgText);
+        break;
+      case "4":
+        className = ".exam";
+        point['type'] = 'exam';
+        $rightName.addClass('uploaded-exam').find('span').eq(0).text('试卷已上传(点击编辑)');
+        $filemask.show().off().on('click', fn2_examCreate);
         break;
     }
     $target = $currentTarget.find(className).eq(0);
@@ -418,6 +425,7 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['title'] = obj['title'];
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
+        window.DD.items[i]['data'][j]['questions'] = obj['questions'];
       }
     }
   }
@@ -705,7 +713,15 @@ function bindDianDuPageEvent() {
 
 
   $('.div-file-mask').off()
-    .on('click', fn2_uploadImgText);
+    .on('click', function (e) {
+      var type = $(e.target).attr('data-type');
+      if (type === "3") {
+        fn2_uploadImgText(e);
+      }
+      else if (type === "4") {
+        fn2_examCreate(e);
+      }
+    });
 }
 
 /*==========================图片选中，不选中状态设置 START==================================*/
@@ -911,6 +927,7 @@ function fileTypeItemClick(e) {
 
   //用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
   $filemask.hide();
+  console.log("$filemask", $filemask)
 
   console.log("data.fileType", data.fileType)
   // 目前只做视频和音频,图文,试卷
@@ -1019,7 +1036,15 @@ function fn2_examCreate(e) {
   var ids = CommonUtil.getIds(e);
   // 试卷数据
   var examData = _data.getDDItems(ids.id) || {};
+  if (typeof examData['questions'] === "string") {
+    examData['questions'] = JSON.parse(examData['questions']);
+  }
   new ExamCreate('#_examCreate', examData, function (submitData) {
+    //标识试卷已经上传
+    var $uploadRight = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-right').eq(0);
+    $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-exam')
+    $uploadRight.find('.upload-right-name span').text('试卷已上传(点击编辑)');
+
     layer.close(_layer);
     _data.setDDItems(ids.id, submitData);
   })
@@ -1252,7 +1277,7 @@ function handleSubmit(e) {
       Model.delDianduPage(_ids[i]);
     }
   }
-  
+
   Model.addDianduPage(data, function (result) {
     console.log("操作成功,返回点读页的id为(videoid)= ", result)
 

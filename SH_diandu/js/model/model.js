@@ -15,7 +15,7 @@ window.Model = (function ($) {
   };
 
   //如何是本地的测试环境
-  if (window.location.host === "localhost") {
+  if (window.location.host === "localhost" || window.location.host.indexOf('192.168') !== -1) {
     URL.base = "http://dev.catics.org/edu/course/api.php";
   }
 

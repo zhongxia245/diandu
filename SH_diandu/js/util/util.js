@@ -97,11 +97,24 @@ window.Util = (function () {
     return flag;
   }
 
+  /**
+   * 根据 ids 获取数据 (ids : 1_1)
+   * @param data
+   * @param ids
+   */
+  function getPointDataByIds(data, ids) {
+    var _ids = ids.split('_');
+    var pages = data.pages;
+    var pointsData = pages[_ids[0]]['points'];
+    return pointsData[_ids[1]];
+  }
+
   return {
     getImageWH: getImageWH,
     getQueryStringByName: getQueryStringByName,
     closeWebPage: closeWebPage,
     Moblie_MoveOrTap: Moblie_MoveOrTap,
-    IsPC: IsPC
+    IsPC: IsPC,
+    getPointDataByIds: getPointDataByIds
   }
 })()

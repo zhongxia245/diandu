@@ -171,6 +171,12 @@ ul, li {
   width: 100%
 }
 
+.sec-exam {
+  position: absolute;
+  z-index: 9999;
+  border-right: 5px;
+}
+
 /*============使用swiper3.0的样式  START==========*/
 .swiper-container {
   width: 100%;

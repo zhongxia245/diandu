@@ -9,10 +9,15 @@
  * 4. 自动记录是否已经答题
  *
  ***************************************************/
-function ExamShowList(selector, data, callback) {
+function ExamShowList(selector, config) {
   this.selector = selector;
-  this.data = data;
-  this.callback = callback;
+  this.config = config;
+  this.data = config.data;
+  this.callback = config.callback;
+
+  this.scale = config.scale || 1;
+  this.scale = this.scale > 1.5 ? 1.5 : this.scale;
+
   this.swiper;
   this.click = this.IsPC() ? 'click' : 'tap';
   this.CLASSENUM = {
@@ -43,6 +48,7 @@ ExamShowList.prototype.render = function () {
   $(this.selector).html(html);
   this.initVar();
   this.bindEvent();
+  this.setScale();
 }
 
 /**
@@ -126,6 +132,10 @@ ExamShowList.prototype.initVar = function () {
   this.$showAnswer = this.$container.find('.exam-list-show-answer')  //显示答案
   this.$btnQuestionsList = this.$container.find('.exam-list-questionsList');  //题干
   this.$questionType = this.$container.find('.exam-list-righttop');  //题型图片
+
+  this.$top = this.$container.find('.exam-list-top');
+  this.$questionTitle = this.$container.find('.exam-list-question-title')
+  this.$answerContainer = this.$container.find('.exam-list-question-answer')
 }
 
 /**
@@ -140,10 +150,10 @@ ExamShowList.prototype.bindEvent = function () {
    */
   that.swiper = new Swiper('.exam-list-main', {
     autoplayStopOnLast: true,
+    slidesPerView: 1,
     onSlideChangeEnd: function (swiper) {
       that.currentIndex = swiper.activeIndex + 1;
       that.renderCurrentIndex();
-      that.callback && that.callback(swiper, this)
 
       //切换题目类型图标
       that.$questionType.removeClass('exam-radio')
@@ -184,7 +194,7 @@ ExamShowList.prototype.bindEvent = function () {
    * 点击题干
    */
   that.$btnQuestionsList.off().on(that.click, function () {
-    alert('点击题干')
+    that.callback && that.callback(that.data)
   })
 
 }
@@ -329,6 +339,17 @@ ExamShowList.prototype.setValue2Data = function () {
       questionsData[i].isRight = flag;
     }
   }
+}
+
+/**
+ * 设置题目的缩放
+ */
+ExamShowList.prototype.setScale = function () {
+  this.$top.css('zoom', this.scale);
+  this.$questionType.css('zoom', this.scale);
+  this.$questionTitle.css('zoom', this.scale);
+  this.$answerContainer.css('zoom', this.scale);
+  this.$showAnswer.css('zoom', this.scale)
 }
 
 /*========================工具方法===========================*/

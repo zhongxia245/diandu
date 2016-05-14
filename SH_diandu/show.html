@@ -8,8 +8,10 @@
   <title>点读展示</title>
   <link rel="stylesheet" href="js/lib/modal/css/style.css">
   <link rel="stylesheet" href="css/show.css">
-  <link rel="stylesheet" href="js/components/slide/slide.css">
   <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
+  <link rel="stylesheet" href="js/components/slide/slide.css">
+  <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
+  <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
 </head>
 
 <body>
@@ -51,10 +53,13 @@
     <!--缩略图 END-->
   </div>
 </div>
+<!--音频 START-->
 <section class="sec-audio">
   <audio id="bg-audio" preload="auto" loop="loop"></audio>
   <audio id="audio" preload="auto"></audio>
 </section>
+<!--音频 END-->
+<!--视频 START-->
 <section class="sec-video">
   <div class="cd-bouncy-nav-modal" style="text-align:center;">
     <div id="div_video" style="width:100%; margin:0 auto; padding:0 10px;">
@@ -65,6 +70,8 @@
     <a href="javascript:void(0);" class="cd-close">Close modal</a>
   </div>
 </section>
+<!--视频 END-->
+<!--图文 START-->
 <section class="sec-imgtext">
   <div class="sec-imgtext-main">
     <div class="sec-imgtext-title"></div>
@@ -74,6 +81,13 @@
     </div>
   </div>
 </section>
+<!--图文 END-->
+<!--考试 START-->
+<section class="sec-exam" style="display: none;">
+  <div class="exam-list" style="height: 100%;"></div>
+  <div class="question-list" style="height: 100%;"></div>
+</section>
+<!--考试 END-->
 
 <!--lib-->
 <script src="js/lib/zepto.min.js"></script>
@@ -83,6 +97,8 @@
 <script src="js/util/drag.js"></script>
 <script src="js/model/model.js"></script>
 <script src="js/components/slide/touchslide.js"></script>
+<script src="js/components/examshowlist/ExamShowList.js"></script>
+<script src="js/components/questionslist/QuestionsList.js"></script>
 <script src="js/show.js"></script>
 </body>
 

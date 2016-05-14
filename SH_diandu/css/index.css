@@ -489,7 +489,7 @@ header {
 }
 
 /*图文上传成功*/
-.uploaded-imgtext {
+.uploaded-imgtext, .uploaded-exam {
   background: #7F7F7F;
   position: relative;
 }

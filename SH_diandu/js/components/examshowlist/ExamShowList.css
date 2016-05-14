@@ -71,11 +71,13 @@ body, ul, li {
 
 .exam-list-questionsList {
   height: 40px;
-  width: 89px;
+  width: 90px;
   background: url(../../../imgs/exam_list/exam_list.png) no-repeat;
-  background-size: auto 40px;
+  background-size: 85% auto;
   margin: 0 auto;
   display: none;
+  position: relative;
+  left: 5%;
 }
 
 .exam-list-main {
@@ -90,7 +92,7 @@ body, ul, li {
 .exam-list-question-title {
   font-style: italic;
   font-weight: normal;
-  margin: 40px 30px 20px 30px;
+  margin: 20px 30px;
   line-height: 30px;
 }
 
@@ -107,6 +109,7 @@ body, ul, li {
   margin-bottom: 15px;
 }
 
+/*单选正确,错误,选中,未选中 样式  START*/
 .exam-list-radio, .exam-list-bool {
   background: url(../../../imgs/exam_list/exam_radio.png) no-repeat;
   background-size: 40px 40px;
@@ -142,14 +145,6 @@ body, ul, li {
   background-size: 40px 40px;
 }
 
-.exam-list-show-answer {
-  margin-bottom: 10px;
-  height: 50px;
-  background: url(../../../imgs/exam_list/exam_answer_show.png) no-repeat center;
-  background-size: auto 50px;
-  cursor: pointer;
-}
-
 .exam-list-checkbox-right {
   background: url(../../../imgs/exam_list/exam_checkbox_show_right.png) no-repeat;
   background-size: 40px 40px;
@@ -165,7 +160,19 @@ body, ul, li {
   background-size: 40px 40px;
 }
 
+/*单选正确,错误,选中,未选中 样式  END*/
+/*显示答案 START*/
+.exam-list-show-answer {
+  margin-bottom: 5px;
+  height: 50px;
+  background: url(../../../imgs/exam_list/exam_answer_show.png) no-repeat center;
+  background-size: 80% auto;
+  cursor: pointer;
+}
+
 .exam-list-hide-answer {
   background: url(../../../imgs/exam_list/exam_answer_hide.png) no-repeat center;
-  background-size: auto 50px;
+  background-size: 80% auto;
 }
+
+/*显示答案 END*/
