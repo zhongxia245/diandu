@@ -44,7 +44,7 @@ function ExamShowList(selector, config) {
  * 渲染页面
  */
 ExamShowList.prototype.render = function () {
-  var html = this.createContainer();
+  var html = this.config.isVertical ? this.createContainer() : this.createHContainer();
   $(this.selector).html(html);
   this.initVar();
   this.bindEvent();
@@ -62,18 +62,43 @@ ExamShowList.prototype.createContainer = function () {
   var html = '';
   html += '<div class="exam-list-container">'
   html += '  <div class="exam-list-righttop exam-radio">'
-  //html += '    <img src="../imgs/exam_create/exam_type_radio.png" alt="单选">'
   html += '  </div>'
   html += '  <div class="exam-list-top">'
+  html += '     <div class="exam-list-questionsList"></div>'
   html += '    <div class="exam-list-sortid">'
   html += '     <div class="exam-list-sortid-spandiv"><span data-id="currentIndex">' + this.currentIndex + '</span> / <span  data-id="total">' + this.total + '</span></div>'
-  html += '     <div class="exam-list-questionsList"></div>'
   html += '    </div>'
   html += '  </div>'
   html += this.createQuestions(data.questions);
   html += '  <div class="exam-list-show-answer">'
   html += '  </div>'
   html += '</div>'
+  html += '  <div class="exam-list-close"></div>'
+  return html;
+}
+
+ExamShowList.prototype.createHContainer = function () {
+  var data = this.data;
+  this.currentIndex = this.currentIndex || 1;
+  this.total = data.questions.length || 1;
+  var html = '';
+  html += '<div class="exam-list-container" style="flex-direction: row;">'
+  html += '   <div  class="exam-list-left" style="flex: 66;">'
+  html += '     <div class="exam-list-righttop exam-radio"></div>'
+  html += '     <div class="exam-list-top">'
+  html += '     <div class="exam-list-questionsList"></div>'
+  html += '       <div class="exam-list-sortid">'
+  html += '         <div class="exam-list-sortid-spandiv"><span data-id="currentIndex">' + this.currentIndex + '</span> / <span  data-id="total">' + this.total + '</span></div>'
+  html += '       </div>'
+  html += '     </div>'
+  html += '     <div class="exam-list-show-answer">'
+  html += '     </div>'
+  html += '   </div>'
+  html += '   <div class="exam-list-right" style="flex: 84;">'
+  html += this.createQuestions(data.questions);
+  html += '   </div>'
+  html += '</div>'
+  html += '  <div class="exam-list-close"></div>'
   return html;
 }
 
@@ -124,7 +149,7 @@ ExamShowList.prototype.createAnswers = function (answers, type, index) {
  * 初始化变量
  */
 ExamShowList.prototype.initVar = function () {
-  this.$container = $(this.selector).find('.exam-list-container')
+  this.$container = $(this.selector);
   this.$currentIndex = this.$container.find('span[data-id="currentIndex"]')
   this.$total = this.$container.find('span[data-id="total"]')
   this.$questions = this.$container.find('.exam-list-question')
@@ -136,6 +161,7 @@ ExamShowList.prototype.initVar = function () {
   this.$top = this.$container.find('.exam-list-top');
   this.$questionTitle = this.$container.find('.exam-list-question-title')
   this.$answerContainer = this.$container.find('.exam-list-question-answer')
+  this.$close = this.$container.find('.exam-list-close');
 }
 
 /**
@@ -160,6 +186,13 @@ ExamShowList.prototype.bindEvent = function () {
         .removeClass('exam-bool')
         .removeClass('exam-checkbox')
         .addClass('exam-' + that.data.questions[swiper.activeIndex].type);
+
+      ////[选中的题目才显示题干按钮] 目前没有这个要求
+      //if (that.data.questions[that.currentIndex - 1].selected) {
+      //  that.$btnQuestionsList.show();
+      //} else {
+      //  that.$btnQuestionsList.hide()
+      //}
     }
   });
 
@@ -172,7 +205,7 @@ ExamShowList.prototype.bindEvent = function () {
     //隐藏答案
     if (that.$showAnswer.hasClass('exam-list-hide-answer')) {
       that.$showAnswer.removeClass('exam-list-hide-answer')
-      that.$btnQuestionsList.hide();
+      //that.$btnQuestionsList.hide();
       for (var i = 0; i < that.data.questions.length; i++) {
         that.hideAnswer4Index(i);
       }
@@ -182,7 +215,7 @@ ExamShowList.prototype.bindEvent = function () {
     else { //显示答案
       that.$showAnswer.addClass('exam-list-hide-answer');
       that.$answers.off();
-      that.$btnQuestionsList.show();
+      //that.$btnQuestionsList.show();
       for (var i = 0; i < that.data.questions.length; i++) {
         that.showAnswer4Index(i);
       }
@@ -195,6 +228,11 @@ ExamShowList.prototype.bindEvent = function () {
    */
   that.$btnQuestionsList.off().on(that.click, function () {
     that.callback && that.callback(that.data)
+  })
+
+  that.$close.off().on(that.click, function (e) {
+    var $ctar = $(e.currentTarget);
+    $ctar.parent().parent().hide();
   })
 
 }
@@ -282,14 +320,20 @@ ExamShowList.prototype.renderAnswer = function (e) {
   if (type !== 'checkbox') {
     $answers.removeClass(className);
   }
-
   //已选中在点击 则 变成 未选中
   if ($answer.hasClass(className)) {
     $answer.removeClass(className)
   } else {
     $answer.addClass(className)
   }
-  this.setValue2Data();
+  this.setValue2Data()
+
+  //判断是否显示题干按钮
+  if (this.data.questions[this.currentIndex - 1].selected) {
+    this.$btnQuestionsList.show();
+  } else {
+    this.$btnQuestionsList.hide()
+  }
 }
 
 
@@ -350,6 +394,7 @@ ExamShowList.prototype.setScale = function () {
   this.$questionTitle.css('zoom', this.scale);
   this.$answerContainer.css('zoom', this.scale);
   this.$showAnswer.css('zoom', this.scale)
+  this.$close.css('zoom', this.scale)
 }
 
 /*========================工具方法===========================*/

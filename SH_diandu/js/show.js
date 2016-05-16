@@ -841,13 +841,17 @@ function fnExamClick(e) {
   var pointData = Util.getPointDataByIds(DATA, ids);
   var questions = JSON.parse(pointData.questions);
 
-  $(GLOBAL.SEC_EXAM).show()
+  var $secExam = $(GLOBAL.SEC_EXAM);
+  $secExam.show()
   $(GLOBAL.SEC_EXAM_LIST).show();
   $(GLOBAL.SEC_QUESTION_LIST).hide();
 
+  var scaleExam = isVertical ? $secExam.width() / 320 : $secExam.width() / 1500 * 2;
+
   GLOBAL.examShowList = new ExamShowList(GLOBAL.SEC_EXAM_LIST, {
     data: {questions: questions},
-    scale: $(GLOBAL.SEC_EXAM).width() / 320,
+    scale: scaleExam,
+    isVertical: isVertical,
     callback: function (questionData) {
       //点击题干
       $(GLOBAL.SEC_EXAM_LIST).hide();
@@ -855,15 +859,12 @@ function fnExamClick(e) {
 
       GLOBAL.questionsList = new QuestionsList(GLOBAL.SEC_QUESTION_LIST, {
         data: questionData,
-        scale: $(GLOBAL.SEC_EXAM).width() / 620,
+        scale: scaleExam,
+        isVertical: isVertical,
         fnReturn: function () {
           //题干列表返回到考生页面
           $(GLOBAL.SEC_EXAM_LIST).show();
           $(GLOBAL.SEC_QUESTION_LIST).hide();
-        },
-        fnClose: function () {
-          //关闭题干列表
-          $(GLOBAL.SEC_EXAM).hide()
         },
         fnQuestionClick: function (questionIndex) {
           //点击第几题,考生页面跳转到该题目

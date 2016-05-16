@@ -11,6 +11,8 @@ var QuestionsList = (function () {
     this.data = config.data;
     this.scale = config.scale;
 
+    console.log("scale", this.scale)
+
     this.fnReturn = config.fnReturn;
     this.fnClose = config.fnClose;
     this.fnQuestionClick = config.fnQuestionClick;
@@ -39,11 +41,10 @@ var QuestionsList = (function () {
      * 渲染页面
      */
     render: function () {
-      var html = this.renderContainer();
+      var html = this.config.isVertical ? this.renderContainer() : this.renderHContainer();
       $(this.selector).html(html);
       this.initVar();
       this.bindEvent();
-
       this.setScale();
     },
     /**
@@ -53,8 +54,7 @@ var QuestionsList = (function () {
       var html = '';
       html += '<div class="exam-question-list">'
       html += '    <div class="exam-question-list-top">'
-      html += '    <div class="exam-question-list-return">返回</div>'
-      html += '    <div class="exam-question-list-close">X</div>'
+      html += '    <div class="exam-question-list-return"></div>'
       html += '    </div>'
       html += '    <!--题目列表 START-->'
       html += '  <div class="exam-question-list-main">'
@@ -67,10 +67,44 @@ var QuestionsList = (function () {
       html += this.renderAllPercents()
       html += '    </div>'
       html += '    <!--已做,未做,正确,错误的比例 END-->'
-      html += '    <div class="exam-question-list-showAnswer"> 查看答案 </div>'
-      html += '    <div class="exam-question-list-hideAnswer" style="display: none;"> 隐藏答案 </div>'
+      html += '    <div class="exam-question-show-answer"></div>'
       html += '  </div>'
       html += '</div>'
+      html += '  <div class="exam-question-close"></div>'
+      return html;
+    },
+    /**
+     * 初始化题干列表[ 横屏 ]
+     */
+    renderHContainer: function () {
+      //该方法要在 renderAllPercents 之前,运行,这样 已做,未做,正确,错误的数目才能正确
+      var questionItemsHTML = this.renderQuestionItems(this.data.questions);
+
+      var html = '';
+      html += '<div class="exam-question-list" style="flex-direction: row">'
+      html += '<div class="exam-question-list-layout-left" style="flex: 66;">'
+      html += '  <div class="exam-question-list-top">'
+      html += '    <div class="exam-question-list-return"></div>'
+      html += '  </div>'
+      html += '  <div class="exam-question-list-bottom">'
+      html += '    <!--已做,未做,正确,错误的比例 START-->'
+      html += '  <div class="exam-question-percents">'
+      html += this.renderAllPercents()
+      html += '    </div>'
+      html += '    <!--已做,未做,正确,错误的比例 END-->'
+      html += '    <div class="exam-question-show-answer"></div>'
+      html += '  </div>'
+      html += ' </div>'
+
+      html += ' <div class="exam-question-list-layout-right" style="flex: 84;">'
+      html += '    <!--题目列表 START-->'
+      html += '  <div class="exam-question-list-main">'
+      html += questionItemsHTML
+      html += '    </div>'
+      html += '    <!--题目列表 END-->'
+      html += ' </div>'
+      html += '</div>'
+      html += '  <div class="exam-question-close"></div>'
       return html;
     },
 
@@ -150,9 +184,8 @@ var QuestionsList = (function () {
     initVar: function () {
       this.$container = $(this.selector);
       this.$btn_return = this.$container.find('.exam-question-list-return');
-      this.$btn_close = this.$container.find('.exam-question-list-close');
-      this.$btn_showAnswer = this.$container.find('.exam-question-list-showAnswer');
-      this.$btn_hideAnswer = this.$container.find('.exam-question-list-hideAnswer');
+      this.$btn_close = this.$container.find('.exam-question-close');
+      this.$showAnswer = this.$container.find('.exam-question-show-answer')  //显示答案
 
       this.$questions = this.$container.find('.exam-question-list-item');
 
@@ -162,8 +195,18 @@ var QuestionsList = (function () {
       this.$undoPercent = this.$container.find('div[data-type="undo"]');
     },
 
+    /**
+     * 设置容器缩放的比例
+     */
     setScale: function () {
-      this.$container.css('zoom', this.scale)
+      this.$container.find('.exam-question-list-layout-left').css('zoom', this.scale)
+      this.$container.find('.exam-question-list-layout-right').css('zoom', this.scale)
+      this.$btn_close.css('zoom', this.scale)
+      if (this.config.isVertical) {
+        this.$container.find('.exam-question-list-main').css('zoom', this.scale)
+      } else {
+        this.$container.find('.exam-question-list-main').css('zoom', this.scale * 1.3)
+      }
     },
 
     /**
@@ -175,44 +218,45 @@ var QuestionsList = (function () {
         that.fnReturn && that.fnReturn(that);
       })
 
-      this.$btn_close.off().on(that.click, function () {
-        that.fnClose && that.fnClose(that);
+      this.$btn_close.off().on(that.click, function (e) {
+        var $ctar = $(e.currentTarget);
+        $ctar.parent().parent().hide();
       })
 
 
-      this.$btn_showAnswer.off().on(that.click, function () {
-        that.$doPercent.hide();
-        that.$rightPercent.show();
-        that.$errorPercent.show();
+      /**
+       * 显示所有答案
+       */
+      that.$showAnswer.off().on(that.click, function () {
+        //隐藏答案
+        if (that.$showAnswer.hasClass('exam-question-hide-answer')) {
+          that.$showAnswer.removeClass('exam-question-hide-answer')
 
-        for (var i = 0; i < that.$questions.length; i++) {
-          var $question = $(that.$questions[i]);
-          $question
-            .removeClass($question.attr('data-hideanswer'))
-            .addClass($question.attr('data-showanswer'));
+          that.$doPercent.show();
+          that.$rightPercent.hide();
+          that.$errorPercent.hide();
+
+          for (var i = 0; i < that.$questions.length; i++) {
+            var $question = $(that.$questions[i]);
+            $question
+              .removeClass($question.attr('data-showanswer'))
+              .addClass($question.attr('data-hideanswer'));
+          }
         }
+        else { //显示答案
+          that.$showAnswer.addClass('exam-question-hide-answer')
+          that.$doPercent.hide();
+          that.$rightPercent.show();
+          that.$errorPercent.show();
 
-
-        that.$btn_hideAnswer.show();
-        that.$btn_showAnswer.hide();
-      })
-
-
-      this.$btn_hideAnswer.off().on(that.click, function () {
-        that.$doPercent.show();
-        that.$rightPercent.hide();
-        that.$errorPercent.hide();
-
-        for (var i = 0; i < that.$questions.length; i++) {
-          var $question = $(that.$questions[i]);
-          $question
-            .removeClass($question.attr('data-showanswer'))
-            .addClass($question.attr('data-hideanswer'));
+          for (var i = 0; i < that.$questions.length; i++) {
+            var $question = $(that.$questions[i]);
+            $question
+              .removeClass($question.attr('data-hideanswer'))
+              .addClass($question.attr('data-showanswer'));
+          }
         }
-
-        that.$btn_hideAnswer.hide();
-        that.$btn_showAnswer.show();
-      })
+      });
 
 
       this.$questions.off().on(that.click, function (e) {

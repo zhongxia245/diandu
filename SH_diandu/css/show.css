@@ -175,6 +175,7 @@ ul, li {
   position: absolute;
   z-index: 9999;
   border-right: 5px;
+  box-shadow: 0 0 50px black;
 }
 
 /*============使用swiper3.0的样式  START==========*/
