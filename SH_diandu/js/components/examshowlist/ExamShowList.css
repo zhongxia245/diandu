@@ -29,6 +29,7 @@ body, ul, li {
   background-size: 100% 100%;
 }
 
+/*============================横屏的特殊样式 START========================*/
 .exam-list-left, .exam-list-right {
   overflow: hidden;
   position: relative;
@@ -48,8 +49,24 @@ body, ul, li {
 .exam-list-left .exam-list-show-answer {
   width: 100%;
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
 }
+
+/*横屏左侧显示题目, 设置样式*/
+.exam-list-left .exam-list-question-title {
+  font-size: 24px;
+}
+
+/*横屏,右侧的题目直接隐藏,不去掉*/
+.exam-list-right .exam-list-question-title {
+  display: none;
+}
+
+.exam-list-right .exam-list-question-answer {
+  margin-top: 40px;
+}
+
+/*============================横屏的特殊样式 END========================*/
 
 .exam-list-righttop {
   position: absolute;
@@ -113,14 +130,14 @@ body, ul, li {
   background: url(../../../imgs/exam_list/exam_list.png) no-repeat;
   background-size: 85% auto;
   margin: 0 auto;
-  display: none;
+  /*display: none;*/
   position: relative;
   left: 5%;
 }
 
 .exam-list-main {
-  flex: 1;
   overflow-y: auto;
+  height: 100%;
 }
 
 .exam-list-question {
@@ -142,8 +159,9 @@ body, ul, li {
 .exam-list-question-answer > li > div {
   cursor: pointer;
   padding-left: 60px;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
+  padding-top: 7px;
+  /*line-height: 40px;*/
   margin-bottom: 15px;
 }
 
@@ -201,8 +219,7 @@ body, ul, li {
 /*单选正确,错误,选中,未选中 样式  END*/
 /*显示答案 START*/
 .exam-list-show-answer {
-  margin-bottom: 5px;
-  height: 50px;
+  min-height: 50px;
   background: url(../../../imgs/exam_list/exam_answer_show.png) no-repeat center;
   background-size: 90% auto;
   cursor: pointer;

@@ -199,13 +199,18 @@ var QuestionsList = (function () {
      * 设置容器缩放的比例
      */
     setScale: function () {
-      this.$container.find('.exam-question-list-layout-left').css('zoom', this.scale)
-      this.$container.find('.exam-question-list-layout-right').css('zoom', this.scale)
+      this.$container.find('.exam-question-list-top').css('zoom', this.scale)
+
+
       this.$btn_close.css('zoom', this.scale)
       if (this.config.isVertical) {
         this.$container.find('.exam-question-list-main').css('zoom', this.scale)
+        this.$container.find('.exam-question-list-layout-left').css('zoom', this.scale)
+        this.$container.find('.exam-question-list-layout-right').css('zoom', this.scale)
       } else {
         this.$container.find('.exam-question-list-main').css('zoom', this.scale * 1.3)
+        this.$container.find('.exam-question-percents').css('zoom', this.scale * 1.5)
+        this.$container.find('.exam-question-show-answer').css('zoom', this.scale)
       }
     },
 
