@@ -109,6 +109,7 @@ function init() {
     OLDWIDTH = parseFloat(strw);
     OLDHEIGHT = parseFloat(strh);
     initPoint(data);
+    console.log("data", data)
   })
 
   //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
@@ -821,7 +822,8 @@ function bindEvent() {
     /*上下滑动,展示缩略图和自动播放控制轴*/
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       console.log("swipeUp", $(ev.target).attr('class'))
-      if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+      var _className = $(ev.target).attr('class');
+      if (_className.indexOf('exam') === -1 && $(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
         ev.preventDefault();
         $(".gallery-main").show();
         $(".gallery-main").css('opacity', 1);
@@ -839,7 +841,21 @@ function fnExamClick(e) {
   var $cTar = $(e.currentTarget);
   var ids = $cTar.attr('data-id');
   var pointData = Util.getPointDataByIds(DATA, ids);
-  var questions = JSON.parse(pointData.questions);
+
+  //解析题目的JSON字符串, 加强版解析  BUG 300 START
+  var _count = 0;
+  var questions = [];
+  while (typeof pointData['questions'] === "string" && _count < 10) {
+    _count++;
+    pointData['questions'] = JSON.parse(pointData['questions']);
+  }
+  if (_count > 10) {
+    alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
+  } else {
+    questions = pointData['questions'];
+  }
+
+  // BUG 300 END
 
   var $secExam = $(GLOBAL.SEC_EXAM);
   $secExam.show()

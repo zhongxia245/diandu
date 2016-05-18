@@ -19,39 +19,87 @@
 
 /*容器样式 START*/
 .exam-question-list {
-  width: 620px;
-  height: 930px;
+  width: 100%;
+  height: 100%;
   -ms-zoom: 1;
   zoom: 1;
   display: flex;
   flex-direction: column;
   background: #FAFAFA;
-  border: 2px solid #F1F1F1;
   border-radius: 5px;
   position: relative;
+  overflow-y: auto;
 }
+
+.exam-question-close {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  z-index: 9999;
+  cursor: pointer;
+  box-shadow: 0 0 20px black;
+  border-radius: 50%;
+  background-image: url(../../../imgs/exam_list/exam_list_close.png);
+  background-size: 100% 100%;
+}
+
+/*针对横屏才起效果  START*/
+.exam-question-list-layout-left, .exam-question-list-layout-right {
+  overflow-y: auto;
+  position: relative;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.exam-question-list-layout-left {
+  background: #F2F2F2;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-question-list-layout-left .exam-question-percents {
+  margin-bottom: 40%;
+}
+
+.exam-question-list-layout-right {
+  background: #FAFAFA;
+}
+
+.exam-question-list-layout-right .exam-question-list-main {
+  margin-top: 40px;
+}
+
+.exam-question-list-layout-left .exam-question-percent {
+  margin: auto auto;
+  margin-bottom: 10px;
+}
+
+.exam-question-list-layout-left .exam-question-show-answer {
+  position: absolute;
+  width: 100%;
+  bottom: 5px;
+}
+
+/*针对横屏才起效果  END*/
 
 /*顶部 返回按钮,关闭按钮  START*/
 .exam-question-list-top {
-  height: 80px;
-  border-bottom: 10px solid #FECB98;
+  height: 40px;
+  border-bottom: 4px solid #FECB98;
   position: relative;
+  padding-right: 20px;
 }
 
 .exam-question-list-return {
-  width: 155px;
-  height: 70px;
-  line-height: 70px;
-  background: #00CC99;
-  margin: auto auto;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  font-size: 40px;
-  text-align: center;
-  color: #FFF;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
+  height: 40px;
+  width: 90px;
+  background: url(../../../imgs/exam_question/return.png) no-repeat;
+  background-size: 85% auto;
+  margin: 0 auto;
+  position: relative;
+  left: 5%;
 }
 
 .exam-question-list-close {
@@ -60,27 +108,28 @@
   font-size: 70px;
   position: absolute;
   right: 20px;
-  top: 10px;
+  top: -5px;
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+  z-index: 1;
 }
 
 /* 题目列表  START*/
 .exam-question-list-main {
-  padding: 0 34px;
+  padding: 0 17px;
 }
 
 .exam-question-list-item {
-  width: 90px;
-  height: 90px;
-  line-height: 90px;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
   text-align: center;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 17px;
-  margin-top: 17px;
-  font-size: 50px;
+  margin-right: 11px;
+  margin-top: 11px;
+  font-size: 26px;
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
@@ -90,47 +139,39 @@
 .exam-question-list-bottom {
   position: absolute;
   bottom: 0;
-  padding: 0 34px;
+  width: 100%;
 }
 
 .exam-question-percent {
   display: flex;
-  width: 290px;
-  height: 60px;
-  line-height: 60px;
+  width: 150px;
+  line-height: 30px;
   text-align: center;
   border: 2px solid #A5A5A5;
-  border-radius: 15px;
+  border-radius: 5px;
   color: #000;
-  font-size: 30px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  margin: 0 17px 5px 17px;
   overflow: hidden;
 }
 
 .exam-question-percent-left {
-  flex: 16.5;
+  flex: 12;
 }
 
 .exam-question-percent-right {
-  flex: 12.5;
+  flex: 13;
 }
 
-.exam-question-list-showAnswer, .exam-question-list-hideAnswer {
-  width: 540px;
-  height: 90px;
-  line-height: 90px;
-  text-align: center;
-  color: #7E7E7E;
-  margin: auto auto;
-  border: 5px solid #808080;
-  border-radius: 10px;
-  font-size: 50px;
-  -webkit-user-select: none;
-  user-select: none;
+/*显示答案 START*/
+.exam-question-show-answer {
+  min-height: 50px;
+  background: url(../../../imgs/exam_list/exam_answer_show.png) no-repeat center;
+  background-size: 90% auto;
   cursor: pointer;
 }
 
-.exam-question-list-hideAnswer {
-  color: #FFF;
-  background: #7F7F7F;
+.exam-question-hide-answer {
+  background: url(../../../imgs/exam_list/exam_answer_hide.png) no-repeat center;
+  background-size: 90% auto;
 }

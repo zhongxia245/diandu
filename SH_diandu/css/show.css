@@ -186,6 +186,12 @@ ul, li {
   margin-right: auto;
 }
 
+.swiper-container .swiper-button-next, .swiper-container .swiper-button-prev {
+  background-size: 100% 100%;
+  width: 54px;
+  height: 88px;
+}
+
 .swiper-slide {
   background-size: 100% 100%;
   background-size: cover;

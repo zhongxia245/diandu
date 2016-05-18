@@ -154,9 +154,11 @@ var _data = (function () {
         var destItems = [];
         var items = srcArr[i]['data'];
 
+        destPage['delPointIds'] = destPage['delPointIds'] || "";
+
         for (var j = 0; j < items.length; j++) {
 
-          if (!items[j].isRemove && !isEmpty(items[j])) {
+          if (!items[j].isRemove && !isEmpty(items[j])) { //去掉删除的点读位
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -164,14 +166,20 @@ var _data = (function () {
               url: items[j].url,
               title: items[j].title,
               content: items[j].content,
+              hide: items[j].hide ? 1 : 0,
               questions: JSON.stringify(items[j].questions),
               type: _data.getTypeByName(items[j].type)
             }
             if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
             destItems.push(obj);
+          } else {
+            //记录下删除的点读位ID
+            var _oldid = items[j]['oldId'] ? items[j]['oldId'] : '';
+            destPage['delPointIds'] += _oldid + ","
           }
         }
 
+        destPage['delPointIds'] = destPage['delPointIds'].length > 0 ? destPage['delPointIds'].substr(0, destPage['delPointIds'].length - 1) : '';
         destPage['points'] = destItems;
         destArr.push(destPage)
       }
@@ -259,6 +267,7 @@ var _edit = (function () {
       _initPages(data.pages);
       //把数据解析到window.DD.items里面
       _data2DDItems(data);
+      _setPointState(data.pages);
       GLOBAL.ISEDIT = {
         flag: true,
         id: id
@@ -310,8 +319,12 @@ var _edit = (function () {
     $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true)
     $('#input[name="pic"]').val(data['pic'])
     $('#chargeStandard').val(data['cost'])
-    if (data['background'])
-      $('#btnAutoAudio>span').text(data['background'])
+    $('#file_btnAutoAudio_path').val(data['background'])
+    $('#btnAutoAudio>span').text(data['bgFileName'])
+    //TODO:BUG:280 背景音乐乱码, 需要后台返回文件名, 上传的时候已经上传,需要后端保存起来
+    //if (data['background']) {
+    //  $('#btnAutoAudio>span').text(data['background'])
+    //}
   }
 
   /**
@@ -371,6 +384,7 @@ var _edit = (function () {
     var type = point['type'];
     var fileName = point['filename'];
     var url = point['url'];
+    var hide = point['hide'] ? true : false;
 
     var ids = dataid.split('_');
     var $currentTarget = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).eq(0);
@@ -379,6 +393,7 @@ var _edit = (function () {
     $filemask.attr('data-type', type);
     var $target, className;
     $rightName.removeClass('notselect');
+
     switch (type) {
       case "1":
         className = ".video";
@@ -412,6 +427,11 @@ var _edit = (function () {
     $('#__file' + id).hide();
   }
 
+  /**
+   * 把编辑返回的数据, 保存到window.DD.items里面
+   * @param data
+   * @private
+   */
   function _data2DDItems(data) {
     $('input[name="pic"]').val(data['pic']);
     var pages = data.pages;
@@ -426,6 +446,20 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
         window.DD.items[i]['data'][j]['questions'] = obj['questions'];
+        window.DD.items[i]['data'][j]['hide'] = (obj['hide'] ? true : false);
+      }
+    }
+  }
+
+  //设置点读位的状态,点读位是否为隐藏状态
+  function _setPointState(pages) {
+    for (var i = 0; i < pages.length; i++) {
+      for (var j = 0; j < pages[i]['points'].length; j++) {
+        var point = pages[i]['points'][j];
+        if (point['hide']) {
+          var _ids = (i + 1) + "_" + (j + 1)
+          $('[data-id="__diandu' + _ids + '"]').find('.img-hide').click()
+        }
       }
     }
   }
@@ -1036,9 +1070,17 @@ function fn2_examCreate(e) {
   var ids = CommonUtil.getIds(e);
   // 试卷数据
   var examData = _data.getDDItems(ids.id) || {};
-  if (typeof examData['questions'] === "string") {
+
+  //如果不是字符串就一直解析, 解析10次不行就跳过
+  var _count = 0;
+  while (typeof examData['questions'] === "string" && _count < 10) {
+    _count++;
     examData['questions'] = JSON.parse(examData['questions']);
   }
+  if (_count > 10) {
+    alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
+  }
+
   new ExamCreate('#_examCreate', examData, function (submitData) {
     //标识试卷已经上传
     var $uploadRight = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-right').eq(0);
@@ -1255,6 +1297,8 @@ function handleSubmit(e) {
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),
+    backgroud: $('#btnAutoAudio>span').text(),
+    bgFileName: $('#btnAutoAudio>span').text(),
     pages: _pagesInfo.data,
     delPageIds: _pagesInfo.delPageIds
   }
