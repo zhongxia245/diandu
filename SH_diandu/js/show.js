@@ -104,6 +104,9 @@ function init() {
   Model.getList(id, function (data) {
     DATA = data;
 
+    //排序点读页顺序
+    ArrayUtil.sortByKey(data.pages, 'seq');
+
     var strw = data && data.pages.length && data.pages[0].w || "1200";
     var strh = data && data.pages.length && data.pages[0].h || "675";
     OLDWIDTH = parseFloat(strw);
@@ -291,13 +294,16 @@ function setScale(selector, size) {
  * @return {[type]} [description]
  */
 function initSwipe() {
-  if (Util.IsPC()) {
+
+  //PC端,展示左右剪头,只有一个 点读页不展示
+  if (Util.IsPC() && DATA.pages.length > 1) {
     $('.swiper-button-next').show();
     $('.swiper-button-prev').show();
   } else {
     $('.swiper-button-next').hide();
     $('.swiper-button-prev').hide();
   }
+
   window.galleryTop = new Swiper('.gallery-top', {
     autoplayStopOnLast: true,
     nextButton: '.swiper-button-next',
@@ -368,11 +374,14 @@ function initSlide() {
  */
 function initPage(id, data) {
   var html = '';
+
   if (data || data['pages']) {
     var pages = data['pages'];
+
     $('#id_pagination_total').text(pages.length);
     for (var i = 0; i < pages.length; i++) {
       var subid = GLOBAL.PREBGID + i;  //每一个页面的id
+
       //获取图片的宽高
       Util.getImageWH(pages[i]['pic'], {subid: subid, data: pages[i], i: i}, function (obj, param) {
         var bgSize = '100% auto';
@@ -420,6 +429,7 @@ function initPage(id, data) {
         //所有点读位置生成结束
         bindEvent();
       })
+
 
       html += initDianDuPage(pages[i], subid);
     }
@@ -479,58 +489,58 @@ function initThumbs(id, pages) {
  */
 function initCircle(data, w, h, scale) {
 
-  pointDatas = data.data['points']
+  var pointDatas = data.data['points']
 
   var html = "";
   html += '<div data-id="all-radius" data-hide="all-radius-hide">'
   for (var i = 0; i < pointDatas.length; i++) {
+    if (pointDatas[i]['hide'] != "1") {
+      //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
+      var diff = DIFF * scale;
+      var pointSize = scale * POINTPOINTSIZE;
+      var left = parseFloat(pointDatas[i].x) * w + diff;
+      var top = parseFloat(pointDatas[i].y) * h + diff;
+      var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
+      var type = pointDatas[i]['type'];
+      var url = pointDatas[i]['url'];
+      var filename = pointDatas[i]['filename'];
+      var title = pointDatas[i]['title'];
+      var content = pointDatas[i]['content'];
+      var question = pointDatas[i]['questions'];
 
-    //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
-    var diff = DIFF * scale;
-    var pointSize = scale * POINTPOINTSIZE;
-    var left = parseFloat(pointDatas[i].x) * w + diff;
-    var top = parseFloat(pointDatas[i].y) * h + diff;
-    var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
-    var type = pointDatas[i]['type'];
-    var url = pointDatas[i]['url'];
-    var filename = pointDatas[i]['filename'];
-    var title = pointDatas[i]['title'];
-    var content = pointDatas[i]['content'];
-    var question = pointDatas[i]['questions'];
+      var className = '';
+      var mediaImg = "";
 
-    var className = '';
-    var mediaImg = "";
+      switch (type) {
+        case 1:
+        case "1": //视频
+          className = 'm-video';
+          mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
+          break;
+        case 2:
+        case "2": //音频
+          className = 'm-audio';
+          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
+          break;
+        case 3:
+        case "3": //图文
+          className = 'm-imgtext';
+          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
+          break;
+        case 4:
+        case "4"://考试
+          className = 'm-exam';
+          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_exam.png" alt="imgtext" />';
+          break;
+        default:
+          className = 'm-video';
+          break;
+      }
 
-    switch (type) {
-      case 1:
-      case "1": //视频
-        className = 'm-video';
-        mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
-        break;
-      case 2:
-      case "2": //音频
-        className = 'm-audio';
-        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
-        break;
-      case 3:
-      case "3": //图文
-        className = 'm-imgtext';
-        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
-        break;
-      case 4:
-      case "4"://考试
-        className = 'm-exam';
-        mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_exam.png" alt="imgtext" />';
-        break;
-      default:
-        className = 'm-video';
-        break;
+      html += '<div class="' + className + '" data-id="' + (data.i + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+      html += mediaImg;
+      html += '</div>'
     }
-
-    html += '<div class="' + className + '" data-id="' + (data.i + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
-    html += mediaImg;
-    html += '</div>'
-
   }
   html += '</div>'
   return html;
@@ -849,7 +859,7 @@ function fnExamClick(e) {
     _count++;
     pointData['questions'] = JSON.parse(pointData['questions']);
   }
-  if (_count > 10) {
+  if (_count >= 10) {
     alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
   } else {
     questions = pointData['questions'];

@@ -137,11 +137,13 @@ ExamShowList.prototype.createAnswers = function (answers, type, index) {
   html += '<ul class="exam-list-question-answer">'
   for (var i = 0; i < answers.length; i++) {
     var answer = answers[i];
-    html += '  <li data-type="' + type + '" data-flag="' + answer.answer + '" data-id="' + (index + '_' + i) + '">'  //li列表上,标注着该选项是否为答案
-    html += '    <div class="exam-list-' + type + '">'
-    html += '<span>' + answer.text + '</span>';
-    html += '    </div>'
-    html += '  </li>'
+    if (answer.text.length > 0) {
+      html += '  <li data-type="' + type + '" data-flag="' + answer.answer + '" data-id="' + (index + '_' + i) + '">'  //li列表上,标注着该选项是否为答案
+      html += '    <div class="exam-list-' + type + '">'
+      html += '<span>' + answer.text + '</span>';
+      html += '    </div>'
+      html += '  </li>'
+    }
   }
   html += '</ul>'
   return html;

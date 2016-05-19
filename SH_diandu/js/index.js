@@ -93,7 +93,6 @@ var _upload = (function () {
   }
 })();
 
-
 /***************************************
  * window.DD.items 数据对象方法
  ***************************************/
@@ -147,7 +146,8 @@ var _data = (function () {
           pic: srcArr[i].pic,
           h: srcArr[i].h,
           w: srcArr[i].w,
-          id: srcArr[i]['oldId']
+          id: srcArr[i]['oldId'],
+          seq: srcArr[i]['sort']
         };
 
         //点读位
@@ -167,7 +167,7 @@ var _data = (function () {
               title: items[j].title,
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
-              questions: JSON.stringify(items[j].questions),
+              questions: typeof items[j]['questions'] !== "string" ? JSON.stringify(items[j].questions) : items[j].questions,
               type: _data.getTypeByName(items[j].type)
             }
             if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
@@ -262,12 +262,23 @@ var _edit = (function () {
    */
   function initEdit(id) {
     Model.getList(id, function (data) {
-      console.log("data", data)
+      console.log("load editData success! ", data)
+
+      //编辑的时候,按照点读页进行排序
+      ArrayUtil.sortByKey(data.pages, 'seq');
+
+      //初始化 表单数据
       _initFormData(data);
+
+      //初始化点读页
       _initPages(data.pages);
+
       //把数据解析到window.DD.items里面
       _data2DDItems(data);
+
+      //设置点读位状态, 显示或者隐藏
       _setPointState(data.pages);
+
       GLOBAL.ISEDIT = {
         flag: true,
         id: id
@@ -321,10 +332,6 @@ var _edit = (function () {
     $('#chargeStandard').val(data['cost'])
     $('#file_btnAutoAudio_path').val(data['background'])
     $('#btnAutoAudio>span').text(data['bgFileName'])
-    //TODO:BUG:280 背景音乐乱码, 需要后台返回文件名, 上传的时候已经上传,需要后端保存起来
-    //if (data['background']) {
-    //  $('#btnAutoAudio>span').text(data['background'])
-    //}
   }
 
   /**
@@ -384,7 +391,7 @@ var _edit = (function () {
     var type = point['type'];
     var fileName = point['filename'];
     var url = point['url'];
-    var hide = point['hide'] ? true : false;
+    var hide = point['hide'] == "1" ? true : false;
 
     var ids = dataid.split('_');
     var $currentTarget = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).eq(0);
@@ -446,7 +453,7 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
         window.DD.items[i]['data'][j]['questions'] = obj['questions'];
-        window.DD.items[i]['data'][j]['hide'] = (obj['hide'] ? true : false);
+        window.DD.items[i]['data'][j]['hide'] = (obj['hide'] == "1" ? true : false);
       }
     }
   }
@@ -456,7 +463,7 @@ var _edit = (function () {
     for (var i = 0; i < pages.length; i++) {
       for (var j = 0; j < pages[i]['points'].length; j++) {
         var point = pages[i]['points'][j];
-        if (point['hide']) {
+        if (point['hide'] == "1") {
           var _ids = (i + 1) + "_" + (j + 1)
           $('[data-id="__diandu' + _ids + '"]').find('.img-hide').click()
         }
@@ -1297,17 +1304,16 @@ function handleSubmit(e) {
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),
-    backgroud: $('#btnAutoAudio>span').text(),
     bgFileName: $('#btnAutoAudio>span').text(),
     pages: _pagesInfo.data,
     delPageIds: _pagesInfo.delPageIds
   }
 
-  //小组ID，开发用3000
-  data.teamid = teamid;  //Util.getQueryStringByName('teamid') || 3000;
-  data.unitid = unitid;  //Util.getQueryStringByName('unitid') || 405;
+  //需要传给后台的参数
+  data.teamid = teamid;
+  data.unitid = unitid;
   data.userid = userid;
-  data.checked = 1
+  data.checked = 1   //验证 是否审核通过
 
   //如果是编辑页面,把当前id传给后端
   if (GLOBAL.ISEDIT.flag) {
