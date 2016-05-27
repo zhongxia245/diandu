@@ -118,3 +118,4 @@ window.Util = (function () {
     getPointDataByIds: getPointDataByIds
   }
 })()
+

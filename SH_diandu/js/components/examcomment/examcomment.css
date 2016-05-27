@@ -1,0 +1,334 @@
+/*
+      复制 腾讯新闻的样式 START
+      url:http://info.3g.qq.com/g/s?f_pid=131&newchannel=news_h_nch&newpos=society_1_tab&aid=society_ss&id=news_20160521036701#comment
+    */
+body {
+  font: 400 14px/1.5 "\5FAE\8F6F\96C5\9ED1", Helvetica;
+  color: #000;
+  background-color: #fff;
+  -webkit-user-select: none;
+  -webkit-text-size-adjust: none;
+}
+
+ol, ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /*padding-bottom: .44rem !important;*/
+  font-size: .14rem;
+  color: #1b1b1b;
+  -webkit-user-select: auto !important;
+}
+
+.main-comment-list {
+  padding: 0 .1rem;
+}
+
+.main-comment-list li {
+  padding: .12rem 0 !important;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.main-comment-list.small li {
+  padding: .12rem .1rem !important;
+  border-bottom: 1px solid #f2f2f2
+}
+
+.main-comment-list.small2 li {
+  padding: .12rem 0;
+  border-bottom: 1px solid #ededed
+}
+
+.main-comment-list li:last-child {
+  border-bottom: 0
+}
+
+.main-comment-list .u-img {
+  display: block;
+  float: left;
+  width: .3rem;
+  height: .3rem;
+  margin-right: .06rem
+}
+
+.main-comment-list .img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-border-radius: 50%
+}
+
+.main-comment-list .detail {
+  overflow: hidden;
+  font-size: .14rem;
+  color: #333
+}
+
+.main-comment-list .cmt-title {
+  position: relative;
+  font-size: .1rem;
+  color: #888;
+  margin-right: .2rem;
+}
+
+.main-comment-list .cmt-title a {
+  color: #3f81e1
+}
+
+.main-comment-list .cmt-name {
+  /*display: block;*/
+  -webkit-box-flex: 1;
+  margin-bottom: .03rem;
+  font-weight: 700;
+  font-size: .12rem;
+  color: #3f81e1
+}
+
+.main-comment-list .cmt-setgood {
+  width: .18rem;
+  height: .18rem;
+  float: right;
+  background-image: url(../../../imgs/exam_comment/comment_good.png);
+  background-size: .18rem .18rem;
+}
+
+.main-comment-list .cmt-title time, .main-comment-list .cmt-title span {
+  margin-right: .02rem
+}
+
+.main-comment-list .cmt-title2 .cmt-name {
+  margin-bottom: 0
+}
+
+.main-comment-list.small .cmt-name {
+  -webkit-box-flex: 1
+}
+
+.main-comment-list .location:before {
+  content: '';
+  display: inline-block;
+  width: .07rem;
+  height: .1rem;
+  background: url(http://3gimg.qq.com/wap30/info/info5/img/sp_comment2.png?v=16051201) no-repeat 0 -.3rem;
+  -webkit-background-size: 1.5rem auto;
+  background-size: 1.5rem auto;
+  margin-right: .02rem;
+  vertical-align: -.02rem
+}
+
+.main-comment-list .cmt-content {
+  margin: .08rem 0;
+  line-height: 1.4
+}
+
+.main-comment-list .cmt-content .cmt-comment-audio {
+
+}
+
+.main-comment-list .cmt-content .cmt-comment-audio img {
+
+}
+
+.main-comment-list.small .cmt-content, .main-comment-list.small2 .cmt-content {
+  margin: .05rem 0 -.01rem
+}
+
+/*复制 腾讯新闻的样式 END*/
+
+/* 评论内容样式 START*/
+.cmt-container {
+  width: 90%;
+  overflow-y: auto;
+  margin: 0 auto;
+  -webkit-display: flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  background-color: #FAFAFA;
+  position: relative;
+  height: 100%;
+}
+
+.cmt-container .cmt-top {
+  position: relative;
+  height: .3rem;
+  line-height: .3rem;
+  margin-bottom: .15rem;
+  padding-left: .15rem;
+  background: #0e90d2;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  color: #FFF;
+  font-size: .18rem;
+}
+
+.cmt-container .cmt-top-img {
+  cursor: pointer;
+  position: absolute;
+  left: 45%;
+  top: .1rem;
+  width: .4rem;
+  height: .4rem;
+  background-image: url(../../../imgs/exam_comment/comment_text.png);
+  background-size: .4rem .4rem;
+}
+
+.cmt-container .cmt-top-img-on {
+  background-image: url(../../../imgs/exam_comment/comment_text_on.png);
+  background-size: .4rem .4rem;
+}
+
+.cmt-container .cmt-main {
+  flex: 1;
+}
+
+.cmt-container .cmt-content img {
+  max-height: 50%;
+  max-width: 50%;
+}
+
+.cmt-container .cmt-content .cmt-comment-audio {
+  width: 70%;
+  height: .3rem;
+  border-radius: .05rem;
+  background-color: #92D050;
+  display: flex;
+}
+
+.cmt-container .cmt-content .cmt-comment-audio .audio-size {
+  width: .3rem;
+  height: .3rem;
+  line-height: .2rem;
+  background: url(../../../imgs/exam_comment/comment_audio_size.png) no-repeat center;
+  background-size: .2rem .2rem;
+}
+
+.cmt-container .cmt-content .cmt-comment-audio .audio-length {
+  height: .3rem;
+  line-height: .3rem;
+  flex: 1;
+  text-align: right;
+  padding-right: .1rem;
+}
+
+/*创建评论 START*/
+.cmt-create {
+  padding: .2rem;
+  background: #F2F2F2;
+  border-radius: .05rem;
+}
+
+.cmt-create textarea {
+  width: 100%;
+}
+
+.cmt-create .cmt-upload-type {
+  height: .4rem;
+  margin: .1rem 0;
+}
+
+.cmt-upload-type .cmt-audio, .cmt-upload-type .cmt-image {
+  width: .4rem;
+  height: .4rem;
+  margin-right: .1rem;
+  float: left;
+  cursor: pointer;
+}
+
+.cmt-audio {
+  background: url(../../../imgs/exam_comment/comment_upload_audio.png);
+  background-size: .4rem .4rem;
+}
+
+.cmt-image {
+  background: url(../../../imgs/exam_comment/comment_upload_image.png);
+  background-size: .4rem .4rem;
+}
+
+.cmt-create .cmt-create-btns {
+  height: .45rem;
+  width: 100%;
+}
+
+.cmt-create-btns .cmt-cancle {
+  cursor: pointer;
+  height: .45rem;
+  width: 40%;
+  background: url(../../../imgs/exam_comment/comment_cancle.png) no-repeat;
+  background-size: auto .45rem;
+  float: left;
+}
+
+.cmt-create-btns .cmt-submit {
+  cursor: pointer;
+  height: .45rem;
+  width: 55%;
+  background: url(../../../imgs/exam_comment/comment_submit.png) no-repeat;
+  background-size: auto .45rem;
+  float: right;
+}
+
+.cmt-upload-div {
+  display: none;
+}
+
+.cmt-audio-div {
+  height: 1.2rem;
+}
+
+.cmt-audio-div-img {
+  height: .8rem;
+  background: url(../../../imgs/exam_comment/comment_audio_wait.png) no-repeat center;
+  background-size: .7rem auto;
+}
+
+.cmt-audio-div-text {
+  text-align: center;
+  font-style: italic;
+}
+
+.cmt-image-div {
+  width: 1.2rem;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  background: #5B9BD5;
+  margin: auto auto;
+  border-radius: .05rem;
+  font-size: .24rem;
+  text-align: center;
+  color: #FFF;
+  position: relative;
+}
+
+/*创建评论 END*/
+
+/*文件上传 START*/
+/*注意 ! importance 只在 webuploader 上使用, 上传插件初始化才生成下面的div, 因此 无法使用JS设置, 并且不设置 importance 会被覆盖*/
+.webuploader-container > div[id] {
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.webuploader-container > div[id] input {
+  position: absolute;
+  opacity: 0;
+}
+
+.webuploader-pick {
+  background: transparent;
+  padding: 0;
+  display: block !important;
+  padding: 0 !important;
+}
+
+.cmt-hide {
+  display: none !important;
+}
+
+/*文件上传 END*/
+/* 评论内容样式 END*/

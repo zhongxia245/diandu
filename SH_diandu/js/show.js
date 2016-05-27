@@ -5,14 +5,17 @@ var GLOBAL = {
   PREBGID: '_diandu',  //每一个背景页的前缀
   H_IMGSCALE: 1920 / 1080,  //横屏比例点
   V_IMGSCALE: 1080 / 1760,  //竖屏比例点
-  OLDWIDTH: 1200,  //创建页面的横屏宽度
+  OLDWIDTH: 1200,  //创建页面的横屏宽度  上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
   OLDHEIGHT: 960,  //创建页面的竖屏高度,
   EXAM_W: 0,
   EXAM_H: 0,
+  STARTSIZE: 100,   //点读开关缩放后大小
+  POINTPOINTSIZE: 72,  //点读位缩放前大小
   SEC_EXAM: '.sec-exam',  //考试展示容器
   SEC_EXAM_LIST: '.sec-exam .exam-list',  //考生页面容器
   SEC_QUESTION_LIST: '.sec-exam .question-list',  //题干列表容器
   CURRENTINDEX: 0,
+  videoid: 0 // 点读展示的id
 }
 
 /**
@@ -58,22 +61,10 @@ GLOBAL.BGAUDIO = {
 }
 
 
-//上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
-var OLDWIDTH = 1200;
-var OLDHEIGHT = 960;
-/*
- var SCREENSIZE = {
- h: {width: 1200, height: 675},
- v: {width: 540, height: 960}
- };
- */
-var STARTSIZE = 100; //创建时的点读位置大小为100px
-var POINTPOINTSIZE = 72; //点读位置默认大小
-
 /*
  * 计算点读位从100变成72的圆心位置偏移
  * */
-var DIFFR = (STARTSIZE - POINTPOINTSIZE) / 2;
+var DIFFR = (GLOBAL.STARTSIZE - GLOBAL.POINTPOINTSIZE) / 2;
 var DIFF = Math.sqrt(Math.pow(DIFFR, 2) / 2);
 
 
@@ -87,8 +78,6 @@ var DATA; //用来保存请求回来的变量
 var _ISCLICKTHUMBS = false; // 记录是否为点击缩略图进行跳转
 
 /*=============================初始化页面 START===========================*/
-
-
 $(function () {
   init();
 });
@@ -97,22 +86,23 @@ $(function () {
  * 初始化
  */
 function init() {
-  fn_onResize();
   // 点读页的ID,保存的时候会返回ID
-  var id = Util.getQueryStringByName('videoid') || 1080;
+  var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
 
   Model.getList(id, function (data) {
     DATA = data;
 
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
-
-    var strw = data && data.pages.length && data.pages[0].w || "1200";
-    var strh = data && data.pages.length && data.pages[0].h || "675";
-    OLDWIDTH = parseFloat(strw);
-    OLDHEIGHT = parseFloat(strh);
+    //var strw = data && data.pages.length && data.pages[0].w || "1200";
+    //var strh = data && data.pages.length && data.pages[0].h || "675";
+    //GLOBAL.OLDWIDTH = parseFloat(strw);
+    //GLOBAL.OLDHEIGHT = parseFloat(strh);
     initPoint(data);
     console.log("data", data)
+
+    //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
+    fn_onResize();
   })
 
   //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
@@ -126,6 +116,7 @@ function init() {
  * @return {[type]} [description]
  */
 window.onresize = function () {
+  //不能每次页面有变动 都重新渲染, 否则 评论 弹出输入框就有问题
   fn_onResize();
 }
 
@@ -145,7 +136,7 @@ function fn_onResize() {
   var _size;
   if (W > H) {
     //横屏
-    SCALE = (window.W / OLDWIDTH);
+    SCALE = (window.W / GLOBAL.OLDWIDTH);
     $('.cd-close').removeClass('cd-close-v');
     $('#div_video').css({
       width: '80%',
@@ -169,7 +160,7 @@ function fn_onResize() {
   }
   else {
     //竖屏
-    SCALE = (window.H / OLDWIDTH);
+    SCALE = (window.H / GLOBAL.OLDWIDTH);
     $('.cd-close').addClass('cd-close-v')
     $('#div_video').css({
       width: '100%',
@@ -194,7 +185,7 @@ function fn_onResize() {
 
   $('.sec-imgtext-main').css({width: _size, height: _size});
 
-  POINTSIZE = SCALE * POINTPOINTSIZE;
+  POINTSIZE = SCALE * GLOBAL.POINTPOINTSIZE;
 
   //设置顶部进度条的宽高
   styleHandler();
@@ -267,9 +258,8 @@ function initPoint(data) {
  * @return {[type]} [description]
  */
 function initScale_Scale(wrap, scale) {
-  var pointSize = POINTPOINTSIZE * scale;
-  console.log("pointSize", pointSize, "STARTSIZE", STARTSIZE * scale)
-  setScale(wrap + ' .m-dd-start', STARTSIZE * scale);
+  var pointSize = GLOBAL.POINTPOINTSIZE * scale;
+  setScale(wrap + ' .m-dd-start', GLOBAL.STARTSIZE * scale);
   setScale(wrap + ' .m-audio', pointSize);
   setScale(wrap + ' .m-audio img', pointSize);
   setScale(wrap + ' .m-video', pointSize);
@@ -327,8 +317,6 @@ function initSwipe() {
     spaceBetween: 5,
     freeMode: true
   });
-
-
   initSlide();
 }
 
@@ -342,11 +330,11 @@ function initSlide() {
     scrollBar: 'scroll-bar',
     entireBar: 'entire-bar',
     barLength: $('#scroll-bar').width(),
-    maxNumber: 100,
+    maxNumber: 30,
     value: 110,
     callback: function (value) {
       var $block = $('#action-block')
-      if (value <= 100) {
+      if (value <= 30) {
         $block.removeClass('close').addClass('open');
         $block.text(value);
         window.AUTOPLAYINTERVAL = value * 1000;
@@ -411,13 +399,11 @@ function initPage(id, data) {
           }
         }
 
-
         if (obj.w > obj.h) {
           scale = window.W / GLOBAL.OLDWIDTH;
         } else {
           scale = window.H / GLOBAL.OLDHEIGHT;
         }
-
         $wrap.css({height: h, width: w});
 
         $wrap.append(initCircle(param, w, h, scale))
@@ -429,7 +415,6 @@ function initPage(id, data) {
         //所有点读位置生成结束
         bindEvent();
       })
-
 
       html += initDianDuPage(pages[i], subid);
     }
@@ -444,13 +429,13 @@ function initPage(id, data) {
  */
 function initDianDuPage(data, id) {
   var bgPath = data['pic'];
-  //var cicleHtml = initCircle(data['points']);
   var h = $(window).height()
   var html = "";
-  html += '<div id="' + id + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
-  html += '    <div class="wrap">'
+  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+  html += '        <div class="m-dd-start-comment-div"></div>'
   html += '        <div class="m-dd-start"></div>'
-  //html += cicleHtml;
+  html += '    <div class="wrap">'
+  //html += '        <div class="m-dd-start"></div>'
   html += '    </div>'
   html += '</div>'
   return html;
@@ -468,10 +453,13 @@ function initThumbs(id, pages) {
     html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }
+
   var $thumbs = $('#' + id);
   $thumbs.html('').html(html);
+
   var $swiperSlide = $thumbs.find('.swiper-slide');
   $swiperSlide.eq(0).addClass('swiper-slide-active-custom');
+
   if (isVertical) {
     $swiperSlide.css({
       width: $('#thumbs').height() * 9 / 16
@@ -497,7 +485,7 @@ function initCircle(data, w, h, scale) {
     if (pointDatas[i]['hide'] != "1") {
       //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
       var diff = DIFF * scale;
-      var pointSize = scale * POINTPOINTSIZE;
+      var pointSize = scale * GLOBAL.POINTPOINTSIZE;
       var left = parseFloat(pointDatas[i].x) * w + diff;
       var top = parseFloat(pointDatas[i].y) * h + diff;
       var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
@@ -618,24 +606,66 @@ function closeVideoOrAudio(flag) {
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
 function bindEvent() {
-  console.log("bindEvent")
   // 启动开关
   $('.m-dd-start').off().on(click, function (e) {
+    //new ExamComment('.exam-comment', {data: []})
     e.preventDefault();
     e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
 
-    /*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
-    setHoverImgSrcx($('.m-dd-start'));
+    var $cTar = $(e.currentTarget);
     var $allRadius = $('div[data-id="all-radius"]');
-    /*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
 
     var hideClassName = $allRadius.attr('data-hide');
-    if ($allRadius.hasClass(hideClassName)) {
-      $allRadius.removeClass();
-    } else {
-      $allRadius.addClass(hideClassName);
-      closeVideoOrAudio(false);
+    var type = $cTar.attr('data-type') || 2;
+    var pageid = $cTar.parent().attr('data-id');
+    var _dianduid = $cTar.parent().attr('id');
+    var div_comment = '#' + _dianduid + " .m-dd-start-comment-div";
+    $(div_comment).hide()
+    console.log("type", type)
+    switch (type) {
+      //隐藏
+      case 0:
+      case "0":
+        $cTar.attr('class', 'm-dd-start-hide')
+        $allRadius.addClass(hideClassName);
+        closeVideoOrAudio(false);
+        break;
+
+      //显示点读
+      case 1:
+      case "1":
+        $cTar.attr('class', 'm-dd-start')
+        $allRadius.removeClass();
+        break;
+
+      //评论
+      case 2:
+      case "2":
+        $(div_comment).show()
+        $cTar.attr('class', 'm-dd-start-comment')
+        Model.getComment(pageid, function (result) {
+          new ExamComment('#' + _dianduid + " .m-dd-start-comment-div", {
+            data: result,
+            pageid: pageid,
+            videoid: GLOBAL.videoid
+          })
+        })
+        break;
     }
+    $cTar.attr('data-type', (parseInt(type) + 1) % 3)
+
+    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
+    //setHoverImgSrcx($('.m-dd-start'));
+    //var $allRadius = $('div[data-id="all-radius"]');
+    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
+    //
+    //var hideClassName = $allRadius.attr('data-hide');
+    //if ($allRadius.hasClass(hideClassName)) {
+    //  $allRadius.removeClass();
+    //} else {
+    //  $allRadius.addClass(hideClassName);
+    //  closeVideoOrAudio(false);
+    //}
     return false;
   });
 
@@ -833,7 +863,7 @@ function bindEvent() {
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       console.log("swipeUp", $(ev.target).attr('class'))
       var _className = $(ev.target).attr('class');
-      if (_className.indexOf('exam') === -1 && $(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+      if (_className.indexOf('exam') === -1 && $(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap') || $(ev.target).hasClass('m-dd-start-comment-div')) {
         ev.preventDefault();
         $(".gallery-main").show();
         $(".gallery-main").css('opacity', 1);

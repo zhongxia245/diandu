@@ -138,6 +138,7 @@ var _data = (function () {
     var srcArr = window.DD.items;
     ArrayUtil.sortByKey(srcArr, 'sort');
 
+
     //点读页
     for (var i = 0; i < srcArr.length; i++) {
       if (!srcArr[i].isRemove) { //去掉已经删除的点读页
@@ -175,7 +176,8 @@ var _data = (function () {
           } else {
             //记录下删除的点读位ID
             var _oldid = items[j]['oldId'] ? items[j]['oldId'] : '';
-            destPage['delPointIds'] += _oldid + ","
+            if (_oldid)
+              destPage['delPointIds'] += _oldid + ","
           }
         }
 
@@ -263,7 +265,6 @@ var _edit = (function () {
   function initEdit(id) {
     Model.getList(id, function (data) {
       console.log("load editData success! ", data)
-
       //编辑的时候,按照点读页进行排序
       ArrayUtil.sortByKey(data.pages, 'seq');
 

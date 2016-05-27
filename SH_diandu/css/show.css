@@ -21,7 +21,6 @@ ul, li {
   width: 100%;
   height: 100%;
   background-color: #000;
-  overflow: hidden;
 }
 
 .m-bg {
@@ -30,7 +29,7 @@ ul, li {
   background-repeat: no-repeat;
   position: relative;
   /*拉伸适应DIV大小*/
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  /*background-size: contain !important;*/
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
@@ -46,15 +45,42 @@ ul, li {
   /*background-color: red;*/
 }
 
-.m-dd-start {
+.m-dd-start, .m-dd-start-hide, .m-dd-start-comment {
   height: 72px;
   width: 72px;
   position: absolute;
   top: 10px;
   right: 10px;
-  background-repeat: no-repeat;
-  background-image: url('../imgs/start_on.png');
-  background-size: 100%;
+  z-index: 2;
+}
+
+/*点读开始*/
+.m-dd-start {
+  background: url('../imgs/start_on.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+/*点读隐藏*/
+.m-dd-start-hide {
+  background: url('../imgs/exam_comment/comment_hide.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+/*评论*/
+.m-dd-start-comment {
+  background: url('../imgs/exam_comment/comment_in.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+/*评论的容器*/
+.m-dd-start-comment-div {
+  z-index: 1;
+  position: absolute;
+  top: 20px;
+  bottom: 40px;
+  overflow: hidden;
+  width: 100%;
+  display: none;
 }
 
 .all-radius-hide {
