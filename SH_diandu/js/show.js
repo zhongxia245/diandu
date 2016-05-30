@@ -120,14 +120,19 @@ window.onresize = function (e) {
 //横竖屏切换事件
 window.addEventListener("orientationchange", function () {
 // 宣布新方向的数值
-  //alert(window.orientation);
-  fn_onResize();
+  console.log(window.orientation);
+  //直接重置有BUG, 需要停顿一下
+  setTimeout(function () {
+    fn_onResize();
+  }, 100)
+
 }, false);
 
 /**
  * 窗口变化时展示
  */
 function fn_onResize() {
+  console.log("onresize")
   window.W = $(window).width();
   window.H = $(window).height();
 
@@ -875,7 +880,7 @@ function bindEvent() {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
         console.log("swipeUp", $(ev.target).attr('class'))
-        if ($(ev.target).hasClass('swiper-slide')) {
+        if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
           $(".gallery-main").css('opacity', 1);

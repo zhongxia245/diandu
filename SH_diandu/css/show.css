@@ -83,6 +83,15 @@ ul, li {
   display: none;
 }
 
+/*横屏样式*/
+@media screen and (orientation: landscape) {
+  /* landscape-specific styles */
+  .m-dd-start-comment-div {
+    top: 0;
+    bottom: 0;
+  }
+}
+
 .all-radius-hide {
   display: none;
 }

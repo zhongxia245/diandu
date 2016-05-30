@@ -11,7 +11,13 @@ var ExamComment = (function () {
     this.data = config.data;
     this.scale = config.scale;
 
-    this.basePath = '../'
+    this.basePath = '../';  //评论图片的地址
+    this.avatarBaseURL = 'edu/course/';  //基本头像地址
+
+    //本地开发用
+    if (location.href.indexOf('192') !== -1 || location.href.indexOf('localhost') !== -1) {
+      this.avatarBaseURL = 'http://dev.catics.org/' + this.avatarBaseURL
+    }
 
     this.pageid = config.pageid || 1240;
     this.videoid = config.videoid || 1466;
@@ -84,7 +90,7 @@ var ExamComment = (function () {
         var comment = list[i];
         html += '<li data-id="' + comment.id + '">'
         html += '  <span class="u-img">'
-        html += '    <img src="' + comment.avatar + '" class="img">'
+        html += '    <img src="' + this.avatarBaseURL + comment.avatar + '" class="img">'
         html += '  </span>'
         html += '  <div class="detail">'
         html += '    <div class="cmt-name-wrap">'
@@ -169,18 +175,34 @@ var ExamComment = (function () {
         auto: true,
         threads: 1,
         duplicate: true,
+        compress: {
+          // 图片质量，只有type为`image/jpeg`的时候才有效。
+          quality: 30,
+          // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+          allowMagnify: false,
+          // 是否允许裁剪。
+          crop: false,
+          // 是否保留头部meta信息。
+          preserveHeaders: false,
+          // 如果发现压缩后文件大小比原来还大，则使用原来图片
+          // 此属性可能会影响图片自动纠正功能
+          noCompressIfLarger: false,
+          // 单位字节，如果图片大小小于此值，不会采用压缩。
+          compressSize: 0
+        },
         accept: {
           title: 'Images',
           extensions: 'gif,jpg,jpeg,bmp,png',
           mimeTypes: 'image/*'
         },
-        fileSingleSizeLimit: 1024 * 1024 * 3  //最大 3M
+        fileSingleSizeLimit: 1024 * 1024 * 10  //最大 10M
       })
 
       /**
        * 上传成功
        */
       this.uploader.on('uploadSuccess', function (file, res) {
+        console.log("file.size", file)
         var path = res._raw;
 
         that.attachment = path;
@@ -299,6 +321,7 @@ var ExamComment = (function () {
      * 隐藏评论
      */
     cancleCreateCmt: function () {
+
       this.type = "0"
       this.$textarea.val("");
       if (this.global.isUploadPage) {
