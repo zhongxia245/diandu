@@ -183,6 +183,7 @@ body {
 
 .cmt-container .cmt-main {
   flex: 1;
+  overflow-y: auto;
 }
 
 .cmt-container .cmt-content img {

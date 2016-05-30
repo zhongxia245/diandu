@@ -89,7 +89,7 @@ var ExamComment = (function () {
         html += '  <div class="detail">'
         html += '    <div class="cmt-name-wrap">'
         html += '      <a class="cmt-name">' + comment.truename + '</a>'
-        html += '      <img class="cmt-setgood" src="../imgs/exam_comment/comment_good.png" alt="">'
+        html += '      <div class="cmt-setgood"></div>'
         html += '      <span style="float: right; margin-right:10px">' + comment.support + '</span>'
         html += '    </div>'
         html += '    <div class="cmt-title">'
@@ -145,7 +145,7 @@ var ExamComment = (function () {
           html = comment.content;
           break;
         case this.global.ENUM.IMG:
-          html = '<img src="' + this.basePath + comment.attachment + '" alt="">'
+          html = '<img class="cmt-image" src="' + this.basePath + comment.attachment + '" alt="">'
           break;
         case this.global.ENUM.AUDIO:
           html += '<div class="cmt-comment-audio">'

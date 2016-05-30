@@ -29,8 +29,6 @@ SlideBar.prototype = {
   drag: function () {
     var that = this;
     var actionBlock = document.getElementById(that.actionBlock);
-    var barLength = that.barLength;
-    var maxNumber = that.maxNumber;
     actionBlock.onmousedown = function (evdown) {
       evdown = evdown || event;
       var target = evdown.target;
@@ -47,7 +45,6 @@ SlideBar.prototype = {
         that.value = Math.round((target.offsetLeft) / (that.barLength - target.offsetWidth) * that.maxNumber);
         that.value = that.value === 0 ? 1 : that.value;
         that.callback && that.callback(that.value, that);
-        //}
         return false;
       }
 
@@ -87,8 +84,9 @@ SlideBar.prototype = {
   },
 
   setValue: function (value) {
+    var _leftVal = value > this.maxNumber ? this.maxNumber * 0.9 : value;
     var $block = $('#' + this.actionBlock);
-    var _left = this.barLength / this.maxNumber * value;
+    var _left = this.barLength / this.maxNumber * _leftVal;
     $block.css('left', _left);
     this.callback && this.callback(value);
   },

@@ -9,15 +9,16 @@ var GLOBAL = {
   OLDHEIGHT: 960,  //创建页面的竖屏高度,
   EXAM_W: 0,
   EXAM_H: 0,
-  STARTSIZE: 100,   //点读开关缩放后大小
-  POINTPOINTSIZE: 72,  //点读位缩放前大小
+  STARTSIZE: 100,   //点读开关大小
+  CREATPOINTSIZE: 86, //创建页面的点读位大小 为 86,  用于计算 圆心 偏差用
+  POINTSIZE: 72,  //点读位缩放前大小
   SEC_EXAM: '.sec-exam',  //考试展示容器
   SEC_EXAM_LIST: '.sec-exam .exam-list',  //考生页面容器
   SEC_QUESTION_LIST: '.sec-exam .question-list',  //题干列表容器
   CURRENTINDEX: 0,
-  videoid: 0 // 点读展示的id
+  videoid: 0, // 点读展示的id,
+  DEFAULTAUTOPLAYTIME: 15, //自动播放的间隔时间
 }
-
 /**
  * 背景音乐相关操作
  */
@@ -64,7 +65,7 @@ GLOBAL.BGAUDIO = {
 /*
  * 计算点读位从100变成72的圆心位置偏移
  * */
-var DIFFR = (GLOBAL.STARTSIZE - GLOBAL.POINTPOINTSIZE) / 2;
+var DIFFR = (GLOBAL.CREATPOINTSIZE - GLOBAL.POINTSIZE) / 2;
 var DIFF = Math.sqrt(Math.pow(DIFFR, 2) / 2);
 
 
@@ -94,10 +95,7 @@ function init() {
 
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
-    //var strw = data && data.pages.length && data.pages[0].w || "1200";
-    //var strh = data && data.pages.length && data.pages[0].h || "675";
-    //GLOBAL.OLDWIDTH = parseFloat(strw);
-    //GLOBAL.OLDHEIGHT = parseFloat(strh);
+
     initPoint(data);
     console.log("data", data)
 
@@ -115,10 +113,16 @@ function init() {
  * 页面大小变化，则重新绘制点读位
  * @return {[type]} [description]
  */
-window.onresize = function () {
+window.onresize = function (e) {
   //不能每次页面有变动 都重新渲染, 否则 评论 弹出输入框就有问题
-  fn_onResize();
+  //fn_onResize();
 }
+//横竖屏切换事件
+window.addEventListener("orientationchange", function () {
+// 宣布新方向的数值
+  //alert(window.orientation);
+  fn_onResize();
+}, false);
 
 /**
  * 窗口变化时展示
@@ -132,7 +136,6 @@ function fn_onResize() {
     width: window.W
   });
 
-  console.log('window.W:', window.W, "window.H", window.H)
   var _size;
   if (W > H) {
     //横屏
@@ -185,7 +188,7 @@ function fn_onResize() {
 
   $('.sec-imgtext-main').css({width: _size, height: _size});
 
-  POINTSIZE = SCALE * GLOBAL.POINTPOINTSIZE;
+  POINTSIZE = SCALE * GLOBAL.POINTSIZE;
 
   //设置顶部进度条的宽高
   styleHandler();
@@ -258,8 +261,16 @@ function initPoint(data) {
  * @return {[type]} [description]
  */
 function initScale_Scale(wrap, scale) {
-  var pointSize = GLOBAL.POINTPOINTSIZE * scale;
-  setScale(wrap + ' .m-dd-start', GLOBAL.STARTSIZE * scale);
+  var pointSize = GLOBAL.POINTSIZE * scale;
+  var startSize;
+  if (isVertical) {
+    startSize = GLOBAL.STARTSIZE * window.screen.width / 800;
+  } else {
+    startSize = GLOBAL.STARTSIZE * window.screen.width / 1200;
+  }
+  setScale(wrap + ' .m-dd-start', startSize > 80 ? 80 : startSize);
+
+
   setScale(wrap + ' .m-audio', pointSize);
   setScale(wrap + ' .m-audio img', pointSize);
   setScale(wrap + ' .m-video', pointSize);
@@ -294,29 +305,38 @@ function initSwipe() {
     $('.swiper-button-prev').hide();
   }
 
-  window.galleryTop = new Swiper('.gallery-top', {
-    autoplayStopOnLast: true,
-    nextButton: '.swiper-button-next',
-    prevButton: '.swiper-button-prev',
-    onSlideChangeEnd: function (swiper) {
-      //closeVideoOrAudio();
-      GLOBAL.CURRENTINDEX = swiper.activeIndex;  // 记录当前的点读页
+  // 如果已经初始化了, 则不在初始化 Swiper
+  if (!window.galleryTop) {
+    window.galleryTop = new Swiper('.gallery-top', {
+      autoplayStopOnLast: true,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      onSlideChangeEnd: function (swiper) {
+        //closeVideoOrAudio();
+        GLOBAL.CURRENTINDEX = swiper.activeIndex;  // 记录当前的点读页
 
-      $('#id_pagination_cur').text(swiper.activeIndex + 1);
-      !_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
-      _ISCLICKTHUMBS = true;
-      //播放到最后一个,停止自动播放
-      if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
-        window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+        $('#id_pagination_cur').text(swiper.activeIndex + 1);
+
+        var _$thumbsSwipers = $('#thumbs>div[data-id]');
+        _$thumbsSwipers.removeClass('swiper-slide-active-custom');
+        _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+
+        //!_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
+        //_ISCLICKTHUMBS = true;
+
+        //播放到最后一个,停止自动播放
+        if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+          window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+        }
       }
-    }
-  });
+    });
 
-  window.galleryThumbs = new Swiper('.gallery-thumbs', {
-    slidesPerView: 5,
-    spaceBetween: 5,
-    freeMode: true
-  });
+    window.galleryThumbs = new Swiper('.gallery-thumbs', {
+      slidesPerView: 5,
+      spaceBetween: 5,
+      freeMode: true
+    });
+  }
   initSlide();
 }
 
@@ -349,7 +369,8 @@ function initSlide() {
       }
     }
   });
-  window.silideBar.setValue(15);
+  //设置 刚开始 自动播放的间隔时间
+  window.silideBar.setValue(GLOBAL.DEFAULTAUTOPLAYTIME);
   //window.galleryTop.stopAutoplay();
 }
 
@@ -485,7 +506,7 @@ function initCircle(data, w, h, scale) {
     if (pointDatas[i]['hide'] != "1") {
       //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
       var diff = DIFF * scale;
-      var pointSize = scale * GLOBAL.POINTPOINTSIZE;
+      var pointSize = scale * GLOBAL.POINTSIZE;
       var left = parseFloat(pointDatas[i].x) * w + diff;
       var top = parseFloat(pointDatas[i].y) * h + diff;
       var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
@@ -613,8 +634,8 @@ function bindEvent() {
     e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
 
     var $cTar = $(e.currentTarget);
-    var $allRadius = $('div[data-id="all-radius"]');
-
+    //var $allRadius = $('div[data-id="all-radius"]');  //隐藏点读页
+    var $allRadius = $cTar.parent().find('div[data-id="all-radius"]');  //隐藏当前点读页
     var hideClassName = $allRadius.attr('data-hide');
     var type = $cTar.attr('data-type') || 2;
     var pageid = $cTar.parent().attr('data-id');
@@ -643,6 +664,7 @@ function bindEvent() {
       case "2":
         $(div_comment).show()
         $cTar.attr('class', 'm-dd-start-comment')
+
         Model.getComment(pageid, function (result) {
           new ExamComment('#' + _dianduid + " .m-dd-start-comment-div", {
             data: result,
@@ -650,6 +672,9 @@ function bindEvent() {
             videoid: GLOBAL.videoid
           })
         })
+
+        //关闭自动播放,超出最大范围值, 就显示为关闭
+        window.silideBar.setValue(110);
         break;
     }
     $cTar.attr('data-type', (parseInt(type) + 1) % 3)
@@ -850,7 +875,7 @@ function bindEvent() {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
         console.log("swipeUp", $(ev.target).attr('class'))
-        if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+        if ($(ev.target).hasClass('swiper-slide')) {
           ev.preventDefault();
           $(".gallery-main").show();
           $(".gallery-main").css('opacity', 1);
@@ -862,8 +887,8 @@ function bindEvent() {
     /*上下滑动,展示缩略图和自动播放控制轴*/
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       console.log("swipeUp", $(ev.target).attr('class'))
-      var _className = $(ev.target).attr('class');
-      if (_className.indexOf('exam') === -1 && $(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap') || $(ev.target).hasClass('m-dd-start-comment-div')) {
+      //var _className = $(ev.target).attr('class');
+      if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
         ev.preventDefault();
         $(".gallery-main").show();
         $(".gallery-main").css('opacity', 1);

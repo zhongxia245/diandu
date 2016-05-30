@@ -4,9 +4,29 @@
 document.addEventListener('touchmove', function (event) {
   //TODO:禁用这个之后,滚动条就不能用了,因此这里放开了图文展示的滚动条展示
   var className = event.target.getAttribute('class') || "";
-  if (className.indexOf('sec') === -1 && className.indexOf('exam-list') === -1) {
+  console.log("className", className)
+  var allowScrolls = [
+    "sec",
+    "exam",
+    'cmt',
+    'detail',
+    'time'
+  ]
+  var flag = true;
+  for (var i = 0; i < allowScrolls.length; i++) {
+    if (className.indexOf(allowScrolls[i]) !== -1) {
+      flag = false;
+    }
+  }
+  if (flag) {
     event.preventDefault();
   }
+  //if (className.indexOf('sec') === -1 && className.indexOf('exam-list') === -1) {
+  //  event.preventDefault();
+  //}
+  //if (className.indexOf('m-bg') !== -1) {
+  //  event.preventDefault();
+  //}
 }, false);
 
 /* Zepto v1.1.4 - zepto event ajax form ie - zeptojs.com/license */
