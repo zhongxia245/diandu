@@ -297,7 +297,8 @@ function setScale(selector, size) {
 }
 
 /**
- * [TODO: 这个地方 必须初始化, 否则 切换 横竖屏的时候, swiper 每一个页 不占满屏幕]
+ * [DO: 这个地方 必须初始化, 否则 切换 横竖屏的时候, swiper 每一个页 不占满屏幕]
+ * 解决: 使用 swiper.onResize();
  * 初始化左右滑动的插件
  * @return {[type]} [description]
  */
