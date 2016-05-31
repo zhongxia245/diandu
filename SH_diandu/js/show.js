@@ -135,7 +135,6 @@ function fn_onResize() {
   console.log("onresize")
   window.W = $(window).width();
   window.H = $(window).height();
-
   $('#main').css({
     height: window.H,
     width: window.W
@@ -245,6 +244,8 @@ function styleHandler() {
  * @return {[type]}      [description]
  */
 function initPoint(data) {
+  $('#pages').html('');
+  $('#thumbs').html('');
   initPage('pages', data);
   initThumbs('thumbs', data.pages);
   initSwipe();
@@ -296,6 +297,7 @@ function setScale(selector, size) {
 }
 
 /**
+ * [TODO: 这个地方 必须初始化, 否则 切换 横竖屏的时候, swiper 每一个页 不占满屏幕]
  * 初始化左右滑动的插件
  * @return {[type]} [description]
  */
@@ -342,6 +344,10 @@ function initSwipe() {
       freeMode: true
     });
   }
+
+  //大小改变之后, 重新规划大小
+  window.galleryTop.onResize()
+  window.galleryThumbs.onResize()
   initSlide();
 }
 
