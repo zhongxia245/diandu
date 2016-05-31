@@ -11,12 +11,12 @@ var ExamComment = (function () {
     this.data = config.data;
     this.scale = config.scale;
 
-    this.basePath = '../';  //评论图片的地址
-    this.avatarBaseURL = 'edu/course/';  //基本头像地址
+    this.basePath = ""; //'../';  //评论图片的地址
+    this.avatarBaseURL = '/edu/course/';  //基本头像地址
 
     //本地开发用
     if (location.href.indexOf('192') !== -1 || location.href.indexOf('localhost') !== -1) {
-      this.avatarBaseURL = 'http://dev.catics.org/' + this.avatarBaseURL
+      this.avatarBaseURL = 'http://dev.catics.org' + this.avatarBaseURL
     }
 
     this.pageid = config.pageid || 1240;
@@ -167,7 +167,7 @@ var ExamComment = (function () {
      */
     initWebUploader: function () {
       var that = this;
-      var url = "../php/fileupload2.php";
+      var url = "php/fileupload2.php";
       this.uploader = WebUploader.create({
         server: url,
         pick: this.selector + " .cmt-image-div",
@@ -209,7 +209,7 @@ var ExamComment = (function () {
 
         that.$container.find('.webuploader-pick').addClass('cmt-hide');
         that.$div_uploadImage.css({
-          backgroundImage: 'url(../' + path + ')',  //在 show.html 就不需要使用这个地址
+          backgroundImage: 'url(' + path + ')',  //在 show.html 就不需要使用这个地址
           backgroundSize: 'auto 100%',
           backgroundRepeat: 'no-repeat',
           backgroundColor: 'transparent',

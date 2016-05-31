@@ -143,14 +143,27 @@ body {
   width: 90%;
   overflow-y: auto;
   margin: 0 auto;
+  border-radius: .05rem;
+
   -webkit-display: flex;
   display: flex;
+
   -webkit-flex-direction: column;
   flex-direction: column;
   background-color: #FAFAFA;
   position: relative;
   height: 100%;
-  box-shadow: 0 0 30px #000;
+  -moz-box-shadow: 0 0 .3rem #000;
+  -webkit-box-shadow: 0 0 .3rem #000;
+  box-shadow: 0 0 .3rem #000;
+}
+
+/*横屏样式*/
+@media screen and (orientation: landscape) {
+  /* landscape-specific styles */
+  .cmt-container {
+    width: 100%;
+  }
 }
 
 .cmt-container .cmt-top {
