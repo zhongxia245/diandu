@@ -52,13 +52,15 @@ if (!file_exists($uploadDir)) {
     @mkdir($uploadDir);
 }
 // Get a file name
-if (isset($_REQUEST["name"])) {
-    $fileName = $_REQUEST["name"];
-} elseif (!empty($_FILES)) {
-    $fileName = $_FILES["file"]["name"];
-} else {
-    $fileName = uniqid("file_");
-}
+// if (isset($_REQUEST["name"])) {
+//     $fileName = $_REQUEST["name"];
+// } elseif (!empty($_FILES)) {
+//     $fileName = $_FILES["file"]["name"];
+// } else {
+//     $fileName = uniqid("file_");
+// }
+$fileName = uniqid("file_");
+
 $md5File = @file('md5list2.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $md5File = $md5File ? $md5File : array();
 if (isset($_REQUEST["md5"]) && array_search($_REQUEST["md5"], $md5File ) !== FALSE ) {

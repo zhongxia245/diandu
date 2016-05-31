@@ -34,6 +34,10 @@ var ExamComment = (function () {
       isUploadPage: false, // 当前是否显示  图片上传, 语音录制的页面, 是: 点击取消, 返回 创建 评论页面
     }
     this.render();
+
+    if (!isWeiXin()) {
+      $(this.selector).find('.cmt-audio').hide();
+    }
     return this;
   }
 
@@ -88,6 +92,8 @@ var ExamComment = (function () {
       var html = '';
       for (var i = 0; i < list.length; i++) {
         var comment = list[i];
+        comment.avatar = comment.avatar || "diandu/imgs/exam_comment/default.jpeg"
+        comment.truename = comment.truename || "匿名用户"
         html += '<li data-id="' + comment.id + '">'
         html += '  <span class="u-img">'
         html += '    <img src="' + this.avatarBaseURL + comment.avatar + '" class="img">'
@@ -154,9 +160,10 @@ var ExamComment = (function () {
           html = '<img class="cmt-image" src="' + this.basePath + comment.attachment + '" alt="">'
           break;
         case this.global.ENUM.AUDIO:
+          comment.content = comment.content || '未知'
           html += '<div class="cmt-comment-audio">'
           html += '  <div class="audio-size"></div>'
-          html += ' <div class="audio-length" data-audio="' + comment.attachment + '">' + comment.attachment + '\'</div>'
+          html += ' <div class="audio-length" data-audio="' + comment.attachment + '">' + comment.content + '\'</div>'
           html += '</div>'
           break;
       }
@@ -233,6 +240,7 @@ var ExamComment = (function () {
       this.$btn_submit = this.$container.find('.cmt-submit');
       this.$btn_audio = this.$container.find('.cmt-audio');
       this.$btn_image = this.$container.find('.cmt-image');
+      this.$playAudio = this.$container.find('.cmt-comment-audio');
     },
 
     /**
@@ -279,6 +287,44 @@ var ExamComment = (function () {
         that.$div_uploadImage.hide();
       })
 
+      //录音
+      that.$div_uploadAudio.off().on(that.click, function () {
+        var _$audio_div = that.$div_uploadAudio.find('.cmt-audio-div-img');
+
+        if (_$audio_div.hasClass('cmt-audio-div-img-on')) {
+          // 停止录音
+          _$audio_div.removeClass('cmt-audio-div-img-on')
+          wx && wx.stopRecord({
+            success: function (res) {
+              console.log("已经停止", window.resLocalId)
+              alert(JSON.stringify(res))
+              that.attachment = res.localId;
+            }
+          });
+        } else {
+          //开始录音
+          _$audio_div.addClass('cmt-audio-div-img-on')
+          wx && wx.startRecord({
+            success: function (res) {
+              if (res.errMsg == 'startRecord:ok') {
+                console.log("正在开始录音....")
+              }
+            }
+          });
+        }
+      })
+
+      //播放录音
+      that.$playAudio.off().on(that.click, function (e) {
+        var $cTar = $(e.target);
+        wx && wx.playVoice({
+          localId: $cTar.attr('data-audio'),
+          success: function (res) {
+            $("#status").html("播放录音...");
+          }
+        });
+      })
+
       // 取消
       that.$btn_cancle.off().on(that.click, function () {
         that.cancleCreateCmt()
@@ -294,6 +340,19 @@ var ExamComment = (function () {
           attachment: that.attachment
         }
 
+        //测试
+        /*
+         if (that.type == "2") {
+         alert('播放录音')
+         wx.playVoice({
+         localId: that.attachment,
+         success: function (res) {
+         $("#status").html("播放录音...");
+         }
+         });
+         return;
+         }
+         */
         //如果评论内容, 或者附件列表为空,则不允许添加评论
         if (data.content || data.attachment) {
           Model.addComment(data, function (result) {
@@ -327,6 +386,8 @@ var ExamComment = (function () {
       if (this.global.isUploadPage) {
         this.$div_upload.hide();
         this.$textarea.show();
+        this.global.isUploadPage = false;
+        this.$div_uploadAudio.find('.cmt-audio-div-img').removeClass('cmt-audio-div-img-on')
       } else {
         this.$div_cmtCreate.hide()
         this.$btn_createCmt.removeClass('cmt-top-img-on')
@@ -361,6 +422,19 @@ var ExamComment = (function () {
       }
     }
     return flag;
+  }
+
+  /**
+   * 是否为微信浏览器
+   * @returns {boolean}
+   */
+  function isWeiXin() {
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   return ExamComment;
