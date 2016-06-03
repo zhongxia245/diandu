@@ -1,4 +1,6 @@
 <?php
+session_start();
+include_once('../course_common.php');
 if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   require_once "php/jssdk.php";
   $jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
@@ -17,13 +19,14 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
   <title>点读展示</title>
+  <link rel="stylesheet" href="js/lib/frozen/css/frozen.css"/>
   <link rel="stylesheet" href="js/lib/modal/css/style.css">
   <link rel="stylesheet" href="css/show.css">
   <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
   <link rel="stylesheet" href="js/components/slide/slide.css">
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
-  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css">
+  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=1123">
 </head>
 
 <body>
@@ -105,6 +108,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/lib/zepto.js"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
+<script src="js/lib/frozen/js/frozen.js"></script>
 <!--微信录音-->
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
@@ -126,8 +130,10 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
     // 在这里调用 API
     console.log("微信录音初始化成功")
   });
-</script>
 
+  //获取用户id
+  window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
+</script>
 <!--custom-->
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
@@ -139,7 +145,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_r=2222"></script>
+<script src="js/components/examcomment/ExamComment.js?_r=122"></script>
 
 <script src="js/show.js"></script>
 </body>

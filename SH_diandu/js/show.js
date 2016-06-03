@@ -681,7 +681,8 @@ function bindEvent() {
           new ExamComment('#' + _dianduid + " .m-dd-start-comment-div", {
             data: result,
             pageid: pageid,
-            videoid: GLOBAL.videoid
+            videoid: GLOBAL.videoid,
+            userid: window.__userid
           })
         })
 

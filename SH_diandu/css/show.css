@@ -81,6 +81,7 @@ ul, li {
   overflow: hidden;
   width: 100%;
   display: none;
+  box-shadow: 0 0 .3rem #000;
 }
 
 /*横屏样式*/

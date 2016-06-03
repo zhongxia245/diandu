@@ -138,6 +138,9 @@ header {
 .upload-li > img {
   width: 205px;
   height: 205px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .riado-group {
@@ -552,6 +555,9 @@ header {
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .setting-btn-autovideo {
@@ -567,6 +573,9 @@ header {
   -webkit-user-select: none;
   user-select: none;
   position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .setting-btn-autovideo > .uploadify {
