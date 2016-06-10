@@ -95,6 +95,23 @@ body {
   background-size: .18rem .18rem;
 }
 
+/*自己的评论,评论内容标红色, 可以删除*/
+.cmt-list-remove .cmt-setgood, .cmt-list-remove .cmt-goodcounts {
+  display: none;
+}
+
+.cmt-list-remove .cmt-content {
+  color: red;
+}
+
+.cmt-list-remove .cmt-btn-remove {
+  width: .28rem;
+  height: .28rem;
+  float: right;
+  background-image: url(../../../imgs/exam_comment/comment_del.png);
+  background-size: .28rem .28rem;
+}
+
 .main-comment-list .cmt-title time, .main-comment-list .cmt-title span {
   margin-right: .02rem
 }
@@ -301,11 +318,12 @@ body {
 }
 
 .cmt-audio-div-img-on {
-  background: url(../../../imgs/exam_comment/comment_audio_on.png) no-repeat center;
+  /*background: url(../../../imgs/exam_comment/comment_audio_on.png) no-repeat center;*/
+  background: url(../../../imgs/exam_comment/comment_recording.gif) no-repeat center;
   background-size: .7rem auto;
 }
 
-.cmt-audio-div-text {
+.cmt-audio-div-text, .cmt-audio-div-text-record, .record-time {
   text-align: center;
   font-style: italic;
 }
@@ -317,7 +335,7 @@ body {
   background: #5B9BD5;
   margin: auto auto;
   border-radius: .05rem;
-  font-size: .24rem;
+  font-size: .20rem;
   text-align: center;
   color: #FFF;
   position: relative;

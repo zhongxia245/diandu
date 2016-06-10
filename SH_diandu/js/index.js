@@ -19,6 +19,7 @@ var GLOBAL = {
   PREFIX_DIANDU: "__diandu",          // 点读位文件类型列表的ID前缀
   SCREENTYPE: "",                     //屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
   ISSELECTEDSCREENTYPE: false,        //是否选中了点读页类型
+  DIANDUSIZE: 72, //点读点大小
   H_IMGSCALE: 1920 / 1080,  //横屏比例点
   V_IMGSCALE: 1080 / 1760,  //竖屏比例点
   OLDWIDTH: 1200,  //创建页面的横屏宽度
@@ -295,6 +296,7 @@ var _edit = (function () {
   function _initPages(pages) {
     for (var i = 0; i < pages.length; i++) {
       var pageIndex = i + 1;
+
       var picW = parseFloat(pages[i]['w']);
       var picH = parseFloat(pages[i]['h']);
       var picPath = pages[i]['pic']
@@ -345,18 +347,25 @@ var _edit = (function () {
    * @private
    */
   function _initPointByData(pageIndex, w, h, point) {
-    var x = parseFloat(point['x']) * w;
-    var y = parseFloat(point['y']) * h;
-    // 获取当前点读页的数据
-    var DDPageItems = window.DD.items[pageIndex - 1]['data'];
-    //唯一标识该点读位 1_3 第一个点读页的第三个点读位[从1开始算]
-    var dataid = pageIndex + "_" + (DDPageItems.length + 1);
 
+    //计算图片的宽高
+    var _scaleWH = getImageScaleWH(w, h);
+    w = _scaleWH.scaleW;
+    h = _scaleWH.scaleH;
+
+    //创建的时候,减去图片缩放后的 黑色区域宽度,  编辑的时候加上, 回显
+    var x = parseFloat(point['x']) * w + (GLOBAL.SCREENSIZE.h.width - w) / 2;
+    var y = parseFloat(point['y']) * h + (GLOBAL.SCREENSIZE.h.height - h) / 2;
+
+    var DDPageItems = window.DD.items[pageIndex - 1]['data'];  // 获取当前点读页的数据
+    var dataid = pageIndex + "_" + (DDPageItems.length + 1);  //唯一标识该点读位 1_3 第一个点读页的第三个点读位[从1开始算]
+
+    var _location = getLocation(w, h, GLOBAL.SCREENSIZE.h.width, GLOBAL.SCREENSIZE.h.height, x, y)
 
     //存放位置信息在全部变量里面，使用按比例的方式存放
     DDPageItems.push({
-      x: x / w, //坐标的比例
-      y: y / h,
+      x: _location.x, //坐标的比例
+      y: _location.y,
       id: dataid
     });
 
@@ -365,17 +374,14 @@ var _edit = (function () {
     var id = GLOBAL.PREFIX_DIANDU + dataid;
 
     createCircle(pageIndex, id, index, x, y);
-    addDianDu(pageIndex, id, index);
+    addDianDu(pageIndex, id, index)
 
     //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 START】
     var $pdiv = $('#' + id).parent();
-
     new Drag($pdiv[0], function (x, y) {
-      x += 50;
-      y += 50;
-      //把移动之后的位置，赋值到window变量里面
-      var newxy = getValidXY(x, y, w, h);
-      _data.setDDItems(dataid, {x: newxy.x / w, y: newxy.y / h});
+      debugger;
+      var _dargLocation = getLocation(w, h, GLOBAL.SCREENSIZE.h.width, GLOBAL.SCREENSIZE.h.height, x, y)
+      _data.setDDItems(dataid, {x: _dargLocation.x, y: _dargLocation.y});
     });
 
     //初始化视频,音频,图文的数据
@@ -489,7 +495,6 @@ function setBgImageScale(path, id) {
   Util.getImageWH(path, null, function (obj) {
     var bgSize = '100% auto';
     var currentScale = obj.w / obj.h;
-
     //竖屏
     if (GLOBAL.SCREENTYPE === 'v') {
       if (currentScale > GLOBAL.V_IMGSCALE) {
@@ -498,7 +503,7 @@ function setBgImageScale(path, id) {
         bgSize = 'auto 100%';
       }
 
-      //竖屏 , 宽度小于 竖屏宽度, 不缩放,不放大
+      //竖屏 , 小图, 没有办法铺满 宽 或者 高  [不缩放,不放大]
       if (obj.w < GLOBAL.SCREENSIZE.v.width) {
         bgSize = "auto auto";
       }
@@ -631,7 +636,7 @@ function createCircle(pageIndex, circleid, index, left, top) {
   var style = "style='position:absolute; left:" + left + "px; top :" + top + "px;'";
   var html = "";
   html += '<div class="radius" ' + style + '>';
-  html += '    <div id="' + circleid + '" class="radius_in">' + index + '</div>';
+  html += '    <div id="' + circleid + '" class="radius-in">' + index + '</div>';
   html += '</div>';
   $(pid).append(html);
 }
@@ -729,12 +734,65 @@ function addDianduPageByUpload(index, fileName, resultPath) {
     $('.btn_start').show();
     $('.bigimg-tip').hide();
 
-    window.DD.items[index - 1]['name'] = fileName;
-    window.DD.items[index - 1]['pic'] = src;
-    window.DD.items[index - 1]['w'] = $bg.width();
-    window.DD.items[index - 1]['h'] = $bg.height();
+    //获取图片的大小
+    Util.getImageWH(src, {}, function (obj) {
 
-    bindDianDuPageEvent();
+      var _scaleWH = getImageScaleWH(obj.w, obj.h)
+
+      window.DD.items[index - 1]['w'] = _scaleWH.scaleW
+      window.DD.items[index - 1]['h'] = _scaleWH.scaleH
+      window.DD.items[index - 1]['name'] = fileName;
+      window.DD.items[index - 1]['pic'] = src;
+
+      bindDianDuPageEvent();
+    });
+
+    //图片大小默认是 1200*675
+    //window.DD.items[index - 1]['name'] = fileName;
+    //window.DD.items[index - 1]['pic'] = src;
+    //window.DD.items[index - 1]['w'] = $bg.width();
+    //window.DD.items[index - 1]['h'] = $bg.height();
+    //
+    //bindDianDuPageEvent();
+  }
+}
+
+/**
+ * 传入宽高,获取缩放到适应屏幕的宽高大小
+ * @param w
+ * @param h
+ * @returns {{scaleW: *, scaleH: *}}
+ */
+function getImageScaleWH(w, h) {
+  var obj = {}, _scaleImgW, _scaleImgH;
+  obj.w = w;
+  obj.h = h;
+  if (obj.w < GLOBAL.SCREENSIZE.h.width && obj.h < GLOBAL.SCREENSIZE.h.height) {
+    _scaleImgW = obj.w;
+    _scaleImgH = obj.h;
+  }
+  else if (obj.w > obj.h) {
+    //横向图, w=1200 h=按比例缩小  1200 * 实际高 = 实际宽 * 缩放高
+    _scaleImgW = GLOBAL.SCREENSIZE.h.width;
+    _scaleImgH = _scaleImgW / obj.w * obj.h;
+    //如果缩放宽高, 宽1200  高>675 , 则以高为缩放比例
+    if (_scaleImgH > GLOBAL.SCREENSIZE.h.height) {
+      _scaleImgH = GLOBAL.SCREENSIZE.h.height;
+      _scaleImgW = _scaleImgH / obj.h * obj.w;
+    }
+  } else {
+    //竖型图  h=675  w=按比例缩小
+    _scaleImgH = GLOBAL.SCREENSIZE.h.height;
+    _scaleImgW = _scaleImgH / obj.h * obj.w;
+
+    if (_scaleImgW > GLOBAL.SCREENSIZE.h.height) {
+      _scaleImgW = GLOBAL.SCREENSIZE.h.width;
+      _scaleImgH = _scaleImgW / obj.w * obj.h;
+    }
+  }
+  return {
+    scaleW: _scaleImgW,
+    scaleH: _scaleImgH,
   }
 }
 
@@ -807,21 +865,23 @@ function setUnSelectImgSrc($currentTarget) {
  * 获取有效的XY坐标，防止超出背景图
  */
 function getValidXY(ex, ey, w, h) {
+  var size = GLOBAL.DIANDUSIZE;
+  var r = size / 2;
   // 不允许超过背景图之外
-  var x = ex - 50; //减去圆的半径
-  var y = ey - 50;
+  var x = ex - r; //减去圆的半径
+  var y = ey - r;
 
-  if (ex - 50 < 0) {
+  if (ex - r < 0) {
     x = 0;
   }
-  if (ey - 50 < 0) {
+  if (ey - r < 0) {
     y = 0;
   }
-  if (ex + 50 > w) {
-    x = w - 100;
+  if (ex + r > w) {
+    x = w - size;
   }
-  if (ey + 50 > h) {
-    y = h - 100;
+  if (ey + r > h) {
+    y = h - size;
   }
   return {
     x: x,
@@ -845,13 +905,16 @@ function downloadFile(e) {
  */
 function addDianDuLocation(e) {
   e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
-  $tar = $(e.target);
+  e.preventDefault();
+
+  var $tar = $(e.target);
   var w = $tar.width();
   var h = $tar.height();
 
   //每一个点读页用一个数组来保存
   var pageIndex = parseInt($tar.data().index);
-  // 添加点读位置
+
+  // 添加点读位置,点读位上点击是不能添加新的点读位的
   if ($tar.hasClass('setting-bigimg-img')) {
 
     var xy = getValidXY(e.offsetX, e.offsetY, w, h);
@@ -859,16 +922,24 @@ function addDianDuLocation(e) {
     var y = xy.y;
 
     // 获取当前点读页的数据
-    var DDPageItems = window.DD.items[pageIndex - 1]['data'];
+    var _page = window.DD.items[pageIndex - 1];
+    var DDPageItems = _page['data'];
     //唯一标识该点读位
     var dataid = pageIndex + "_" + (DDPageItems.length + 1);
-    //存放位置信息在全部变量里面，使用按比例的方式存放
+
+    /**
+     * 修复点读位在展示页面, 位置偏差问题 START 2016-06-05 10:07:12
+     * 1. 创建的点读点 大小 修改成 72px
+     * 2. 点读点位置 相对于 图片的左上角来算, 不能超出图片区域
+     */
+    var location = getLocation(_page.w, _page.h, w, h, x, y)
+    /*修复点读位在展示页面, 位置偏差问题 END 2016-06-05 10:07:18*/
+
     DDPageItems.push({
-      x: x / w, //坐标的比例
-      y: y / h,
+      x: location.x, //坐标的比例
+      y: location.y,
       id: dataid
     });
-
 
     //创建点图位置小圆圈，以及上传文件的列表
     var index = DDPageItems.length;
@@ -884,13 +955,29 @@ function addDianDuLocation(e) {
     });
 
     new Drag($pdiv[0], function (x, y) {
-      x += 50;
-      y += 50;
-      //把移动之后的位置，赋值到window变量里面
-      var newxy = getValidXY(x, y, w, h);
-      _data.setDDItems(dataid, {x: newxy.x / w, y: newxy.y / h});
+      //TODO:需要在Drag中控制移动时不能超出图片区域
+      //点读点的半径
+      var _dargLocation = getLocation(_page.w, _page.h, w, h, x, y)
+      _data.setDDItems(dataid, {x: _dargLocation.x, y: _dargLocation.y});
     });
     //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 END】
+  }
+}
+
+//获取点读点 相对于图片左上角的位置
+function getLocation(imgW, imgH, w, h, x, y) {
+  var _scaleImgW = imgW;
+  var _scaleImgH = imgH;
+  var _x, _y;
+
+  _x = x - (w - _scaleImgW) / 2
+  _y = y - (h - _scaleImgH) / 2
+
+  return {
+    x: _x / _scaleImgW,
+    y: _y / _scaleImgH,
+    w: _scaleImgW,
+    h: _scaleImgH,
   }
 }
 

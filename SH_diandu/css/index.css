@@ -335,7 +335,31 @@ header {
   margin: 20px 0;
 }
 
+/*点读点的大小*/
 .radius {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #7C7C7C;
+  padding: 5px;
+  float: left;
+}
+
+.radius-in {
+  height: 62px;
+  line-height: 62px;
+  width: 62px;
+  text-align: center;
+  font-size: 50px;
+  color: #FFF;
+  border-radius: 50%;
+  /*只有在选中上传类型，或者已经上传才设置这个颜色*/
+  background: #66CCCC;
+  cursor: move;
+}
+
+/*上传列表的序号*/
+.upload-radius {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -344,7 +368,7 @@ header {
   float: left;
 }
 
-.radius_in {
+.upload-radius-in {
   height: 86px;
   line-height: 86px;
   width: 86px;

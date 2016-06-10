@@ -26,7 +26,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   <link rel="stylesheet" href="js/components/slide/slide.css">
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
-  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=1123">
+  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=23">
 </head>
 
 <body>

@@ -10,7 +10,6 @@ var GLOBAL = {
   EXAM_W: 0,
   EXAM_H: 0,
   STARTSIZE: 100,   //点读开关大小
-  CREATPOINTSIZE: 86, //创建页面的点读位大小 为 86,  用于计算 圆心 偏差用
   POINTSIZE: 72,  //点读位缩放前大小
   SEC_EXAM: '.sec-exam',  //考试展示容器
   SEC_EXAM_LIST: '.sec-exam .exam-list',  //考生页面容器
@@ -18,6 +17,18 @@ var GLOBAL = {
   CURRENTINDEX: 0,
   videoid: 0, // 点读展示的id,
   DEFAULTAUTOPLAYTIME: 15, //自动播放的间隔时间
+  PAGESIZE: {  //创建时的容器大小
+    W: 1200,
+    H: 675
+  },
+  SCREEN: {
+    W: function () {
+      return Util.IsPC() ? GLOBAL.PAGESIZE.W : window.screen.width
+    },
+    H: function () {
+      return Util.IsPC() ? GLOBAL.PAGESIZE.H : window.screen.height
+    },
+  }
 }
 /**
  * 背景音乐相关操作
@@ -61,14 +72,6 @@ GLOBAL.BGAUDIO = {
   }
 }
 
-
-/*
- * 计算点读位从100变成72的圆心位置偏移
- * */
-var DIFFR = (GLOBAL.CREATPOINTSIZE - GLOBAL.POINTSIZE) / 2;
-var DIFF = Math.sqrt(Math.pow(DIFFR, 2) / 2);
-
-
 var POINTSIZE;
 var SCALE = 1; //缩放的比例
 var isVertical = false;  //是否为竖屏
@@ -83,44 +86,14 @@ $(function () {
   init();
 });
 
+/*========================页面缩放,横竖屏切换事件 START=====================*/
 /**
- * 初始化
+ *横竖屏切换事件,重新绘制点读页
  */
-function init() {
-  // 点读页的ID,保存的时候会返回ID
-  var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
-
-  Model.getList(id, function (data) {
-    DATA = data;
-
-    //排序点读页顺序
-    ArrayUtil.sortByKey(data.pages, 'seq');
-
-    initPoint(data);
-    console.log("data", data)
-
-    //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
-    fn_onResize();
-  })
-
-  //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
-  initBgAudio();
-  initAudio();
-  initVideo();
-}
-
-/**
- * 页面大小变化，则重新绘制点读位
- * @return {[type]} [description]
- */
-window.onresize = function (e) {
-  //不能每次页面有变动 都重新渲染, 否则 评论 弹出输入框就有问题
-  //fn_onResize();
-}
-//横竖屏切换事件
 window.addEventListener("orientationchange", function () {
-// 宣布新方向的数值
+  // 宣布新方向的数值
   console.log(window.orientation);
+
   //直接重置有BUG, 需要停顿一下
   setTimeout(function () {
     fn_onResize();
@@ -132,7 +105,7 @@ window.addEventListener("orientationchange", function () {
  * 窗口变化时展示
  */
 function fn_onResize() {
-  console.log("onresize")
+  console.log("trigger onresize")
   window.W = $(window).width();
   window.H = $(window).height();
   $('#main').css({
@@ -199,7 +172,7 @@ function fn_onResize() {
 
   if (DATA) {
     $('.gallery-main').css('opacity', 0).show();
-    initPoint(DATA);
+    initDiandu(DATA);
   }
 }
 
@@ -237,19 +210,47 @@ function styleHandler() {
   }
 }
 
+/*========================页面缩放,横竖屏切换事件 END=====================*/
 
 /**
- * 初始化节点，在横竖屏切换的时候，可能重新调用
- * @param  {[type]} data [description]
- * @return {[type]}      [description]
+ * 初始化
  */
-function initPoint(data) {
+function init() {
+  // 点读页的ID,保存的时候会返回ID
+  var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
+
+  Model.getList(id, function (data) {
+    DATA = data;
+
+    //排序点读页顺序
+    ArrayUtil.sortByKey(data.pages, 'seq');
+
+    initDiandu(data);
+
+    console.log("data", data)
+
+    //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
+    fn_onResize();
+  })
+
+  //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
+  initBgAudio();
+  initAudio();
+  initVideo();
+}
+
+/**
+ * 初始化点读展示页
+ * @param  {[type]} data [description]
+ */
+function initDiandu(data) {
   $('#pages').html('');
   $('#thumbs').html('');
   initPage('pages', data);
   initThumbs('thumbs', data.pages);
   initSwipe();
 
+  //背景音乐相关操作
   if (data['background']) {
     GLOBAL.BGAUDIO.setAudio(data['background']);
     if (GLOBAL.BGAUDIO.isOn()) {
@@ -263,24 +264,27 @@ function initPoint(data) {
 
 
 /**
- * 按比例缩放图标
- * @return {[type]} [description]
+ * 按比例缩放点读点
+ * @param wrap 点读点容器
+ * @param scale 比例大小
  */
-function initScale_Scale(wrap, scale) {
+function setPointSizeScale(wrap, scale) {
   var pointSize = GLOBAL.POINTSIZE * scale;
-  var startSize;
-  if (isVertical) {
-    startSize = GLOBAL.STARTSIZE * window.screen.width / 800;
-  } else {
-    startSize = GLOBAL.STARTSIZE * window.screen.width / 1200;
-  }
-  setScale(wrap + ' .m-dd-start', startSize > 80 ? 80 : startSize);
-
-
   setScale(wrap + ' .m-audio', pointSize);
   setScale(wrap + ' .m-audio img', pointSize);
   setScale(wrap + ' .m-video', pointSize);
   setScale(wrap + ' .m-video img', pointSize);
+
+
+  var startSize;
+  if (isVertical) {
+    //竖屏
+    startSize = GLOBAL.STARTSIZE * GLOBAL.SCREEN.w / 800;
+  } else {
+    //横屏
+    startSize = GLOBAL.STARTSIZE * GLOBAL.SCREEN.w / 1200;
+  }
+  setScale(wrap + ' .m-dd-start', startSize > 80 ? 80 : startSize);
 }
 
 
@@ -404,46 +408,96 @@ function initPage(id, data) {
       var subid = GLOBAL.PREBGID + i;  //每一个页面的id
 
       //获取图片的宽高
-      Util.getImageWH(pages[i]['pic'], {subid: subid, data: pages[i], i: i}, function (obj, param) {
+      Util.getImageWH(pages[i]['pic'], {subid: subid, page: pages[i], i: i}, function (obj, param) {
         var bgSize = '100% auto';
         var currentScale = obj.w / obj.h;
         var $wrap = $('#' + param.subid).find('.wrap');
+        //获取图片大小
+        var _imgScale = 1; //竖图  横向100%, 修改缩放比例  创建时,竖图,是纵向100%  当前图片高度/675
 
-        var w = window.W;
-        var h = window.H;
+        var wrapWidth = window.W;
+        var wrapHeight = window.H;
+        var _flag = false;
 
-        var scale;
-
+        //设置图片比例
         if (isVertical) {
-          if (currentScale > GLOBAL.V_IMGSCALE) {
+          if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
             bgSize = '100% auto';
-            h = window.W * obj.h / obj.w;
-          } else {
+            wrapHeight = wrapWidth * obj.h / obj.w;
+            _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
+            _flag = true;
+          }
+          else if (currentScale > GLOBAL.V_IMGSCALE) {
+            //竖屏
+            //横图
+            bgSize = '100% auto';
+            wrapHeight = window.W * obj.h / obj.w;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
+
+            //竖图,横向100%, 重新计算计算缩放比例
+            if (obj.h / obj.w > 1) {
+              _imgScale = wrapHeight / GLOBAL.SCREEN.H
+            }
+          }
+          else {
+            //竖图
             bgSize = 'auto 100%';
-            w = window.H * obj.w / obj.h;
+            wrapWidth = window.H * obj.w / obj.h;
+
+            //横图,纵向100%, 重新计算计算缩放比例
+            if (obj.w / obj.h > 1) {
+              _imgScale = wrapWidth / GLOBAL.SCREEN.H
+            }
           }
         } else {
-          if (currentScale > GLOBAL.H_IMGSCALE) {
-            bgSize = '100% auto';
-            h = window.W * obj.h / obj.w;
-          } else {
+          //横屏
+          if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
             bgSize = 'auto 100%';
-            w = window.H * obj.w / obj.h;
+            wrapWidth = window.H * obj.w / obj.h;
+            _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
+            _flag = true;
+          }
+          else if (currentScale > GLOBAL.H_IMGSCALE) {
+            //横图
+            bgSize = '100% auto';
+            wrapHeight = window.W * obj.h / obj.w;
+            if (obj.h / obj.w > 1) {
+              _imgScale = wrapHeight / GLOBAL.SCREEN.H
+            }
+          } else {
+            //竖图
+            bgSize = 'auto 100%';
+            wrapWidth = window.H * obj.w / obj.h;
+            if (obj.w / obj.h > 1) {
+              _imgScale = wrapWidth / GLOBAL.SCREEN.H
+            }
           }
         }
-
-        if (obj.w > obj.h) {
-          scale = window.W / GLOBAL.OLDWIDTH;
-        } else {
-          scale = window.H / GLOBAL.OLDHEIGHT;
-        }
-        $wrap.css({height: h, width: w});
-
-        $wrap.append(initCircle(param, w, h, scale))
-
         $('#' + param.subid).css('background-size', bgSize);
 
-        initScale_Scale('#' + param.subid, scale);
+        var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
+        if (!_flag) {
+          _pointSizeScale = _pointSizeScale * _imgScale;
+        } else {
+          _pointSizeScale = _imgScale
+        }
+
+        //针对小图, 创建的时候, 没有缩放的图片 START
+        if (obj.w < GLOBAL.PAGESIZE.W && obj.h < GLOBAL.PAGESIZE.H) {
+          if (currentScale > GLOBAL.H_IMGSCALE) {
+            //横图
+            _pointSizeScale = GLOBAL.SCREEN.H / obj.w
+          } else {
+            //竖图
+            _pointSizeScale = GLOBAL.SCREEN.H / obj.h
+          }
+        }
+        //针对小图, END
+
+        $wrap.css({height: wrapHeight, width: wrapWidth});
+        $wrap.html('');
+        $wrap.append(initPoints(param, wrapWidth, wrapHeight, _pointSizeScale))
+
+        setPointSizeScale('#' + param.subid, _pointSizeScale);
 
         //所有点读位置生成结束
         bindEvent();
@@ -453,6 +507,23 @@ function initPage(id, data) {
     }
   }
   $('#' + id).html('').html(html);
+}
+
+/**
+ * 获取点读点的缩放比例
+ * 1. 创建时 横图 宽 1200  ==> 点读点 72px
+ *          竖图 高 675   ==> 点读点 72px
+ * 这里按比例缩放
+ * @param imgW 创建时保存的图片宽
+ * @param imgH 创建时保存的图片高
+ * @returns {number}
+ */
+function getPointSizeScale(imgW, imgH) {
+  if (imgW > imgH) {
+    return GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.W;
+  } else {
+    return GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H;
+  }
 }
 
 /**
@@ -506,21 +577,25 @@ function initThumbs(id, pages) {
 
 /**
  * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
- * @param  {[type]} data [根据数据生成点读位]
+ * @param data 点读点集合数据
+ * @param imgW 图片缩放后的宽
+ * @param imgH 图片缩放后的高
+ * @param scale 缩放比例
+ * @returns {string}
  */
-function initCircle(data, w, h, scale) {
+function initPoints(data, imgW, imgH, scale) {
 
-  var pointDatas = data.data['points']
+  var pointDatas = data['page']['points']
 
   var html = "";
   html += '<div data-id="all-radius" data-hide="all-radius-hide">'
   for (var i = 0; i < pointDatas.length; i++) {
+    //隐藏点, 则不显示出来
     if (pointDatas[i]['hide'] != "1") {
       //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
-      var diff = DIFF * scale;
       var pointSize = scale * GLOBAL.POINTSIZE;
-      var left = parseFloat(pointDatas[i].x) * w + diff;
-      var top = parseFloat(pointDatas[i].y) * h + diff;
+      var left = parseFloat(pointDatas[i].x) * imgW;
+      var top = parseFloat(pointDatas[i].y) * imgH;
       var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
       var type = pointDatas[i]['type'];
       var url = pointDatas[i]['url'];

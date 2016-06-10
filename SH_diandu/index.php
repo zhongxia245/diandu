@@ -256,9 +256,9 @@ $pic_arr=explode(",",$video['pic']);
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
-    <div class="radius">
+    <div class="upload-radius">
       <img src="imgs/hide_t.png" style="position: relative;visibility: hidden;">
-      <div class="radius_in" id="item{{id}}" style="margin-top:-90px;">{{index}}</div>
+      <div class="upload-radius-in" id="item{{id}}" style="margin-top:-90px;">{{index}}</div>
     </div>
     <div class="upload-type">
       <ul data-id="{{id}}">
