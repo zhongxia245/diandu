@@ -148,7 +148,7 @@ $pic_arr=explode(",",$video['pic']);
     <div class="header-title">
       创建点读页
     </div>
-    <div class="header-close" id="close"><span>X</span></div>
+    <div class="header-close" id="close"><span>&times;</span></div>
   </header>
   <!-- Header end -->
   <!-- baseinfo start -->
@@ -238,7 +238,7 @@ $pic_arr=explode(",",$video['pic']);
       <div class="setting-btns">
         <div class="setting-btn" id="btnAdd">新增点读页</div>
         <div style="margin: 25px 0;">
-          <div class="setting-title">自动播放时的音乐设置(可选)</div>
+          <div class="setting-title" style="width: 100%;">自动播放时的音乐设置(可选)</div>
           <div class="setting-btn-autovideo" id="btnAutoAudio">
             <span>点击上传自动播放时的背景音乐(MP3格式)</span>
             <input type="file" id="file_btnAutoAudio" class="filehide"/>
