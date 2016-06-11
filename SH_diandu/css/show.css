@@ -91,6 +91,11 @@ ul, li {
     top: 0;
     bottom: 0;
   }
+
+  .exam-list-left .exam-list-question-title {
+    height: 60%;
+    overflow-y: auto;
+  }
 }
 
 .all-radius-hide {
