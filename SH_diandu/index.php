@@ -159,7 +159,7 @@ $pic_arr=explode(",",$video['pic']);
       <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $video['name'];?>">
     </div>
     <div class="form-group">
-      <label for="intro">简介(选填)</label>
+      <label for="intro">简介<span>( 选填 )</span></label>
       <textarea class="form-control" id="intro" rows="5"
                 placeholder="介绍测试的相关内容、注意点等,简洁不能超过100字"><?php echo $video['saytext'];?></textarea>
     </div>
@@ -167,7 +167,7 @@ $pic_arr=explode(",",$video['pic']);
       <label>
         缩略图
         <span>(缩略图像素要求为205x205,1号图为封面图,
-            <span style="color:red;">出现在点读页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
+            <span style="color:#FF7B5A;">出现在点读页面</span> ,如上传多个缩略图，可实现鼠标预选序号动画效果)
         </span>
       </label>
 
