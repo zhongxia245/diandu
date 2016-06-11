@@ -379,7 +379,6 @@ var _edit = (function () {
     //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 START】
     var $pdiv = $('#' + id).parent();
     new Drag($pdiv[0], function (x, y) {
-      debugger;
       var _dargLocation = getLocation(w, h, GLOBAL.SCREENSIZE.h.width, GLOBAL.SCREENSIZE.h.height, x, y)
       _data.setDDItems(dataid, {x: _dargLocation.x, y: _dargLocation.y});
     });
@@ -1159,7 +1158,7 @@ function fn2_uploadImgText(e) {
 }
 
 /**
- * 上传试卷[20150507]
+ * 上传试卷[20150507], TODO:编辑的时候如果从非考试转成考试有问题
  */
 function fn2_examCreate(e) {
   var ids = CommonUtil.getIds(e);

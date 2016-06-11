@@ -22,12 +22,12 @@ var GLOBAL = {
     H: 675
   },
   SCREEN: {
-    W: function () {
-      return Util.IsPC() ? GLOBAL.PAGESIZE.W : window.screen.width
-    },
-    H: function () {
-      return Util.IsPC() ? GLOBAL.PAGESIZE.H : window.screen.height
-    },
+    W: (function () {
+      return Util.IsPC() ? 1200 : window.screen.width
+    })(),
+    H: (function () {
+      return Util.IsPC() ? 675 : window.screen.height
+    })(),
   }
 }
 /**
@@ -520,7 +520,7 @@ function initPage(id, data) {
  */
 function getPointSizeScale(imgW, imgH) {
   if (imgW > imgH) {
-    return GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.W;
+    return GLOBAL.SCREEN.W / GLOBAL.PAGESIZE.W;
   } else {
     return GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H;
   }
