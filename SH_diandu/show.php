@@ -27,6 +27,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
   <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=23">
+  <link rel="stylesheet" href="js/lib/flowplayer/skin/functional.css">
 </head>
 
 <body>
@@ -77,9 +78,12 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <!--视频 START-->
 <section class="sec-video">
   <div class="cd-bouncy-nav-modal" style="text-align:center;">
-    <div id="div_video" style="width:100%; margin:0 auto; padding:0 10px;">
-      <video style="width:100%;height:100%;" preload="auto" id="video" controls="controls">
-        your browser does not support the video tag
+    <div id="div_video" class="flowplayer" style="width:100%; margin:0 auto; padding:0 10px;">
+      <!--<video style="width:100%;height:100%;" preload="auto" id="video" controls="controls">-->
+        <!--your browser does not support the video tag-->
+      <!--</video>-->
+      <video id="video" style="width:100%;height:100%;">
+        <source id="videoSource"  type="video/mp4" src="http://vjs.zencdn.net/v/oceans.mp4">
       </video>
     </div>
     <a href="javascript:void(0);" class="cd-close">Close modal</a>
@@ -105,6 +109,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <!--考试 END-->
 
 <!--lib-->
+<!--<script src="js/lib/jquery.min.js"></script>-->
 <script src="js/lib/zepto.js"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
@@ -140,6 +145,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/util/drag.js"></script>
 <script src="js/model/model.js"></script>
 <script src="js/util/timeago.js"></script>
+<script src="js/lib/flowplayer/flowplayer.min.js"></script>
 
 <!--components-->
 <script src="js/components/slide/touchslide.js"></script>

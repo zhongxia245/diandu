@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>ddemo for kindeditor</title>
+  <style type="text/css">
+    body {
+      font-size: 12px;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .wrap {
+      width: 778px;
+      margin: 50px auto;
+    }
+
+    .wrap p {
+      line-height: 25px;
+      text-align: left;
+    }
+  </style>
+  <script language="javascript" src="kindeditor/kindeditor-min.js" charset="utf-8"></script>
+  <script language="javascript" src="kindeditor/lang/zh_CN.js" charset="utf-8"></script>
+  <script language="javascript">
+    var editor = null;
+    KindEditor.ready(function (K) {
+      editor = K.create('textarea[name="content"]', {
+        uploadJson: "Kindeditor/php/upload_json.php",
+        fileManagerJson: "Kindeditor/php/file_manager_json.php",
+        allowFileManager: true,
+        items: [
+          'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+          'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+          'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+      });
+
+      /*点击按钮时打开上传图像的对话框 */
+      K('#btnUplader').click(function () {
+        editor.loadPlugin('image', function () {
+          editor.plugin.imageDialog({
+            imageUrl: K('#litpic').val(),
+            //点击确定按钮时返回图像路径
+            clickFn: function (url, title, width, height, border, align) {
+              K('#litpic').val(url);
+              //还可以在这里加更多的操作
+              editor.hideDialog();
+            }
+          });
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+<div class="wrap">
+  <form name="form1" id="form1" action="" method="post">
+    <p>缩略图片：
+      <input name="litpic" type="text" id="litpic" size="70"/>
+      <input type="button" name="btnUplader" id="btnUplader" value="开始上传"/>
+    </p>
+    <p>
+      <textarea id="content" name="content" style="width:99%;height:350px;display:none;"></textarea>
+    </p>
+    <p style="text-align:center;">
+      <input type="submit" name="button" id="button" value="提交"/>
+    </p>
+  </form>
+</div>
+</body>
+</html>

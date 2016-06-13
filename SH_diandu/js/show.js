@@ -601,7 +601,7 @@ function initPoints(data, imgW, imgH, scale) {
       var url = pointDatas[i]['url'];
       var filename = pointDatas[i]['filename'];
       var title = pointDatas[i]['title'];
-      var content = pointDatas[i]['content'];
+      var content = encodeURI(pointDatas[i]['content']);  //ZHONGXIA
       var question = pointDatas[i]['questions'];
 
       var className = '';
@@ -834,6 +834,12 @@ function bindEvent() {
       var url = $tar.attr('data-url');
       var filename = $tar.attr('data-filename');
 
+      //var jsSrc = $("#videoSource")
+      //if (jsSrc.attr('src') !== url) {
+      //  jsSrc.attr('src', url);
+      //}
+
+
       if (video.getAttribute('src') !== url) {
         video.setAttribute('src', url);
       }
@@ -892,7 +898,7 @@ function bindEvent() {
 
     var _url = $tar.attr('data-url');
     var _title = $tar.attr('data-title');
-    var _content = $tar.attr('data-content');
+    var _content = decodeURI($tar.attr('data-content'));
     var $title = $secImgText.find('.sec-imgtext-title');
     var $img = $secImgText.find('.sec-imgtext-img');
 

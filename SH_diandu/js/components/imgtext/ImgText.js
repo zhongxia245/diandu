@@ -28,7 +28,7 @@ var ImgText = function (selector, data, fn_upload, fn_submit, setUploadify, base
         '           <span class="glyphicon glyphicon-remove upload-imgtext-close" aria-hidden="true"></span>',
         '       </div>',
         '       <div class="upload-imgtext-content">',
-        '           <textarea class="_content" name="" id="" placeHolder="输入区"></textarea>',
+        '           <textarea class="_content" name="_content" id="" placeHolder="输入区"></textarea>',
         //'           <div class="upload-imgtext-img"><img class="_img" src=""/></div>',
         '       </div>',
         '       <div class="upload-imgtext-bottom">',

@@ -208,6 +208,10 @@ ul, li {
   padding: 5px;
 }
 
+.sec-imgtext-content img {
+  width: 100%;
+}
+
 .sec-imgtext-img {
   width: 100%
 }
