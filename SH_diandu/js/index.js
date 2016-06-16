@@ -1402,6 +1402,7 @@ function handleSubmit(e) {
   data.userid = userid;
   data.checked = 1   //验证 是否审核通过
 
+
   //如果是编辑页面,把当前id传给后端
   if (GLOBAL.ISEDIT.flag) {
     data.id = GLOBAL.ISEDIT.id
@@ -1415,7 +1416,9 @@ function handleSubmit(e) {
     }
   }
 
-  Model.addDianduPage(data, function (result) {
+  var qrcode = Util.getQueryStringByName('qrcode') || ""  //尹果要求加的参数
+
+  Model.addDianduPage(data, qrcode, function (result) {
     console.log("操作成功,返回点读页的id为(videoid)= ", result)
 
     var msg = "创建成功,点击确定返回单元列表!";
