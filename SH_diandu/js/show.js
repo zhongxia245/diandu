@@ -409,7 +409,7 @@ function initPage(id, data) {
 
       //获取图片的宽高
       Util.getImageWH(pages[i]['pic'], {subid: subid, page: pages[i], i: i}, function (obj, param) {
-        var bgSize = '100% auto';
+        //var bgSize = '100% auto';
         var currentScale = obj.w / obj.h;
         var $wrap = $('#' + param.subid).find('.wrap');
         //获取图片大小
@@ -417,12 +417,12 @@ function initPage(id, data) {
 
         var wrapWidth = window.W;
         var wrapHeight = window.H;
-        var _flag = false;
+        var _flag = false; //横图 却高铺满屏幕 点读点大小特殊处理
 
         //设置图片比例
         if (isVertical) {
           if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            bgSize = '100% auto';
+            //bgSize = '100% auto';
             wrapHeight = wrapWidth * obj.h / obj.w;
             _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
             _flag = true;
@@ -430,7 +430,7 @@ function initPage(id, data) {
           else if (currentScale > GLOBAL.V_IMGSCALE) {
             //竖屏
             //横图
-            bgSize = '100% auto';
+            //bgSize = '100% auto';
             wrapHeight = window.W * obj.h / obj.w;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
 
             //竖图,横向100%, 重新计算计算缩放比例
@@ -440,7 +440,7 @@ function initPage(id, data) {
           }
           else {
             //竖图
-            bgSize = 'auto 100%';
+            //bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
 
             //横图,纵向100%, 重新计算计算缩放比例
@@ -451,28 +451,28 @@ function initPage(id, data) {
         } else {
           //横屏
           if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            bgSize = 'auto 100%';
+            //bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
             _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
             _flag = true;
           }
           else if (currentScale > GLOBAL.H_IMGSCALE) {
             //横图
-            bgSize = '100% auto';
+            //bgSize = '100% auto';
             wrapHeight = window.W * obj.h / obj.w;
             if (obj.h / obj.w > 1) {
               _imgScale = wrapHeight / GLOBAL.SCREEN.H
             }
           } else {
             //竖图
-            bgSize = 'auto 100%';
+            //bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
             if (obj.w / obj.h > 1) {
               _imgScale = wrapWidth / GLOBAL.SCREEN.H
             }
           }
         }
-        $('#' + param.subid).css('background-size', bgSize);
+        $('#' + param.subid).css('background-size', 'contain');
 
         var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
         if (!_flag) {
@@ -483,15 +483,15 @@ function initPage(id, data) {
 
         //针对小图, 创建的时候, 没有缩放的图片 START
         if (obj.w < GLOBAL.PAGESIZE.W && obj.h < GLOBAL.PAGESIZE.H) {
-          if (currentScale > GLOBAL.H_IMGSCALE) {
-            //横图
-            _pointSizeScale = GLOBAL.SCREEN.H / obj.w
+          if (obj.w / obj.h > window.screen.width / window.screen.height) {
+            console.log("小图 宽铺满屏幕")
+            _pointSizeScale = GLOBAL.SCREEN.W / obj.w
           } else {
-            //竖图
-            _pointSizeScale = GLOBAL.SCREEN.H / obj.h
+            console.log("小图 高铺满屏幕")
+            _pointSizeScale = GLOBAL.SCREEN.H / obj.h;
           }
         }
-        //针对小图, END
+        //针对小图, EN
 
         $wrap.css({height: wrapHeight, width: wrapWidth});
         $wrap.html('');
@@ -553,7 +553,7 @@ function initThumbs(id, pages) {
   for (var i = 0; i < pages.length; i++) {
     var page = pages[i];
     var bgPath = page['pic'];
-    html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+    html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');background-size: contain;">'
     html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }

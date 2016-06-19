@@ -32,7 +32,7 @@ $pic_arr=explode(",",$video['pic']);
   <title>创建点读页</title>
   <link rel="stylesheet" type="text/css" href="css/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="js/components/imgtext/imgtext.css">
+  <link rel="stylesheet" href="js/components/imgtext/imgtext2.css">
   <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css">
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
   <link rel="stylesheet" type="text/css" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
@@ -352,6 +352,8 @@ $pic_arr=explode(",",$video['pic']);
 <script type="text/javascript" src="/edu/course/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/edu/course/js/resumable.js"></script>
 <script type="text/javascript" src="/edu/course/js/common_tool.js"></script>
+<script src="js/lib/kindeditor/kindeditor-min.js"></script>
+<script src="js/lib/kindeditor/lang/zh_CN.js"></script>
 <!--custom-->
 <script src="js/model/model.js"></script>
 <script src="js/util/arrayUtil.js"></script>
@@ -359,7 +361,7 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/util/drag.js"></script>
 <script src="js/index.js"></script>
 <!--组件-->
-<script src="js/components/imgtext/ImgText.js"></script>
+<script src="js/components/imgtext/ImgText2.js"></script>
 <script src="js/components/examcreate/ExamCreate.js"></script>
 
 <script>

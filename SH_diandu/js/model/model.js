@@ -60,9 +60,9 @@ window.Model = (function ($) {
   /**
    * 提交点读数据
    */
-  function addDianduPage(data, callback) {
+  function addDianduPage(data, qrcode, callback) {
     var dataStr = JSON.stringify(data);
-    $.post(URL.base, {action: URL.save, data: dataStr}, function (result) {
+    $.post(URL.base, {action: URL.save, data: dataStr, qrcode: qrcode}, function (result) {
       console.log('result', result);
       callback && callback(result);
     });

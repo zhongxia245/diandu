@@ -140,7 +140,7 @@ ExamShowList.prototype.createAnswers = function (answers, type, index) {
     if (answer.text.length > 0) {
       html += '  <li data-type="' + type + '" data-flag="' + answer.answer + '" data-id="' + (index + '_' + i) + '">'  //li列表上,标注着该选项是否为答案
       html += '    <div class="exam-list-' + type + '">'
-      html += '<span>' + answer.text + '</span>';
+      html += '<span class="exam-list-answer-item">' + answer.text + '</span>';
       html += '    </div>'
       html += '  </li>'
     }

@@ -1165,14 +1165,25 @@ function fn2_examCreate(e) {
   // 试卷数据
   var examData = _data.getDDItems(ids.id) || {};
 
-  //如果不是字符串就一直解析, 解析10次不行就跳过
-  var _count = 0;
-  while (typeof examData['questions'] === "string" && _count < 10) {
-    _count++;
-    examData['questions'] = JSON.parse(examData['questions']);
-  }
-  if (_count > 10) {
-    alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
+  /**
+   * 编辑时,从其他点读类型(图文,视频,音频==>考试), 设置 examData 为 {}, 否则报错
+   * 因为其他类型的点读中,examData["question"]为null, 不能
+   **/
+  if (examData['questions'] === "") {
+    examData = {}
+  } else {
+    /**
+     * 如果不是字符串就一直解析, 解析10次不行就跳过
+     * 解决多次序列化的问题,导致JSON字符串多许序列化问题
+     * */
+    var _count = 0;
+    while (typeof examData['questions'] === "string" && _count < 10) {
+      _count++;
+      examData['questions'] = JSON.parse(examData['questions']);
+    }
+    if (_count > 10) {
+      alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
+    }
   }
 
   new ExamCreate('#_examCreate', examData, function (submitData) {

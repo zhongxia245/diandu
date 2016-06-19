@@ -76,9 +76,9 @@ ImgText.prototype.init = function () {
   this.$input = this.$modal.find('._title');
   this.$img = this.$modal.find('._img');
   that.editor = KindEditor.create(that.selector + ' textarea[name="_content"]', {
-    uploadJson: "js/lib/kindeditor/Kindeditor/php/upload_json.php",
-    fileManagerJson: "js/lib/kindeditor/Kindeditor/php/file_manager_json.php",
-    cssPath: "js/lib/kindeditor/Kindeditor/user.css",
+    uploadJson: "js/lib/kindeditor/php/upload_json.php",
+    fileManagerJson: "js/lib/kindeditor/php/file_manager_json.php",
+    cssPath: "js/lib/kindeditor/user.css",
     allowFileManager: true,
     width: '100%',
     items: ['image']

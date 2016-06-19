@@ -1,3 +1,4 @@
+<!--获取wiki帐号-->
 <?php
 session_start();
 include_once('../course_common.php');
@@ -7,10 +8,8 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   $signPackage = $jssdk->GetSignPackage();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" style="font-size: 100px">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
@@ -109,11 +108,6 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <!--考试 END-->
 
 <!--lib-->
-<!--<script src="js/lib/jquery.min.js"></script>-->
-<script src="js/lib/zepto.js"></script>
-<script src="js/lib/swipe/js/swiper.js"></script>
-<script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
-<script src="js/lib/frozen/js/frozen.js"></script>
 <!--微信录音-->
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
@@ -122,10 +116,10 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
     appId: '<?php echo $signPackage["appId"];?>',
     timestamp: '<?php echo $signPackage["timestamp"];?>',
     nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-      signature: '<?php echo $signPackage["signature"];?>',
-      jsApiList: [
-         'startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice'
-      ]
+    signature: '<?php echo $signPackage["signature"];?>',
+    jsApiList: [
+      'startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice'
+    ]
   });
 
   //演示demo代码
@@ -139,21 +133,26 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   //获取用户id
   window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
+<!--<script src="js/lib/jquery.min.js"></script>-->
+<script src="js/lib/zepto.js"></script>
+<script src="js/lib/swipe/js/swiper.js"></script>
+<script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
+<script src="js/lib/frozen/js/frozen.js"></script>
 <!--custom-->
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
-<script src="js/model/model.js"></script>
 <script src="js/util/timeago.js"></script>
 <script src="js/lib/flowplayer/flowplayer.min.js"></script>
-
-<!--components-->
+<!--Ajax操作-->
+<script src="js/model/model.js"></script>
+<!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_r=122"></script>
-
-<script src="js/show.js"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160619_112"></script>
+<!--页面入口-->
+<script src="js/show.js?version=20160619"></script>
 </body>
 
 </html>

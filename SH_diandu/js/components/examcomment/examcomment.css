@@ -87,6 +87,12 @@ body {
   color: #3f81e1
 }
 
+.main-comment-list .cmt-support {
+  height: 0.25rem;
+  width: 0.5rem;
+  float: right;
+}
+
 .main-comment-list .cmt-setgood {
   width: .18rem;
   height: .18rem;
@@ -96,7 +102,7 @@ body {
 }
 
 /*自己的评论,评论内容标红色, 可以删除*/
-.cmt-list-remove .cmt-setgood, .cmt-list-remove .cmt-goodcounts {
+.cmt-list-remove .cmt-support {
   display: none;
 }
 
