@@ -150,7 +150,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160619_112"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160619"></script>
 <!--页面入口-->
 <script src="js/show.js?version=20160619"></script>
 </body>
