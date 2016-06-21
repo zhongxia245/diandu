@@ -54,7 +54,7 @@ body, ul, li {
 
 /*横屏左侧显示题目, 设置样式*/
 .exam-list-left .exam-list-question-title {
-  font-size: 24px;
+  font-size: 21px;
 }
 
 /*横屏,右侧的题目直接隐藏,不去掉*/
@@ -147,23 +147,30 @@ body, ul, li {
 .exam-list-question-title {
   font-style: italic;
   font-weight: normal;
-  font-size: 26px;
+  font-size: 21px;
   margin: 20px 30px;
   line-height: 30px;
 }
 
 .exam-list-question-answer {
   padding-top: 10px;
-  margin-left: 30px;
+  margin: 0px 5%;
+}
+
+/*横屏样式*/
+@media screen and (orientation: landscape) {
+  .exam-list-question-answer {
+    margin: 0px 30px;
+  }
 }
 
 .exam-list-question-answer > li > div {
   cursor: pointer;
-  padding-left: 50px;
+  padding-left: 40px;
   min-height: 30px;
   padding-top: 7px;
   line-height: 1;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   margin-right: 5px;
 }
 

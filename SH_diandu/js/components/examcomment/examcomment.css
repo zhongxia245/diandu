@@ -375,4 +375,15 @@ body {
 }
 
 /*文件上传 END*/
+
+/*大图展示的样式 START*/
+.cmt-bigger-image {
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/*大图展示的样式 END*/
 /* 评论内容样式 END*/
