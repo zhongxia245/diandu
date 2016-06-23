@@ -1128,17 +1128,14 @@ function fn2_uploadImgText(e) {
   var data = window.DD.items[pageId].data[dianduId];
 
   if (!window.imgText) {
-    window.imgText = new ImgText('body', data,
-      function (result, file, sResult) {
-        //图文 上传图片之后的回调
-      }, function (result) {
-        _data.setDDItems(result.id, result);
-        //这个不能写外面，否则会被缓存起来
-        var ids = result.id.split('_');
-        var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
-        $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
-        $uploadRight.find('.upload-right-name span').text('图文已上传(点击编辑)');
-      }).init();
+    window.imgText = new ImgText('body', data, function (result) {
+      _data.setDDItems(result.id, result);
+      //这个不能写外面，否则会被缓存起来
+      var ids = result.id.split('_');
+      var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
+      $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
+      $uploadRight.find('.upload-right-name span').text('图文已上传(点击编辑)');
+    }).init();
 
     //如果是编辑页面,则第一次就需要赋值初始值
     if (_isEdit) {
