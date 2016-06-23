@@ -92,7 +92,7 @@ ExamShowList.prototype.createHContainer = function () {
   html += '         <div class="exam-list-sortid-spandiv"><span data-id="currentIndex">' + this.currentIndex + '</span> / <span  data-id="total">' + this.total + '</span></div>'
   html += '       </div>'
   html += '     </div>'
-  html += '     <div class="exam-list-question-title"><p data-id="_hTitle"></p></div>'
+  html += '     <div class="exam-list-question-title"><p data-id="_hTitle" class="exam-hTitle"></p></div>'
   html += '     <div class="exam-list-show-answer">'
   html += '     </div>'
   html += '   </div>'
