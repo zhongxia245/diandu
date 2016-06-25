@@ -616,7 +616,8 @@ function initPoints(data, imgW, imgH, scale) {
         case 2:
         case "2": //音频
           className = 'm-audio';
-          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
+          mediaImg = '   <img class="audio-play" style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
+          mediaImg += '   <img class="audio-load" style="display:none; border-radius:50%;" src="imgs/load.gif" alt="audio" />';
           break;
         case 3:
         case "3": //图文
@@ -649,22 +650,63 @@ function initBgAudio() {
 }
 function initAudio() {
   audio = document.getElementById('audio');
+
+}
+
+/**
+ * 为了解决移动端播放音频需要加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
+ * @param audio
+ */
+function audioPlay(audio, $tar) {
+  if ($tar.attr('isLoad')) {//音频加载结束
+    audio.play();
+  } else { //音频还未加载
+    $tar.find('.audio-load').show();
+    $tar.find('.audio-play').hide();
+    $tar.css('background-size', '0')
+
+    audio.addEventListener('canplaythrough', function (e) {
+      $tar.find('.audio-load').hide();
+      $tar.find('.audio-play').show();
+      $tar.css('background-size', '100%')
+      audio.play();
+      $tar.attr('isLoad', true)
+    }, false);
+  }
 }
 
 /**
  * 播放或者暂停 音频
- * @param  {[type]} flag [true ，则播放， false 则暂停]
+ * @param {jquery obj} 当前音频图标
  */
-function playOrPaused(flag) {
-  if (flag) {
-    if (audio.paused)  audio.play();
-    GLOBAL.BGAUDIO.pause();
-  } else {
+function playOrPaused($tar) {
+  if ($tar[0].tagName === "IMG") { // 设置暂停
+    $tar.hide();
     audio.pause();
+    GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
+  } else { //设置播放
+    var url = $tar.attr('data-url');
+    var filename = $tar.attr('data-filename');
 
-    //关闭音频的时候,间隔自动播放的时间在启动
-    GLOBAL.BGAUDIO.setTimePlay()
+    if (audio.getAttribute('src') !== url) {
+      audio.setAttribute('src', url);
+    }
+    $tar.find('img').show();
+
+    if (audio.paused)  audioPlay(audio, $tar) //audio.play();
+
+    GLOBAL.BGAUDIO.pause();
   }
+
+  //if (flag) {
+  //  if (audio.paused)  audioPlay(audio, $tar) //audio.play();
+  //  GLOBAL.BGAUDIO.pause();
+  //} else {
+  //  audio.pause();
+  //
+  //  //关闭音频的时候,间隔自动播放的时间在启动
+  //  GLOBAL.BGAUDIO.setTimePlay()
+  //}
 }
 
 function initVideo() {
@@ -859,7 +901,7 @@ function bindEvent() {
     var timer = setInterval(function () {
       if (audio.ended) {
         $cTar.find('img').hide();
-        playOrPaused(false);
+        playOrPaused($tar);
         window.clearInterval(timer);
 
         if (AUTOPLAYINTERVAL !== 0) {
@@ -868,19 +910,21 @@ function bindEvent() {
       }
     }, 10)
 
-    if ($tar[0].tagName === "IMG") { // 正在播放
-      $tar.hide();
-      playOrPaused(false);
-    } else { //设置播放
-      var url = $tar.attr('data-url');
-      var filename = $tar.attr('data-filename');
+    playOrPaused($tar)
 
-      if (audio.getAttribute('src') !== url) {
-        audio.setAttribute('src', url);
-      }
-      $tar.find('img').show();
-      playOrPaused(true);
-    }
+    //if ($tar[0].tagName === "IMG") { // 正在播放
+    //  $tar.hide();
+    //  playOrPaused($tar);
+    //} else { //设置播放
+    //  var url = $tar.attr('data-url');
+    //  var filename = $tar.attr('data-filename');
+    //
+    //  if (audio.getAttribute('src') !== url) {
+    //    audio.setAttribute('src', url);
+    //  }
+    //  $tar.find('img').show();
+    //  playOrPaused(true);
+    //}
 
     return false;
   })

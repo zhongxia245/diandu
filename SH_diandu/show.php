@@ -25,7 +25,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   <link rel="stylesheet" href="js/components/slide/slide.css">
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
-  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=23">
+  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=26">
   <link rel="stylesheet" href="js/lib/flowplayer/skin/functional.css">
 </head>
 
@@ -150,9 +150,9 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160619"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160625"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160619"></script>
+<script src="js/show.js?version=20160625"></script>
 </body>
 
 </html>

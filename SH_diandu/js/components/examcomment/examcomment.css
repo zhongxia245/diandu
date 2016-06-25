@@ -223,7 +223,7 @@ body {
   overflow-y: auto;
 }
 
-.cmt-container .cmt-content img {
+.cmt-container .cmt-content .cmt-image {
   max-height: 50%;
   max-width: 50%;
 }
@@ -240,7 +240,8 @@ body {
   width: .3rem;
   height: .3rem;
   line-height: .2rem;
-  background: url(../../../imgs/exam_comment/comment_audio_size.png) no-repeat center;
+  /*background: url(../../../imgs/exam_comment/comment_audio_size.png) no-repeat center;*/
+  background: url(../../../imgs/exam_comment/comment-audio.png) no-repeat center;
   background-size: .2rem .2rem;
 }
 
