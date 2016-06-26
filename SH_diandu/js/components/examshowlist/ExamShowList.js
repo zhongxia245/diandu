@@ -92,7 +92,7 @@ ExamShowList.prototype.createHContainer = function () {
   html += '         <div class="exam-list-sortid-spandiv"><span data-id="currentIndex">' + this.currentIndex + '</span> / <span  data-id="total">' + this.total + '</span></div>'
   html += '       </div>'
   html += '     </div>'
-  html += '     <div class="exam-list-question-title"><p data-id="_hTitle" class="exam-hTitle"></p></div>'
+  html += '     <div class="exam-list-question-title"><p data-id="_hTitle" style="word-wrap: break-word;word-break: break-all;" class="exam-hTitle"></p></div>'
   html += '     <div class="exam-list-show-answer">'
   html += '     </div>'
   html += '   </div>'
@@ -116,7 +116,7 @@ ExamShowList.prototype.createQuestions = function (questions) {
   for (var i = 0; i < questions.length; i++) {
     var question = questions[i];
     html += '<div class="exam-list-question swiper-slide">'
-    html += '  <p class="exam-list-question-title">' + question.text + '</p>'
+    html += '  <p class="exam-list-question-title" style="word-wrap: break-word;word-break: break-all;">' + question.text + '</p>'
     html += this.createAnswers(question.answers, question.type, i)
     html += '</div>'
   }
@@ -140,7 +140,7 @@ ExamShowList.prototype.createAnswers = function (answers, type, index) {
     if (answer.text.length > 0) {
       html += '  <li data-type="' + type + '" data-flag="' + answer.answer + '" data-id="' + (index + '_' + i) + '">'  //li列表上,标注着该选项是否为答案
       html += '    <div class="exam-list-' + type + '">'
-      html += '<span class="exam-list-answer-item">' + answer.text + '</span>';
+      html += '<span class="exam-list-answer-item" style="word-wrap: break-word;word-break: break-all;">' + answer.text + '</span>';
       html += '    </div>'
       html += '  </li>'
     }

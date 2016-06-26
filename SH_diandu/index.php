@@ -345,6 +345,7 @@ $pic_arr=explode(",",$video['pic']);
 <!--lib-->
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/handlebars.min.js"></script>
+<script src="js/lib/autosize.min.js"></script>
 <script src="js/lib/layer/layer.js"></script>
 <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
 <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>

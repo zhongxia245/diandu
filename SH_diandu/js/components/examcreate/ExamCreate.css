@@ -1,5 +1,5 @@
 .exam-create-container {
-  width: 340px;
+  width: 355px;
   height: 500px;
   background: #f9f9f9;
   padding: 5px 15px;
@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: scroll;
 }
 
 .exam-create-container input {
@@ -107,8 +108,8 @@
 }
 
 .exam-create-question {
-  margin-top: 35px;
-  margin-left: 10px;
+  margin-top: 20px;
+  /*margin-left: 10px;*/
   height: 60px;
   text-align: center;
   font-size: 18px;
@@ -122,7 +123,7 @@
 }
 
 .exam-create-answer-item {
-  height: 50px;
+  /*height: 50px;*/
   margin-top: 10px;
   display: flex;
 }
@@ -156,9 +157,9 @@
   flex: 1;
 }
 
-.exam-create-answer-item-content > input {
+.exam-create-answer-item-content > input, .exam-create-answer-item-content > textarea {
   margin-left: 10px;
-  height: 45px;
+  min-height: 40px !important;
   width: 250px;
   text-align: center;
   font-size: 16px;

@@ -1198,6 +1198,9 @@ function fn2_examCreate(e) {
     shadeClose: false,
     content: $('#_examCreate')
   });
+
+  //设置 textarea 自动撑开
+  autosize($('#_examCreate').find('textarea'));
 }
 
 

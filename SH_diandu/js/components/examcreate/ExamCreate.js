@@ -50,7 +50,7 @@ var ExamCreate = function (selector, data, fn_submit) {
   // 题目模板
   this.questionTpl = [
     '<div class="exam-create-main-item" data-id="{{index}}" style="display:{{hide}}">',
-    '  <input class="exam-create-question" placeholder="输入题干" value="{{text}}"/>',
+    '  <textarea class="exam-create-question form-control" placeholder="输入题干">{{text}}</textarea>',
     '  <div class="exam-create-answer">',
     '{{{answerHTML}}}',
     '  </div>',
@@ -61,7 +61,7 @@ var ExamCreate = function (selector, data, fn_submit) {
     '    <div class="exam-create-answer-item" data-id="{{index}}">',
     '      <div data-type="{{type}}" class="exam-create-answer-item-{{type}} {{answerClass}}"></div>',
     '      <div class="exam-create-answer-item-content">',
-    '        <input placeholder="{{placeholder}}" value="{{text}}"/>',
+    '        <textarea class="form-control" rows="1" placeholder="{{placeholder}}">{{text}}</textarea>',
     '      </div>',
     '    </div>',
   ].join('');
@@ -212,6 +212,7 @@ ExamCreate.prototype.bindEvent = function () {
       that.$currentIndex.text(that.currentIndex)
       that.changeQuestion(that.currentIndex - 1);
       that.setQuestionType(that.currentIndex - 1);
+      autosize.update($(that.selector).find('textarea'));
     }
   });
 
@@ -224,6 +225,7 @@ ExamCreate.prototype.bindEvent = function () {
       that.$currentIndex.text(that.currentIndex);
       that.changeQuestion(that.currentIndex - 1);
       that.setQuestionType(that.currentIndex - 1);
+      autosize.update($(that.selector).find('textarea'));
     }
   });
 
@@ -276,6 +278,7 @@ ExamCreate.prototype.bindEvent = function () {
     that.currentIndex++;
     that.data.questions.splice(that.currentIndex - 1, 0, item);
     that.render();
+    autosize($(that.selector).find('textarea'));
   });
 
   /**
@@ -300,6 +303,7 @@ ExamCreate.prototype.bindEvent = function () {
     that.getValue2Data();
     that.data.questions[that.currentIndex - 1].answers.push({text: ''});
     that.render();
+    autosize($(that.selector).find('textarea'));
   });
 
   /**
@@ -346,7 +350,7 @@ ExamCreate.prototype.getValue2Data = function (flag) {
     this.data.questions[id]['text'] = $question.find('.exam-create-question').val();
     if (!flag) {
       // 每个答案的内容
-      var $answerItems = $question.find('.exam-create-answer-item input');
+      var $answerItems = $question.find('.exam-create-answer-item textarea');
       for (var j = 0; j < $answerItems.length; j++) {
         var $item = $($answerItems[j]);
         if (this.data.questions[id]['answers'][j]) {
