@@ -38,7 +38,10 @@ GLOBAL.BGAUDIO = {
   audio: document.getElementById('audio'),
   $btnBgAudio: $('#btn_bgAudio'),
   setAudio: function (src) {
-    $(this.bgaudio).attr('src', src);
+    //如果已经设置了, 则不在设置背景音乐
+    if (!$(this.bgaudio).attr('src')) {
+      $(this.bgaudio).attr('src', src);
+    }
   },
   isOn: function () {
     if (this.$btnBgAudio.attr('src').indexOf('on') !== -1) {
@@ -427,7 +430,7 @@ function initPage(id, data) {
             _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
             _flag = true;
           }
-          else if (currentScale > GLOBAL.V_IMGSCALE) {
+          else if (currentScale >= GLOBAL.V_IMGSCALE) {
             //竖屏
             //横图
             //bgSize = '100% auto';
@@ -449,6 +452,7 @@ function initPage(id, data) {
             }
           }
         } else {
+
           //横屏
           if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
             //bgSize = 'auto 100%';
@@ -456,7 +460,7 @@ function initPage(id, data) {
             _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
             _flag = true;
           }
-          else if (currentScale > GLOBAL.H_IMGSCALE) {
+          else if (currentScale >= GLOBAL.H_IMGSCALE) {
             //横图
             //bgSize = '100% auto';
             wrapHeight = window.W * obj.h / obj.w;
@@ -658,21 +662,26 @@ function initAudio() {
  * @param audio
  */
 function audioPlay(audio, $tar) {
-  if ($tar.attr('isLoad')) {//音频加载结束
-    audio.play();
-  } else { //音频还未加载
-    $tar.find('.audio-load').show();
-    $tar.find('.audio-play').hide();
-    $tar.css('background-size', '0')
+  audio.play()
 
-    audio.addEventListener('canplaythrough', function (e) {
-      $tar.find('.audio-load').hide();
-      $tar.find('.audio-play').show();
-      $tar.css('background-size', '100%')
-      audio.play();
-      $tar.attr('isLoad', true)
-    }, false);
-  }
+  //TODO:在移动端下 有兼容性问题
+  //if ($tar.attr('isLoad')) {//音频加载结束
+  //  alert('加载银屏结束')
+  //  audio.play();
+  //} else { //音频还未加载
+  //  $tar.find('.audio-load').show();
+  //  $tar.find('.audio-play').hide();
+  //  $tar.css('background-size', '0')
+  //
+  //  audio.addEventListener('canplaythrough', function (e) {
+  //    alert('canplaythrough')
+  //    $tar.find('.audio-load').hide();
+  //    $tar.find('.audio-play').show();
+  //    $tar.css('background-size', '100%')
+  //    audio.play();
+  //    $tar.attr('isLoad', true)
+  //  }, false);
+  //}
 }
 
 /**
@@ -954,6 +963,9 @@ function bindEvent() {
     _title ? $title.html(_title) : $title.hide();
     _url ? $img.attr('src', _url) : $img.hide();
     $secImgText.find('.sec-imgtext-content').html(_content);
+
+    //设置内容可以滚动, 由于 zepto 为了搞定 微信向上滑兼容性, 重写了touchmove事件导致
+    $secImgText.find('.sec-imgtext-content').find('*').addClass('sec-scorll')
   })
 
   /**

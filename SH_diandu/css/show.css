@@ -337,3 +337,15 @@ ul, li {
   font-weight: bold;
   color: red;
 }
+
+.btn-close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 26px;
+  font-weight: bold;
+  color: red;
+  cursor: pointer;
+  width: 30px;
+  text-align: center;
+}

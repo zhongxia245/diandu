@@ -4,7 +4,7 @@
 document.addEventListener('touchmove', function (event) {
   //TODO:禁用这个之后,滚动条就不能用了,因此这里放开了图文展示的滚动条展示
   var className = event.target.getAttribute('class') || "";
-  console.log("className", className)
+  //console.log("className", className)
   var allowScrolls = [
     "sec",
     "exam",
