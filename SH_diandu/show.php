@@ -54,7 +54,6 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
         <div class="action-block close" id="action-block">关</div>
       </div>
       <img class="" id="btn_bgAudio" style="cursor: pointer;" src="imgs/bg_audio_on.png" alt="开启背景音乐">
-      <!--<label style="line-height: 40px;"><input id="cb_bgAudio" checked type="checkbox"/>背景音乐</label>-->
       <div id="btn-close" class="btn-close">X</div>
     </div>
     <!--自动播放时间进度条 END-->
@@ -68,19 +67,19 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 </div>
 <!--音频 START-->
 <section class="sec-audio">
-  <audio id="bg-audio" preload="auto" loop="loop" ></audio>
+  <audio id="bg-audio" preload="auto" loop="loop"></audio>
   <audio id="audio" preload="auto"></audio>
 </section>
 <!--音频 END-->
 <!--视频 START-->
 <section class="sec-video">
   <div class="cd-bouncy-nav-modal" style="text-align:center;">
-    <div id="div_video" class="flowplayer" style="width:100%; margin:0 auto; padding:0 10px;">
+    <div id="div_video" style="width:100%; margin:0 auto; padding:0 10px;">
       <video style="width:100%;height:100%;" preload="auto" id="video" controls="controls">
         your browser does not support the video tag
       </video>
       <!--<video id="video" style="width:100%;height:100%;">-->
-        <!--<source id="videoSource"  type="video/mp4" src="http://vjs.zencdn.net/v/oceans.mp4">-->
+      <!--<source id="videoSource"  type="video/mp4" src="http://vjs.zencdn.net/v/oceans.mp4">-->
       <!--</video>-->
     </div>
     <a href="javascript:void(0);" class="cd-close">Close modal</a>
@@ -116,40 +115,41 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
     nonceStr: '<?php echo $signPackage["nonceStr"];?>',
     signature: '<?php echo $signPackage["signature"];?>',
     jsApiList: [
-      'startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice'
+      'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice'
     ]
   });
 
   //演示demo代码
-  window.resLocalId='';//本地录音文件ID
-  window.resRemoteId='';//服务器端录音文件ID
+  window.resLocalId = '';//本地录音文件ID
+  window.resRemoteId = '';//服务器端录音文件ID
   wx.ready(function () {
     // 在这里调用 API
     console.log("微信录音初始化成功")
   });
 
   //获取用户id
-  window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
+    window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <!--<script src="js/lib/jquery.min.js"></script>-->
 <!--<script src="js/lib/vconsole.min.js"></script>-->
-<script src="js/lib/zepto.js?vvv=20160628_1112"></script>
+<script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
 <script src="js/lib/frozen/js/frozen.js"></script>
+<script src="js/util/scale.js"></script>
 <!--custom-->
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
 <script src="js/util/timeago.js"></script>
-<script src="js/lib/flowplayer/flowplayer.min.js"></script>
+<!--<script src="js/lib/flowplayer/flowplayer.min.js"></script>-->
 <!--Ajax操作-->
 <script src="js/model/model.js"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160625"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160701"></script>
 <!--页面入口-->
 <script src="js/show.js?version=20160628"></script>
 </body>

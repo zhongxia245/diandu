@@ -29,7 +29,7 @@
   <section class="baseinfo">
     <div class="baseinfo-title">基本信息</div>
     <div class="form-group">
-      <label for="name">点图页名称</label>
+      <label for="name">点图页名称</label><span style="color: red;font-size: 20px;">(*)</span>
       <input type="text" class="form-control" id="name" placeholder="">
     </div>
     <div class="form-group">
@@ -175,13 +175,10 @@
         <span class="h-tip">横屏背景图比例 16:9</span>
         <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
         <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
-        <img class="bigimg-h2s-right" style="display:{{visible}}; display:none;" src="imgs/h2v.png"
-             data-src="imgs/v2h.png"
-             alt="">
-        <ul class="bigimg-h hide">
-          <li class="down"></li>
-          <li class="up"></li>
-          <li class="hide1"></li>
+        <ul class="bigimg-h">
+          <li class="down hide"></li>
+          <li class="up hide"></li>
+          <li class="hide1 hide"></li>
           <li class="show1" style="display:none;"></li>
           <li class="del"></li>
         </ul>
@@ -192,13 +189,6 @@
         <div class="setting-bigimg-tip-h bigimg-tip">
           <h3>提示</h3>
           <p style="font-size:16px">手机横屏比例为16:9，对应像素通常为1920*1080。建议上传大于此分辨率的图片作为背景图</p>
-          <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a
-            选择一个文件夹下的所有图片)
-          <p/>
-        </div>
-        <div class="setting-bigimg-tip-v bigimg-tip">
-          <h3>提示</h3>
-          <p style="font-size:16px">手机竖屏比例为9:16，对应像素通常为1080*1920。建议上传大于此分辨率的图片作为背景图</p>
           <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a
             选择一个文件夹下的所有图片)
           <p/>

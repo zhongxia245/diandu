@@ -100,8 +100,7 @@ var _upload = (function () {
 var _data = (function () {
   /**
    * 根据id，设置数据仓库点读位置数据
-   * @param  {[type]} id 点读的id ,类似  1_1
-   * @return {[type]}    [description]
+   * @param  id 点读的id ,类似  1_1
    */
   function setDDItems(id, config) {
     //点读背景默认从1开始，所以，这里减1
@@ -187,7 +186,9 @@ var _data = (function () {
         destArr.push(destPage)
       }
       else {
-        delPageIds += srcArr[i]['oldId'] + ',';
+        if (srcArr[i]['oldId']) {
+          delPageIds += srcArr[i]['oldId'] + ',';
+        }
       }
     }
     delPageIds = delPageIds.length > 0 ? delPageIds.substr(0, delPageIds.length - 1) : '';
@@ -541,6 +542,22 @@ function bindEvent() {
     $tar.val($tar.val().replace(/[^\d.]/g, ''))
   });
 
+  //删除点读页.   该使用方法相当于 live
+  $(document).on("click", '.bigimg-h .del', function (e) {
+    console.log("del click")
+    e.stopPropagation();
+    var $bgPage = $(e.currentTarget).parent().parent().parent().parent();
+    var display = $bgPage.find('.setting-bigimg-tip-h').css('display');
+    layer.confirm('确定删除该点读页？', {
+      btn: ['确定', '取消'] //按钮
+    }, function (index) {
+      $bgPage.remove();
+      $bgPage.prev('hr').remove();
+      delDDItem($bgPage.attr('data-index'));
+      layer.close(index);
+    });
+  });
+
   _upload.setUploadify($('#file_btnAutoAudio'), {
     width: '100%',
     height: '50',
@@ -554,41 +571,6 @@ function bindEvent() {
   });
 }
 
-
-/**
- * 横竖切换操作
- * @return {[type]} [description]
- */
-function bindH2V() {
-  //TODO: 二期：背景图横竖屏切换 [已经去掉,可以考虑清除]
-  $('.bigimg-h2s-right').on('click', function (e) {
-    if (!GLOBAL.ISSELECTEDSCREENTYPE) {
-      $tar = $(e.target);
-      //切换横竖屏按钮图标
-      var src = $tar.attr('src');
-      $tar.attr('src', $tar.attr('data-src'));
-      $tar.attr('data-src', src);
-      //背景图
-      var $bg = $tar.parent().parent().find('.setting-bigimg-img');
-      //背景刚开始是横屏
-      if (src.indexOf('h2v') !== -1) {
-        GLOBAL.SCREENTYPE = "v";
-        $bg.css(GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE])
-        $('.v-tip').show();
-        $('.h-tip').hide();
-        $bg.find('.setting-bigimg-tip-h').hide();
-        $bg.find('.setting-bigimg-tip-v').show();
-      } else { //背景是竖屏
-        GLOBAL.SCREENTYPE = "h";
-        $('.v-tip').hide();
-        $('.h-tip').show();
-        $bg.find('.setting-bigimg-tip-v').hide();
-        $bg.find('.setting-bigimg-tip-h').show();
-      }
-      $bg.css(GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE])
-    }
-  })
-}
 /*==========================动态创建页面，根据模板 START==================================*/
 /**
  * 添加点读页
@@ -607,8 +589,6 @@ function addDianDuPageTpl() {
   $('#id_diandupages').append(tpls(data));
   //初始化上传控件
   setUploadControl(GLOBAL.PAGECOUNT);
-  // 绑定横竖切换按钮的事件
-  bindH2V();
 
   //没每添加一个点读页，就在这里添加一个数组
   window.DD.items.push({
@@ -714,8 +694,6 @@ function addDianduPageByUpload(index, fileName, resultPath) {
     var $bg = $(id_bg);
 
     var src = resultPath;   //PHP返回的资源路径
-    // TODO：上传文件的路径
-    //var src = FILEBASEPATH + file.name; //统一改成使用返回的路径
 
     $bg.css('backgroundImage', 'url("' + src + '")');
 
@@ -723,12 +701,7 @@ function addDianduPageByUpload(index, fileName, resultPath) {
     $bg.parent().find('.setting-bigimg-header>span').eq(1).show();
     $bg.parent().find('.bigimg-h2s-right').hide();
 
-    // 判断是横屏还是竖屏，点读页操作按钮位置不一样的位置[800是取540~1200的中间值，随便都可以]
-    if ($bg.width() > 800) {
-      $bg.parent().find('.hide').removeClass('hide');
-    } else {
-      $bg.parent().find('.hide').removeClass().addClass('bigimg-v');
-    }
+    $bg.parent().find('.hide').removeClass('hide');
 
     $('.btn_start').show();
     $('.bigimg-tip').hide();
@@ -1313,11 +1286,12 @@ function hideDDLocation(e) {
 
 /*=====================二期，点读页上下移动，显示删除隐藏 START==========================*/
 /**
- * 点读页上下操作的点击事件
+ * 点读页上下移动,隐藏, 删除 等点击事件
  * @param  {[type]} e [description]
  * @return {[type]}   [description]
  */
 function dianduPageOperator(e) {
+  console.log("ul click")
   var $tar = self = $(e.target);
   var $bgItem = $(e.currentTarget).parentsUntil('.diandupageitem').parent();
   var sortIndex = parseInt($bgItem.attr('data-index')); //下标
@@ -1361,16 +1335,19 @@ function dianduPageOperator(e) {
       $tar.prev('.hide1').show();
       $bgItem.find('._mask').hide();
       break;
-    case 'del':
-      layer.confirm('确定删除该点读页？', {
-        btn: ['确定', '取消'] //按钮
-      }, function (index) {
-        layer.close(index);
-        $bgItem.prev('hr').remove();
-        $bgItem.remove();
-        delDDItem($bgItem.attr('data-index'));
-      });
-      break;
+
+    /*在 bindEvent 里面已经 单独的注册了 live 的事件*/
+    //case 'del':
+    //  layer.confirm('确定删除该点读页？', {
+    //    btn: ['确定', '取消'] //按钮
+    //  }, function (index) {
+    //    layer.close(index);
+    //    $bgItem.prev('hr').remove();
+    //    $bgItem.remove();
+    //    delDDItem($bgItem.attr('data-index'));
+    //    console.log("$bgItem.attr('data-index')", $bgItem.attr('data-index'))
+    //  });
+    //  break;
   }
 }
 
@@ -1397,7 +1374,7 @@ function handleSubmit(e) {
   var _pagesInfo = _data.getValidItems();
   var data = {
     title: $('#name').val(),
-    saytext: $('#intro').val(),
+    saytext: $('#intro').val() || " ",
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
@@ -1405,6 +1382,11 @@ function handleSubmit(e) {
     bgFileName: $('#btnAutoAudio>span').text(),
     pages: _pagesInfo.data,
     delPageIds: _pagesInfo.delPageIds
+  }
+
+  if (data.title.trim() === "") {
+    alert('点读页名称不能为空!');
+    return;
   }
 
   //需要传给后台的参数
@@ -1420,12 +1402,12 @@ function handleSubmit(e) {
   }
 
   //如果有删除的话
-  if (data.delPageIds.length > 0) {
-    var _ids = data.delPageIds.split(',');
-    for (var i = 0; i < _ids.length; i++) {
-      Model.delDianduPage(_ids[i]);
-    }
-  }
+  //if (data.delPageIds.length > 0) {
+  //  var _ids = data.delPageIds.split(',');
+  //  for (var i = 0; i < _ids.length; i++) {
+  //    Model.delDianduPage(_ids[i]);
+  //  }
+  //}
 
   var qrcode = Util.getQueryStringByName('qrcode') || ""  //尹果要求加的参数
 

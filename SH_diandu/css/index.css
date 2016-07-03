@@ -209,7 +209,7 @@ header {
 /*=======操作点读页栏===========*/
 
 .bigimg-h, .bigimg-v {
-  width: 220px;
+  /*width: 220px;*/
   height: 40px;
 }
 
