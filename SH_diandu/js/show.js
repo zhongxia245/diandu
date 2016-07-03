@@ -21,7 +21,7 @@ var GLOBAL = {
   SEC_QUESTION_LIST: '.sec-exam .question-list',  //题干列表容器
 
   videoid: 0, // 点读展示的id,
-  DEFAULTAUTOPLAYTIME: 15, //自动播放的间隔时间
+  DEFAULTAUTOPLAYTIME: 100, //自动播放的间隔时间
   PAGESIZE: {  //创建时的容器大小
     W: 1200,
     H: 675
@@ -73,12 +73,16 @@ GLOBAL.BGAUDIO = {
   setTimePlay: function (duration) {
     duration = duration || 5000;
     var that = this;
-    setTimeout(function () {
-      if (that.audio.paused) {
-        that.play()
-      }
+    console.log("set Timeout...")
+    that.timer = setTimeout(function () {
+      that.play()
     }, duration)
+  },
+  clearTimeout: function () {
+    console.log("clear Timeout...")
+    this.timer && clearTimeout(this.timer)
   }
+
 }
 
 var POINTSIZE;
@@ -672,26 +676,35 @@ function initAudio() {
  * @param audio
  */
 function audioPlay(audio, $tar) {
-  audio.play()
-
+  //audio.play()
   //TODO:在移动端下 有兼容性问题
-  //if ($tar.attr('isLoad')) {//音频加载结束
-  //  alert('加载银屏结束')
-  //  audio.play();
-  //} else { //音频还未加载
-  //  $tar.find('.audio-load').show();
-  //  $tar.find('.audio-play').hide();
-  //  $tar.css('background-size', '0')
-  //
-  //  audio.addEventListener('canplaythrough', function (e) {
-  //    alert('canplaythrough')
-  //    $tar.find('.audio-load').hide();
-  //    $tar.find('.audio-play').show();
-  //    $tar.css('background-size', '100%')
-  //    audio.play();
-  //    $tar.attr('isLoad', true)
-  //  }, false);
-  //}
+  if ($tar.attr('isLoad')) {//音频加载结束
+    console.log("已经加载结束...")
+    audio.play();
+    $tar.find('.audio-play').show();
+  } else { //音频还未加载
+    $tar.find('.audio-load').show();
+    $tar.find('.audio-play').hide();
+    $tar.css('background-size', '0')
+
+    audio.addEventListener('canplaythrough', function (e) {
+      //是当前播放的音频, 则显示 正在播放状态
+      if (audio.src.indexOf($tar.attr('data-url')) !== -1) {
+        console.log("加载音频完成...")
+        $tar.find('.audio-load').hide();
+        $tar.find('.audio-play').show();
+        $tar.css('background-size', '100%')
+        audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
+        audio.play();
+        $tar.attr('isLoad', true)
+      }
+    }, false);
+
+    //移动端 canplaythrough 必须 设置 play 之后, 才能触发
+    audio.play()
+    audio.setAttribute('data-volume', audio.volume)
+    audio.volume = 0;
+  }
 }
 
 /**
@@ -699,11 +712,20 @@ function audioPlay(audio, $tar) {
  * @param {jquery obj} 当前音频图标
  */
 function playOrPaused($tar) {
-  if ($tar[0].tagName === "IMG") { // 设置暂停
+  GLOBAL.BGAUDIO.clearTimeout();
+
+  if ($tar.attr('class') === "audio-load") { //加载状态
+    $tar.hide();
+    $tar.parent().css('background-size', '100%');
+  }
+
+  else if ($tar.attr('class') === "audio-play") { //正在播放状态
     $tar.hide();
     audio.pause();
     GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
-  } else { //设置播放
+  }
+
+  else {  //默认状态, 未播放状态
     var url = $tar.attr('data-url');
     var filename = $tar.attr('data-filename');
 
@@ -716,16 +738,6 @@ function playOrPaused($tar) {
 
     GLOBAL.BGAUDIO.pause();
   }
-
-  //if (flag) {
-  //  if (audio.paused)  audioPlay(audio, $tar) //audio.play();
-  //  GLOBAL.BGAUDIO.pause();
-  //} else {
-  //  audio.pause();
-  //
-  //  //关闭音频的时候,间隔自动播放的时间在启动
-  //  GLOBAL.BGAUDIO.setTimePlay()
-  //}
 }
 
 function initVideo() {
@@ -750,10 +762,6 @@ function triggerBouncyNav($bool) {
         $('.cd-bouncy-nav-modal').removeClass('fade-out');
       }
     });
-  //判断css 动画是否开启..
-  if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
-    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-  }
 }
 
 /**
@@ -762,7 +770,11 @@ function triggerBouncyNav($bool) {
  */
 function closeVideoOrAudio(flag) {
   if (flag === undefined) flag = true;
+
   $('.m-audio img').hide(); //隐藏所有的播放GIF图
+  $('.m-audio').css('background-size', '100%')
+  audio.src = '';
+
   var $video = $('.m-video-size');
   $video.find('img').hide();
   $video.removeClass('m-video-size');
@@ -828,18 +840,6 @@ function bindEvent() {
     }
     $cTar.attr('data-type', (parseInt(type) + 1) % 3)
 
-    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
-    //setHoverImgSrcx($('.m-dd-start'));
-    //var $allRadius = $('div[data-id="all-radius"]');
-    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
-    //
-    //var hideClassName = $allRadius.attr('data-hide');
-    //if ($allRadius.hasClass(hideClassName)) {
-    //  $allRadius.removeClass();
-    //} else {
-    //  $allRadius.addClass(hideClassName);
-    //  closeVideoOrAudio(false);
-    //}
     return false;
   });
 
@@ -881,7 +881,10 @@ function bindEvent() {
 
   // 视频
   $('.m-video').off().on(click, function (e) {
-    closeVideoOrAudio();
+    GLOBAL.BGAUDIO.clearTimeout();  //清除背景音乐定时器,防止快速打开视频, 又关闭, 又打开, 播放背景音乐
+
+    closeVideoOrAudio(true);
+
     var $cTar = $(e.currentTarget);
     var $tar = $(e.target);
     var className = 'm-video-size';
@@ -900,7 +903,6 @@ function bindEvent() {
       //  jsSrc.attr('src', url);
       //}
 
-
       if (video.getAttribute('src') !== url) {
         video.setAttribute('src', url);
       }
@@ -916,35 +918,23 @@ function bindEvent() {
   $('.m-audio').off().on(click, function (e) {
     var $tar = $(e.target);
     var $cTar = $(e.currentTarget);
-    closeVideoOrAudio();
+
+    //关闭视频,并且设置所有的 音频为默认图标状态
+    closeVideoOrAudio(true);
+
     var timer = setInterval(function () {
+      //播放结束, 则清除 正在播放的图片
       if (audio.ended) {
         $cTar.find('img').hide();
-        playOrPaused($tar);
         window.clearInterval(timer);
 
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }
       }
-    }, 10)
+    }, 500)
 
     playOrPaused($tar)
-
-    //if ($tar[0].tagName === "IMG") { // 正在播放
-    //  $tar.hide();
-    //  playOrPaused($tar);
-    //} else { //设置播放
-    //  var url = $tar.attr('data-url');
-    //  var filename = $tar.attr('data-filename');
-    //
-    //  if (audio.getAttribute('src') !== url) {
-    //    audio.setAttribute('src', url);
-    //  }
-    //  $tar.find('img').show();
-    //  playOrPaused(true);
-    //}
-
     return false;
   })
 
