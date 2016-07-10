@@ -155,7 +155,7 @@ $pic_arr=explode(",",$video['pic']);
   <section class="baseinfo">
     <div class="baseinfo-title">基本信息</div>
     <div class="form-group">
-      <label for="name">点图页名称</label><span style="color: red;font-size: 20px;">(*)</span>
+      <label for="name">点图页名称</label><span style="color: red;font-size: 20px;">*</span>
       <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $video['name'];?>">
     </div>
     <div class="form-group">
