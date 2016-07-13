@@ -43,10 +43,27 @@ GLOBAL.BGAUDIO = {
   audio: document.getElementById('audio'),
   $btnBgAudio: $('#btn_bgAudio'),
   setAudio: function (src) {
+    var that = this;
     //如果已经设置了, 则不在设置背景音乐
     if (!$(this.bgaudio).attr('src')) {
       $(this.bgaudio).attr('src', src);
     }
+    //STOPBGAUDIO
+    $('body').off('STOPBGAUDIO').on('STOPBGAUDIO', function (e, flag) {
+      //暂停播放背景音乐
+      if (flag) {
+        that.timer && clearTimeout(that.timer)
+        that.pause()
+        console.log("pause")
+      }
+      //播放背景音乐
+      else {
+        that.timer = setTimeout(function () {
+          that.play();
+          console.log("play")
+        }, 5000)
+      }
+    })
   },
   isOn: function () {
     if (this.$btnBgAudio.attr('src').indexOf('on') !== -1) {

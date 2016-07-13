@@ -119,9 +119,6 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
     ]
   });
 
-  //演示demo代码
-  window.resLocalId = '';//本地录音文件ID
-  window.resRemoteId = '';//服务器端录音文件ID
   wx.ready(function () {
     // 在这里调用 API
     console.log("微信录音初始化成功")
@@ -131,7 +128,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
     window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <!--<script src="js/lib/jquery.min.js"></script>-->
-<!--<script src="js/lib/vconsole.min.js"></script>-->
+<script src="js/lib/vconsole.min.js"></script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
@@ -149,9 +146,9 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160701"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160713_7"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160701"></script>
+<script src="js/show.js?version=20160713"></script>
 </body>
 
 </html>
