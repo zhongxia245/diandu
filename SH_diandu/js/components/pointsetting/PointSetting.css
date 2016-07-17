@@ -1,0 +1,67 @@
+.dps-container {
+  height: 600px;
+  width: 600px;
+}
+
+.dps-header {
+  height: 60px;
+  line-height: 60px;
+  background: #008988;
+  font-size: 30px;
+  text-align: center;
+  color: #FFF;
+}
+
+.dps-content {
+  height: 540px;
+  background: #EFEFEF;
+  padding: 40px;
+}
+
+.dps-content-size {
+  margin-bottom: 50px;
+}
+
+.dps-content-color {
+}
+
+/*bootstrap-slider 插件设置*/
+/*滑块 宽度,高度*/
+.slider.slider-horizontal {
+  width: 470px;
+  margin-left: 20px;
+  height: 50px;
+}
+
+/*滑块的大小,颜色, 字体颜色*/
+.slider-handle {
+  width: 60px;
+  height: 60px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 10px;
+  border: 5px solid #949494;
+  background: #FE8719;
+  color: #5C442C;
+  font-size: 30px;
+}
+
+/*滑块的上下位置*/
+.slider.slider-horizontal .slider-handle {
+  margin-left: -30px;
+  margin-top: -20px;
+}
+
+/*滑块条的背景,高度*/
+.slider.slider-horizontal .slider-track {
+  height: 20px;
+  background: #B1B2B1;
+  border-radius: 20px;
+}
+
+/*滑块条选中条的背景,高度*/
+.slider-selection {
+  background: #B1B2B1;
+  border-radius: 20px;
+}
+

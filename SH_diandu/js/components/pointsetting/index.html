@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="bootstrap-slider.min.css">
+  <link rel="stylesheet" href="PointSetting.css">
+</head>
+<body>
+<div id="dianduPointSetting" class="dps-container">
+  <div class="dps-header">
+    点读设置
+  </div>
+  <div class="dps-content">
+    <div class="dps-content-size">
+      <h4>1. 请设置点读点大小的默认比例(%)</h4>
+      <p>(在点读点页可对点读点单独设置大小)</p>
+      <div class="dps-content-size-imgs">
+        <img src="imgs/point_setting/36.png" alt="36px">
+        <img style="margin:0 24%;" src="imgs/point_setting/72.png" alt="72px">
+        <img src="imgs/point_setting/144.png" alt="144px">
+      </div>
+      <input id="dpsSize" type="text" data-slider-handle="square"/>
+    </div>
+
+    <div class="dps-content-color">
+      <h4>2. 请设置点读页外空白区域的颜色</h4>
+      <input id="dpsColor" type="text" data-slider-handle="square"/>
+    </div>
+  </div>
+</div>
+<script src="../../lib/jquery.min.js"></script>
+<script src="bootstrap-slider.min.js"></script>
+<script>
+  $("#dpsSize").slider({
+        step: 10,
+        min: 50,
+        max: 200,
+        value: 100,
+      })
+      .on('slide', function (slideEvt) {
+        $("#dpsSize").prev().find('.slider-handle').text(slideEvt.value)
+      })
+
+  $("#dpsSize").prev().find('.slider-handle').text(100)
+
+
+  $("#dpsColor").slider({
+        step: 0.05,
+        min: 0,
+        max: 1,
+        value: 0,
+      })
+      .on('slide', function (slideEvt) {
+        var value = slideEvt.value;
+        value = Math.abs(value - 1);
+        var colorVal = value * 255;
+        $('#dpsColor').prev().find('.slider-handle').css('background', 'rgb(' + colorVal + ',' + colorVal + ',' + colorVal + ')')
+      })
+
+  $("#dpsColor").prev().find('.slider-handle').css('background', 'rgb(255,255,255)')
+
+  var RGBChange = function () {
+  };
+</script>
+</body>
+</html>
