@@ -127,8 +127,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   //获取用户id
     window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<!--<script src="js/lib/jquery.min.js"></script>-->
-<script src="js/lib/vconsole.min.js"></script>
+<!--<script src="js/lib/vconsole.min.js"></script>-->
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
@@ -139,16 +138,21 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
 <script src="js/util/timeago.js"></script>
-<!--<script src="js/lib/flowplayer/flowplayer.min.js"></script>-->
 <!--Ajax操作-->
 <script src="js/model/model.js"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160713_7"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160715"></script>
 <!--页面入口-->
 <script src="js/show.js?version=20160713"></script>
+<script>
+  var _isDebug = Util.getQueryStringByName('debug');
+  if (_isDebug) {
+    Util.loadJS("js/lib/vconsole.min.js")
+  }
+</script>
 </body>
 
 </html>
