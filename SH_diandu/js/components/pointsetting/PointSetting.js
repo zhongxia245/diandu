@@ -83,7 +83,7 @@ PointSetting.prototype.init = function () {
   var that = this;
   //初始化点读点大小滑块
   $("#dpsSize").slider({
-      step: 10,
+      step: 25,
       min: 50,
       max: 200,
       value: 100,
