@@ -163,6 +163,7 @@ var _data = (function () {
             var obj = {
               x: items[j].x,
               y: items[j].y,
+              point_size: items[j]['point_size'],
               filename: items[j].filename,
               url: items[j].url,
               title: items[j].title,
@@ -171,13 +172,19 @@ var _data = (function () {
               questions: typeof items[j]['questions'] !== "string" ? JSON.stringify(items[j].questions) : items[j].questions,
               type: _data.getTypeByName(items[j].type)
             }
+
             if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
+
             destItems.push(obj);
-          } else {
+          }
+
+          else {
             //记录下删除的点读位ID
             var _oldid = items[j]['oldId'] ? items[j]['oldId'] : '';
-            if (_oldid)
+
+            if (_oldid) {
               destPage['delPointIds'] += _oldid + ","
+            }
           }
         }
 
@@ -185,12 +192,14 @@ var _data = (function () {
         destPage['points'] = destItems;
         destArr.push(destPage)
       }
+
       else {
         if (srcArr[i]['oldId']) {
           delPageIds += srcArr[i]['oldId'] + ',';
         }
       }
     }
+
     delPageIds = delPageIds.length > 0 ? delPageIds.substr(0, delPageIds.length - 1) : '';
     return {
       data: destArr,
@@ -203,7 +212,6 @@ var _data = (function () {
    * @return {[type]} [description]
    */
   function getTypeByName(typeName) {
-    // TODO：有其他类型，在添加
     switch (typeName) {
       case 'video':
         return 1;
@@ -472,7 +480,7 @@ var _edit = (function () {
         var point = pages[i]['points'][j];
         if (point['hide'] == "1") {
           var _ids = (i + 1) + "_" + (j + 1)
-          $('[data-id="__diandu' + _ids + '"]').find('.img-hide').click()
+          $('[data-id="' + GLOBAL.PREFIX_DIANDU + _ids + '"]').find('.img-hide').click()
         }
       }
     }
@@ -651,6 +659,15 @@ function addDianDu(pageIndex, dianduItemid, index) {
   }
   var tpls = Handlebars.compile($("#tpl_uploadSetting").html());
   $(settingId).append(tpls(data));
+
+  //设置单个点读点的大小
+  new CNumber('[data-id="' + dianduItemid + '"] .number-container', {
+    callback: function (val) {
+      var id = dianduItemid.replace(GLOBAL.PREFIX_DIANDU, '')
+      _data.setDDItems(id, {point_size: val});
+      console.log("set point_size:", id, val)
+    }
+  })
   // 点读设置项
   $('.upload-item').off().on('click', handleUploadItem);
 }
@@ -1105,7 +1122,7 @@ function fileTypeItemClick(e) {
 }
 
 /**
- * 上传图文[共用一个图文上传页]  TODO:zhongxia
+ * 上传图文[共用一个图文上传页]
  * @return {[type]} [description]
  */
 function fn2_uploadImgText(e) {
@@ -1265,7 +1282,6 @@ function hideDDLocation(e) {
 
     _data.setDDItems(_dataid, {hide: true});
 
-    // TODO:理论上，隐藏之后，文件类型的点击事件是不可以用的，目前产品没有要求做
     //记录旧的样式，等显示在赋值上去
     for (var i = 0; i < $lis.length; i++) {
       var $li = $($lis[i]);
