@@ -558,6 +558,7 @@ function bindEvent() {
     });
   });
 
+  //上传背景音乐
   _upload.setUploadify($('#file_btnAutoAudio'), {
     width: '100%',
     height: '50',
@@ -569,6 +570,24 @@ function bindEvent() {
       $('#btnAutoAudio>span').text(file.name);
     }
   });
+
+  //点读点大小设置  2016-07-17 17:02:42
+  $('#pointSetting').on('click', function (e) {
+    e.stopPropagation();
+    var $divDPS = $('#dianduPointSetting');
+    if ($divDPS.html() === "") {
+      window.cPointSetting = new PointSetting('#dianduPointSetting')
+    }
+    layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 1,
+      area: ['600px', '600px'], //宽高
+      shadeClose: false,
+      skin: 'yourclass',
+      content: $divDPS
+    });
+  })
 }
 
 /*==========================动态创建页面，根据模板 START==================================*/
@@ -1371,7 +1390,12 @@ function delDDItem(id) {
  * 提交
  */
 function handleSubmit(e) {
-  var _pagesInfo = _data.getValidItems();
+  var pagesInfo = _data.getValidItems();
+  var pointSettingData = window.cPointSetting && window.cPointSetting.getData() || {
+      size: 100,
+      color: 'rgb(255,255,255)'
+    };
+
   var data = {
     title: $('#name').val(),
     saytext: $('#intro').val() || " ",
@@ -1380,8 +1404,10 @@ function handleSubmit(e) {
     pic: $('input[name="pic"]').val(),  //缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),
     bgFileName: $('#btnAutoAudio>span').text(),
-    pages: _pagesInfo.data,
-    delPageIds: _pagesInfo.delPageIds
+    pages: pagesInfo.data,
+    delPageIds: pagesInfo.delPageIds,
+    point_size: pointSettingData.size,
+    back_color: pointSettingData.color
   }
 
   if (data.title.trim() === "") {
@@ -1400,14 +1426,6 @@ function handleSubmit(e) {
   if (GLOBAL.ISEDIT.flag) {
     data.id = GLOBAL.ISEDIT.id
   }
-
-  //如果有删除的话
-  //if (data.delPageIds.length > 0) {
-  //  var _ids = data.delPageIds.split(',');
-  //  for (var i = 0; i < _ids.length; i++) {
-  //    Model.delDianduPage(_ids[i]);
-  //  }
-  //}
 
   var qrcode = Util.getQueryStringByName('qrcode') || ""  //尹果要求加的参数
 

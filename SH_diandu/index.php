@@ -30,12 +30,13 @@ $pic_arr=explode(",",$video['pic']);
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,user-scalable=no">
   <title>创建点读页</title>
-  <link rel="stylesheet" type="text/css" href="css/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="js/components/imgtext/imgtext2.css">
   <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css">
-  <link rel="stylesheet" type="text/css" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
-  <link rel="stylesheet" type="text/css" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
+  <link rel="stylesheet" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
+  <link rel="stylesheet" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
   <!---add by brian 20160426-->
   <style>
     .choose_area {
@@ -228,7 +229,10 @@ $pic_arr=explode(",",$video['pic']);
       </div>
     </div>
     <div class="setting-diandu">
-      <div class="baseinfo-title">点读页设置</div>
+      <div class="baseinfo-title">
+        <span>点读页创建</span>
+        <div class="setting-diandu-icon" id="pointSetting"><i class="fa fa-cog" aria-hidden="true"></i></div>
+      </div>
       <!-- TODO:多个点读页 -->
       <!-- 点读页集合 START -->
       <div id="id_diandupages" class="diandupages">
@@ -350,10 +354,14 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
-<script src="js/index.js"></script>
+
 <!--组件-->
 <script src="js/components/imgtext/ImgText2.js"></script>
 <script src="js/components/examcreate/ExamCreate.js"></script>
+<script src="js/components/pointsetting/PointSetting.js"></script>
+
+<script src="js/index.js"></script>
+
 
 <script>
     var id = <?php echo intval($id);?>;//team_video id

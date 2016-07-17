@@ -130,6 +130,13 @@ header {
   margin-bottom: 10px;
 }
 
+.setting-diandu-icon {
+  float: right;
+  margin-right: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
 .upload-img {
   height: 210px;
 }
@@ -679,3 +686,4 @@ header {
 .sort-info .filename {
   font-style: normal;
 }
+

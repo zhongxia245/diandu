@@ -109,13 +109,46 @@ window.Util = (function () {
     return pointsData[_ids[1]];
   }
 
+  /**
+   * 加载样式
+   * @param path
+   */
+  function loadCSS(path) {
+    if (!path || path.length === 0) {
+      throw new Error('argument "path" is required !');
+    }
+    var head = document.getElementsByTagName('head')[0];
+    var link = document.createElement('link');
+    link.href = path;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    head.appendChild(link);
+  }
+
+  /**
+   * 加载脚本
+   * @param path
+   */
+  function loadJS(path) {
+    if (!path || path.length === 0) {
+      throw new Error('argument "path" is required !');
+    }
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.src = path;
+    script.type = 'text/javascript';
+    head.appendChild(script);
+  }
+
   return {
     getImageWH: getImageWH,
     getQueryStringByName: getQueryStringByName,
     closeWebPage: closeWebPage,
     Moblie_MoveOrTap: Moblie_MoveOrTap,
     IsPC: IsPC,
-    getPointDataByIds: getPointDataByIds
+    getPointDataByIds: getPointDataByIds,
+    loadCSS: loadCSS,
+    loadJS: loadJS,
   }
 })()
 
