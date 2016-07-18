@@ -1,7 +1,7 @@
 body, ul, li {
   padding: 0;
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: "Microsoft YaHei", "微软雅黑";
 }
 
 ul, li {
@@ -9,14 +9,44 @@ ul, li {
 }
 
 /*========================================================*/
-/*body {*/
-/*position: absolute;*/
-/*top: 0;*/
-/*bottom: 0;*/
-/*left: 0;*/
-/*right: 0;*/
-/*}*/
 
+/*-------------横屏样式 START---------------*/
+@media screen and (orientation: landscape) {
+  .m-dd-start-comment-div {
+    top: 0;
+    bottom: 0;
+  }
+
+  .exam-list-left .exam-list-question-title {
+    height: 60%;
+    overflow-y: auto;
+  }
+
+  /*视频播放器  容器*/
+  #div_video {
+    width: 80%;
+    height: 60%;
+    position: relative;
+    top: 20%;
+  }
+}
+
+/*-------------横屏样式 END---------------*/
+
+/*-------------竖屏样式 START---------------*/
+@media screen and (orientation: portrait) {
+  /*视频播放器  容器*/
+  #div_video {
+    width: 100%;
+    position: relative;
+    top: 30%;
+  }
+
+}
+
+/*-------------竖屏样式 END---------------*/
+
+/*-------------不区分横竖屏的样式 START---------------*/
 .m-bgs {
   width: 100%;
   height: 100%;
@@ -29,7 +59,6 @@ ul, li {
   background-repeat: no-repeat;
   position: relative;
   /*拉伸适应DIV大小*/
-  /*background-size: contain !important;*/
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
@@ -42,7 +71,6 @@ ul, li {
   left: 0;
   bottom: 0;
   right: 0;
-  /*background-color: red;*/
 }
 
 .m-dd-start, .m-dd-start-hide, .m-dd-start-comment {
@@ -82,20 +110,6 @@ ul, li {
   width: 100%;
   display: none;
   box-shadow: 0 0 .3rem #000;
-}
-
-/*横屏样式*/
-@media screen and (orientation: landscape) {
-  /* landscape-specific styles */
-  .m-dd-start-comment-div {
-    top: 0;
-    bottom: 0;
-  }
-
-  .exam-list-left .exam-list-question-title {
-    height: 60%;
-    overflow-y: auto;
-  }
 }
 
 .all-radius-hide {
@@ -175,14 +189,12 @@ ul, li {
   right: 0;
   left: 0;
   color: #000;
-  /*overflow: hidden;*/
   z-index: 9999;
   margin: auto;
 }
 
 .sec-imgtext-main {
   height: 200px;
-  /*width: 540px;*/
   position: absolute;
   top: 20%;
   left: 30%;

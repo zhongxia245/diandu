@@ -33,6 +33,9 @@
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+  font-size: 26px;
+  line-height: 25px;
+  color: #FFF;
 }
 
 .val-default {

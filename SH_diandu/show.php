@@ -78,9 +78,6 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
       <video style="width:100%;height:100%;" preload="auto" id="video" controls="controls">
         your browser does not support the video tag
       </video>
-      <!--<video id="video" style="width:100%;height:100%;">-->
-      <!--<source id="videoSource"  type="video/mp4" src="http://vjs.zencdn.net/v/oceans.mp4">-->
-      <!--</video>-->
     </div>
     <a href="javascript:void(0);" class="cd-close">Close modal</a>
   </div>
@@ -125,7 +122,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
   });
 
   //获取用户id
-    window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
+  window.__userid=<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <script src="js/lib/zepto.js?vvv=20160628"></script>

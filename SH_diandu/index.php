@@ -256,7 +256,10 @@ $pic_arr=explode(",",$video['pic']);
   </section>
   <!-- setting end -->
 </div>
+<!--创建考试-->
 <div id="_examCreate"></div>
+<!--点读点大小设置-->
+<div id="dianduPointSetting"></div>
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -266,14 +269,13 @@ $pic_arr=explode(",",$video['pic']);
     </div>
     <div class="upload-type">
       <ul data-id="{{id}}">
+        <li title="点读点大小" class="number-container"></li>
         <li title="视频" class="video" data-type="uploadType" data-file-type="video"
             data-text="点击上传MP4格式的视频文件"></li>
         <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
             data-text="点击上传MP3格式的音频文件"></li>
         <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext"
             data-text="点击上传图文(支持文字和图片)"></li>
-        <li title="音画" class="audioimg" data-type="uploadType" data-file-type="audioimg"
-            data-text="点击上传音画文件"></li>
         <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
       </ul>
     </div>
@@ -312,9 +314,9 @@ $pic_arr=explode(",",$video['pic']);
         <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
         <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
         <ul class="bigimg-h">
-          <li class="down"></li>
-          <li class="up"></li>
-          <li class="hide1"></li>
+          <li class="down hide"></li>
+          <li class="up hide"></li>
+          <li class="hide1 hide"></li>
           <li class="show1" style="display:none;"></li>
           <li class="del"></li>
         </ul>
@@ -359,6 +361,7 @@ $pic_arr=explode(",",$video['pic']);
 <script src="js/components/imgtext/ImgText2.js"></script>
 <script src="js/components/examcreate/ExamCreate.js"></script>
 <script src="js/components/pointsetting/PointSetting.js"></script>
+<script src="js/components/number/CNumber.js"></script>
 
 <script src="js/index.js"></script>
 

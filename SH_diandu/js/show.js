@@ -1,6 +1,10 @@
 /*=============================定义变量 START===========================*/
 var click = Util.IsPC() ? 'click' : 'tap';
 var bgAudio, audio, video;
+var SCALE = 1; //缩放的比例
+var isVertical = false;  //是否为竖屏
+var DATA; //用来保存请求回来的变量
+
 var GLOBAL = {
   PREBGID: '_diandu',  //每一个背景页的前缀
 
@@ -48,7 +52,8 @@ GLOBAL.BGAUDIO = {
     if (!$(this.bgaudio).attr('src')) {
       $(this.bgaudio).attr('src', src);
     }
-    //STOPBGAUDIO
+
+    //停止背景音乐, 监听事件
     $('body').off('STOPBGAUDIO').on('STOPBGAUDIO', function (e, flag) {
       //暂停播放背景音乐
       if (flag) {
@@ -99,14 +104,7 @@ GLOBAL.BGAUDIO = {
     console.log("clear Timeout...")
     this.timer && clearTimeout(this.timer)
   }
-
 }
-
-var POINTSIZE;
-var SCALE = 1; //缩放的比例
-var isVertical = false;  //是否为竖屏
-
-var DATA; //用来保存请求回来的变量
 
 /*=============================初始化页面 START===========================*/
 $(function () {
@@ -144,12 +142,6 @@ function fn_onResize() {
     //横屏
     SCALE = (window.W / GLOBAL.OLDWIDTH);
     $('.cd-close').removeClass('cd-close-v');
-    $('#div_video').css({
-      width: '80%',
-      height: '60%',
-      position: 'relative',
-      top: '20%'
-    })
 
     GLOBAL.EXAM_W = $(window).width() * (1500 / 1920);
     GLOBAL.EXAM_H = $(window).height() * (800 / 1080);
@@ -168,12 +160,6 @@ function fn_onResize() {
     //竖屏
     SCALE = (window.H / GLOBAL.OLDWIDTH);
     $('.cd-close').addClass('cd-close-v')
-    $('#div_video').css({
-      width: '100%',
-      //height: '75%',
-      position: 'relative',
-      top: '30%'
-    })
 
     GLOBAL.EXAM_W = $(window).width() * (800 / 1080);
     GLOBAL.EXAM_H = $(window).height() * (1200 / 1920);
@@ -191,8 +177,6 @@ function fn_onResize() {
 
   $('.sec-imgtext-main').css({width: _size, height: _size});
 
-  POINTSIZE = SCALE * GLOBAL.POINTSIZE;
-
   //设置顶部进度条的宽高
   styleHandler();
 
@@ -203,7 +187,7 @@ function fn_onResize() {
 }
 
 /**
- * 横竖屏样式处理[批量添加需求]
+ * 横竖屏样式处理
  */
 function styleHandler() {
   var $scrollBar = $('#scroll-bar');
@@ -276,6 +260,7 @@ function initDiandu(data) {
 
   initSwipe();
 
+  initPointSizeAndBgColor(data);
 
   //背景音乐相关操作
   if (data['background']) {
@@ -295,7 +280,15 @@ function initDiandu(data) {
 }
 
 /**
- * 监听点击播放背景音乐
+ * 初始化空白区域背景颜色, 以及点读点的大小
+ * @param data
+ */
+function initPointSizeAndBgColor(data) {
+  $('.m-bgs').css('background-color', data['back_color'])
+}
+
+/**
+ * 监听点击屏幕 播放背景音乐
  */
 function playBgAduio() {
   console.log("play bg audio and remove touchstart event...")

@@ -41,6 +41,7 @@ CNumber.prototype.render = function () {
   var html = this.initHTML();
   $(this.selector).html(html);
   this.init();
+  this.setColor();
 }
 
 /**
@@ -49,7 +50,7 @@ CNumber.prototype.render = function () {
 CNumber.prototype.initHTML = function () {
   var html = "";
   html += '<div class="c-number">'
-  html += '  <div class="c-number-val">100</div>'
+  html += '  <div class="c-number-val">' + this.val + '</div>'
   html += '  <div class="c-number-op">'
   html += '     <div class="c-number-op-plus">+</div>'
   html += '     <div class="c-number-op-sub">-</div>  '

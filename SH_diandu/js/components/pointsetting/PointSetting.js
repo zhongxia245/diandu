@@ -25,13 +25,16 @@
 })()
 
 
-function PointSetting(selector, callback) {
+function PointSetting(selector, config) {
   this.selector = selector;
-  this.callback = callback;
+
+  config = config || {};
+  this.callback = config.callback;
   this.data = {
-    size: 100,
-    color: 'rgb(255,255,255)'
+    size: config.size || 100,
+    color: config.color || 'rgb(255,255,255)'
   };
+  console.log("data", this.data)
   this.render();
 }
 
@@ -82,38 +85,48 @@ PointSetting.prototype.initHTML = function () {
 PointSetting.prototype.init = function () {
   var that = this;
   //初始化点读点大小滑块
-  $("#dpsSize").slider({
-      step: 25,
-      min: 50,
-      max: 200,
-      value: 100,
-      tooltip: 'hide'
-    })
-    .on('slide', function (slideEvt) {
-      $("#dpsSize").prev().find('.slider-handle').text(slideEvt.value)
-      that.data.size = slideEvt.value;
-    })
+  var slideSize = new Slider('#dpsSize', {
+    step: 25,
+    min: 50,
+    max: 200,
+    value: that.data.size,
+    tooltip: 'hide'
+  })
 
-  $("#dpsSize").prev().find('.slider-handle').text(100)
+  slideSize.on('slide', function (slideEvt) {
+    $("#dpsSize").prev().find('.slider-handle').text(slideEvt.value)
+    that.data.size = slideEvt.value;
+    that.callback && that.callback(that.data);
+  })
 
-  //初始化颜色大小滑块
-  $("#dpsColor").slider({
-      step: 0.05,
-      min: 0,
-      max: 1,
-      value: 0,
-      tooltip: 'hide'
-    })
-    .on('slide', function (slideEvt) {
-      var value = slideEvt.value;
-      value = Math.abs(value - 1);
-      var colorVal = value * 255;
-      var color = 'rgb(' + colorVal + ',' + colorVal + ',' + colorVal + ')';
-      $('#dpsColor').prev().find('.slider-handle').css('background', color)
-      that.data.color = color;
-    })
+  $("#dpsSize").prev().find('.slider-handle').text(that.data.size)
 
-  $("#dpsColor").prev().find('.slider-handle').css('background', 'rgb(255,255,255)')
+
+  var tempColor = parseInt(that.data.color.replace('rgb', '').replace('(', '').replace(')', '').split(',')[0]);
+  tempColor = 1 - tempColor / 255;
+
+  console.log("tempColor", tempColor)
+
+  var slideColor = new Slider('#dpsColor', {
+    step: 0.05,
+    min: 0,
+    max: 1,
+    value: tempColor,
+    tooltip: 'hide'
+  })
+  slideColor.on('slide', function (slideEvt) {
+    var value = slideEvt.value;
+    value = Math.abs(value - 1);
+
+    var colorVal = (value * 255).toFixed(0);
+    var color = 'rgb(' + colorVal + ',' + colorVal + ',' + colorVal + ')';
+
+    $('#dpsColor').prev().find('.slider-handle').css('background-color', color)
+    that.data.color = color;
+    that.callback && that.callback(that.data);
+  })
+
+  $("#dpsColor").prev().find('.slider-handle').css('background-color', that.data.color)
 }
 
 PointSetting.prototype.getData = function () {
