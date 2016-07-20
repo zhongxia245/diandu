@@ -62,7 +62,7 @@ PointSetting.prototype.initHTML = function () {
   html += '      <p>(在点读点页可对点读点单独设置大小)</p>'
   html += '      <div class="dps-content-size-imgs">'
   html += '        <img src="imgs/point_setting/36.png" alt="36px">'
-  html += '        <img style="margin:0 24%;" src="imgs/point_setting/72.png" alt="72px">'
+  html += '        <img style="margin: 0 30% 0 18%;" src="imgs/point_setting/72.png" alt="72px">'
   html += '        <img src="imgs/point_setting/144.png" alt="144px">'
   html += '      </div>'
   html += '      <input id="dpsSize" type="text" data-slider-handle="square"/>'

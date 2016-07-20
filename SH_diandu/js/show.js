@@ -37,7 +37,9 @@ var GLOBAL = {
     H: (function () {
       return Util.IsPC() ? 675 : window.screen.height
     })(),
-  }
+  },
+  GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
+  BACK_COLOR: 'rgb(0,0,0)' //背景图片空白区域颜色
 }
 /**
  * 背景音乐相关操作
@@ -260,7 +262,11 @@ function initDiandu(data) {
 
   initSwipe();
 
-  initPointSizeAndBgColor(data);
+
+  GLOBAL.GLOBAL_POINT_SIZE = data['point_size'];
+  GLOBAL.BACK_COLOR = data['back_color'];
+  //设置背景图片空白区域的颜色
+  initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
 
   //背景音乐相关操作
   if (data['background']) {
@@ -281,10 +287,10 @@ function initDiandu(data) {
 
 /**
  * 初始化空白区域背景颜色, 以及点读点的大小
- * @param data
+ * @param color 颜色
  */
-function initPointSizeAndBgColor(data) {
-  $('.m-bgs').css('background-color', data['back_color'])
+function initPointSizeAndBgColor(color) {
+  $('.m-bgs').css('background-color', color)
 }
 
 /**
@@ -303,7 +309,8 @@ function playBgAduio() {
  * @param scale 比例大小
  */
 function setPointSizeScale(wrap, scale) {
-  var pointSize = GLOBAL.POINTSIZE * scale;
+  console.log("page_size", GLOBAL.GLOBAL_POINT_SIZE)
+  var pointSize = GLOBAL.POINTSIZE * scale * (GLOBAL.GLOBAL_POINT_SIZE / 100);
   setScale(wrap + ' .m-audio', pointSize);
   setScale(wrap + ' .m-audio img', pointSize);
   setScale(wrap + ' .m-video', pointSize);
@@ -502,6 +509,7 @@ function initPage(id, data) {
         }
         $('#' + param.subid).css('background-size', 'contain');
 
+        //计算点读点缩放比例
         var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
         if (!_flag) {
           _pointSizeScale = _pointSizeScale * _imgScale;
@@ -621,7 +629,11 @@ function initPoints(data, imgW, imgH, scale) {
     //隐藏点, 则不显示出来
     if (pointDatas[i]['hide'] != "1") {
       //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
-      var pointSize = scale * GLOBAL.POINTSIZE;
+      var pointSizeScale = parseInt(pointDatas[i]['point_size']) || GLOBAL.GLOBAL_POINT_SIZE;
+      pointSizeScale = pointSizeScale / 100;
+      //TODO:可能存在问题, 点读点位置问题
+      var pointSize = scale * GLOBAL.POINTSIZE * pointSizeScale;
+
       var left = parseFloat(pointDatas[i].x) * imgW;
       var top = parseFloat(pointDatas[i].y) * imgH;
       var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';

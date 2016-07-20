@@ -31,8 +31,8 @@ var GLOBAL = {
   ISEDIT: {
     flag: false                       //是否为编辑页面,默认为false
   },
-  POINT_SIZE: null,   //点读点缩放比例(%)
-  BACK_COLOR: ''  //背景图之外空白区域的颜色
+  POINT_SIZE: 100,   //点读点缩放比例(%)
+  BACK_COLOR: 'rgb(0,0,0)'  //背景图之外空白区域的颜色
 }
 /***************************************
  * 程序入口
@@ -296,6 +296,9 @@ var _edit = (function () {
         flag: true,
         id: id
       }
+
+      //回显背景图片的空白区域颜色
+      setBackColor(GLOBAL.BACK_COLOR)
     })
   }
 
@@ -348,10 +351,11 @@ var _edit = (function () {
     $('#btnAutoAudio>span').text(data['bgFileName'])
     GLOBAL.POINT_SIZE = parseInt(data['point_size']);
     GLOBAL.BACK_COLOR = data['back_color'];
+    console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
   }
 
   /**
-   * 根据数据快速生成点读位[不根据点击事件]
+   * 根据数据快速生成点读位[根据数据生存]
    * @param pageIndex     背景图下标
    * @param w             背景图 w
    * @param h             背景图 h
@@ -588,16 +592,30 @@ function bindEvent() {
   $('#pointSetting').on('click', function (e) {
     e.stopPropagation();
     var $divDPS = $('#dianduPointSetting');
+
+    //实例化 点读点大小设置页面
     if ($divDPS.html() === "") {
-      window.cPointSetting = new PointSetting('#dianduPointSetting', {
+      console.log("GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
+      console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
+      new PointSetting('#dianduPointSetting', {
         size: GLOBAL.POINT_SIZE,
         color: GLOBAL.BACK_COLOR,
         callback: function (config) {
-          setPointSize('.radius-in', config.size)
-          $('.setting-bigimg-img').css('background-color', config.color)
+          //保存变量到全局
+          GLOBAL.POINT_SIZE = config.size;
+          GLOBAL.BACK_COLOR = config.color;
+
+          //设置页面上的效果,去除已经设置单个大小的点读点
+          setPointSize('.radius-in:not([data-change="1"])', config.size)
+          setBackColor(config.color);
+
+          //没有单独设置大小的点读点, 都受影响
+          var $val = $('.c-number-val:not([data-change])');
+          CNumber.prototype.setColorOut($val, config.size)
         }
       })
     }
+
     layer.open({
       type: 1,
       title: false,
@@ -608,6 +626,14 @@ function bindEvent() {
       content: $divDPS
     });
   })
+}
+
+/**
+ * [COMMON]设置背景页的颜色
+ * @param color
+ */
+function setBackColor(color) {
+  $('.setting-bigimg-img').css('background-color', color)
 }
 
 /*==========================动态创建页面，根据模板 START==================================*/
@@ -638,6 +664,8 @@ function addDianDuPageTpl() {
     data: [] //点读位数组
   });
   GLOBAL.PAGECOUNT++;
+
+  setBackColor(GLOBAL.BACK_COLOR)
 }
 
 /**
@@ -677,22 +705,45 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
   var tpls = Handlebars.compile($("#tpl_uploadSetting").html());
   $(settingId).append(tpls(data));
 
-  //设置单个点读点的大小  2016-07-18 22:43:43
+  //设置单个点读点的大小  2016-07-18 22:43:43  START
+  var pointSize = parseInt(point['point_size']);
   new CNumber('[data-id="' + dianduItemid + '"] .number-container', {
-    val: parseInt(point['point_size']),
+    val: pointSize || GLOBAL.POINT_SIZE,
+    flag: !!pointSize,
+    pointSelector: '#' + dianduItemid,
     callback: function (val) {
       var id = dianduItemid.replace(GLOBAL.PREFIX_DIANDU, '')
       _data.setDDItems(id, {point_size: val});
+
       setPointSize('#' + dianduItemid, val);
       console.log("set point_size:", id, val)
     }
   })
+
+
+  if (point) {
+    //编辑
+    if (pointSize) {
+      //单独设置了大小
+      setPointSize('#' + dianduItemid, pointSize);
+    } else {
+      //全局大小
+      GLOBAL.POINT_SIZE && setPointSize('#' + dianduItemid, GLOBAL.POINT_SIZE);
+    }
+
+  } else {
+    //新增
+    GLOBAL.POINT_SIZE && setPointSize('#' + dianduItemid, GLOBAL.POINT_SIZE);
+  }
+
+  //设置单个点读点的大小  2016-07-18 22:43:43  END
+
   // 点读设置项
   $('.upload-item').off().on('click', handleUploadItem);
 }
 
 /**
- * 设置点读位置的大小
+ * [COMMON]设置点读位置的大小
  * @param id
  */
 function setPointSize(selector, val) {
@@ -1439,10 +1490,6 @@ function delDDItem(id) {
  */
 function handleSubmit(e) {
   var pagesInfo = _data.getValidItems();
-  var pointSettingData = window.cPointSetting && window.cPointSetting.getData() || {
-      size: 100,
-      color: 'rgb(255,255,255)'
-    };
 
   var data = {
     title: $('#name').val(),
@@ -1454,8 +1501,8 @@ function handleSubmit(e) {
     bgFileName: $('#btnAutoAudio>span').text(),
     pages: pagesInfo.data,
     delPageIds: pagesInfo.delPageIds,
-    point_size: pointSettingData.size,
-    back_color: pointSettingData.color
+    point_size: GLOBAL.POINT_SIZE,
+    back_color: GLOBAL.BACK_COLOR
   }
 
   if (data.title.trim() === "") {
