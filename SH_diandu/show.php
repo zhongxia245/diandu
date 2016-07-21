@@ -141,9 +141,9 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160715"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160721"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160713"></script>
+<script src="js/show.js?version=20160722"></script>
 <script>
   var _isDebug = Util.getQueryStringByName('debug');
   if (_isDebug) {

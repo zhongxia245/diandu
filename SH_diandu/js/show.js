@@ -262,9 +262,13 @@ function initDiandu(data) {
 
   initSwipe();
 
-
-  GLOBAL.GLOBAL_POINT_SIZE = data['point_size'];
-  GLOBAL.BACK_COLOR = data['back_color'];
+  //针对早期的数据, 由于数据库默认保存 数据为 0 , 因此这边需要做处理
+  if (data['point_size'] !== "0") {
+    GLOBAL.GLOBAL_POINT_SIZE = parseInt(data['point_size']);
+  }
+  if (data['back_color'] !== "0") {
+    GLOBAL.BACK_COLOR = data['back_color'];
+  }
   //设置背景图片空白区域的颜色
   initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
 
@@ -309,12 +313,14 @@ function playBgAduio() {
  * @param scale 比例大小
  */
 function setPointSizeScale(wrap, scale) {
-  console.log("page_size", GLOBAL.GLOBAL_POINT_SIZE)
-  var pointSize = GLOBAL.POINTSIZE * scale * (GLOBAL.GLOBAL_POINT_SIZE / 100);
-  setScale(wrap + ' .m-audio', pointSize);
-  setScale(wrap + ' .m-audio img', pointSize);
-  setScale(wrap + ' .m-video', pointSize);
-  setScale(wrap + ' .m-video img', pointSize);
+
+  /*设置这里会影响点读点大小的设置, 考试, 音频, 视频都会被影响, 因此注释掉*/
+  //console.log("page_size", GLOBAL.GLOBAL_POINT_SIZE)
+  //var pointSize = GLOBAL.POINTSIZE * scale * (GLOBAL.GLOBAL_POINT_SIZE / 100);
+  //setScale(wrap + ' .m-audio', pointSize);
+  //setScale(wrap + ' .m-audio img', pointSize);
+  //setScale(wrap + ' .m-video', pointSize);
+  //setScale(wrap + ' .m-video img', pointSize);
 
 
   var startSize;
@@ -651,13 +657,13 @@ function initPoints(data, imgW, imgH, scale) {
         case 1:
         case "1": //视频
           className = 'm-video';
-          mediaImg = '   <img style="display:none;" src="imgs/video_on.png" alt="video" />';
+          mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
           break;
         case 2:
         case "2": //音频
           className = 'm-audio';
-          mediaImg = '   <img class="audio-play" style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
-          mediaImg += '   <img class="audio-load" style="display:none; border-radius:50%;" src="imgs/load.gif" alt="audio" />';
+          mediaImg = '   <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
+          mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
           break;
         case 3:
         case "3": //图文

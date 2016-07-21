@@ -349,9 +349,10 @@ var _edit = (function () {
     $('#chargeStandard').val(data['cost'])
     $('#file_btnAutoAudio_path').val(data['background'])
     $('#btnAutoAudio>span').text(data['bgFileName'])
-    GLOBAL.POINT_SIZE = parseInt(data['point_size']);
-    GLOBAL.BACK_COLOR = data['back_color'];
-    console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
+    
+    GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100;
+    GLOBAL.BACK_COLOR = data['back_color'] === "0" ? 'rgb(0,0,0)' : data['back_color'];
+    console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
   }
 
   /**
