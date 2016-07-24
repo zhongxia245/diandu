@@ -76,9 +76,9 @@ var _upload = (function () {
       method: 'post', //方法，服务端可以用$_POST数组获取数据
       buttonText: '', //设置按钮文本
       multi: true, //允许同时上传多张图片
-      uploadLimit: 100, //一次最多只允许上传10张图片
+      uploadLimit: 100, //一次最多只允许上传100张图片
       fileTypeDesc: 'Image Files',
-      fileTypeExts: '*.gif;*.jpg;*.png',
+      fileTypeExts: '*.gif;*.jpg;*.png;*.jepg',
       fileSizeLimit: "2GB", //限制上传的图片不得超过约等于2G
       onUploadSuccess: function (file, data, response) { //每次成功上传后执行的回调函数，从服务端返回数据到前端
       },

@@ -5,6 +5,7 @@ var SCALE = 1; //缩放的比例
 var isVertical = false;  //是否为竖屏
 var DATA; //用来保存请求回来的变量
 
+
 var GLOBAL = {
   PREBGID: '_diandu',  //每一个背景页的前缀
 
@@ -707,32 +708,38 @@ function audioPlay(audio, $tar) {
   //audio.play()
   //TODO:在移动端下 有兼容性问题
   if ($tar.attr('isLoad')) {//音频加载结束
-    console.log("已经加载结束...")
+    console.log("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
     $tar.find('.audio-play').show();
-  } else { //音频还未加载
+  } else {
+    console.log("未加载音频, 正在加载中....,audio.volume:", audio.volume)
+    //音频还未加载
     $tar.find('.audio-load').show();
     $tar.find('.audio-play').hide();
     $tar.css('background-size', '0')
-
-    audio.addEventListener('canplaythrough', function (e) {
-      //是当前播放的音频, 则显示 正在播放状态
-      if (audio.src.indexOf($tar.attr('data-url')) !== -1) {
-        console.log("加载音频完成...")
-        $tar.find('.audio-load').hide();
-        $tar.find('.audio-play').show();
-        $tar.css('background-size', '100%')
-        audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
-        audio.play();
-        $tar.attr('isLoad', true)
-      }
-    }, false);
 
     //移动端 canplaythrough 必须 设置 play 之后, 才能触发
     audio.play()
     audio.setAttribute('data-volume', audio.volume)
     audio.volume = 0;
   }
+
+  /*audio可以播放的事件*/
+  audio.addEventListener('canplaythrough', function (e) {
+    console.log("!$tar.attr('isLoad')", !$tar.attr('isLoad'))
+    if (!$tar.attr('isLoad')) {
+      //是当前播放的音频, 则显示 正在播放状态
+      if (audio.src.indexOf($tar.attr('data-url')) !== -1) {
+        $tar.find('.audio-load').hide();
+        $tar.find('.audio-play').show();
+        $tar.css('background-size', '100%')
+        audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
+        audio.play();
+        $tar.attr('isLoad', true)
+        console.log("加载音频完成...,audio.volume:", audio.volume)
+      }
+    }
+  }, false);
 }
 
 /**
