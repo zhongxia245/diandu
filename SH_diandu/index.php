@@ -212,7 +212,7 @@ if ($id > 0) {
                             <input type="radio" name="chargeType" value="2"> 收费但对VIP半价
                         </label>
                         <label style="width:300px">
-                            <input type="radio" name="chargeType" value="3"> 全部免费
+                            <input type="radio" name="chargeType" value="3"> 全部收费
                         </label>
                     </div>
                 </div>
@@ -262,43 +262,51 @@ if ($id > 0) {
 <div id="_examCreate"></div>
 <!--点读点大小设置-->
 <div id="dianduPointSetting"></div>
+
+<!--全局音频设置-->
+<div id="globalAudioSetting"></div>
+
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
-    <li class="upload-item item{{index}}" data-index="{{index}}">
-        <div class="upload-radius">
-            <img src="imgs/hide_t.png" style="position: relative;visibility: hidden;">
-            <div class="upload-radius-in" id="item{{id}}" style="margin-top:-90px;">{{index}}</div>
-        </div>
-        <div class="upload-type">
-            <ul data-id="{{id}}">
-                <li title="点读点大小" class="number-container"></li>
-                <li title="视频" class="video" data-type="uploadType" data-file-type="video"
-                    data-text="点击上传MP4格式的视频文件"></li>
-                <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
-                    data-text="点击上传MP3格式的音频文件"></li>
-                <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext"
-                    data-text="点击上传图文(支持文字和图片)"></li>
-                <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
-            </ul>
-        </div>
-        <div class="upload-right">
-            <div class="upload-right-name notselect">
-                <span>{{fileName}}</span>
+  <li class="upload-item item{{index}}" data-index="{{index}}">
+    <div class="upload-radius">
+      <img src="imgs/hide_t.png" style="position: relative;visibility: hidden;">
+      <div class="upload-radius-in" id="item{{id}}" style="margin-top:-90px;">{{index}}</div>
+    </div>
+    <div class="upload-type">
+      <ul data-id="{{id}}">
+        <li title="点读点大小" class="number-container"></li>
+        <li title="视频" class="video" data-type="uploadType" data-file-type="video"
+            data-text="点击上传MP4格式的视频文件"></li>
+        <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
+            data-text="点击上传MP3格式的音频文件"></li>
+        <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext"
+            data-text="点击上传图文(支持文字和图片)"></li>
+        <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
+      </ul>
+    </div>
+    <div class="upload-right">
+      <div class="upload-right-name notselect">
+        <span>{{fileName}}</span>
 
-                <div class="div-file">
-                    <div class="div-file-mask" style="display:none"></div>
-                    <input type="file" id="__file{{id}}" name="upload" class="fileupload"/>
-                </div>
-                <img class="download" src="imgs/download.png" alt="download">
-            </div>
-            <div class="upload-right-btn">
-                <ul data-id="{{id}}" data-index="{{index}}">
-                    <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
-                    <li title="删除" class="img-delete" data-type="delete"></li>
-                </ul>
-            </div>
+        <div class="div-file">
+          <div class="div-file-mask" style="display:none"></div>
+          <input type="file" id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"/>
         </div>
-    </li>
+        <img class="download" src="imgs/download.png" alt="download">
+      </div>
+      <div class="upload-right-btn">
+        <ul data-id="{{id}}" data-index="{{index}}">
+          <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+          <li title="删除" class="img-delete" data-type="delete"></li>
+          <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
+            <li title="设置全程音频" class="img-global-audio-setting"
+                data-type="global-audio-setting"
+                style="display:none"></li>
+        </ul>
+      </div>
+    </div>
+  </li>
 </script>
 <!--上传文件类型选择，显示隐藏，删除 模版 END-->
 <!--背景图模板 START-->

@@ -128,6 +128,9 @@ header {
   background: #00CC99;
   padding-left: 10px;
   margin-bottom: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 .setting-diandu-icon {
@@ -472,16 +475,17 @@ header {
 }
 
 .upload-right-name {
-  width: 505px;
+  width: 440px;
   height: 100%;
   background: #FF7C80;
+  border-radius: 3px;
 }
 
 .upload-right-name .div-file {
   position: absolute;
   top: 0;
   left: 0;
-  width: 505px;
+  width: 100%;
   height: 100%;
 }
 
@@ -569,7 +573,7 @@ header {
 
 .upload-right-btn .img-hide {
   background: url('../imgs/hide.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   margin-right: 10px;
@@ -577,9 +581,30 @@ header {
 
 .upload-right-btn .img-delete {
   background: url('../imgs/delete.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
+  margin-right: 10px;
+}
+
+.upload-right-btn .img-global-audio {
+  background: url('../imgs/img-global-audio.png') no-repeat center;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  visibility: hidden;
+}
+
+.upload-right-btn .img-global-audio-setting {
+  background: url('../imgs/img-global-audio-setting.png') no-repeat center;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+
+/*鼠标移入右边音频名称时,显示设置全局按钮*/
+.upload-right[data-type="audio"][data-upload="1"]:hover .upload-right-btn .img-global-audio {
+  visibility: visible;
 }
 
 /*最底部按钮*/

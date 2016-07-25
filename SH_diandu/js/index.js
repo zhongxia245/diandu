@@ -16,7 +16,6 @@ window.DD.items = []; //点读的位置记录
  ******************************************/
 var GLOBAL = {
   PAGECOUNT: 1,                        // 点读页数量
-  PREFIX_DIANDU: "__diandu",          // 点读位文件类型列表的ID前缀
   SCREENTYPE: "",                     //屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
   ISSELECTEDSCREENTYPE: false,        //是否选中了点读页类型
   DIANDUSIZE: 72, //点读点大小
@@ -349,7 +348,7 @@ var _edit = (function () {
     $('#chargeStandard').val(data['cost'])
     $('#file_btnAutoAudio_path').val(data['background'])
     $('#btnAutoAudio>span').text(data['bgFileName'])
-    
+
     GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100;
     GLOBAL.BACK_COLOR = data['back_color'] === "0" ? 'rgb(0,0,0)' : data['back_color'];
     console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
@@ -389,7 +388,7 @@ var _edit = (function () {
 
     //创建点图位置小圆圈，以及上传文件的列表
     var index = DDPageItems.length;
-    var id = GLOBAL.PREFIX_DIANDU + dataid;
+    var id = dataid;
 
     createCircle(pageIndex, id, index, x, y);
     addDianDu(pageIndex, id, index, point)
@@ -490,7 +489,7 @@ var _edit = (function () {
         var point = pages[i]['points'][j];
         if (point['hide'] == "1") {
           var _ids = (i + 1) + "_" + (j + 1)
-          $('[data-id="' + GLOBAL.PREFIX_DIANDU + _ids + '"]').find('.img-hide').click()
+          $('[data-id="' + _ids + '"]').find('.img-hide').click()
         }
       }
     }
@@ -552,17 +551,20 @@ function setBgImageScale(path, id) {
 function bindEvent() {
   // 提交
   $('#btnSubmit').on('click', handleSubmit);
+
   // 添加点读页
   $('#btnAdd').on('click', addDianDuPageTpl);
+
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
     var $tar = $(e.target);
     $tar.val($tar.val().replace(/[^\d.]/g, ''))
   });
 
+
   //删除点读页.   该使用方法相当于 live
   $(document).on("click", '.bigimg-h .del', function (e) {
-    console.log("del click")
+    console.log("del diandi page")
     e.stopPropagation();
     var $bgPage = $(e.currentTarget).parent().parent().parent().parent();
     var display = $bgPage.find('.setting-bigimg-tip-h').css('display');
@@ -575,6 +577,7 @@ function bindEvent() {
       layer.close(index);
     });
   });
+
 
   //上传背景音乐
   _upload.setUploadify($('#file_btnAutoAudio'), {
@@ -589,7 +592,7 @@ function bindEvent() {
     }
   });
 
-  //点读点大小设置  2016-07-17 17:02:42
+  //点读点大小设置 START  2016-07-17 17:02:42
   $('#pointSetting').on('click', function (e) {
     e.stopPropagation();
     var $divDPS = $('#dianduPointSetting');
@@ -626,7 +629,9 @@ function bindEvent() {
       skin: 'yourclass',
       content: $divDPS
     });
-  })
+  });
+  //点读点大小设置 END
+
 }
 
 /**
@@ -713,7 +718,7 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
     flag: !!pointSize,
     pointSelector: '#' + dianduItemid,
     callback: function (val) {
-      var id = dianduItemid.replace(GLOBAL.PREFIX_DIANDU, '')
+      var id = dianduItemid;
       _data.setDDItems(id, {point_size: val});
 
       setPointSize('#' + dianduItemid, val);
@@ -838,14 +843,6 @@ function addDianduPageByUpload(index, fileName, resultPath) {
 
       bindDianDuPageEvent();
     });
-
-    //图片大小默认是 1200*675
-    //window.DD.items[index - 1]['name'] = fileName;
-    //window.DD.items[index - 1]['pic'] = src;
-    //window.DD.items[index - 1]['w'] = $bg.width();
-    //window.DD.items[index - 1]['h'] = $bg.height();
-    //
-    //bindDianDuPageEvent();
   }
 }
 
@@ -1035,7 +1032,7 @@ function addDianDuLocation(e) {
 
     //创建点图位置小圆圈，以及上传文件的列表
     var index = DDPageItems.length;
-    var id = GLOBAL.PREFIX_DIANDU + dataid;
+    var id = dataid;
 
     createCircle(pageIndex, id, index, x, y);
     addDianDu(pageIndex, id, index);
@@ -1101,8 +1098,38 @@ function handleUploadItem(e) {
         $currentTarget.remove();
 
         //在本地数据变量里面标注，已经删除
-        var _dataid = itemdata.id.replace(GLOBAL.PREFIX_DIANDU, '');
+        var _dataid = itemdata.id;
         _data.setDDItems(_dataid, {isRemove: true});
+        break;
+
+      //设置全局音频按钮
+      case 'global-audio':
+
+        var $tar = $(e.target);
+        var dataItemId = $tar.parent().attr('data-id');  //DD.items 里面的标识id
+        var globalAudioSrc = $tar.parents('.upload-right-btn').prev().attr('data-src');
+        $tar.attr('data-dataid', dataItemId).attr('data-src', globalAudioSrc);
+        //$tar.css('visibility', 'visible');
+        $tar.hide();
+        $tar.next().show();
+
+        console.log("设置该音频为全局音频", $tar)
+        break;
+
+
+      //全程音频设置参数
+      case 'global-audio-setting':
+        var $tar = $(e.target);
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 1,
+          area: ['600px', '600px'], //宽高
+          shadeClose: false,
+          skin: 'yourclass',
+          content: '全局音频设置'
+        });
+        console.log("设置该全局音频的参数", $tar)
         break;
       // 默认报错，不处理
       default:
@@ -1128,14 +1155,25 @@ function fileTypeItemClick(e) {
   var data = $target.data(); //文件类型，和提示信息（上传什么类型文件）
   var pdata = $target.parent().data(); //点读位文件类型列表data-数据(文件列表的ul)
   var id = pdata.id;
-  var _dataid = id.replace(GLOBAL.PREFIX_DIANDU, ''); //在变量里面的唯一标识(eg:1_1)  setItem的数据需要用到这个标识
+  var _dataid = id;
+  var fileTypeDesc, fileTypeExts;
+
+  // 设置右边上传位置文字，以及背景颜色
+  var $rightName = $currentTarget.find('.upload-right-name');
+
+  //上传文件名称，以及点读点操作按钮区域
+  var $uploadRight = $currentTarget.find('.upload-right');
+
 
   //设置上传类型的默认图标--》设置选中的图片
   setUnSelectImgSrc($currentTarget);
   setHoverImgSrcx($target);
 
-  // 设置右边上传位置文字，以及背景颜色
-  var $rightName = $currentTarget.find('.upload-right-name');
+
+  //加上点读点类型【用于hover出现全局音频按钮】
+  $uploadRight.attr('data-type', data.fileType);
+
+
   $rightName.find('span').html(data.text);
   //未上传文件，设置上传文件的样式
   $rightName.removeClass('notselect').addClass('upload');
@@ -1144,36 +1182,29 @@ function fileTypeItemClick(e) {
   //已经上传图文文件[二期]
   $rightName.removeClass('uploaded-imgtext').addClass('upload');
 
-  var fileTypeDesc, fileTypeExts;
 
   //用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
   $filemask.hide();
-  console.log("$filemask", $filemask)
+  console.log("点读点的类型为 => data.fileType:", data.fileType)
 
-  console.log("data.fileType", data.fileType)
-  // 目前只做视频和音频,图文,试卷
   switch (data.fileType) {
-    case 'video':
+    case 'video':  //视频
       fileTypeExts = '*.mp4';
       fileTypeDesc = "MP4文件";
       break;
-    case 'audio':
+    case 'audio':  //音频
       fileTypeExts = '*.mp3';
       fileTypeDesc = "MP3文件";
       break;
-    case 'imgtext':
+    case 'imgtext':  //图文
       fileTypeExts = '*.gif;*.jpg;*.png';
       fileTypeDesc = "Image 文件";
       $filemask.show().off().on('click', fn2_uploadImgText);
       break;
-    case 'exam':
+    case 'exam':  //考试
       fileTypeExts = '*.gif;*.jpg;*.png';
       fileTypeDesc = "Image 文件";
       $filemask.show().off().on('click', fn2_examCreate);
-      break;
-    default:
-      fileTypeExts = '*.gif;*.jpg;*.png';
-      fileTypeDesc = "Image 文件";
       break;
   }
 
@@ -1197,6 +1228,8 @@ function fileTypeItemClick(e) {
         $rightName.removeClass('upload').addClass('uploaded');
         $rightName.find('span').html(file.name);
 
+        $uploadRight.attr('data-upload', 1);  //标记已经上传文件
+
         _data.setDDItems(_dataid, {url: fileSrc, filename: file.name});
       }
     }
@@ -1211,6 +1244,7 @@ function fileTypeItemClick(e) {
  */
 function fn2_uploadImgText(e) {
   //获取 id
+  debugger;
   var ids = CommonUtil.getIds(e);
   var _isEdit = ids.isEdit;
   var pageId = ids.pageId;
@@ -1310,15 +1344,18 @@ var CommonUtil = (function () {
   function getIds(e) {
     //计算出当前数据的ID,然后去window.DD.items 里面获取数据 [针对点读页上下移动,重新绑定事件获取数据的方式]
     var id, _isEdit = false;
+
     if ($(e.target).parent().find('.uploadify').attr('id')) {
       id = $(e.target).parent().find('.uploadify').attr('id');
     } else {
       id = $(e.target).parent().find('input').attr('id');  //编辑由于没有初始化uploadify,所有获取id的方式使用这种
       _isEdit = true;
     }
-    id = id.replace('__file__diandu', '');
+
+    id = id.replace('__file', '');
     var pageId = parseInt(id.split('_')[0]) - 1;
     var dianduId = parseInt(id.split('_')[1]) - 1;
+
     return {
       id: id,
       pageId: pageId,
@@ -1349,7 +1386,7 @@ function hideDDLocation(e) {
   setHoverImgSrcx($target);
 
   var itemdata = $target.parent().data();
-  var _dataid = itemdata.id.replace(GLOBAL.PREFIX_DIANDU, '');
+  var _dataid = itemdata.id;
 
   var $itemSortId = $('#item' + itemdata.id);  //序号
   // 隐藏点读位
@@ -1454,19 +1491,6 @@ function dianduPageOperator(e) {
       $tar.prev('.hide1').show();
       $bgItem.find('._mask').hide();
       break;
-
-    /*在 bindEvent 里面已经 单独的注册了 live 的事件*/
-    //case 'del':
-    //  layer.confirm('确定删除该点读页？', {
-    //    btn: ['确定', '取消'] //按钮
-    //  }, function (index) {
-    //    layer.close(index);
-    //    $bgItem.prev('hr').remove();
-    //    $bgItem.remove();
-    //    delDDItem($bgItem.attr('data-index'));
-    //    console.log("$bgItem.attr('data-index')", $bgItem.attr('data-index'))
-    //  });
-    //  break;
   }
 }
 
