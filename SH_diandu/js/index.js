@@ -553,7 +553,8 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  $('#btnAdd').on('click', addDianDuPageTpl);
+  //$('#btnAdd').on('click', addDianDuPageTpl);
+  $('#btnAdd').on('click', addGlobalAudio);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -599,8 +600,8 @@ function bindEvent() {
 
     //实例化 点读点大小设置页面
     if ($divDPS.html() === "") {
-      console.log("GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
-      console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
+      console.log("GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE, "GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
+
       new PointSetting('#dianduPointSetting', {
         size: GLOBAL.POINT_SIZE,
         color: GLOBAL.BACK_COLOR,
@@ -632,6 +633,7 @@ function bindEvent() {
   });
   //点读点大小设置 END
 
+
 }
 
 /**
@@ -643,6 +645,26 @@ function setBackColor(color) {
 }
 
 /*==========================动态创建页面，根据模板 START==================================*/
+//TODO:临时使用
+function addGlobalAudio(e) {
+  var $tar = $(e.target);
+
+  var $divGA = $('#globalAudioSetting');
+  //实例化 点读点大小设置页面
+  new GlobalAudio('#globalAudioSetting', {})
+
+  layer.open({
+    type: 1,
+    title: false,
+    closeBtn: 1,
+    area: ['600px', '600px'], //宽高
+    shadeClose: false,
+    skin: 'yourclass',
+    content: $divGA
+  });
+  console.log("设置该全局音频的参数", $tar)
+}
+
 /**
  * 添加点读页
  */
@@ -1119,7 +1141,17 @@ function handleUploadItem(e) {
 
       //全程音频设置参数
       case 'global-audio-setting':
+        e.stopPropagation();
+
         var $tar = $(e.target);
+
+        var $divGA = $('#globalAudioSetting');
+        //实例化 点读点大小设置页面
+        if ($divGA.html() === "") {
+
+          new GlobalAudio('#globalAudioSetting', {})
+        }
+
         layer.open({
           type: 1,
           title: false,
@@ -1127,7 +1159,7 @@ function handleUploadItem(e) {
           area: ['600px', '600px'], //宽高
           shadeClose: false,
           skin: 'yourclass',
-          content: '全局音频设置'
+          content: $divGA
         });
         console.log("设置该全局音频的参数", $tar)
         break;
