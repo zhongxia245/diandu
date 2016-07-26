@@ -1,0 +1,114 @@
+.ga-container {
+  height: 600px;
+  width: 600px;
+  position: relative;
+}
+
+.ga-logo {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 100px;
+  height: 90px;
+  background: url(img/global-audio.png) no-repeat;
+  background-size: 100px 90px;
+}
+
+.ga-header {
+  height: 60px;
+  line-height: 60px;
+  background: #008988;
+  font-size: 30px;
+  text-align: center;
+  color: #FFF;
+}
+
+/*内容*/
+.ga-content {
+  height: 540px;
+  background: #EFEFEF;
+  padding: 20px;
+}
+
+/*复选按钮和文字提示*/
+.ga-content-top {
+  padding: 0 10px 0 120px;
+}
+
+/*是否设置为全局音频*/
+#cbkGlobalAudio {
+  margin-right: 5px;
+}
+
+.ga-content-info {
+  height: 30px;
+  line-height: 30px;
+}
+
+.ga-content-info-time {
+  float: right;
+  border: 1px solid #E1E1E1;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.ga-currentTime {
+
+}
+
+.ga-totalTime {
+  color: #A8A8A8;
+}
+
+/*进度条样式 START*/
+.ga-audio-control {
+  width: 100%;
+  height: 50px;
+  margin: 0px 0 10px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ga-audio-control div {
+  position: absolute;
+}
+
+.ga-audio-control .ga-progressBar {
+  width: 100%;
+  height: 10px;
+  left: 0;
+  top: 20px;
+  background: #666666;
+  border-radius: 5px;
+}
+
+.ga-audio-control .ga-speed {
+  position: absolute;
+  top: 20px;
+  left: -100%;
+  width: 100%;
+  height: 10px;
+  background: #f06060;
+}
+
+.ga-audio-control .ga-drag {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  left: 0;
+  top: 10px;
+  background: #84460E;
+  color: #FFF;
+  font-size: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/*进度条样式 END*/
+
+.ga-content-bottom {
+  height: 330px;
+  overflow-y: auto;
+  background: red;
+}
