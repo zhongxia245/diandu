@@ -43,9 +43,24 @@ GlobalAudio.prototype.render = function () {
   var html = this.initHTML();
   $(this.selector).html(html);
   this.init();
+
+  var pagesHTML = this.renderPageItem([
+    {
+      src: 'http://localhost/uploads/c11168c85d4c755d9f243f74f40a1f5c.jpg',
+      time: '00:00:10'
+    },
+    {
+      src: 'http://localhost/uploads/c11168c85d4c755d9f243f74f40a1f5c.jpg',
+      time: '00:00:20'
+    }
+  ])
+  this.$pages.html(pagesHTML);
+
+
   this.bindEvent();
 
-  this.audio.src = "http://localhost/uploads/0a77a417fdccc16ac132ad5dee5655e4.mp3";
+
+  this.audio.src = "http://localhost/uploads/88637755916e546fd6a3e2ba604ddd23.mp3";
 }
 
 /**
@@ -78,18 +93,37 @@ GlobalAudio.prototype.initHTML = function () {
   html.push('      <div class="ga-progressBar"></div>')
   html.push('      <div class="ga-speed"></div>')
   html.push('      <div class="ga-drag">')
-  html.push('        <audio class="ga-audio" loop="loop"></audio>')
+  html.push('        <audio class="ga-audio"></audio>')
   html.push('        <i class="fa fa-play-circle ga-play" aria-hidden="true"></i>')
   html.push('        <i class="fa fa-pause-circle ga-pause" aria-hidden="true" style="display: none;"></i>')
   html.push('      </div>')
   html.push('    </div>')
   html.push('    <!--音频控制条 END-->')
   html.push('    <!--点读页 START-->')
-  html.push('    <div class="ga-content-bottom">')
+  html.push('    <div class="ga-content-pages">')
   html.push('    </div>')
   html.push('    <!--点读页 END-->')
   html.push('  </div>')
   html.push('</div>')
+  return html.join(' ');
+}
+
+GlobalAudio.prototype.renderPageItem = function (data) {
+  var html = [];
+  data = data || [];
+
+  for (var i = 0, length = data.length; i < length; i++) {
+
+    var obj = data[i];
+    var background = 'background:#008988 url(' + obj.src + ') no-repeat; background-size: contain;';
+
+    html.push('<div class="ga-content-page-item" style="' + background + '">')
+    html.push('  <div class="ga-content-page-item-index">' + i + '</div>')
+    html.push('  <div class="ga-content-page-item-time">' + obj.time + '</div>')
+    html.push('</div>')
+
+  }
+
   return html.join(' ');
 }
 
@@ -100,52 +134,115 @@ GlobalAudio.prototype.initHTML = function () {
 GlobalAudio.prototype.init = function () {
   this.$container = $(this.selector);
   this.audio = this.$container.find('.ga-audio')[0];
-  this.drag = this.$container.find('.ga-drag')[0];
-  this.speed = this.$container.find('.ga-speed')[0];
 
-  this.$progressBar = this.$container.find('.ga-progressBar')
+  this.$drag = this.$container.find('.ga-drag');
+
+  this.$audioControl = this.$container.find('.ga-audio-control')
   this.$play = this.$container.find('.ga-play');
   this.$pause = this.$container.find('.ga-pause');
   this.$currentTime = this.$container.find('.ga-currentTime');
   this.$totalTime = this.$container.find('.ga-totalTime');
+  this.$pages = this.$container.find('.ga-content-pages');
+  this.$pageItem = this.$container.find('.ga-content-page-item-time');
   this.$audioName = this.$container.find('.ga-audio-name');
+
   this.$cbkGlobalAudio = this.$container.find('#cbkGlobalAudio');
 }
 
+/**
+ * 绑定事件
+ */
 GlobalAudio.prototype.bindEvent = function () {
   var that = this;
   var audio = this.audio;
+
+  /**
+   * 点击进度条,跳转到该进度
+   */
+  that.$audioControl.on('click', function (e) {
+    e.stopPropagation();
+    var left = e.offsetX - that.$drag.width() / 2;
+    var width = that.$audioControl.width() - 30;
+
+    left = left < 0 ? 0 : left;
+    left = left > width ? width : left;
+
+    var currentTime = (left / width) * that.audio.duration; //30是拖动圆圈的长度，减掉是为了让歌曲结束的时候不会跑到window以外
+    that.audio.currentTime = currentTime;
+    that.$drag.css('left', left);
+  })
+
+  /**
+   * 播放
+   */
+  that.$play.on('click', function (e) {
+    e.stopPropagation();
+    that.audio.play();
+    that.$play.hide();
+    that.$pause.show();
+  })
+
+  /**
+   * 暂停
+   */
+  that.$pause.on('click', function (e) {
+    e.stopPropagation();
+    that.audio.pause();
+    that.$pause.hide();
+    that.$play.show();
+  })
+
+  /**
+   * 点击获取进度条上的时间
+   */
+  that.$container.on('click', '.ga-content-page-item-time', function (e) {
+    $(e.currentTarget)
+      .attr('contenteditable', false)
+      .text(that.formatTime(audio.currentTime))
+  })
+
+  /**
+   * 点击获取进度条上的时间
+   */
+  that.$container.on('dblclick', '.ga-content-page-item-time', function (e) {
+    $(e.currentTarget)
+      .attr('contenteditable', true)
+      .focus()
+  })
+
+  /**
+   * 点击获取进度条上的时间
+   */
+  that.$container.on('keydown', '.ga-content-page-item-time', function (e) {
+    if (e.keyCode === 13) {
+      $(e.currentTarget)
+        .attr('contenteditable', false)
+    }
+  })
+
+  /**
+   * 音频加载结束,展示总时长,并设置播放时的定时器让进度条在移动
+   */
   audio.addEventListener("loadeddata", //歌曲一经完整的加载完毕( 也可以写成上面提到的那些事件类型)
     function () {
-      var allTime = audio.duration;
-      that.timeChange(allTime, '$totalTime');
+      that.$totalTime.html(that.formatTime(audio.duration));
 
+      //设置进度条随着音频时间自动滑动
       setInterval(function () {
-        var currentTime = audio.currentTime;
-        that.timeChange(currentTime, '$currentTime')
-      }, 1000);
+        that.$currentTime.html(that.formatTime(audio.currentTime));
 
-      that.clicks();
+        var width = that.$audioControl.width() - 30;
+        var left = (audio.currentTime / audio.duration) * width;
+
+        that.$drag.css('left', left);
+      }, 500);
+
     }, false);
 
-  audio.addEventListener("pause",
-    function () {
-      //监听暂停
-      console.log("点击播放")
-      if (audio.currentTime == audio.duration) {
-        audio.stop();
-        audio.currentTime = 0;
-      }
-    }, false);
-  audio.addEventListener("play",
-    function () {
-      //监听暂停
-      that.dragMove();
-      console.log("暂停播放")
-    }, false);
-  audio.addEventListener("ended", function () {
-    alert(0)
-  }, false)
+  audio.addEventListener('ended', function (e) {
+    console.log("global audio play end ....")
+    that.$pause.click();
+  })
 }
 
 /**
@@ -153,9 +250,8 @@ GlobalAudio.prototype.bindEvent = function () {
  * @param time
  * @param timePlace
  */
-GlobalAudio.prototype.timeChange = function (time, timePlace) {
+GlobalAudio.prototype.formatTime = function (time) {
   //默认获取的时间是时间戳改成我们常见的时间格式
-  var $timePlace = this[timePlace]
   //分钟
   var minute = time / 60;
   var minutes = parseInt(minute);
@@ -169,44 +265,7 @@ GlobalAudio.prototype.timeChange = function (time, timePlace) {
     seconds = "0" + seconds;
   }
   var allTime = minutes + ":" + seconds;
-  $timePlace.html(allTime);
-}
-
-/**
- * 点击播放
- */
-GlobalAudio.prototype.clicks = function () {
-  var audio = this.audio;
-  var that = this;
-
-  this.$play.on('click', function () {
-    audio.play();
-    that.$play.hide();
-    that.$pause.show();
-
-    that.dragMove();
-  })
-
-  this.$pause.on('click', function () {
-    audio.pause();
-    that.$pause.hide();
-    that.$play.show();
-  })
-}
-
-/**
- * 播放抽根据进度滑动
- */
-GlobalAudio.prototype.dragMove = function () {
-  var drag = this.drag;
-  //var speed = this.speed;
-  var audio = this.audio;
-  var width = this.$container.width();
-
-  setInterval(function () {
-    drag.style.left = (audio.currentTime / audio.duration) * (width - 30) + "px";
-    //speed.style.left = -(width - (audio.currentTime / audio.duration) * (width - 10)) + "px";
-  }, 500);
+  return allTime;
 }
 
 GlobalAudio.prototype.getData = function () {
