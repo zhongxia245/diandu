@@ -10,6 +10,19 @@ ul, li {
   list-style: none;
 }
 
+div[disabled] {
+  color: #FFF;
+  background: #CFCFCF;
+  cursor: not-allowed;
+  -webkit-pointer-events: none;
+  -moz-point-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 .main {
   width: 1200px;
   background: #FFF;

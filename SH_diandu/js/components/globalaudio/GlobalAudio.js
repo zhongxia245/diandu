@@ -4,6 +4,21 @@
  * 说明: 全局音频
  *
  ***************************************************/
+/**
+ * 让可编辑的DIV,触发change事件
+ */
+$('body').on('focus', '[contenteditable]', function () {
+  var $this = $(this);
+  $this.data('before', $this.html());
+  return $this;
+}).on('blur keyup paste input', '[contenteditable]', function () {
+  var $this = $(this);
+  if ($this.data('before') !== $this.html()) {
+    $this.data('before', $this.html());
+    $this.trigger('change');
+  }
+  return $this;
+});
 
 //加载依赖的脚本和样式
 (function () {
@@ -29,10 +44,11 @@ function GlobalAudio(selector, config) {
 
   config = config || {};
   this.callback = config.callback;
-  this.data = {
-    size: config.size || 100,
-    color: config.color || 'rgb(255,255,255)'
-  };
+
+  this.id = config.id;
+  this.name = config.name || "";
+  this.src = config.src || "";
+
   this.render();
 }
 
@@ -44,23 +60,15 @@ GlobalAudio.prototype.render = function () {
   $(this.selector).html(html);
   this.init();
 
-  var pagesHTML = this.renderPageItem([
-    {
-      src: 'http://localhost/uploads/c11168c85d4c755d9f243f74f40a1f5c.jpg',
-      time: '00:00:10'
-    },
-    {
-      src: 'http://localhost/uploads/c11168c85d4c755d9f243f74f40a1f5c.jpg',
-      time: '00:00:20'
-    }
-  ])
+  var pagesHTML = this.renderPageItem(window.DD.items)
   this.$pages.html(pagesHTML);
 
 
   this.bindEvent();
 
 
-  this.audio.src = "http://localhost/uploads/88637755916e546fd6a3e2ba604ddd23.mp3";
+  //this.audio.src = "http://localhost/uploads/88637755916e546fd6a3e2ba604ddd23.mp3";
+  this.audio.src = this.src;
 }
 
 /**
@@ -81,10 +89,10 @@ GlobalAudio.prototype.initHTML = function () {
   html.push('    </div>')
   html.push('    <!--音频名称,音频时间信息 START-->')
   html.push('    <div class="ga-content-info">')
-  html.push('      <span class="ga-audio-name">音频名称...</span>')
+  html.push('      <span class="ga-audio-name">' + this.name + '</span>')
   html.push('      <div class="ga-content-info-time">')
-  html.push('        <span class="ga-currentTime">00:01</span> /')
-  html.push('        <span class="ga-totalTime">10:01</span>')
+  html.push('        <span class="ga-currentTime">00:00</span> /')
+  html.push('        <span class="ga-totalTime">00:00</span>')
   html.push('      </div>')
   html.push('    </div>')
   html.push('    <!--音频名称,音频时间信息 END-->')
@@ -115,11 +123,11 @@ GlobalAudio.prototype.renderPageItem = function (data) {
   for (var i = 0, length = data.length; i < length; i++) {
 
     var obj = data[i];
-    var background = 'background:#008988 url(' + obj.src + ') no-repeat; background-size: contain;';
+    var background = 'background:#008988 url(' + obj.pic + ') no-repeat; background-size: contain;   background-position: center;';
 
-    html.push('<div class="ga-content-page-item" style="' + background + '">')
+    html.push('<div data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
     html.push('  <div class="ga-content-page-item-index">' + i + '</div>')
-    html.push('  <div class="ga-content-page-item-time">' + obj.time + '</div>')
+    html.push('  <div class="ga-content-page-item-time">' + (obj.time || "") + '</div>')
     html.push('</div>')
 
   }
@@ -196,18 +204,31 @@ GlobalAudio.prototype.bindEvent = function () {
    * 点击获取进度条上的时间
    */
   that.$container.on('click', '.ga-content-page-item-time', function (e) {
-    $(e.currentTarget)
-      .attr('contenteditable', false)
+    var $cTar = $(e.currentTarget);
+    $cTar.attr('contenteditable', false)
       .text(that.formatTime(audio.currentTime))
+
+    var id = parseInt($cTar.parent().attr('data-id')) - 1;
+    window.DD && ( window.DD.items[id].time = that.formatTime(audio.currentTime));
   })
 
   /**
-   * 点击获取进度条上的时间
+   * 双击设置时间
    */
   that.$container.on('dblclick', '.ga-content-page-item-time', function (e) {
     $(e.currentTarget)
       .attr('contenteditable', true)
       .focus()
+  })
+
+  /**
+   * 双击设置时间
+   */
+  that.$container.on('change', '.ga-content-page-item-time', function (e) {
+    var $cTar = $(e.currentTarget);
+    var id = parseInt($cTar.parent().attr('data-id')) - 1;
+    var timeStr = $cTar.text();
+    window.DD && ( window.DD.items[id].time = timeStr);
   })
 
   /**

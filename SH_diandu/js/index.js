@@ -553,8 +553,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  //$('#btnAdd').on('click', addDianDuPageTpl);
-  $('#btnAdd').on('click', addGlobalAudio);
+  $('#btnAdd').on('click', addDianDuPageTpl);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -624,6 +623,7 @@ function bindEvent() {
     layer.open({
       type: 1,
       title: false,
+      scrollbar: false,
       closeBtn: 1,
       area: ['600px', '600px'], //宽高
       shadeClose: false,
@@ -645,25 +645,6 @@ function setBackColor(color) {
 }
 
 /*==========================动态创建页面，根据模板 START==================================*/
-//TODO:临时使用
-function addGlobalAudio(e) {
-  var $tar = $(e.target);
-
-  var $divGA = $('#globalAudioSetting');
-  //实例化 点读点大小设置页面
-  new GlobalAudio('#globalAudioSetting', {})
-
-  layer.open({
-    type: 1,
-    title: false,
-    closeBtn: 1,
-    area: ['600px', '600px'], //宽高
-    shadeClose: false,
-    skin: 'yourclass',
-    content: $divGA
-  });
-  console.log("设置该全局音频的参数", $tar)
-}
 
 /**
  * 添加点读页
@@ -1126,43 +1107,28 @@ function handleUploadItem(e) {
 
       //设置全局音频按钮
       case 'global-audio':
-
+        e.stopPropagation();
         var $tar = $(e.target);
-        var dataItemId = $tar.parent().attr('data-id');  //DD.items 里面的标识id
-        var globalAudioSrc = $tar.parents('.upload-right-btn').prev().attr('data-src');
-        $tar.attr('data-dataid', dataItemId).attr('data-src', globalAudioSrc);
-        //$tar.css('visibility', 'visible');
         $tar.hide();
         $tar.next().show();
-
-        console.log("设置该音频为全局音频", $tar)
         break;
-
 
       //全程音频设置参数
       case 'global-audio-setting':
         e.stopPropagation();
-
         var $tar = $(e.target);
+        var dataItemId = $tar.parent().attr('data-id');  //DD.items 里面的标识id
+        var globalAudioSrc = $tar.parents('.upload-right-btn').prev().attr('data-src');
+        var globalAudioName = $tar.parents('.upload-right-btn').prev().find('.uploadify-button-text').text();
 
-        var $divGA = $('#globalAudioSetting');
-        //实例化 点读点大小设置页面
-        if ($divGA.html() === "") {
+        $tar.attr('data-dataid', dataItemId).attr('data-src', globalAudioSrc).attr('data-name', globalAudioName);
 
-          new GlobalAudio('#globalAudioSetting', {})
-        }
-
-        layer.open({
-          type: 1,
-          title: false,
-          closeBtn: 1,
-          area: ['600px', '600px'], //宽高
-          shadeClose: false,
-          skin: 'yourclass',
-          content: $divGA
+        addGlobalAudio(e, {
+          id: dataItemId,
+          src: globalAudioSrc,
+          name: globalAudioName
         });
-        console.log("设置该全局音频的参数", $tar)
-        break;
+
       // 默认报错，不处理
       default:
         break;
@@ -1174,6 +1140,31 @@ function handleUploadItem(e) {
     downloadFile(e);
   }
 }
+
+/**
+ * 添加全局音频设置
+ * @param e
+ */
+function addGlobalAudio(e, param) {
+  var $tar = $(e.target);
+
+  var $divGA = $('#globalAudioSetting');
+  //实例化 点读点大小设置页面
+  new GlobalAudio('#globalAudioSetting', param)
+
+  layer.open({
+    type: 1,
+    title: false,
+    scrollbar: false,
+    closeBtn: 1,
+    area: ['600px', '600px'], //宽高
+    shadeClose: false,
+    skin: 'yourclass',
+    content: $divGA
+  });
+  console.log("设置该全局音频的参数", $tar)
+}
+
 
 /**
  * 点图文件上传，文件类型选择，上传框，序号小圆圈样式管理
@@ -1353,6 +1344,7 @@ function fn2_examCreate(e) {
   })
   var _layer = layer.open({
     type: 1,
+    scrollbar: false,
     title: '上传试卷',
     shadeClose: false,
     content: $('#_examCreate')
