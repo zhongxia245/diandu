@@ -1111,6 +1111,7 @@ function handleUploadItem(e) {
         var $tar = $(e.target);
         $tar.hide();
         $tar.next().show();
+        $('html').attr('data-selected', 1);
         break;
 
       //全程音频设置参数
@@ -1121,12 +1122,36 @@ function handleUploadItem(e) {
         var globalAudioSrc = $tar.parents('.upload-right-btn').prev().attr('data-src');
         var globalAudioName = $tar.parents('.upload-right-btn').prev().find('.uploadify-button-text').text();
 
+        //保存到window变量里面
+        window.DD.globalAudioId = dataItemId;
+        window.DD.globalAudioSrc = globalAudioSrc;
+        window.DD.globalAudioName = globalAudioName;
+
         $tar.attr('data-dataid', dataItemId).attr('data-src', globalAudioSrc).attr('data-name', globalAudioName);
 
         addGlobalAudio(e, {
           id: dataItemId,
           src: globalAudioSrc,
-          name: globalAudioName
+          name: globalAudioName,
+          callback: function (e) {
+            layer.confirm('确定删除该全局音频？', {
+              btn: ['确定', '取消'] //按钮
+            }, function () {
+              layer.closeAll()
+              $tar.parent().find('.img-global-audio-setting').hide();
+              $tar.parent().find('.img-global-audio').show();
+              $('html').attr('data-selected', 0);
+
+              //去掉全局音频之后, 去掉之前的配置
+              window.DD.globalAudioId = "";
+              window.DD.globalAudioSrc = "";
+              window.DD.globalAudioName = "";
+              for (var i = 0; i < window.DD.items.length; i++) {
+                var obj = window.DD.items[i];
+                obj.time = ""
+              }
+            });
+          }
         });
 
       // 默认报错，不处理
@@ -1267,7 +1292,6 @@ function fileTypeItemClick(e) {
  */
 function fn2_uploadImgText(e) {
   //获取 id
-  debugger;
   var ids = CommonUtil.getIds(e);
   var _isEdit = ids.isEdit;
   var pageId = ids.pageId;
@@ -1534,11 +1558,34 @@ function delDDItem(id) {
 
 
 /*=====================二期，点读页上下移动，显示删除隐藏 END==========================*/
+
+/**
+ * 获取全局音频的配置数据
+ * 全局音频,音频名称,音频地址,每个点读页的出现事件
+ */
+function getGlobalAudioConfig() {
+  var pageConfig = [];
+  for (var i = 0; i < window.DD.items.length; i++) {
+    var obj = window.DD.items[i];
+    pageConfig.push(obj.time);
+  }
+  var globalAudioConfig = {
+    id: window.DD.globalAudioId,
+    src: window.DD.globalAudioSrc,
+    name: window.DD.globalAudioName,
+    pageConfig: pageConfig
+  }
+  return globalAudioConfig;
+}
+
+
 /**
  * 提交
  */
 function handleSubmit(e) {
   var pagesInfo = _data.getValidItems();
+  var globalAudioContent = getGlobalAudioConfig();
+
 
   var data = {
     title: $('#name').val(),
@@ -1551,8 +1598,9 @@ function handleSubmit(e) {
     pages: pagesInfo.data,
     delPageIds: pagesInfo.delPageIds,
     point_size: GLOBAL.POINT_SIZE,
-    back_color: GLOBAL.BACK_COLOR
-  }
+    back_color: GLOBAL.BACK_COLOR,
+    content: JSON.stringify(globalAudioContent)
+}
 
   if (data.title.trim() === "") {
     alert('点读页名称不能为空!');

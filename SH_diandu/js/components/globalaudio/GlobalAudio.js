@@ -60,14 +60,13 @@ GlobalAudio.prototype.render = function () {
   $(this.selector).html(html);
   this.init();
 
-  var pagesHTML = this.renderPageItem(window.DD.items)
+  var pageIndex = parseInt(this.id.split('_')[0]);
+  var pagesHTML = this.renderPageItem(window.DD.items, pageIndex)
   this.$pages.html(pagesHTML);
 
 
   this.bindEvent();
 
-
-  //this.audio.src = "http://localhost/uploads/88637755916e546fd6a3e2ba604ddd23.mp3";
   this.audio.src = this.src;
 }
 
@@ -82,7 +81,7 @@ GlobalAudio.prototype.initHTML = function () {
   html.push('  <div class="ga-content">')
   html.push('    <div class="ga-content-top">')
   html.push('      <p>')
-  html.push('        <input type="checkbox" id="cbkGlobalAudio">')
+  html.push('        <input type="checkbox" id="cbkGlobalAudio" checked="true">')
   html.push('        <label for="cbkGlobalAudio">设置本音频为全局音频</label>')
   html.push('      </p>')
   html.push('      <p>全局音频为多个点读页面所用,可设置各个点读页对应音频的时间点出现,每一个点读只能设置一个全局音频</p>')
@@ -116,7 +115,7 @@ GlobalAudio.prototype.initHTML = function () {
   return html.join(' ');
 }
 
-GlobalAudio.prototype.renderPageItem = function (data) {
+GlobalAudio.prototype.renderPageItem = function (data, pageIndex) {
   var html = [];
   data = data || [];
 
@@ -124,8 +123,9 @@ GlobalAudio.prototype.renderPageItem = function (data) {
 
     var obj = data[i];
     var background = 'background:#008988 url(' + obj.pic + ') no-repeat; background-size: contain;   background-position: center;';
+    var disabled = i < pageIndex ? "disabled" : "";
 
-    html.push('<div data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
+    html.push('<div ' + disabled + ' data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
     html.push('  <div class="ga-content-page-item-index">' + i + '</div>')
     html.push('  <div class="ga-content-page-item-time">' + (obj.time || "") + '</div>')
     html.push('</div>')
@@ -198,6 +198,13 @@ GlobalAudio.prototype.bindEvent = function () {
     that.audio.pause();
     that.$pause.hide();
     that.$play.show();
+  })
+
+  /**
+   * 是否设置为全局音频
+   */
+  that.$cbkGlobalAudio.on('change', function (e) {
+    that.callback && that.callback(e);
   })
 
   /**

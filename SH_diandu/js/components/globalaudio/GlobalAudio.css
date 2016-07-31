@@ -154,7 +154,9 @@
   cursor: pointer;
 }
 
-.ga-content-page-item .time-disable {
+
+
+.ga-content-page-item[disabled] .ga-content-page-item-time {
   background: #CFCFCF;
   color: #F0F0F0;
 }

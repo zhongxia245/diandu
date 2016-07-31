@@ -616,7 +616,7 @@ header {
 }
 
 /*鼠标移入右边音频名称时,显示设置全局按钮*/
-.upload-right[data-type="audio"][data-upload="1"]:hover .upload-right-btn .img-global-audio {
+html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover .upload-right-btn .img-global-audio {
   visibility: visible;
 }
 
