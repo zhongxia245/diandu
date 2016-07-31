@@ -3,25 +3,20 @@ var click = Util.IsPC() ? 'click' : 'tap';
 var bgAudio, audio, video;
 var GLOBAL = {
   PREBGID: '_diandu',  //每一个背景页的前缀
-
   H_IMGSCALE: 1920 / 1080,  //横屏比例点
   V_IMGSCALE: 1080 / 1760,  //竖屏比例点
   OLDWIDTH: 1200,  //创建页面的横屏宽度  上传点读页的时候,横屏默认1200*675,竖屏 540*960,这边会从数据库返回
   OLDHEIGHT: 960,  //创建页面的竖屏高度,
   EXAM_W: 0,
   EXAM_H: 0,
-
-  AUTOPLAYINTERVAL: 0,//图片自动轮播的时间, 0为关闭自动播放
-
   STARTSIZE: 100,   //点读开关大小
   POINTSIZE: 72,  //点读位缩放前大小
-
   SEC_EXAM: '.sec-exam',  //考试展示容器
   SEC_EXAM_LIST: '.sec-exam .exam-list',  //考生页面容器
   SEC_QUESTION_LIST: '.sec-exam .question-list',  //题干列表容器
-
+  CURRENTINDEX: 0,
   videoid: 0, // 点读展示的id,
-  DEFAULTAUTOPLAYTIME: 100, //自动播放的间隔时间
+  DEFAULTAUTOPLAYTIME: 15, //自动播放的间隔时间
   PAGESIZE: {  //创建时的容器大小
     W: 1200,
     H: 675
@@ -43,27 +38,7 @@ GLOBAL.BGAUDIO = {
   audio: document.getElementById('audio'),
   $btnBgAudio: $('#btn_bgAudio'),
   setAudio: function (src) {
-    var that = this;
-    //如果已经设置了, 则不在设置背景音乐
-    if (!$(this.bgaudio).attr('src')) {
-      $(this.bgaudio).attr('src', src);
-    }
-    //STOPBGAUDIO
-    $('body').off('STOPBGAUDIO').on('STOPBGAUDIO', function (e, flag) {
-      //暂停播放背景音乐
-      if (flag) {
-        that.timer && clearTimeout(that.timer)
-        that.pause()
-        console.log("pause")
-      }
-      //播放背景音乐
-      else {
-        that.timer = setTimeout(function () {
-          that.play();
-          console.log("play")
-        }, 5000)
-      }
-    })
+    $(this.bgaudio).attr('src', src);
   },
   isOn: function () {
     if (this.$btnBgAudio.attr('src').indexOf('on') !== -1) {
@@ -74,14 +49,13 @@ GLOBAL.BGAUDIO = {
   play: function () {
     if (this.audio.paused && this.bgaudio.paused) {
       this.bgaudio.play();
-      console.log("play...")
       this.$btnBgAudio.attr('src', 'imgs/bg_audio_on.png')
     }
   },
   pause: function () {
-    this.$btnBgAudio.attr('src', 'imgs/bg_audio.png')
     if (!this.bgaudio.paused) {
       this.bgaudio.pause();
+      this.$btnBgAudio.attr('src', 'imgs/bg_audio.png')
     }
   },
   hideBtn: function () {
@@ -90,23 +64,22 @@ GLOBAL.BGAUDIO = {
   setTimePlay: function (duration) {
     duration = duration || 5000;
     var that = this;
-    console.log("set Timeout...")
-    that.timer = setTimeout(function () {
-      that.play()
+    setTimeout(function () {
+      if (that.audio.paused) {
+        that.play()
+      }
     }, duration)
-  },
-  clearTimeout: function () {
-    console.log("clear Timeout...")
-    this.timer && clearTimeout(this.timer)
   }
-
 }
 
 var POINTSIZE;
 var SCALE = 1; //缩放的比例
 var isVertical = false;  //是否为竖屏
 
+window.AUTOPLAYINTERVAL = 0;  //自动播放时间 ,0 为关闭
+
 var DATA; //用来保存请求回来的变量
+var _ISCLICKTHUMBS = false; // 记录是否为点击缩略图进行跳转
 
 /*=============================初始化页面 START===========================*/
 $(function () {
@@ -132,6 +105,7 @@ window.addEventListener("orientationchange", function () {
  * 窗口变化时展示
  */
 function fn_onResize() {
+  console.log("trigger onresize")
   window.W = $(window).width();
   window.H = $(window).height();
   $('#main').css({
@@ -259,6 +233,8 @@ function init() {
     fn_onResize();
   })
 
+  //初始化播放器，页面里面只有一个视频播放器和一个音频播放器,还有一个背景音乐,默认播放
+  initBgAudio();
   initAudio();
   initVideo();
 }
@@ -270,37 +246,20 @@ function init() {
 function initDiandu(data) {
   $('#pages').html('');
   $('#thumbs').html('');
-
   initPage('pages', data);
-  initThumbs('thumbs', data['pages']);
-
+  initThumbs('thumbs', data.pages);
   initSwipe();
-
 
   //背景音乐相关操作
   if (data['background']) {
     GLOBAL.BGAUDIO.setAudio(data['background']);
-    //PC端直接设置自动播放
-    if (Util.IsPC()) {
+    if (GLOBAL.BGAUDIO.isOn()) {
       GLOBAL.BGAUDIO.play();
-    } else {
-      //移动端
-      document.addEventListener("touchstart", playBgAduio, false);
     }
   } else {
     GLOBAL.BGAUDIO.hideBtn()
   }
-
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
-}
-
-/**
- * 监听点击播放背景音乐
- */
-function playBgAduio() {
-  console.log("play bg audio and remove touchstart event...")
-  GLOBAL.BGAUDIO.play();
-  document.removeEventListener("touchstart", playBgAduio, false)
 }
 
 
@@ -365,12 +324,17 @@ function initSwipe() {
       nextButton: '.swiper-button-next',
       prevButton: '.swiper-button-prev',
       onSlideChangeEnd: function (swiper) {
+        //closeVideoOrAudio();
+        GLOBAL.CURRENTINDEX = swiper.activeIndex;  // 记录当前的点读页
 
         $('#id_pagination_cur').text(swiper.activeIndex + 1);
 
         var _$thumbsSwipers = $('#thumbs>div[data-id]');
         _$thumbsSwipers.removeClass('swiper-slide-active-custom');
         _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+
+        //!_ISCLICKTHUMBS && window.galleryThumbs.slideTo(swiper.activeIndex);
+        //_ISCLICKTHUMBS = true;
 
         //播放到最后一个,停止自动播放
         if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
@@ -409,14 +373,14 @@ function initSlide() {
       if (value <= 30) {
         $block.removeClass('close').addClass('open');
         $block.text(value);
-        GLOBAL.AUTOPLAYINTERVAL = value * 1000;
+        window.AUTOPLAYINTERVAL = value * 1000;
         window.galleryTop.stopAutoplay();
-        window.galleryTop.params.autoplay = GLOBAL.AUTOPLAYINTERVAL;
+        window.galleryTop.params.autoplay = window.AUTOPLAYINTERVAL;
         window.galleryTop.startAutoplay();
       } else {
         $block.removeClass('open').addClass('close')
         $block.text("关");
-        GLOBAL.AUTOPLAYINTERVAL = 0;
+        window.AUTOPLAYINTERVAL = 0;
         window.galleryTop.stopAutoplay();
       }
     }
@@ -429,7 +393,9 @@ function initSlide() {
 /*************************************根据数据生成页面 START********************************/
 /**
  * 根据返回的数据，动态生成页面(多个)
- * @param  id 点读页容器id
+ * @param  {[type]} id [点读页容器id]
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
  */
 function initPage(id, data) {
   var html = '';
@@ -443,7 +409,7 @@ function initPage(id, data) {
 
       //获取图片的宽高
       Util.getImageWH(pages[i]['pic'], {subid: subid, page: pages[i], i: i}, function (obj, param) {
-        //var bgSize = '100% auto';
+        var bgSize = '100% auto';
         var currentScale = obj.w / obj.h;
         var $wrap = $('#' + param.subid).find('.wrap');
         //获取图片大小
@@ -451,20 +417,20 @@ function initPage(id, data) {
 
         var wrapWidth = window.W;
         var wrapHeight = window.H;
-        var _flag = false; //横图 却高铺满屏幕 点读点大小特殊处理
+        var _flag = false;
 
         //设置图片比例
         if (isVertical) {
           if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            //bgSize = '100% auto';
+            bgSize = '100% auto';
             wrapHeight = wrapWidth * obj.h / obj.w;
             _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
             _flag = true;
           }
-          else if (currentScale >= GLOBAL.V_IMGSCALE) {
+          else if (currentScale > GLOBAL.V_IMGSCALE) {
             //竖屏
             //横图
-            //bgSize = '100% auto';
+            bgSize = '100% auto';
             wrapHeight = window.W * obj.h / obj.w;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
 
             //竖图,横向100%, 重新计算计算缩放比例
@@ -474,7 +440,7 @@ function initPage(id, data) {
           }
           else {
             //竖图
-            //bgSize = 'auto 100%';
+            bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
 
             //横图,纵向100%, 重新计算计算缩放比例
@@ -483,31 +449,30 @@ function initPage(id, data) {
             }
           }
         } else {
-
           //横屏
           if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            //bgSize = 'auto 100%';
+            bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
             _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
             _flag = true;
           }
-          else if (currentScale >= GLOBAL.H_IMGSCALE) {
+          else if (currentScale > GLOBAL.H_IMGSCALE) {
             //横图
-            //bgSize = '100% auto';
+            bgSize = '100% auto';
             wrapHeight = window.W * obj.h / obj.w;
             if (obj.h / obj.w > 1) {
               _imgScale = wrapHeight / GLOBAL.SCREEN.H
             }
           } else {
             //竖图
-            //bgSize = 'auto 100%';
+            bgSize = 'auto 100%';
             wrapWidth = window.H * obj.w / obj.h;
             if (obj.w / obj.h > 1) {
               _imgScale = wrapWidth / GLOBAL.SCREEN.H
             }
           }
         }
-        $('#' + param.subid).css('background-size', 'contain');
+        $('#' + param.subid).css('background-size', bgSize);
 
         var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
         if (!_flag) {
@@ -518,15 +483,15 @@ function initPage(id, data) {
 
         //针对小图, 创建的时候, 没有缩放的图片 START
         if (obj.w < GLOBAL.PAGESIZE.W && obj.h < GLOBAL.PAGESIZE.H) {
-          if (obj.w / obj.h > window.screen.width / window.screen.height) {
-            console.log("小图 宽铺满屏幕")
+          if (currentScale > GLOBAL.H_IMGSCALE) {
+            //横图
             _pointSizeScale = GLOBAL.SCREEN.W / obj.w
           } else {
-            console.log("小图 高铺满屏幕")
-            _pointSizeScale = GLOBAL.SCREEN.H / obj.h;
+            //竖图
+            _pointSizeScale = GLOBAL.SCREEN.H / obj.h
           }
         }
-        //针对小图, EN
+        //针对小图, END
 
         $wrap.css({height: wrapHeight, width: wrapWidth});
         $wrap.html('');
@@ -588,7 +553,7 @@ function initThumbs(id, pages) {
   for (var i = 0; i < pages.length; i++) {
     var page = pages[i];
     var bgPath = page['pic'];
-    html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');background-size: contain;">'
+    html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
     html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }
@@ -651,8 +616,7 @@ function initPoints(data, imgW, imgH, scale) {
         case 2:
         case "2": //音频
           className = 'm-audio';
-          mediaImg = '   <img class="audio-play" style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
-          mediaImg += '   <img class="audio-load" style="display:none; border-radius:50%;" src="imgs/load.gif" alt="audio" />';
+          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/audio.gif" alt="audio" />';
           break;
         case 3:
         case "3": //图文
@@ -685,75 +649,21 @@ function initBgAudio() {
 }
 function initAudio() {
   audio = document.getElementById('audio');
-
-}
-
-/**
- * 为了解决移动端播放音频需要加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
- * @param audio
- */
-function audioPlay(audio, $tar) {
-  //audio.play()
-  //TODO:在移动端下 有兼容性问题
-  if ($tar.attr('isLoad')) {//音频加载结束
-    console.log("已经加载结束...")
-    audio.play();
-    $tar.find('.audio-play').show();
-  } else { //音频还未加载
-    $tar.find('.audio-load').show();
-    $tar.find('.audio-play').hide();
-    $tar.css('background-size', '0')
-
-    audio.addEventListener('canplaythrough', function (e) {
-      //是当前播放的音频, 则显示 正在播放状态
-      if (audio.src.indexOf($tar.attr('data-url')) !== -1) {
-        console.log("加载音频完成...")
-        $tar.find('.audio-load').hide();
-        $tar.find('.audio-play').show();
-        $tar.css('background-size', '100%')
-        audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
-        audio.play();
-        $tar.attr('isLoad', true)
-      }
-    }, false);
-
-    //移动端 canplaythrough 必须 设置 play 之后, 才能触发
-    audio.play()
-    audio.setAttribute('data-volume', audio.volume)
-    audio.volume = 0;
-  }
 }
 
 /**
  * 播放或者暂停 音频
- * @param {jquery obj} 当前音频图标
+ * @param  {[type]} flag [true ，则播放， false 则暂停]
  */
-function playOrPaused($tar) {
-  GLOBAL.BGAUDIO.clearTimeout();
-
-  if ($tar.attr('class') === "audio-load") { //加载状态
-    $tar.hide();
-    $tar.parent().css('background-size', '100%');
-  }
-
-  else if ($tar.attr('class') === "audio-play") { //正在播放状态
-    $tar.hide();
-    audio.pause();
-    GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
-  }
-
-  else {  //默认状态, 未播放状态
-    var url = $tar.attr('data-url');
-    var filename = $tar.attr('data-filename');
-
-    if (audio.getAttribute('src') !== url) {
-      audio.setAttribute('src', url);
-    }
-    $tar.find('img').show();
-
-    if (audio.paused)  audioPlay(audio, $tar) //audio.play();
-
+function playOrPaused(flag) {
+  if (flag) {
+    if (audio.paused)  audio.play();
     GLOBAL.BGAUDIO.pause();
+  } else {
+    audio.pause();
+
+    //关闭音频的时候,间隔自动播放的时间在启动
+    GLOBAL.BGAUDIO.setTimePlay()
   }
 }
 
@@ -779,6 +689,10 @@ function triggerBouncyNav($bool) {
         $('.cd-bouncy-nav-modal').removeClass('fade-out');
       }
     });
+  //判断css 动画是否开启..
+  if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
+    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+  }
 }
 
 /**
@@ -787,11 +701,7 @@ function triggerBouncyNav($bool) {
  */
 function closeVideoOrAudio(flag) {
   if (flag === undefined) flag = true;
-
   $('.m-audio img').hide(); //隐藏所有的播放GIF图
-  $('.m-audio').css('background-size', '100%')
-  audio.src = '';
-
   var $video = $('.m-video-size');
   $video.find('img').hide();
   $video.removeClass('m-video-size');
@@ -857,6 +767,18 @@ function bindEvent() {
     }
     $cTar.attr('data-type', (parseInt(type) + 1) % 3)
 
+    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
+    //setHoverImgSrcx($('.m-dd-start'));
+    //var $allRadius = $('div[data-id="all-radius"]');
+    ///*点读按钮控制所有点读页的点读位置  2016.3.20 修改 START*/
+    //
+    //var hideClassName = $allRadius.attr('data-hide');
+    //if ($allRadius.hasClass(hideClassName)) {
+    //  $allRadius.removeClass();
+    //} else {
+    //  $allRadius.addClass(hideClassName);
+    //  closeVideoOrAudio(false);
+    //}
     return false;
   });
 
@@ -898,10 +820,7 @@ function bindEvent() {
 
   // 视频
   $('.m-video').off().on(click, function (e) {
-    GLOBAL.BGAUDIO.clearTimeout();  //清除背景音乐定时器,防止快速打开视频, 又关闭, 又打开, 播放背景音乐
-
-    closeVideoOrAudio(true);
-
+    closeVideoOrAudio();
     var $cTar = $(e.currentTarget);
     var $tar = $(e.target);
     var className = 'm-video-size';
@@ -920,6 +839,7 @@ function bindEvent() {
       //  jsSrc.attr('src', url);
       //}
 
+
       if (video.getAttribute('src') !== url) {
         video.setAttribute('src', url);
       }
@@ -935,23 +855,33 @@ function bindEvent() {
   $('.m-audio').off().on(click, function (e) {
     var $tar = $(e.target);
     var $cTar = $(e.currentTarget);
-
-    //关闭视频,并且设置所有的 音频为默认图标状态
-    closeVideoOrAudio(true);
-
+    closeVideoOrAudio();
     var timer = setInterval(function () {
-      //播放结束, 则清除 正在播放的图片
       if (audio.ended) {
         $cTar.find('img').hide();
+        playOrPaused(false);
         window.clearInterval(timer);
 
-        if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
+        if (AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }
       }
-    }, 500)
+    }, 10)
 
-    playOrPaused($tar)
+    if ($tar[0].tagName === "IMG") { // 正在播放
+      $tar.hide();
+      playOrPaused(false);
+    } else { //设置播放
+      var url = $tar.attr('data-url');
+      var filename = $tar.attr('data-filename');
+
+      if (audio.getAttribute('src') !== url) {
+        audio.setAttribute('src', url);
+      }
+      $tar.find('img').show();
+      playOrPaused(true);
+    }
+
     return false;
   })
 
@@ -980,9 +910,6 @@ function bindEvent() {
     _title ? $title.html(_title) : $title.hide();
     _url ? $img.attr('src', _url) : $img.hide();
     $secImgText.find('.sec-imgtext-content').html(_content);
-
-    //设置内容可以滚动, 由于 zepto 为了搞定 微信向上滑兼容性, 重写了touchmove事件导致
-    $secImgText.find('.sec-imgtext-content').find('*').addClass('sec-scorll')
   })
 
   /**
@@ -1026,6 +953,7 @@ function bindEvent() {
       $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
       $tar.addClass('swiper-slide-active-custom');
       window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
+      _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
     })
   } else {
     Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
@@ -1033,6 +961,7 @@ function bindEvent() {
       $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
       $tar.addClass('swiper-slide-active-custom');
       window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
+      _ISCLICKTHUMBS = true;  // 使用点击缩略图进行跳转的
     })
   }
 
