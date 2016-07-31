@@ -299,7 +299,7 @@ if ($id > 0) {
         <ul data-id="{{id}}" data-index="{{index}}">
           <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
           <li title="删除" class="img-delete" data-type="delete"></li>
-          <li title="全程音频" class="img-global-audio" data-selected="0" data-type="global-audio"></li>
+          <li title="全程音频" class="img-global-audio"  data-type="global-audio"></li>
             <li title="设置全程音频" class="img-global-audio-setting"
                 data-type="global-audio-setting"
                 style="display:none"></li>

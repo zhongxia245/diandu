@@ -5,6 +5,8 @@
  *      1. fn+数字 表示第几期的函数
  *      2. 共用的方法，会抽取出来，放到一个个闭包里面【每一个类型，一个闭包】
  *      3. 通用的组件，可能封装成一个 组件类，目前有 图文上传 ImgText
+ *
+ *  TODO : 1. 已经选中一个全局音频之后,不能修改点读点类型, 否则会有问题
  */
 /*==========================变量定义 START==================================*/
 window.DD = window.DD || {};
@@ -298,6 +300,9 @@ var _edit = (function () {
 
       //回显背景图片的空白区域颜色
       setBackColor(GLOBAL.BACK_COLOR)
+
+      //回显全局音频设置配置
+      _resetGlobalAudioData(data);
     })
   }
 
@@ -490,6 +495,47 @@ var _edit = (function () {
         if (point['hide'] == "1") {
           var _ids = (i + 1) + "_" + (j + 1)
           $('[data-id="' + _ids + '"]').find('.img-hide').click()
+        }
+      }
+    }
+  }
+
+  /**
+   * 把全局音频的数据,保存到点读数据里面  DD.items
+   * 重置全局音频的数据
+   * @param data
+   * @private
+   */
+  function _resetGlobalAudioData(data) {
+    var globalAudioConfig = JSON.parse(data.content || "{}");
+    if (globalAudioConfig.id) {
+      for (var i = 0; i < globalAudioConfig.pageConfig.length; i++) {
+        window.DD.items[i]["time"] = globalAudioConfig.pageConfig[i];
+      }
+
+      //回显全局音频设置
+      $('html').attr('data-selected', 1);
+      var uploadRightBtns = $('.upload-right-btn').find('ul[data-id="' + globalAudioConfig.id + '"]');
+      uploadRightBtns.find('.img-global-audio').hide();
+      uploadRightBtns.find('.img-global-audio-setting').show();
+
+      //设置点读点是音频的做标记,并且标记已经上传(音频+已经上传, 可以显示出 设置全局音频按钮)
+      var pages = window.DD.items;
+      for (var i = 0; i < pages.length; i++) {
+        var points = pages[i].data || [];
+        for (var j = 0; j < points.length; j++) {
+          var point = points[j];
+          if (point.type === "audio" && point.url !== "") {
+            var id = point.id;
+            var pageIndex = id.split('_')[0];
+            var pointIndex = id.split('_')[1];
+
+            $('.diandupageitem[data-index="' + pageIndex + '"]')
+              .find('.upload-item[data-index="' + pointIndex + '"]')
+              .find('.upload-right')
+              .attr('data-upload', 1)
+              .attr('data-type', point.type)
+          }
         }
       }
     }
@@ -1243,6 +1289,7 @@ function fileTypeItemClick(e) {
     case 'audio':  //音频
       fileTypeExts = '*.mp3';
       fileTypeDesc = "MP3文件";
+      $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
       break;
     case 'imgtext':  //图文
       fileTypeExts = '*.gif;*.jpg;*.png';
@@ -1600,7 +1647,7 @@ function handleSubmit(e) {
     point_size: GLOBAL.POINT_SIZE,
     back_color: GLOBAL.BACK_COLOR,
     content: JSON.stringify(globalAudioContent)
-}
+  }
 
   if (data.title.trim() === "") {
     alert('点读页名称不能为空!');
