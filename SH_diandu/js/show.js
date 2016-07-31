@@ -240,10 +240,10 @@ function init() {
 
     initDiandu(data);
 
-    console.log("data", data)
-
     //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
     fn_onResize();
+
+    console.log("data", data)
   })
 
   initAudio();
@@ -290,6 +290,7 @@ function initDiandu(data) {
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
 
+
 /**
  * 初始化空白区域背景颜色, 以及点读点的大小
  * @param color 颜色
@@ -314,15 +315,6 @@ function playBgAduio() {
  * @param scale 比例大小
  */
 function setPointSizeScale(wrap, scale) {
-
-  /*设置这里会影响点读点大小的设置, 考试, 音频, 视频都会被影响, 因此注释掉*/
-  //console.log("page_size", GLOBAL.GLOBAL_POINT_SIZE)
-  //var pointSize = GLOBAL.POINTSIZE * scale * (GLOBAL.GLOBAL_POINT_SIZE / 100);
-  //setScale(wrap + ' .m-audio', pointSize);
-  //setScale(wrap + ' .m-audio img', pointSize);
-  //setScale(wrap + ' .m-video', pointSize);
-  //setScale(wrap + ' .m-video img', pointSize);
-
 
   var startSize;
   if (isVertical) {
@@ -439,117 +431,141 @@ function initSlide() {
  * @param  id 点读页容器id
  */
 function initPage(id, data) {
-  var html = '';
-
   if (data || data['pages']) {
     var pages = data['pages'];
 
     $('#id_pagination_total').text(pages.length);
+
+    //动态生成点读页  START
+    var html = '';
+    for (var i = 0; i < pages.length; i++) {
+      html += initDianDuPage(pages[i], GLOBAL.PREBGID + i);
+    }
+    $('#' + id).html('').html(html);
+    //动态生成点读页  END
+
+    //控制点读页的缩放,以及点读点的大小控制  START
     for (var i = 0; i < pages.length; i++) {
       var subid = GLOBAL.PREBGID + i;  //每一个页面的id
 
-      //获取图片的宽高
-      Util.getImageWH(pages[i]['pic'], {subid: subid, page: pages[i], i: i}, function (obj, param) {
-        //var bgSize = '100% auto';
-        var currentScale = obj.w / obj.h;
-        var $wrap = $('#' + param.subid).find('.wrap');
-        //获取图片大小
-        var _imgScale = 1; //竖图  横向100%, 修改缩放比例  创建时,竖图,是纵向100%  当前图片高度/675
+      var w = parseInt(pages[i]['w']) || 1200;
+      var h = parseInt(pages[i]['h']) || 675;
 
-        var wrapWidth = window.W;
-        var wrapHeight = window.H;
-        var _flag = false; //横图 却高铺满屏幕 点读点大小特殊处理
+      var whScale = w / h;   //宽高比
+      var hwScale = h / w;   //高宽比
 
-        //设置图片比例
-        if (isVertical) {
-          if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            //bgSize = '100% auto';
-            wrapHeight = wrapWidth * obj.h / obj.w;
-            _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
-            _flag = true;
+      var $wrap = $('#' + subid).find('.wrap');
+      var _imgScale = 1;
+      var wrapWidth = window.W;
+      var wrapHeight = window.H;
+      var _flag = false;
+
+      if (isVertical) {
+        if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
+          //bgSize = '100% auto';
+          wrapHeight = wrapWidth * hwScale;
+          _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
+          _flag = true;
+        }
+        else if (whScale >= GLOBAL.V_IMGSCALE) {
+          //竖屏
+          //横图
+          //bgSize = '100% auto';
+          wrapHeight = window.W * hwScale;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
+
+          //竖图,横向100%, 重新计算计算缩放比例
+          if (h / w > 1) {
+            _imgScale = wrapHeight / GLOBAL.SCREEN.H
           }
-          else if (currentScale >= GLOBAL.V_IMGSCALE) {
-            //竖屏
-            //横图
-            //bgSize = '100% auto';
-            wrapHeight = window.W * obj.h / obj.w;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
+        }
+        else {
+          //竖图
+          //bgSize = 'auto 100%';
+          wrapWidth = window.H * whScale;
 
-            //竖图,横向100%, 重新计算计算缩放比例
-            if (obj.h / obj.w > 1) {
-              _imgScale = wrapHeight / GLOBAL.SCREEN.H
-            }
+          //横图,纵向100%, 重新计算计算缩放比例
+          if (whScale > 1) {
+            _imgScale = wrapWidth / GLOBAL.SCREEN.H
           }
-          else {
-            //竖图
-            //bgSize = 'auto 100%';
-            wrapWidth = window.H * obj.w / obj.h;
+        }
+      } else {
 
-            //横图,纵向100%, 重新计算计算缩放比例
-            if (obj.w / obj.h > 1) {
-              _imgScale = wrapWidth / GLOBAL.SCREEN.H
-            }
+        //横屏
+        if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
+          //bgSize = 'auto 100%';
+          wrapWidth = window.H * whScale;
+          _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
+          _flag = true;
+        }
+        else if (whScale >= GLOBAL.H_IMGSCALE) {
+          //横图
+          //bgSize = '100% auto';
+          wrapHeight = window.W * hwScale;
+          if (hwScale > 1) {
+            _imgScale = wrapHeight / GLOBAL.SCREEN.H
           }
         } else {
-
-          //横屏
-          if (currentScale > GLOBAL.V_IMGSCALE && currentScale < GLOBAL.H_IMGSCALE) {
-            //bgSize = 'auto 100%';
-            wrapWidth = window.H * obj.w / obj.h;
-            _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
-            _flag = true;
-          }
-          else if (currentScale >= GLOBAL.H_IMGSCALE) {
-            //横图
-            //bgSize = '100% auto';
-            wrapHeight = window.W * obj.h / obj.w;
-            if (obj.h / obj.w > 1) {
-              _imgScale = wrapHeight / GLOBAL.SCREEN.H
-            }
-          } else {
-            //竖图
-            //bgSize = 'auto 100%';
-            wrapWidth = window.H * obj.w / obj.h;
-            if (obj.w / obj.h > 1) {
-              _imgScale = wrapWidth / GLOBAL.SCREEN.H
-            }
+          //竖图
+          //bgSize = 'auto 100%';
+          wrapWidth = window.H * whScale;
+          if (whScale > 1) {
+            _imgScale = wrapWidth / GLOBAL.SCREEN.H
           }
         }
-        $('#' + param.subid).css('background-size', 'contain');
+      }
+      $('#' + subid).css('background-size', 'contain');
 
-        //计算点读点缩放比例
-        var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
-        if (!_flag) {
-          _pointSizeScale = _pointSizeScale * _imgScale;
+      //计算点读点缩放比例
+      var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
+      if (!_flag) {
+        _pointSizeScale = _pointSizeScale * _imgScale;
+      } else {
+        _pointSizeScale = _imgScale
+      }
+
+      //针对小图, 创建的时候, 没有缩放的图片 START
+      if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
+        if (whScale > window.screen.width / window.screen.height) {
+          console.log("小图 宽铺满屏幕")
+          _pointSizeScale = GLOBAL.SCREEN.W / w
         } else {
-          _pointSizeScale = _imgScale
+          console.log("小图 高铺满屏幕")
+          _pointSizeScale = GLOBAL.SCREEN.H / h
         }
+      }
+      //针对小图, EN
 
-        //针对小图, 创建的时候, 没有缩放的图片 START
-        if (obj.w < GLOBAL.PAGESIZE.W && obj.h < GLOBAL.PAGESIZE.H) {
-          if (obj.w / obj.h > window.screen.width / window.screen.height) {
-            console.log("小图 宽铺满屏幕")
-            _pointSizeScale = GLOBAL.SCREEN.W / obj.w
-          } else {
-            console.log("小图 高铺满屏幕")
-            _pointSizeScale = GLOBAL.SCREEN.H / obj.h;
-          }
-        }
-        //针对小图, EN
+      $wrap.css({height: wrapHeight, width: wrapWidth});
+      $wrap.html('');
+      $wrap.append(initPoints(i, pages[i], wrapWidth, wrapHeight, _pointSizeScale))
 
-        $wrap.css({height: wrapHeight, width: wrapWidth});
-        $wrap.html('');
-        $wrap.append(initPoints(param, wrapWidth, wrapHeight, _pointSizeScale))
-
-        setPointSizeScale('#' + param.subid, _pointSizeScale);
-
-        //所有点读位置生成结束
-        bindEvent();
-      })
-
+      setPointSizeScale('#' + subid, _pointSizeScale);
+      //所有点读位置生成结束
+      bindEvent();
       html += initDianDuPage(pages[i], subid);
     }
+    //控制点读页的缩放,以及点读点的大小控制  END
+    initGlobalAudio(DATA, pages[i]);
   }
-  $('#' + id).html('').html(html);
+}
+
+
+/**
+ * 初始化全局音频的相关配置
+ * @param data 数据
+ * @param isEnd 所有图片是否加载结束
+ */
+function initGlobalAudio(data) {
+  var globalAudioConfig = JSON.parse(data.content || "{}");
+
+  if (globalAudioConfig && globalAudioConfig.id) {
+    var pageIndex = parseInt(globalAudioConfig.id.split('_')[0]) - 1;
+    var pointIndex = parseInt(globalAudioConfig.id.split('_')[1]) - 1;
+    //全局音频所在的点读页 加载结束
+    var selector = '.m-audio[data-id="' + pageIndex + "_" + pointIndex + '"]';
+    var $globalAudio = $(selector);
+    console.log("$globalAudoi", $globalAudio)
+  }
 }
 
 /**
@@ -626,9 +642,9 @@ function initThumbs(id, pages) {
  * @param scale 缩放比例
  * @returns {string}
  */
-function initPoints(data, imgW, imgH, scale) {
+function initPoints(pageIndex, data, imgW, imgH, scale) {
 
-  var pointDatas = data['page']['points']
+  var pointDatas = data['points']
 
   var html = "";
   html += '<div data-id="all-radius" data-hide="all-radius-hide">'
@@ -681,7 +697,7 @@ function initPoints(data, imgW, imgH, scale) {
           break;
       }
 
-      html += '<div class="' + className + '" data-id="' + (data.i + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+      html += '<div class="' + className + '" data-id="' + (pageIndex + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
       html += mediaImg;
       html += '</div>'
     }
