@@ -760,7 +760,9 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
   var settingId = "#uploadSetting" + pageIndex;
   var data = {
     id: dianduItemid,
-    index: index
+    index: index,
+    type: point.type === "2" ? 'audio' : '',
+    upload: point.url ? '1' : '0'
   }
   var tpls = Handlebars.compile($("#tpl_uploadSetting").html());
   $(settingId).append(tpls(data));

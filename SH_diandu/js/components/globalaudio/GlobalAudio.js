@@ -120,18 +120,20 @@ GlobalAudio.prototype.renderPageItem = function (data, pageIndex) {
   data = data || [];
 
   for (var i = 0, length = data.length; i < length; i++) {
-
     var obj = data[i];
-    var background = 'background:#008988 url(' + obj.pic + ') no-repeat; background-size: contain;   background-position: center;';
-    var disabled = i < pageIndex ? "disabled" : "";
+    //已经删除的点读页,不显示
+    if (!obj.isRemove) {
+      var background = 'background:#008988 url(' + obj.pic + ') no-repeat; background-size: contain;   background-position: center;';
+      var disabled = i < pageIndex ? "disabled" : "";
+      var _time = i === pageIndex - 1 ? '00:00' : '';
 
-    html.push('<div ' + disabled + ' data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
-    html.push('  <div class="ga-content-page-item-index">' + (i+1) + '</div>')
-    html.push('  <div class="ga-content-page-item-time">' + (obj.time || "") + '</div>')
-    html.push('</div>')
 
+      html.push('<div ' + disabled + ' data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
+      html.push('  <div class="ga-content-page-item-index">' + (i + 1) + '</div>')
+      html.push('  <div class="ga-content-page-item-time">' + (obj.time || _time) + '</div>')
+      html.push('</div>')
+    }
   }
-
   return html.join(' ');
 }
 

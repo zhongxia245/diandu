@@ -285,7 +285,7 @@ if ($id > 0) {
         <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
       </ul>
     </div>
-    <div class="upload-right">
+    <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
       <div class="upload-right-name notselect">
         <span>{{fileName}}</span>
 
