@@ -468,6 +468,7 @@ var _edit = (function () {
    * @private
    */
   function _data2DDItems(data) {
+
     $('input[name="pic"]').val(data['pic']);
     var pages = data.pages;
     for (var i = 0; i < pages.length; i++) {
@@ -509,6 +510,10 @@ var _edit = (function () {
   function _resetGlobalAudioData(data) {
     var globalAudioConfig = JSON.parse(data.content || "{}");
     if (globalAudioConfig.id) {
+      window.DD.globalAudioId = globalAudioConfig.id;
+      window.DD.globalAudioSrc = globalAudioConfig.src;
+      window.DD.globalAudioName = globalAudioConfig.name;
+
       for (var i = 0; i < globalAudioConfig.pageConfig.length; i++) {
         window.DD.items[i]["time"] = globalAudioConfig.pageConfig[i];
       }
@@ -1166,7 +1171,7 @@ function handleUploadItem(e) {
         var $tar = $(e.target);
         var dataItemId = $tar.parent().attr('data-id');  //DD.items 里面的标识id
         var globalAudioSrc = $tar.parents('.upload-right-btn').prev().attr('data-src');
-        var globalAudioName = $tar.parents('.upload-right-btn').prev().find('.uploadify-button-text').text();
+        var globalAudioName = $tar.parents('.upload-right-btn').prev().find('span').eq(0).text();
 
         //保存到window变量里面
         window.DD.globalAudioId = dataItemId;
@@ -1614,7 +1619,9 @@ function getGlobalAudioConfig() {
   var pageConfig = [];
   for (var i = 0; i < window.DD.items.length; i++) {
     var obj = window.DD.items[i];
-    pageConfig.push(obj.time);
+    if (!obj.isRemove) {
+      pageConfig.push(obj.time);
+    }
   }
   var globalAudioConfig = {
     id: window.DD.globalAudioId,

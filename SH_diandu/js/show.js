@@ -966,7 +966,16 @@ function bindEvent() {
             data: result,
             pageid: pageid,
             videoid: GLOBAL.videoid,
-            userid: window.__userid
+            userid: window.__userid,
+            startRecordCallback: function () {
+              console.info("暂停背景音乐")
+              //开始录音结束背景音乐
+              GLOBAL.BGAUDIO.pause();
+            },
+            stopRecordCallback:function(){
+              console.info("录音结束之后,定时5秒,启动背景音乐播放")
+              GLOBAL.BGAUDIO.setTimePlay();
+            }
           })
         })
 

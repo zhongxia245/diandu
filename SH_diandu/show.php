@@ -128,7 +128,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  //window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
@@ -146,10 +146,10 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160721"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160806_1"></script>
 <script src="js/page/show/globalAudio.js"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160722_03"></script>
+<script src="js/show.js?version=20160806_4"></script>
 <script>
   var _isDebug = Util.getQueryStringByName('debug');
   if (_isDebug) {
