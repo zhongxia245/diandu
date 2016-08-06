@@ -323,10 +323,11 @@ ul, li {
   padding-left: 10px;
 }
 
+
 .gallery-thumbs {
   height: 60%;
   box-sizing: border-box;
-  padding: 5px 0 20px 0;
+  padding: 10px 10px 20px 10px;
 }
 
 .gallery-thumbs .swiper-slide {
@@ -339,7 +340,9 @@ ul, li {
 
 .gallery-thumbs .swiper-slide-active-custom {
   box-shadow: 0 0 10px;
-  transform: scale(1.1);
+  -webkit-transform: scale(1.15);
+  -moz-transform: scale(1.15);
+  transform: scale(1.15);
 }
 
 .thumbs-sort-id {
@@ -390,13 +393,15 @@ ul, li {
 
 .btn-close {
   position: absolute;
-  right: 10px;
-  top: 5px;
-  font-size: 26px;
+  right: 5px;
+  top: 0px;
+  font-size: 40px;
   font-weight: bold;
   color: #FF864E;
   cursor: pointer;
   width: 30px;
+  line-height: 30px;
+  height: 30px;
   text-align: center;
 }
 
@@ -481,6 +486,8 @@ ul, li {
 
 .ga-modal-content-page.active {
   border-color: #FFB600;
+  -webkit-transform: scale(1.15);
+  -moz-transform: scale(1.15);
   transform: scale(1.15);
 }
 

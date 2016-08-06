@@ -43,19 +43,19 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   </div>
 
   <div class="gallery-main" style="opacity: 0; overflow: hidden;">
-    <div id="btn-close" class="btn-close">X</div>
+    <div id="btn-close" class="btn-close">&times;</div>
     <div class="control-audios">
+      <img class="control-global-audio"
+           id="btn_globalAudio"
+           data-src="imgs/global_audio/global-audio-off.png"
+           src="imgs/global_audio/global-audio-on.png" data-state="1" alt="开启全程音频">
       <img class="control-bg-audio"
            id="btn_bgAudio"
            src="imgs/bg_audio_on.png" alt="开启背景音乐">
-      <img class="control-global-audio"
-           id="btn_globalAudio"
-           data-src="imgs/global_audio/global-audio-on.png"
-           src="imgs/global_audio/global-audio-off.png" data-state="0" alt="开启全程音频">
     </div>
     <!--自动播放时间进度条  START-->
     <div class="gallery-main-switch">
-      <div id="txtTip" class="gallery-main-tip">设置连播间隔(秒)</div>
+      <div id="txtTip" style="font-style: italic">设置连播间隔(秒)</div>
       <div class="scroll-bar" id="scroll-bar" style="width: 40%; float: left;">
         <div class="entire-bar" id="entire-bar"></div>
         <div class="action-block close" id="action-block">关</div>

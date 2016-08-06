@@ -63,13 +63,13 @@ GLOBAL.BGAUDIO = {
       if (flag) {
         that.timer && clearTimeout(that.timer)
         that.pause()
-        console.log("pause")
+        console.info("暂停背景音乐!")
       }
       //播放背景音乐
       else {
         that.timer = setTimeout(function () {
           that.play();
-          console.log("play")
+          console.info("间隔5秒,开始自动播放背景音乐!")
         }, 5000)
       }
     })
@@ -83,7 +83,7 @@ GLOBAL.BGAUDIO = {
   play: function () {
     if (this.audio.paused && this.bgaudio.paused) {
       this.bgaudio.play();
-      console.log("play...")
+      console.info("背景音乐播放")
       this.$btnBgAudio.attr('src', 'imgs/bg_audio_on.png')
     }
   },
@@ -99,13 +99,13 @@ GLOBAL.BGAUDIO = {
   setTimePlay: function (duration) {
     duration = duration || 5000;
     var that = this;
-    console.log("set Timeout...")
+    console.info("设置定时器,5秒后播放背景音乐")
     that.timer = setTimeout(function () {
       that.play()
     }, duration)
   },
   clearTimeout: function () {
-    console.log("clear Timeout...")
+    console.info("清除背景音乐定时器!")
     this.timer && clearTimeout(this.timer)
   }
 }
@@ -233,6 +233,34 @@ function init() {
 
     bindEvent();
 
+    //渲染后的操作
+    afterRenderOp(data);
+
+    console.info("展示页数据:", data)
+  })
+}
+
+/**
+ * 渲染之后,对页面进行一些操作
+ * eg: 是否显示背景音乐按钮,是否显示全程音频按钮, 位置样式调整等
+ */
+function afterRenderOp(data) {
+  //存在背景音乐
+  if (data['background']) {
+    GLOBAL.BGAUDIO.setAudio(data['background']);
+    //PC端直接设置自动播放
+    if (Util.IsPC()) {
+      GLOBAL.BGAUDIO.play();
+    } else {
+      //移动端
+      document.addEventListener("touchstart", playBgAduio, false);
+    }
+  } else {
+    GLOBAL.BGAUDIO.hideBtn()
+  }
+
+  //存在全程音频
+  if (data.content != '') {
     //初始化全程音频
     ctlGlobalAudio = new GlobalAudioController('#global-audio',
       {
@@ -242,13 +270,16 @@ function init() {
           window.galleryTop.slideTo(index);
           window.galleryThumbs.slideTo(index);
         },
+        //播放后的回调
         playCallback: function () {
           $('[data-id="global-audio"]').removeClass().addClass('global-audio-other-page-on');
         },
+        //暂停后的回调
         pauseCallback: function () {
           $('[data-id="global-audio"]').removeClass().addClass('global-audio-other-page-off');
           $('.m-global-audio').find('img').hide();
         },
+        //隐藏其他点读点的回调
         hideOtherPointCallback: function (flag) {
           //隐藏
           if (flag) {
@@ -264,12 +295,24 @@ function init() {
             $('.m-video').show();
             $('.m-exam').show();
           }
+        },
+        //隐藏全程音频功能的回调
+        hideCallback: function (flag) {
+          if (flag) {
+            $('[data-id="global-audio"][data-show="1"]').show();
+            $('.m-global-audio').show();
+          }
+          else {
+            $('[data-id="global-audio"][data-show="1"]').hide();
+            $('.m-global-audio').hide();
+          }
         }
       }
     )
+  } else {
+    $('#btn_globalAudio').hide();
+  }
 
-    console.info("展示页数据:", data)
-  })
 }
 
 /**
@@ -294,20 +337,6 @@ function initDiandu(data) {
   }
   //设置背景图片空白区域的颜色
   initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
-
-  //背景音乐相关操作
-  if (data['background']) {
-    GLOBAL.BGAUDIO.setAudio(data['background']);
-    //PC端直接设置自动播放
-    if (Util.IsPC()) {
-      GLOBAL.BGAUDIO.play();
-    } else {
-      //移动端
-      document.addEventListener("touchstart", playBgAduio, false);
-    }
-  } else {
-    GLOBAL.BGAUDIO.hideBtn()
-  }
 
   $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
@@ -586,7 +615,8 @@ function initGlobalAudio(data) {
     window.globalAudio.src = globalAudioConfig.src;
 
     for (var i = 0; i <= pageIndex; i++) {
-      $('#' + GLOBAL.PREBGID + i).find('[data-id="global-audio"]').hide();
+      //不需要显示全程音频的做上标记
+      $('#' + GLOBAL.PREBGID + i).find('[data-id="global-audio"]').attr('data-show', null).hide();
     }
 
     //全局音频所在的点读页 加载结束
@@ -632,7 +662,7 @@ function initDianDuPage(data, id) {
   html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
   html += '        <div class="m-dd-start-comment-div"></div>'
   html += '        <div data-id="btn-start" class="m-dd-start"></div>'
-  html += '        <div data-id="global-audio" class="global-audio-other-page-off"></div>'
+  html += '        <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
   html += '    <div class="wrap">'
 
   html += '    </div>'
@@ -812,8 +842,15 @@ function playOrPaused($tar, isGlobalAudio) {
 
   else if ($tar.attr('class') === "audio-play") { //正在播放状态
     $tar.hide();
-    window.audio.pause();
-    GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
+    if (isGlobalAudio) {
+      ctlGlobalAudio.pause();
+      ctlGlobalAudio.render();
+      console.info("全程音频暂停播放")
+    } else {
+      window.audio.pause();
+      console.info("音频点读点暂停播放,开始播放背景音乐定时器!")
+      GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
+    }
   }
 
   else {  //默认状态, 未播放状态
@@ -1018,7 +1055,7 @@ function bindEvent() {
   $('.m-audio').off().on(click, function (e) {
     var $tar = $(e.target);
     var $cTar = $(e.currentTarget);
-    var isGlobalAudio = $tar.attr('data-global-audio')
+    var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
     //关闭视频,并且设置所有的 音频为默认图标状态
     closeVideoOrAudio(true);
@@ -1040,12 +1077,13 @@ function bindEvent() {
   })
 
 
-  //全程音频
+  //全程音频按钮[非全程音频点读点的页面]
   $('[data-id="global-audio"]').off().on('click', function (e) {
     var $cTar = $(e.target);
     if ($cTar.attr('class') === 'global-audio-other-page-on') {
       var currentIndex = parseInt($('#id_pagination_cur').text()) - 1;
-      window.ctlGlobalAudio.render(currentIndex);
+      ctlGlobalAudio.pause();
+      ctlGlobalAudio.render(currentIndex);
     }
   })
 

@@ -1,7 +1,7 @@
 /***************************************************
  * 时间: 8/4/16 20:48
  * 作者: zhongxia
- * 说明: 全程音频控制器
+ * 说明: 全程音频控制器 [备份用,未具体沟通前的逻辑代码]
  * 1. 播放的时候, 跳转到指定的页面
  ***************************************************/
 function GlobalAudioController(selector, config) {
@@ -20,14 +20,13 @@ function GlobalAudioController(selector, config) {
   this.playCallback = config.playCallback; //播放后的回调
   this.pauseCallback = config.pauseCallback; //暂停后的回调
   this.hideOtherPointCallback = config.hideOtherPointCallback; //暂停后的回调
-  this.hideCallback = config.hideCallback;  //隐藏全程音频功能
 
   this.initData();
 
   var that = this;
 
   /**
-   * 页面上滑出现的,全程音频开关,点击事件
+   * 页面上滑出现的,全程音频开关
    */
   $(this.controllerId).off().on(this.click, function (e) {
     var $cTar = $(e.currentTarget);
@@ -38,10 +37,10 @@ function GlobalAudioController(selector, config) {
 
     if ($cTar.attr('data-state') === "0") {
       $cTar.attr('data-state', "1")
-      that.hideCallback && that.hideCallback(true);
+      that.play();
     } else {
       $cTar.attr('data-state', "0")
-      that.hideCallback && that.hideCallback(false);
+      that.pause();
     }
   })
 }
@@ -152,6 +151,7 @@ GlobalAudioController.prototype.renderPageItem = function (currentIndex) {
  */
 GlobalAudioController.prototype.initDOM = function () {
   this.$container = $('.ga-modal');
+  this.$logo = this.$container.find('.ga-modal-content-logo');
   this.$btn = this.$container.find('[data-id="btn-control"]');
   this.$pageItem = this.$container.find('.ga-modal-content-page');
   this.$btnHidePoint = this.$container.find('.label-hide');
@@ -162,26 +162,35 @@ GlobalAudioController.prototype.initDOM = function () {
  */
 GlobalAudioController.prototype.bindEvent = function () {
   var that = this;
-  //关闭全程音频功能, 隐藏全程音频按钮. 如果想要重新打开,请页面上滑,滑出面板中点击打开全程音频,重新显示全程音频
+  //关闭全程音频
   that.$btn.off().on(this.click, function (e) {
-    console.info("音频全程音频功能!")
-    that.pause();
-    that.$container.hide();
-    that.hideCallback && that.hideCallback();
-    that.hideOtherPointCallback && that.hideOtherPointCallback(false)  //不隐藏其他点读点
+    console.info("关闭全程音频")
+    var $cTar = $(e.currentTarget);
+    if ($cTar.attr('class') === "ga-modal-content-btn-off") {
+      $cTar.removeClass().addClass('ga-modal-content-btn-on');
+      that.play();
+    } else {
+      $cTar.removeClass().addClass('ga-modal-content-btn-off');
+      that.pause();
+    }
   })
 
-  //点击点读页,关闭窗口,播放全程音频,并且跳转到指定页面
+  //关闭弹窗
+  that.$logo.off().on(this.click, function (e) {
+    console.info("关闭全程音频弹框")
+    that.$container.hide();
+  })
+
+  //点击点读页
   that.$pageItem.off().on(this.click, function (e) {
     var $cTar = $(e.currentTarget);
     var index = $cTar.attr('data-index');
-    that.$container.hide();
-    that.play();
+
     //点击点读页, 设置全局音频跳转到该时间点
     that.setActivePage(index, true);
   })
 
-  //隐藏其他点读点
+  //音频其他点读点
   that.$btnHidePoint.off().on(this.click, function (e) {
     var flag = $(e.currentTarget).find('input').attr('checked');
     console.info("隐藏其他点读点");
@@ -238,4 +247,13 @@ GlobalAudioController.prototype.pause = function () {
   this.audio.pause();
   this.pauseCallback && this.pauseCallback();
 }
+
+
+/**
+ * 设置全局音频当前播放时间
+ */
+GlobalAudioController.prototype.setCurrentPage = function (time) {
+  this.audio.currentTime = time;
+}
+
 
