@@ -118,7 +118,7 @@ SlideBar.prototype = {
     $('#' + this.scrollBar).css({
       width: entireW,
       height: 100 * this.scale,
-      top: 20 * this.scale
+      // top: 20 * this.scale
     })
 
   }

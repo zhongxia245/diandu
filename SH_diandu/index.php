@@ -204,7 +204,7 @@ if ($id > 0) {
                             <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
                         </label>
                         <label style="width:300px">
-                            <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
+                            <input type="radio" name="chargeType" value="1"> 收费但对VIP免费
                         </label>
                     </div>
                     <div>
