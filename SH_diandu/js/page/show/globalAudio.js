@@ -31,17 +31,34 @@ function GlobalAudioController(selector, config) {
    */
   $(this.controllerId).off().on(this.click, function (e) {
     var $cTar = $(e.currentTarget);
-    var src = $cTar.attr('src');
-    var dataSrc = $cTar.attr('data-src');
-    $cTar.attr('src', dataSrc);
-    $cTar.attr('data-src', src);
 
-    if ($cTar.attr('data-state') === "0") {
-      $cTar.attr('data-state', "1")
-      that.hideCallback && that.hideCallback(true);
-    } else {
-      $cTar.attr('data-state', "0")
-      that.hideCallback && that.hideCallback(false);
+    //没有开启背景音乐
+    if (!GLOBAL.useBgAudio) {
+      var src = $cTar.attr('src');
+      var dataSrc = $cTar.attr('data-src');
+      $cTar.attr('src', dataSrc);
+      $cTar.attr('data-src', src);
+      if ($cTar.attr('data-state') === "0") {
+        $cTar.attr('data-state', "1")
+        that.hideCallback && that.hideCallback(true);
+        GLOBAL.useGlobalAudio = true;
+      } else {
+        $cTar.attr('data-state', "0")
+        that.hideCallback && that.hideCallback(false);
+        GLOBAL.useGlobalAudio = false;
+      }
+    }
+    //弹出提示
+    else {
+      var dia = $.dialog({
+        content: '全程音频和背景音乐不能同时使用',
+        button: ["确认"]
+      });
+      dia.on("dialog:action", function (ev) {
+        if (ev.index === 0) {
+
+        }
+      });
     }
   })
 }

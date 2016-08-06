@@ -245,22 +245,9 @@ function init() {
  * eg: 是否显示背景音乐按钮,是否显示全程音频按钮, 位置样式调整等
  */
 function afterRenderOp(data) {
-  //存在背景音乐
-  if (data['background']) {
-    GLOBAL.BGAUDIO.setAudio(data['background']);
-    //PC端直接设置自动播放
-    if (Util.IsPC()) {
-      GLOBAL.BGAUDIO.play();
-    } else {
-      //移动端
-      document.addEventListener("touchstart", playBgAduio, false);
-    }
-  } else {
-    GLOBAL.BGAUDIO.hideBtn()
-  }
-
+  var globalAudioConfig = JSON.parse(data.content || "{}")
   //存在全程音频
-  if (data.content != '') {
+  if (globalAudioConfig.id) {
     //初始化全程音频
     ctlGlobalAudio = new GlobalAudioController('#global-audio',
       {
@@ -309,10 +296,32 @@ function afterRenderOp(data) {
         }
       }
     )
+    GLOBAL.useGlobalAudio = true; //使用全程音频
+
   } else {
     $('#btn_globalAudio').hide();
+    $('[data-id="global-audio"]').hide();
   }
 
+  //存在背景音乐
+  if (data['background']) {
+    GLOBAL.BGAUDIO.setAudio(data['background']);
+    //全程音频和背景音乐只能同时打开一个
+    if (!GLOBAL.useGlobalAudio) {
+      //PC端直接设置自动播放
+      if (Util.IsPC()) {
+        GLOBAL.BGAUDIO.play();
+      } else {
+        //移动端
+        document.addEventListener("touchstart", playBgAduio, false);
+      }
+    } else {
+      GLOBAL.BGAUDIO.pause();
+    }
+
+  } else {
+    GLOBAL.BGAUDIO.hideBtn()
+  }
 }
 
 /**
@@ -972,7 +981,7 @@ function bindEvent() {
               //开始录音结束背景音乐
               GLOBAL.BGAUDIO.pause();
             },
-            stopRecordCallback:function(){
+            stopRecordCallback: function () {
               console.info("录音结束之后,定时5秒,启动背景音乐播放")
               GLOBAL.BGAUDIO.setTimePlay();
             }
@@ -992,10 +1001,25 @@ function bindEvent() {
    * 背景音乐开关按钮
    */
   $('#btn_bgAudio').off().on(click, function (e) {
-    if (!GLOBAL.BGAUDIO.isOn()) {
-      GLOBAL.BGAUDIO.play();
+    if (!GLOBAL.useGlobalAudio) {
+      if (!GLOBAL.BGAUDIO.isOn()) {
+        GLOBAL.BGAUDIO.play();
+        GLOBAL.useBgAudio = true;
+      } else {
+        GLOBAL.BGAUDIO.pause();
+        GLOBAL.useBgAudio = false;
+      }
     } else {
-      GLOBAL.BGAUDIO.pause();
+      //confirm 确定删除?
+      var dia = $.dialog({
+        content: '全程音频和背景音乐不能同时使用',
+        button: ["确认"]
+      });
+      dia.on("dialog:action", function (ev) {
+        if (ev.index === 0) {
+
+        }
+      });
     }
   })
 
