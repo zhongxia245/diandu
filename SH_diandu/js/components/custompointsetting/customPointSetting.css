@@ -1,0 +1,114 @@
+.layui-layer {
+  border-radius: 10px;
+}
+
+.cps-container {
+  height: 600px;
+  width: 600px;
+  position: relative;
+}
+
+.cps-header {
+  height: 60px;
+  line-height: 60px;
+  background: #FE4E00;
+  font-size: 30px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 10px 10px 0 0;
+}
+
+.cps-content {
+  height: 450px;
+  background: #EFEFEF;
+}
+
+.cps-content-left, .cps-content-right {
+  height: 100%;
+  width: 295px;
+  float: left;
+  text-align: center;
+  padding: 60px 25px;
+}
+
+.cps-content-left {
+  border-right: 1px dotted #C9C9C9;
+}
+
+.cps-point {
+  width: 210px;
+  height: 185px;
+  text-align: center;
+  margin: 40px auto;
+}
+
+.cps-point-img {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #009EEF;
+  margin: 0 auto;
+}
+
+.cps-point-line {
+  height: 48px;
+  width: 24px;
+  background: url("img/img-point-setting-line.png") no-repeat;
+  background-size: 100% 100%;
+  margin: -15px auto 0 auto;
+}
+
+.cps-point-text {
+  padding: 0 30px;
+  font-size: 30px;
+  color: #000;
+  border: 5px solid #0CC688;
+  border-radius: 10px;
+}
+
+/*uploadify只能用id选择器,so...*/
+#cps-upload-img {
+  width: 175px;
+  height: 175px;
+
+  font-size: 25px;
+  color: #FFF;
+  text-align: center;
+
+  margin: 50px auto;
+
+  
+  background: #6C6C6C;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  overflow: hidden;
+}
+
+#cps-upload-img object {
+  top: 0;
+  left: 0;
+}
+
+#cps-upload-img-button {
+  width: 175px;
+  height: 175px;
+  background: url("img/cps-upload.png") no-repeat !important;
+  cursor: pointer;
+}
+
+.cps-submit {
+  height: 90px;
+  line-height: 90px;
+  background: #FF636B;
+  color: #FFF;
+  text-align: center;
+  font-size: 32px;
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+}

@@ -238,7 +238,7 @@ ul, li {
 }
 
 .global-audio-other-page-on {
-  background: url('../imgs/global_audio/global-audio-other-page-on.png') no-repeat;
+  background: url('../imgs/global_audio/global-audio-other-page-on.gif') no-repeat;
   background-size: 100%;
 }
 
@@ -511,7 +511,7 @@ ul, li {
 }
 
 .ga-modal-content-audio-on {
-  background: url("../imgs/global_audio/global-audio-other-page-on.png") no-repeat;
+  background: url("../imgs/global_audio/global-audio-other-page-on.gif") no-repeat;
   background-size: 100% 100%;
 }
 

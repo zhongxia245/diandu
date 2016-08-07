@@ -7,18 +7,20 @@
 /**
  * 让可编辑的DIV,触发change事件
  */
-$('body').on('focus', '[contenteditable]', function () {
-  var $this = $(this);
-  $this.data('before', $this.html());
-  return $this;
-}).on('blur keyup paste input', '[contenteditable]', function () {
-  var $this = $(this);
-  if ($this.data('before') !== $this.html()) {
+$('body').off()
+  .on('focus', '[contenteditable]', function () {
+    var $this = $(this);
     $this.data('before', $this.html());
-    $this.trigger('change');
-  }
-  return $this;
-});
+    return $this;
+  })
+  .on('blur keyup paste input', '[contenteditable]', function () {
+    var $this = $(this);
+    if ($this.data('before') !== $this.html()) {
+      $this.data('before', $this.html());
+      $this.trigger('change');
+    }
+    return $this;
+  });
 
 //加载依赖的脚本和样式
 (function () {

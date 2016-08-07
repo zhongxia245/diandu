@@ -604,7 +604,8 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  $('#btnAdd').on('click', addDianDuPageTpl);
+  //$('#btnAdd').on('click', addDianDuPageTpl);
+  $('#btnAdd').on('click', addCustomPointSetting);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1143,6 +1144,10 @@ function handleUploadItem(e) {
       case "uploadType":
         fileTypeItemClick(e);
         break;
+
+      case "point-setting":
+        addCustomPointSetting(e);
+        break;
       // 隐藏按钮
       case "hide":
         hideDDLocation(e);
@@ -1206,6 +1211,7 @@ function handleUploadItem(e) {
             });
           }
         });
+        break;
 
       // 默认报错，不处理
       default:
@@ -1241,6 +1247,34 @@ function addGlobalAudio(e, param) {
     content: $divGA
   });
   console.log("设置该全局音频的参数", $tar)
+}
+
+/**
+ * 弹出自定义点读点窗口
+ * @param e
+ * @param param
+ */
+function addCustomPointSetting(e) {
+  var $divGA = $('#customPointSetting');
+
+  //实例化 点读点大小设置页面
+  new CustomPointSetting('#customPointSetting', {
+    hideCallback: function (data) {
+      console.info("自定义点读点数据:", data)
+      layer.closeAll();
+    }
+  })
+
+  layer.open({
+    type: 1,
+    title: false,
+    scrollbar: false,
+    closeBtn: 1,
+    area: ['600px', '600px'], //宽高
+    shadeClose: false,
+    content: $divGA
+  });
+  console.info("自定义点读点样式")
 }
 
 

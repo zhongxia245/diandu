@@ -488,7 +488,7 @@ header {
 }
 
 .upload-right-name {
-  width: 440px;
+  width: 375px;
   height: 100%;
   background: #FF7C80;
   border-radius: 3px;
@@ -582,6 +582,14 @@ header {
   cursor: pointer;
   width: 61px;
   height: 61px;
+}
+
+.upload-right-btn .img-point-setting {
+  background: url('../imgs/custom_point_setting/img-point-setting.png');
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  margin-right: 10px;
 }
 
 .upload-right-btn .img-hide {
