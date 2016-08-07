@@ -119,7 +119,7 @@ GlobalAudioController.prototype.render = function (currentIndex) {
     html.push('<section class="ga-modal">');
     html.push('  <div class="ga-modal-mask"></div>');
     html.push('  <div class="ga-modal-content">');
-    html.push('    <div class="ga-modal-content-logo"></div>');
+    html.push('    <div class="ga-modal-content-audio-off"></div>');
     html.push('    <div data-id="btn-control" class="ga-modal-content-btn-off"></div>');
     html.push('    <div class="clearfix"></div>');
     html.push('    <ul class="ga-modal-content-pages">');
@@ -144,11 +144,15 @@ GlobalAudioController.prototype.render = function (currentIndex) {
  * 渲染点读页
  */
 GlobalAudioController.prototype.renderPageItem = function (currentIndex) {
+  currentIndex = currentIndex || this.data.pageIndex;
+
   var data = this.pages || [];
   var html = [];
+
   for (var i = 0; i < data.length; i++) {
     var display = '';
-    if (i <= this.data.pageIndex || this.data.pageTimes[i] === null) {
+    if (i === this.data.pageIndex) this.data.pageTimes[i] = 0;
+    if (i < this.data.pageIndex || this.data.pageTimes[i] === null) {
       display = 'display:none;';
     }
     var pageItem = data[i];
@@ -171,6 +175,7 @@ GlobalAudioController.prototype.renderPageItem = function (currentIndex) {
  */
 GlobalAudioController.prototype.initDOM = function () {
   this.$container = $('.ga-modal');
+  this.$audioState = this.$container.find('.ga-modal-content-audio-off');
   this.$btn = this.$container.find('[data-id="btn-control"]');
   this.$pageItem = this.$container.find('.ga-modal-content-page');
   this.$btnHidePoint = this.$container.find('.label-hide');
@@ -181,8 +186,18 @@ GlobalAudioController.prototype.initDOM = function () {
  */
 GlobalAudioController.prototype.bindEvent = function () {
   var that = this;
+
+  //点击继续播放全程音频
+  that.$audioState.off().on(that.click, function (e) {
+    var $cTar = $(e.currentTarget);
+    if ($cTar.attr('class').indexOf('off') !== -1) {
+      that.play();
+      that.$container.hide();
+    }
+  })
+
   //关闭全程音频功能, 隐藏全程音频按钮. 如果想要重新打开,请页面上滑,滑出面板中点击打开全程音频,重新显示全程音频
-  that.$btn.off().on(this.click, function (e) {
+  that.$btn.off().on(that.click, function (e) {
     console.info("音频全程音频功能!")
     that.pause();
     that.$container.hide();
@@ -254,7 +269,7 @@ GlobalAudioController.prototype.setActivePage = function (index, flag) {
   this.$pageItem && this.$pageItem.removeClass('active');
   this.$pageItem && this.$pageItem.eq(index).addClass('active');
   var time = this.data.pageTimes && this.data.pageTimes[index];
-  if (time && flag) {
+  if (time !== null && time !== undefined && flag) {
     console.info("点击全程音频点读页,跳转到该点读页的时间点:", index, time)
     this.audio.currentTime = time;  //因为实时在监听音频播放的时间,会重复执行一次., 因此这里+1
   }
@@ -268,5 +283,13 @@ GlobalAudioController.prototype.pause = function () {
   clearTimeout(this.timer)
   this.audio.pause();
   this.pauseCallback && this.pauseCallback();
+}
+
+/**
+ * 全局音频播放
+ */
+GlobalAudioController.prototype.showOrHide = function (flag) {
+  this.pause();
+  this.hideCallback && this.hideCallback(flag);
 }
 

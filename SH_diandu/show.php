@@ -44,31 +44,55 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 
   <div class="gallery-main" style="opacity: 0; overflow: hidden;">
     <div id="btn-close" class="btn-close">&times;</div>
+
+    <!--背景音乐,全程音频开关 START-->
     <div class="control-audios">
-      <img class="control-global-audio"
-           id="btn_globalAudio"
+      <img id="btn_globalAudio"
+           style="margin-right: 10px;"
+           class="control-global-audio"
            data-src="imgs/global_audio/global-audio-off.png"
            src="imgs/global_audio/global-audio-on.png" data-state="1" alt="开启全程音频">
-      <img class="control-bg-audio"
-           id="btn_bgAudio"
+      <img id="btn_bgAudio"
+           class="control-bg-audio"
            src="imgs/bg_audio_on.png" alt="开启背景音乐">
     </div>
+    <!--背景音乐,全程音频开关 END-->
+
+    <!--透明度进度条 START-->
+    <div class="opacity-scroll-bar">
+      <div class="slide-txt" style="font-style: italic; margin-bottom: 2px;">设置点读点透明度</div>
+      <div class="scroll-bar" id="opacity-scroll-bar" style="width: 40%; float: left;">
+        <div class="entire-bar" id="opacity-entire-bar"></div>
+        <div class="action-block close" id="opacity-action-block"
+             style="color:#000;background: transparent; border-color:#4D4D4D;">
+          <div class="action-block-color"
+               style="background: #19C587; width:100%;height:100%;"></div>
+          <div class="action-block-spam"
+               style="position: absolute;text-align: center;width: 100%;height: 100%;top: 0;">
+            10
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--透明度进度条 END-->
+
     <!--自动播放时间进度条  START-->
     <div class="gallery-main-switch">
-      <div id="txtTip" style="font-style: italic">设置连播间隔(秒)</div>
+      <div class="slide-txt" id="txtTip" style="font-style: italic">设置连播间隔(秒)</div>
       <div class="scroll-bar" id="scroll-bar" style="width: 40%; float: left;">
         <div class="entire-bar" id="entire-bar"></div>
         <div class="action-block close" id="action-block">关</div>
       </div>
-
     </div>
     <!--自动播放时间进度条 END-->
+
     <!--缩略图 START-->
     <div class="swiper-container gallery-thumbs">
       <div id="thumbs" class="swiper-wrapper ">
       </div>
     </div>
     <!--缩略图 END-->
+
   </div>
 </div>
 <!--音频 START-->
@@ -128,7 +152,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+    window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>
@@ -143,13 +167,14 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <!--Ajax操作-->
 <script src="js/model/model.js"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
-<script src="js/components/slide/touchslide.js"></script>
+<script src="js/components/slide/touchslide.js?version=20160807"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160806_1"></script>
-<script src="js/page/show/globalAudio.js"></script>
+<script src="js/components/examcomment/ExamComment.js?_version=20160807_1"></script>
+<script src="js/page/show/globalAudio.js?version=20160807_1"></script>
+<script src="js/page/show/pointOpacity.js?version=20160807_1"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160806_4"></script>
+<script src="js/show.js?version=20160807_1"></script>
 <script>
   var _isDebug = Util.getQueryStringByName('debug');
   if (_isDebug) {

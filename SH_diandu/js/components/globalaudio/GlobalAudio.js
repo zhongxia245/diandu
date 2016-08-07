@@ -125,8 +125,11 @@ GlobalAudio.prototype.renderPageItem = function (data, pageIndex) {
     if (!obj.isRemove) {
       var background = 'background:#008988 url(' + obj.pic + ') no-repeat; background-size: contain;   background-position: center;';
       var disabled = i < pageIndex ? "disabled" : "";
-      var _time = i === pageIndex - 1 ? '00:00' : '';
-
+      var _time = '';
+      if (i === pageIndex - 1) {
+        _time = '00:00'
+        data[i].time = _time;
+      }
 
       html.push('<div ' + disabled + ' data-id="' + obj.id + '" class="ga-content-page-item" style="' + background + '">')
       html.push('  <div class="ga-content-page-item-index">' + (i + 1) + '</div>')

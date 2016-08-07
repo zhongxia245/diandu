@@ -13,7 +13,7 @@ function SlideBar(data) {
   this.maxNumber = (data.maxNumber || 100) * 90 / 70;  //底图的比例,超过这个比例,则是关闭自动播放
   this.data = data;
   this.scale = data.barLength / 900; //缩放的比例
-  this.value = data.value || 110;
+  this.value = data.value || 0;
 
   this.useScale();
   this.setValue(this.value)
@@ -31,7 +31,7 @@ SlideBar.prototype = {
     var actionBlock = document.getElementById(that.actionBlock);
     actionBlock.onmousedown = function (evdown) {
       evdown = evdown || event;
-      var target = evdown.target;
+      var target = evdown.currentTarget;
       var thisBlock = this;
       var disX = event.clientX - target.offsetLeft;
 
@@ -59,15 +59,14 @@ SlideBar.prototype = {
     var that = this;
     var moveX, startX;
     $(document).on("touchstart", "#" + that.data.actionBlock, function (event) {
-      var $tar = $(event.target);
-      if ($tar.attr('id') == that.actionBlock) {
+      if ($(event.currentTarget).attr('id') == that.actionBlock) {
         var touchPros = event.touches[0];
-        startX = touchPros.clientX - event.target.offsetLeft;
+        startX = touchPros.clientX - event.currentTarget.offsetLeft;
       }
       return false;
     }).on("touchmove", "#" + that.actionBlock, function (event) {
-      if ($(event.target).attr('id') == that.actionBlock) {
-        var target = event.target;
+      if ($(event.currentTarget).attr('id') == that.actionBlock) {
+        var target = event.currentTarget;
         var touchPros = event.touches[0];
 
         moveX = touchPros.clientX - startX;
@@ -78,6 +77,7 @@ SlideBar.prototype = {
 
         that.value = Math.round((target.offsetLeft) / (that.barLength - target.offsetWidth) * that.maxNumber);
         that.value = that.value === 0 ? 1 : that.value;
+
         that.callback && that.callback(that.value, that);
       }
     });
@@ -118,7 +118,7 @@ SlideBar.prototype = {
     $('#' + this.scrollBar).css({
       width: entireW,
       height: 100 * this.scale,
-      // top: 20 * this.scale
+      top: 20 * this.scale
     })
 
   }

@@ -191,18 +191,21 @@ function fn_onResize() {
 }
 
 /**
- * 横竖屏样式处理
+ * 横竖屏 滑动条样式处理
  */
 function styleHandler() {
   var $scrollBar = $('#scroll-bar');
+  var $opacityScrollBar = $('#opacity-scroll-bar');
   if (isVertical) {
     $scrollBar.css({
       width: '80%'
     });
+    $opacityScrollBar.css('width', '80%')
   } else {
     $scrollBar.css({
       width: '45%'
     })
+    $opacityScrollBar.css('width', '45%')
   }
 }
 
@@ -260,6 +263,7 @@ function afterRenderOp(data) {
         //播放后的回调
         playCallback: function () {
           $('[data-id="global-audio"]').removeClass().addClass('global-audio-other-page-on');
+          $('.m-global-audio').find('img').show();
         },
         //暂停后的回调
         pauseCallback: function () {
@@ -425,6 +429,10 @@ function initSwipe() {
       autoplayStopOnLast: true,
       nextButton: '.swiper-button-next',
       prevButton: '.swiper-button-prev',
+      effect: 'fade',
+      fade: {
+        crossFade: false,
+      },
       onSlideChangeEnd: function (swiper) {
         console.info("页面跳转到第:", swiper.activeIndex, " 页")
         $('#id_pagination_cur').text(swiper.activeIndex + 1);
@@ -484,7 +492,29 @@ function initSlide() {
   });
   //设置 刚开始 自动播放的间隔时间
   window.silideBar.setValue(GLOBAL.DEFAULTAUTOPLAYTIME);
-  //window.galleryTop.stopAutoplay();
+
+  //因为窗体改变的时候,onresize会调用该方法,这里判断是否已经设置了自动播放的值
+  window.opacitySilideBar = new SlideBar({
+    actionBlock: 'opacity-action-block',
+    scrollBar: 'opacity-scroll-bar',
+    entireBar: 'opacity-entire-bar',
+    barLength: $('#opacity-scroll-bar').width(),
+    maxNumber: 9,
+    value: 0,
+    callback: function (value) {
+      var $block = $('#opacity-action-block')
+      $block.removeClass('close').addClass('open');
+
+      var val = value - 1 > 10 ? 10 : value - 1;
+      val = val < 0 ? 0 : val;
+
+      var opacity = (10 - val) / 10;
+      PointOpacity.setOpacity(opacity)
+
+      $block.find('.action-block-spam').text(val);
+      $block.find('.action-block-color').css('opacity', opacity)
+    }
+  });
 }
 
 /*************************************根据数据生成页面 START********************************/
@@ -934,7 +964,6 @@ function closeVideoOrAudio(flag) {
 function bindEvent() {
   // 启动开关
   $('.m-dd-start').off().on(click, function (e) {
-    //new ExamComment('.exam-comment', {data: []})
     e.preventDefault();
     e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
 
@@ -947,7 +976,9 @@ function bindEvent() {
     var _dianduid = $cTar.parent().attr('id');
     var div_comment = '#' + _dianduid + " .m-dd-start-comment-div";
     $(div_comment).hide()
-    console.log("type", type)
+
+    console.info("开始按钮类型(0: 隐藏点读点 1: 显示点读点 2:弹出评论框)", type)
+
     switch (type) {
       //隐藏
       case 0:
@@ -955,6 +986,7 @@ function bindEvent() {
         $cTar.attr('class', 'm-dd-start-hide')
         $allRadius.addClass(hideClassName);
         closeVideoOrAudio(false);
+        ctlGlobalAudio.showOrHide(false);
         break;
 
       //显示点读
@@ -962,11 +994,14 @@ function bindEvent() {
       case "1":
         $cTar.attr('class', 'm-dd-start')
         $allRadius.removeClass();
+        ctlGlobalAudio.showOrHide(true);
         break;
 
       //评论
       case 2:
       case "2":
+        ctlGlobalAudio.showOrHide(false);
+
         $(div_comment).show()
         $cTar.attr('class', 'm-dd-start-comment')
 
@@ -1111,12 +1146,14 @@ function bindEvent() {
 
 
   //全程音频按钮[非全程音频点读点的页面]
-  $('[data-id="global-audio"]').off().on('click', function (e) {
+  $('[data-id="global-audio"]').off().on(click, function (e) {
     var $cTar = $(e.target);
     if ($cTar.attr('class') === 'global-audio-other-page-on') {
       var currentIndex = parseInt($('#id_pagination_cur').text()) - 1;
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render(currentIndex);
+    } else {
+      ctlGlobalAudio.play();
     }
   })
 

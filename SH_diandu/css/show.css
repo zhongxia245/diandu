@@ -30,18 +30,53 @@ ul, li {
     top: 20%;
   }
 
+  .gallery-main {
+    height: 250px !important;
+  }
+
   .control-audios {
-    height: 20% !important;
+    height: 30px !important;
     float: right;
-    margin-right: 10%;
-    margin-top: 20px;
+    margin-right: 20px;
+    margin-top: 80px;
+  }
+
+  .gallery-thumbs {
+    height: 130px !important;
   }
 
   .ga-modal-content-page {
     margin-bottom: 5% !important;
-    height: 60px !important;
+    height: 30% !important;
     width: 15% !important;
     padding: 0 9%;
+  }
+
+  /*针对 nexue 高分辨率手机, 还有ipad, PC端*/
+  @media screen and (min-height: 600px) {
+
+    .gallery-main .opacity-scroll-bar .entire-bar {
+      height: 13px !important;
+    }
+
+    .slide-txt {
+      margin-bottom: 5px;
+    }
+
+    .gallery-main {
+      height: 335px !important;
+    }
+
+    .gallery-main-switch, .opacity-scroll-bar {
+      height: 100px !important;
+      font-size: 20px;
+    }
+
+    .control-audios {
+      height: 38px !important;
+      margin-right: 40px;
+      margin-top: 130px;
+    }
   }
 }
 
@@ -54,6 +89,21 @@ ul, li {
     width: 100%;
     position: relative;
     top: 30%;
+  }
+
+  /*针对 nexue 高分辨率手机, 还有ipad, PC端*/
+  @media screen and (min-width: 600px) {
+    .gallery-main {
+      height: 410px !important;
+    }
+
+    .gallery-main-switch, .opacity-scroll-bar {
+      height: 100px !important;
+    }
+
+    .control-audios {
+      height: 38px !important;
+    }
   }
 
 }
@@ -307,25 +357,39 @@ ul, li {
   color: #D4D4D4;
 }
 
+/*---------------缩略图面板 样式  START------------------*/
 .gallery-main {
   position: absolute;
   z-index: 5000;
-  height: 40%;
-  padding-top: 5px;
+  height: 320px;
+  padding: 10px;
   bottom: 0;
   left: 0;
   right: 0;
   background: #F2F2F2;
 }
 
-.gallery-main-switch {
-  height: 30%;
-  padding-left: 10px;
+.control-audios {
+  height: 30px;
+  margin-bottom: 10px;
 }
 
+.control-bg-audio, .control-global-audio {
+  height: 100%;
+}
+
+.gallery-main-switch, .opacity-scroll-bar {
+  height: 60px;
+}
+
+.opacity-scroll-bar .entire-bar {
+  background: #B1B2B1;
+  height: 6px !important;
+  margin-top: 6px;
+}
 
 .gallery-thumbs {
-  height: 60%;
+  height: 150px;
   box-sizing: border-box;
   padding: 10px 10px 20px 10px;
 }
@@ -340,9 +404,9 @@ ul, li {
 
 .gallery-thumbs .swiper-slide-active-custom {
   box-shadow: 0 0 10px;
-  -webkit-transform: scale(1.15);
-  -moz-transform: scale(1.15);
-  transform: scale(1.15);
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .thumbs-sort-id {
@@ -360,6 +424,8 @@ ul, li {
   background: #268988;
   border-radius: 50%;
 }
+
+/*---------------缩略图面板 样式  END------------------*/
 
 /*============使用swiper3.0的样式  END==========*/
 
@@ -432,13 +498,21 @@ ul, li {
   height: 80%;
 }
 
-.ga-modal-content-logo {
-  background: url("../imgs/global_audio/global-audio-win.png") no-repeat;
-  background-size: 100% 100%;
+.ga-modal-content-audio-on, .ga-modal-content-audio-off {
   width: 75px;
   height: 66px;
   cursor: pointer;
   float: left;
+}
+
+.ga-modal-content-audio-off {
+  background: url("../imgs/global_audio/global-audio-other-page-off.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.ga-modal-content-audio-on {
+  background: url("../imgs/global_audio/global-audio-other-page-on.png") no-repeat;
+  background-size: 100% 100%;
 }
 
 .ga-modal-content-btn-off, .ga-modal-content-btn-on {
@@ -520,14 +594,4 @@ ul, li {
   font-size: 20px;
   line-height: 50px;
   padding-left: 20px;
-}
-
-.control-audios {
-  height: 10%;
-  margin-bottom: 5px;
-}
-
-.control-bg-audio, .control-global-audio {
-  height: 100%;
-  margin-left: 10px;
 }
