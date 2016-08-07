@@ -46,6 +46,8 @@ function GlobalAudioController(selector, config) {
         $cTar.attr('data-state', "0")
         that.hideCallback && that.hideCallback(false);
         GLOBAL.useGlobalAudio = false;
+        that.$container && that.$container.hide();
+        that.pause();
       }
     }
     //弹出提示
@@ -184,6 +186,18 @@ GlobalAudioController.prototype.bindEvent = function () {
     console.info("音频全程音频功能!")
     that.pause();
     that.$container.hide();
+
+    //[缩略面板中的]全程音频控制按钮状态改成关闭
+    var $globalAudio = $(that.controllerId);
+    if ($globalAudio.attr('data-state') === "1") {
+      var src = $globalAudio.attr('src');
+      var dataSrc = $globalAudio.attr('data-src');
+      $globalAudio.attr('src', dataSrc);
+      $globalAudio.attr('data-src', src);
+      $globalAudio.attr('data-state', "0")
+      GLOBAL.useGlobalAudio = false;
+    }
+
     that.hideCallback && that.hideCallback();
     that.hideOtherPointCallback && that.hideOtherPointCallback(false)  //不隐藏其他点读点
   })

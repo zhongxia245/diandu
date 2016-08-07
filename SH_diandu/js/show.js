@@ -426,7 +426,7 @@ function initSwipe() {
       nextButton: '.swiper-button-next',
       prevButton: '.swiper-button-prev',
       onSlideChangeEnd: function (swiper) {
-
+        console.info("页面跳转到第:", swiper.activeIndex, " 页")
         $('#id_pagination_cur').text(swiper.activeIndex + 1);
 
         var _$thumbsSwipers = $('#thumbs>div[data-id]');
@@ -1182,25 +1182,9 @@ function bindEvent() {
     //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
     return false;
   })
-  /**
-   * 点击缩略图,跳转到该位置
-   */
-  if (Util.IsPC()) {
-    $('#thumbs .swiper-slide').off().on(click, function (e) {
-      var $tar = $(e.currentTarget)
-      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
-      $tar.addClass('swiper-slide-active-custom');
-      window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
-    })
-  } else {
-    Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
-      var $tar = $(e.currentTarget)
-      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
-      $tar.addClass('swiper-slide-active-custom');
-      window.galleryTop.slideTo(parseInt($tar.attr('data-id')));
-    })
-  }
 
+
+  //上滑,出现缩略图面板
   if (Util.IsPC()) {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
@@ -1225,6 +1209,36 @@ function bindEvent() {
       }
       return false;
     });
+  }
+
+  /**
+   * 点击缩略图,跳转到该位置
+   */
+  if (Util.IsPC()) {
+    $('#thumbs .swiper-slide').off().on(click, function (e) {
+      var $tar = $(e.currentTarget)
+      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+      $tar.addClass('swiper-slide-active-custom');
+      var pageIndex = parseInt($tar.attr('data-id'));
+      if (!ctlGlobalAudio.audio.paused) {
+        ctlGlobalAudio.setActivePage(pageIndex, true)
+      } else {
+        window.galleryTop.slideTo(pageIndex);
+      }
+    })
+  } else {
+    Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
+      var $tar = $(e.currentTarget)
+      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+      $tar.addClass('swiper-slide-active-custom');
+      var pageIndex = parseInt($tar.attr('data-id'));
+      //全程音频没有在播放, 则不设置到指定时间
+      if (!ctlGlobalAudio.audio.paused) {
+        ctlGlobalAudio.setActivePage(pageIndex, true)
+      } else {
+        window.galleryTop.slideTo(pageIndex);
+      }
+    })
   }
 }
 
