@@ -431,9 +431,9 @@ function initSwipe() {
       prevButton: '.swiper-button-prev',
       effect: 'fade',
       fade: {
-        crossFade: false,
+        crossFade: true,
       },
-      onSlideChangeEnd: function (swiper) {
+      onTransitionEnd: function (swiper) {
         console.info("页面跳转到第:", swiper.activeIndex, " 页")
         $('#id_pagination_cur').text(swiper.activeIndex + 1);
 
@@ -445,7 +445,20 @@ function initSwipe() {
         if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
           window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
         }
-      }
+      },
+      //onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
+      //  console.info("页面跳转到第:", swiper.activeIndex, " 页")
+      //  $('#id_pagination_cur').text(swiper.activeIndex + 1);
+      //
+      //  var _$thumbsSwipers = $('#thumbs>div[data-id]');
+      //  _$thumbsSwipers.removeClass('swiper-slide-active-custom');
+      //  _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+      //
+      //  //播放到最后一个,停止自动播放
+      //  if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+      //    window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+      //  }
+      //},
     });
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
