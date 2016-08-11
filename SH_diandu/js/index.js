@@ -604,8 +604,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  //$('#btnAdd').on('click', addDianDuPageTpl);
-  $('#btnAdd').on('click', addCustomPointSetting);
+  $('#btnAdd').on('click', addDianDuPageTpl);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1256,12 +1255,33 @@ function addGlobalAudio(e, param) {
  */
 function addCustomPointSetting(e) {
   var $divGA = $('#customPointSetting');
+  var $cTar = $(e.target);
+  var dataId = $cTar.parent().data().id;
+  var pageIndex = parseInt(dataId.split('_')[0]) - 1;
+  var pointIndex = parseInt(dataId.split('_')[1]) - 1;
 
   //实例化 点读点大小设置页面
   new CustomPointSetting('#customPointSetting', {
-    hideCallback: function (data) {
-      console.info("自定义点读点数据:", data)
+    dataId: dataId,
+    hideCallback: function (data, isSetData) {
       layer.closeAll();
+
+      //是否设置了数据
+      if (isSetData) {
+        console.info("自定义点读点数据:", data)
+        $cTar.addClass('img-point-setting-on');
+
+        $('#' + dataId)
+        //保存数据到变量里面
+        window.DD.items[pageIndex].data[pointIndex].pic = data.pic;
+        window.DD.items[pageIndex].data[pointIndex].title = data.title;
+
+      } else {
+        $cTar.removeClass('img-point-setting-on');
+        //保存数据到变量里面
+        window.DD.items[pageIndex].data[pointIndex].pic = null;
+        window.DD.items[pageIndex].data[pointIndex].title = null;
+      }
     }
   })
 

@@ -446,19 +446,19 @@ function initSwipe() {
           window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
         }
       },
-      //onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
-      //  console.info("页面跳转到第:", swiper.activeIndex, " 页")
-      //  $('#id_pagination_cur').text(swiper.activeIndex + 1);
-      //
-      //  var _$thumbsSwipers = $('#thumbs>div[data-id]');
-      //  _$thumbsSwipers.removeClass('swiper-slide-active-custom');
-      //  _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
-      //
-      //  //播放到最后一个,停止自动播放
-      //  if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
-      //    window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
-      //  }
-      //},
+      onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
+        console.info("页面跳转到第:", swiper.activeIndex, " 页")
+        $('#id_pagination_cur').text(swiper.activeIndex + 1);
+
+        var _$thumbsSwipers = $('#thumbs>div[data-id]');
+        _$thumbsSwipers.removeClass('swiper-slide-active-custom');
+        _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+
+        //播放到最后一个,停止自动播放
+        if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+          window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+        }
+      },
     });
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
@@ -894,7 +894,7 @@ function playOrPaused($tar, isGlobalAudio) {
 
   else if ($tar.attr('class') === "audio-play") { //正在播放状态
     $tar.hide();
-    if (isGlobalAudio) {
+    if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
       console.info("全程音频暂停播放")
@@ -915,7 +915,7 @@ function playOrPaused($tar, isGlobalAudio) {
     $tar.find('img').show();
 
     //是全局音频
-    if (isGlobalAudio) {
+    if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.play();
     }
     else {
@@ -966,7 +966,7 @@ function closeVideoOrAudio(flag) {
   $video.removeClass('m-video-size');
 
   //停止全程音频
-  ctlGlobalAudio.pause();
+  ctlGlobalAudio && ctlGlobalAudio.pause();
 
   if (flag) {
     GLOBAL.BGAUDIO.pause();
@@ -999,7 +999,7 @@ function bindEvent() {
         $cTar.attr('class', 'm-dd-start-hide')
         $allRadius.addClass(hideClassName);
         closeVideoOrAudio(false);
-        ctlGlobalAudio.showOrHide(false);
+        ctlGlobalAudio && ctlGlobalAudio.showOrHide(false);
         break;
 
       //显示点读
@@ -1007,13 +1007,13 @@ function bindEvent() {
       case "1":
         $cTar.attr('class', 'm-dd-start')
         $allRadius.removeClass();
-        ctlGlobalAudio.showOrHide(true);
+        ctlGlobalAudio && ctlGlobalAudio.showOrHide(true);
         break;
 
       //评论
       case 2:
       case "2":
-        ctlGlobalAudio.showOrHide(false);
+        ctlGlobalAudio && ctlGlobalAudio.showOrHide(false);
 
         $(div_comment).show()
         $cTar.attr('class', 'm-dd-start-comment')
@@ -1270,7 +1270,8 @@ function bindEvent() {
       $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
       $tar.addClass('swiper-slide-active-custom');
       var pageIndex = parseInt($tar.attr('data-id'));
-      if (!ctlGlobalAudio.audio.paused) {
+
+      if (ctlGlobalAudio && !ctlGlobalAudio.audio.paused) {
         ctlGlobalAudio.setActivePage(pageIndex, true)
       } else {
         window.galleryTop.slideTo(pageIndex);
@@ -1283,7 +1284,7 @@ function bindEvent() {
       $tar.addClass('swiper-slide-active-custom');
       var pageIndex = parseInt($tar.attr('data-id'));
       //全程音频没有在播放, 则不设置到指定时间
-      if (!ctlGlobalAudio.audio.paused) {
+      if (ctlGlobalAudio && !ctlGlobalAudio.audio.paused) {
         ctlGlobalAudio.setActivePage(pageIndex, true)
       } else {
         window.galleryTop.slideTo(pageIndex);

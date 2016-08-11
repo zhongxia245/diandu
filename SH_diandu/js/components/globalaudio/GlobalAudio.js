@@ -86,7 +86,7 @@ GlobalAudio.prototype.initHTML = function () {
   html.push('        <input type="checkbox" id="cbkGlobalAudio" checked="true">')
   html.push('        <label for="cbkGlobalAudio">设置本音频为全程音频</label>')
   html.push('      </p>')
-  html.push('      <p>全局音频为多个点读页面所用,可设置各个点读页对应音频的时间点出现,每一个点读只能设置一个全程音频</p>')
+  html.push('      <p>全程音频为多个点读页面所用,可设置各个点读页对应音频的时间点出现,每一个点读只能设置一个全程音频</p>')
   html.push('    </div>')
   html.push('    <!--音频名称,音频时间信息 START-->')
   html.push('    <div class="ga-content-info">')

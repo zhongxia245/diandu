@@ -592,6 +592,13 @@ header {
   margin-right: 10px;
 }
 
+.upload-right-btn .img-point-setting-on {
+  background: url('../imgs/custom_point_setting/img-point-setting-on.png');
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+
 .upload-right-btn .img-hide {
   background: url('../imgs/hide.png');
   -webkit-background-size: 100% 100%;

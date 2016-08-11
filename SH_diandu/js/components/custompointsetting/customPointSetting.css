@@ -29,6 +29,7 @@
   float: left;
   text-align: center;
   padding: 60px 25px;
+  position: relative;
 }
 
 .cps-content-left {
@@ -67,7 +68,7 @@
 }
 
 /*uploadify只能用id选择器,so...*/
-#cps-upload-img {
+#cps-upload-img, .cps-show-img {
   width: 175px;
   height: 175px;
 
@@ -77,7 +78,6 @@
 
   margin: 50px auto;
 
-  
   background: #6C6C6C;
   border-radius: 10px;
 
@@ -88,6 +88,15 @@
   user-select: none;
 
   overflow: hidden;
+}
+
+.cps-show-img {
+  line-height: 175px;
+  background: #000;
+  position: absolute;
+  top: 135px;
+  left: 50%;
+  margin-left: -86px;
 }
 
 #cps-upload-img object {

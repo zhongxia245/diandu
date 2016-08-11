@@ -174,7 +174,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/show/globalAudio.js?version=20160807_1"></script>
 <script src="js/page/show/pointOpacity.js?version=20160807_1"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160807_1"></script>
+<script src="js/show.js?version=20160809_2"></script>
 <script>
   var _isDebug = Util.getQueryStringByName('debug');
   if (_isDebug) {
