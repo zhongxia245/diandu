@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+SH_diandu/access_token.php
+SH_diandu/js/lib/jcrop/.DS_Store
+SH_diandu/js/lib/kindeditor/attached/
+SH_diandu/jsapi_ticket.php
+
+SH_diandu/test
+SH_diandu/uploads
+SH_diandu/js/lib/kindeditor/attached/image
+SH_diandu/.idea

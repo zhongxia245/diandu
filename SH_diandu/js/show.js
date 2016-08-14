@@ -574,7 +574,6 @@ function initPage(id, data) {
       else if (whScale >= GLOBAL.V_IMGSCALE) {
         //竖屏
         //横图
-        //bgSize = '100% auto';
         wrapHeight = window.W * hwScale;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
 
         //竖图,横向100%, 重新计算计算缩放比例
@@ -584,7 +583,6 @@ function initPage(id, data) {
       }
       else {
         //竖图
-        //bgSize = 'auto 100%';
         wrapWidth = window.H * whScale;
 
         //横图,纵向100%, 重新计算计算缩放比例
@@ -596,21 +594,18 @@ function initPage(id, data) {
 
       //横屏
       if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
-        //bgSize = 'auto 100%';
         wrapWidth = window.H * whScale;
         _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
         _flag = true;
       }
       else if (whScale >= GLOBAL.H_IMGSCALE) {
         //横图
-        //bgSize = '100% auto';
         wrapHeight = window.W * hwScale;
         if (hwScale > 1) {
           _imgScale = wrapHeight / GLOBAL.SCREEN.H
         }
       } else {
         //竖图
-        //bgSize = 'auto 100%';
         wrapWidth = window.H * whScale;
         if (whScale > 1) {
           _imgScale = wrapWidth / GLOBAL.SCREEN.H
@@ -764,61 +759,76 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 
   var pointDatas = data['points']
 
+  //点读点相关样式
+  var classNames = {
+    1: "m-video",
+    2: "m-audio",
+    3: "m-imgtext",
+    4: "m-exam"
+  };
+
   var html = "";
   html += '<div data-id="all-radius" data-hide="all-radius-hide">'
 
   for (var i = 0; i < pointDatas.length; i++) {
     //隐藏点, 则不显示出来
     if (pointDatas[i]['hide'] != "1") {
-      //这里由于点读位置大小从开始的100变成72,而页面的比例不变,导正点读位置的比例 和 刚创建时的不一致
+      //点读点大小比例(百分比)
       var pointSizeScale = parseInt(pointDatas[i]['point_size']) || GLOBAL.GLOBAL_POINT_SIZE;
       pointSizeScale = pointSizeScale / 100;
-      //TODO:可能存在问题, 点读点位置问题
-      var pointSize = scale * GLOBAL.POINTSIZE * pointSizeScale;
 
+      var pointScale = scale * pointSizeScale;
+
+      var pointId = pageIndex + '_' + i;
       var left = parseFloat(pointDatas[i].x) * imgW;
       var top = parseFloat(pointDatas[i].y) * imgH;
-      var style = 'left:' + left + 'px; top:' + top + 'px; width:' + pointSize + 'px; height:' + pointSize + 'px';
+      var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + ');';
       var type = pointDatas[i]['type'];
       var url = pointDatas[i]['url'];
       var filename = pointDatas[i]['filename'];
-      var title = pointDatas[i]['title'];
+      var title = pointDatas[i]['title'];  //图文的标题
       var content = encodeURI(pointDatas[i]['content']);  //ZHONGXIA
       var question = pointDatas[i]['questions'];
+      var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
+      var pointTitle = JSON.parse(pointDatas[i]['title'] || "{}")  //TODO:等新增保存字段,替换掉
 
-      var className = '';
-      var mediaImg = "";
-
-      switch (type) {
-        case 1:
-        case "1": //视频
-          className = 'm-video';
-          mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
-          break;
-        case 2:
-        case "2": //音频
-          className = 'm-audio';
-          mediaImg = '   <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
-          mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
-          break;
-        case 3:
-        case "3": //图文
-          className = 'm-imgtext';
-          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_imgtext.png" alt="imgtext" />';
-          break;
-        case 4:
-        case "4"://考试
-          className = 'm-exam';
-          mediaImg = '   <img style="display:none; border-radius:50%;" src="imgs/m_exam.png" alt="imgtext" />';
-          break;
-        default:
-          className = 'm-video';
-          break;
+      if (pic.src || pointTitle.title) {
+        console.info("pic", pic, "pointTitle", pointTitle);
+        var config = {
+          pointId: pointId,
+          left: left,
+          top: top,
+          title: pointTitle,
+          pic: pic,
+          scale: pointScale,
+          className: classNames[type]
+        }
+        if (pic.src) {
+          html += CreatePoint.initPoint(5, config)
+        } else {
+          html += CreatePoint.initPoint(4, config)
+        }
       }
-
-      html += '<div class="' + className + '" data-id="' + (pageIndex + "_" + i) + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
-      html += mediaImg;
-      html += '</div>'
+      else {
+        var className = '';
+        var mediaImg = "";
+        switch (type) {
+          case "1": //视频
+            mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
+            break;
+          case "2": //音频
+            mediaImg = '   <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
+            mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
+            break;
+          case "3": //图文
+            break;
+          case "4"://考试
+            break;
+        }
+        html += '<div class="' + classNames[type] + '" data-id="' + pointId + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+        html += mediaImg;
+        html += '</div>'
+      }
     }
   }
   html += '</div>'
@@ -839,7 +849,7 @@ function initVideo() {
  * 为了解决移动端播放音频需要加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
  * @param audio
  */
-function audioPlay(audio, $tar) {
+function audioPlay(audio, $tar, url) {
 
   //TODO:在移动端下 有兼容性问题
   if ($tar.attr('isLoad')) {//音频加载结束
@@ -863,16 +873,14 @@ function audioPlay(audio, $tar) {
   /*audio可以播放的事件*/
   audio.addEventListener('canplaythrough', function (e) {
     if (!$tar.attr('isLoad')) {
-
       //是当前播放的音频, 则显示 正在播放状态
-      if (audio.src.indexOf($tar.attr('data-url')) !== -1) {
+      if (audio.src.indexOf(url) !== -1) {
         $tar.find('.audio-load').hide();
         $tar.find('.audio-play').show();
         $tar.css('background-size', '100%')
         audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
         audio.play();
         $tar.attr('isLoad', true)
-
         console.info("加载音频完成...,audio.volume:", audio.volume)
       }
     }
@@ -884,8 +892,9 @@ function audioPlay(audio, $tar) {
  * @param {jquery obj} 当前音频图标
  * @param isGlobalAudio 是否为全程音频
  */
-function playOrPaused($tar, isGlobalAudio) {
+function playOrPaused($tar, isGlobalAudio, pointData) {
   GLOBAL.BGAUDIO.clearTimeout();
+  var url = pointData.url;
 
   if ($tar.attr('class') === "audio-load") { //加载状态
     $tar.hide();
@@ -906,9 +915,6 @@ function playOrPaused($tar, isGlobalAudio) {
   }
 
   else {  //默认状态, 未播放状态
-    var url = $tar.attr('data-url');
-    var filename = $tar.attr('data-filename');
-
     if (window.audio.getAttribute('src') !== url) {
       window.audio.setAttribute('src', url);
     }
@@ -919,7 +925,7 @@ function playOrPaused($tar, isGlobalAudio) {
       ctlGlobalAudio.play();
     }
     else {
-      if (window.audio.paused)  audioPlay(window.audio, $tar)
+      if (window.audio.paused)  audioPlay(window.audio, $tar, url)
     }
 
     GLOBAL.BGAUDIO.pause();
@@ -1105,27 +1111,27 @@ function bindEvent() {
     GLOBAL.BGAUDIO.clearTimeout();  //清除背景音乐定时器,防止快速打开视频, 又关闭, 又打开, 播放背景音乐
 
     closeVideoOrAudio(true);
-
     var $cTar = $(e.currentTarget);
-    var $tar = $(e.target);
+    var dataId = $cTar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, dataId);
+
     var className = 'm-video-size';
 
     triggerBouncyNav(true);
 
     $('#video').show();
 
-    if ($tar[0].tagName === "IMG") { // 关闭播放
-      $tar.hide();
-      $cTar.removeClass(className)
+    if ($cTar[0].tagName === "IMG") { // 关闭播放
+      $cTar.removeClass(className).hide();
     } else { //开始播放
-      var url = $tar.attr('data-url');
-      var filename = $tar.attr('data-filename');
+      var url = $cTar.attr('data-url');
+      var filename = $cTar.attr('data-filename');
 
       if (video.getAttribute('src') !== url) {
         video.setAttribute('src', url);
       }
       $cTar.addClass(className)
-      $tar.find('img').show();
+      $cTar.find('img').show();
     }
 
     return false;
@@ -1134,8 +1140,8 @@ function bindEvent() {
 
   // 音频
   $('.m-audio').off().on(click, function (e) {
-    var $tar = $(e.target);
     var $cTar = $(e.currentTarget);
+    var $tar = $(e.target);
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
     //关闭视频,并且设置所有的 音频为默认图标状态
@@ -1153,14 +1159,17 @@ function bindEvent() {
       }
     }, 500)
 
-    playOrPaused($tar, isGlobalAudio)
+    var dataId = $cTar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, dataId);
+
+    playOrPaused($tar, isGlobalAudio, pointData)
     return false;
   })
 
 
   //全程音频按钮[非全程音频点读点的页面]
   $('[data-id="global-audio"]').off().on(click, function (e) {
-    var $cTar = $(e.target);
+    var $cTar = $(e.currentTarget);
     if ($cTar.attr('class') === 'global-audio-other-page-on') {
       var currentIndex = parseInt($('#id_pagination_cur').text()) - 1;
       ctlGlobalAudio.pause();
@@ -1174,17 +1183,20 @@ function bindEvent() {
   // 图文
   $('.m-imgtext').off().on(click, function (e) {
     closeVideoOrAudio(false);
-    var $tar = $(e.target);
+    var $cTar = $(e.currentTarget);
+    var dataId = $cTar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, dataId);
 
     var $secImgText = $('.sec-imgtext');
     $secImgText.css({position: 'absolute'});
     $secImgText.show();
     var $secImgTextMain = $('.sec-imgtext-main');
-    setImgTextLocation_Scale($tar, $secImgTextMain, $(e.currentTarget).parent().parent());  //设置弹窗的位置
+    setImgTextLocation_Scale($cTar, $secImgTextMain, $cTar.parent().parent());  //设置弹窗的位置
 
-    var _url = $tar.attr('data-url');
-    var _title = $tar.attr('data-title');
-    var _content = decodeURI($tar.attr('data-content'));
+    var _url = pointData.url;
+    var _title = pointData.title;
+    var _content = decodeURI(pointData.content);
+
     var $title = $secImgText.find('.sec-imgtext-title');
     var $img = $secImgText.find('.sec-imgtext-img');
 
@@ -1218,7 +1230,6 @@ function bindEvent() {
   $('.m-exam').off().on(click, function (e) {
     fnExamClick(e)
   })
-
 
   //关闭时间进度条
   $('#btn-close').off().on(click, function (ev) {

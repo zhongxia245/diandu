@@ -186,10 +186,7 @@ ul, li {
   width: 72px;
   position: absolute;
   border-radius: 50%;
-  -webkit-overflow: hidden;
-  -moz-overflow: hidden;
-  -o-overflow: hidden;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .m-video-size {
