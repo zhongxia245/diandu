@@ -47,6 +47,7 @@ window.CreatePoint = (function () {
     var top = data.top || "";
     var scale = data.scale || 1;  //缩放的比例, 主要在展示页面用
     var className = data.className; //展示页面  添加到点读点的样式
+    var outHTML = data.outHTML; //[展示页面] 外部传进来的HTML,添加到点读点的div里面
 
     left = typeof(left) === 'number' ? left : left.replace('px', '');
     top = typeof(top) === 'number' ? top : top.replace('px', '');
@@ -75,7 +76,7 @@ window.CreatePoint = (function () {
         break;
       //展示页面  自定义标题
       case 4:
-        html = initMTitlePoint(pointId, style, title, className)
+        html = initMTitlePoint(pointId, style, title, className, outHTML)
         break;
       //展示页面  自定义图片
       case 5:
@@ -162,16 +163,20 @@ window.CreatePoint = (function () {
    * [展示页面,移动端]生成带有标题的point
    * @param outClassName 外部传进来的样式
    */
-  function initMTitlePoint(pointId, style, titleObj, outClassName) {
+  function initMTitlePoint(pointId, style, titleObj, outClassName, outHTML) {
     var title = titleObj.title;
-    var pointType = titleObj.pointType || 'audio';
+    //var pointType = titleObj.pointType || 'audio';
+    var pointType = outClassName.replace('m-', '');
     var className = POINTTITLECLASS[pointType]
 
     var id = "";
     pointId && (id = 'data-id="' + pointId + '"')
+
     var html = [];
     html.push('       <div data-type="point" ' + id + ' style="' + style + '" class="create-point-title ' + outClassName + '">')
-    html.push('         <div class="create-point-title-img ' + className + '"></div>')
+    html.push('         <div class="create-point-title-img ' + className + '">')
+    html.push(outHTML)
+    html.push('         </div>')
     html.push('         <div class="create-point-title-line"></div>')
     html.push('         <div class="create-point-title-text">' + title + '</div>')
     html.push('       </div>')

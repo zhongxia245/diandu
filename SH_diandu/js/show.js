@@ -263,7 +263,9 @@ function afterRenderOp(data) {
         //播放后的回调
         playCallback: function () {
           $('[data-id="global-audio"]').removeClass().addClass('global-audio-other-page-on');
-          $('.m-global-audio').find('img').show();
+          $('.m-global-audio').find('.audio-global-play').show();
+          $('.m-global-audio').find('.audio-load').hide();
+          $('.m-global-audio').find('.audio-play').hide();
         },
         //暂停后的回调
         pauseCallback: function () {
@@ -784,16 +786,24 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var top = parseFloat(pointDatas[i].y) * imgH;
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + ');';
       var type = pointDatas[i]['type'];
-      var url = pointDatas[i]['url'];
-      var filename = pointDatas[i]['filename'];
-      var title = pointDatas[i]['title'];  //图文的标题
-      var content = encodeURI(pointDatas[i]['content']);  //ZHONGXIA
-      var question = pointDatas[i]['questions'];
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
       var pointTitle = JSON.parse(pointDatas[i]['title'] || "{}")  //TODO:等新增保存字段,替换掉
 
+
+      var mediaImg = "";
+      switch (type) {
+        case "1": //视频
+          mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
+          break;
+        case "2": //音频
+          mediaImg = '    <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
+          mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
+          mediaImg += '  <img  class="audio-global-play" style="display:none;border-radius: 50%; width: 100%; height: 100%;" src="imgs/global_audio/global-audio-other-page-on.gif" alt="audio">'
+          break;
+      }
+
+      //自定义点读点
       if (pic.src || pointTitle.title) {
-        console.info("pic", pic, "pointTitle", pointTitle);
         var config = {
           pointId: pointId,
           left: left,
@@ -801,7 +811,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           title: pointTitle,
           pic: pic,
           scale: pointScale,
-          className: classNames[type]
+          className: classNames[type],
+          outHTML: mediaImg
         }
         if (pic.src) {
           html += CreatePoint.initPoint(5, config)
@@ -809,23 +820,9 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           html += CreatePoint.initPoint(4, config)
         }
       }
+      //普通点读点
       else {
-        var className = '';
-        var mediaImg = "";
-        switch (type) {
-          case "1": //视频
-            mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
-            break;
-          case "2": //音频
-            mediaImg = '   <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
-            mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
-            break;
-          case "3": //图文
-            break;
-          case "4"://考试
-            break;
-        }
-        html += '<div class="' + classNames[type] + '" data-id="' + pointId + '" data-title="' + title + '" data-content="' + content + '" data-type="' + type + '" data-url="' + url + '" data-filename="' + filename + '" style="' + style + '">'
+        html += '<div class="' + classNames[type] + '" data-id="' + pointId + '"  style="' + style + '">'
         html += mediaImg;
         html += '</div>'
       }
@@ -850,12 +847,12 @@ function initVideo() {
  * @param audio
  */
 function audioPlay(audio, $tar, url) {
-
   //TODO:在移动端下 有兼容性问题
   if ($tar.attr('isLoad')) {//音频加载结束
     console.info("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
     $tar.find('.audio-play').show();
+    $tar.find('.audio-load').hide();
   }
   else {
     console.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
@@ -889,12 +886,15 @@ function audioPlay(audio, $tar, url) {
 
 /**
  * 播放或者暂停 音频
- * @param {jquery obj} 当前音频图标
  * @param isGlobalAudio 是否为全程音频
  */
-function playOrPaused($tar, isGlobalAudio, pointData) {
-  GLOBAL.BGAUDIO.clearTimeout();
+function playOrPaused(e, isGlobalAudio, pointData) {
+
   var url = pointData.url;
+  var $tar = $(e.target);
+  var $cTar = $(e.currentTarget);
+
+  GLOBAL.BGAUDIO.clearTimeout();
 
   if ($tar.attr('class') === "audio-load") { //加载状态
     $tar.hide();
@@ -918,10 +918,10 @@ function playOrPaused($tar, isGlobalAudio, pointData) {
     if (window.audio.getAttribute('src') !== url) {
       window.audio.setAttribute('src', url);
     }
-    $tar.find('img').show();
-
+    $tar.find('.audio-load').show();
     //是全局音频
     if (ctlGlobalAudio && isGlobalAudio) {
+      $tar.find('.audio-load').hide()
       ctlGlobalAudio.play();
     }
     else {
@@ -1114,6 +1114,8 @@ function bindEvent() {
     var $cTar = $(e.currentTarget);
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
+    var url = pointData.url;
+    var filename = pointData.filename;
 
     var className = 'm-video-size';
 
@@ -1124,9 +1126,6 @@ function bindEvent() {
     if ($cTar[0].tagName === "IMG") { // 关闭播放
       $cTar.removeClass(className).hide();
     } else { //开始播放
-      var url = $cTar.attr('data-url');
-      var filename = $cTar.attr('data-filename');
-
       if (video.getAttribute('src') !== url) {
         video.setAttribute('src', url);
       }
@@ -1140,6 +1139,8 @@ function bindEvent() {
 
   // 音频
   $('.m-audio').off().on(click, function (e) {
+    e.stopPropagation();
+
     var $cTar = $(e.currentTarget);
     var $tar = $(e.target);
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
@@ -1162,8 +1163,10 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
-    playOrPaused($tar, isGlobalAudio, pointData)
-    return false;
+    //自定义点读点的音频图标 或者 标准点读点的音频图标才触发播放
+    if ($tar.attr('class').indexOf('create-point-title-audio') !== -1 || $tar.attr('class').indexOf('m-audio') !== -1) {
+      playOrPaused(e, isGlobalAudio, pointData)
+    }
   })
 
 

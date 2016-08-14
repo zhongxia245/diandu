@@ -258,6 +258,17 @@ GlobalAudioController.prototype.play = function () {
     }
   }, that.duration);
   that.playCallback && that.playCallback()
+
+  clearTimeout(that.playEndtimer);
+  //播放结束,清除定时器
+  that.playEndtimer = setInterval(function () {
+    //播放结束, 则清除 正在播放的图片
+    if (that.audio.ended) {
+      clearInterval(that.playEndtimer);
+      console.info("全程音频结束");
+      that.pauseCallback && that.pauseCallback();
+    }
+  }, 500)
 }
 
 /**

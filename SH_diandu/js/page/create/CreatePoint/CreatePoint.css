@@ -43,6 +43,7 @@
   padding: 0 25px;
   font-size: 30px;
   color: #000;
+  text-align: center;
 
   border: 5px solid #0CC688;
   border-radius: 10px;
@@ -53,6 +54,7 @@
   width: 250%;
   max-height: 150px;
   margin-left: -75%;
+
 
 }
 
