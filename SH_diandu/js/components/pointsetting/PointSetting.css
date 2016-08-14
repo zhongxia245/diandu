@@ -27,14 +27,14 @@
 
 /*bootstrap-slider 插件设置*/
 /*滑块 宽度,高度*/
-.slider.slider-horizontal {
+.dps-container .slider.slider-horizontal {
   width: 470px;
   margin-left: 20px;
   height: 50px;
 }
 
 /*滑块的大小,颜色, 字体颜色*/
-.slider-handle {
+.dps-container .slider-handle {
   width: 60px;
   height: 60px;
   line-height: 50px;
@@ -47,20 +47,20 @@
 }
 
 /*滑块的上下位置*/
-.slider.slider-horizontal .slider-handle {
+.dps-container .slider.slider-horizontal .slider-handle {
   margin-left: -30px;
   margin-top: -20px;
 }
 
 /*滑块条的背景,高度*/
-.slider.slider-horizontal .slider-track {
+.dps-container .slider.slider-horizontal .slider-track {
   height: 20px;
   background: #B1B2B1;
   border-radius: 20px;
 }
 
 /*滑块条选中条的背景,高度*/
-.slider-selection {
+.dps-container .slider-selection {
   background: #B1B2B1;
   border-radius: 20px;
 }

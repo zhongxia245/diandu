@@ -34,22 +34,22 @@ $('body').off()
   }
 
   Util.loadCSS(getBasePath() + '/customPointSetting.css');
-  //Util.loadJS(getBasePath() + '/bootstrap-slider.min.js');
 })()
 
 
 function CustomPointSetting(selector, config) {
-  this.selector = selector;
-  this.data = {};
-  this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
-
   config = config || {};
 
-  this.submitCallback = config.submitCallback;    //关闭页面的回调
-  this.pointType = config.pointType || 'audio';  //点读点类型
+  this.selector = selector;
+  this.data = {};
+  this.data.title = config.title || {};
+  this.data.pic = config.pic || {};
+  this.data.pic.color = this.data.pic.color || '#FFFF0B';
+  this.data.pic.colorSize = this.data.pic.colorSize || 5;
 
-  this.colorSize = 5;
-  this.color = '#FFFF0B';
+  this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
+
+  this.submitCallback = config.submitCallback;    //关闭页面的回调
 
   this.pointTypeClasses = {
     audio: 'cps-point-audio',
@@ -61,13 +61,28 @@ function CustomPointSetting(selector, config) {
   $(this.selector).html(this.render());
   this.initVar();
   this.bindEvent();
+
+
+  //如果是编辑,有数据,回显
+  if (this.data.pic.src) {
+    var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
+    this.$showImg.show().css({
+      background: 'url(' + this.data.pic.src + ') no-repeat',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      '-webkit-filter': filter,
+      filter: filter
+    })
+
+    this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
+  }
 }
 
 /**
  * 渲染页面
  */
 CustomPointSetting.prototype.render = function () {
-  var pointTypeClass = this.pointTypeClasses[this.pointType];
+  var pointTypeClass = this.pointTypeClasses[this.data.title.type];
   var html = [];
   html.push('<div class="cps-container">')
   html.push('  <div class="cps-header">点读点设置</div>')
@@ -78,7 +93,7 @@ CustomPointSetting.prototype.render = function () {
   html.push('       <div class="cps-point">')
   html.push('         <div class="cps-point-img ' + pointTypeClass + '"></div>')
   html.push('         <div class="cps-point-line"></div>')
-  html.push('         <div class="cps-point-text" contenteditable="true"></div>')
+  html.push('         <div class="cps-point-text" contenteditable="true">' + (this.data.title.title || "") + '</div>')
   html.push('       </div>')
   html.push('    </div>')
   html.push('    <div class="cps-content-right">')
@@ -87,12 +102,12 @@ CustomPointSetting.prototype.render = function () {
   html.push('       <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>')
   html.push('       <div class="cps-show-img" style="display: none;"></div>')
   html.push('       <ul class="cps-show-color">')
-  html.push('         <li tabindex="1" style="background: #FB0006;"></li>')
-  html.push('         <li tabindex="2" style="background: #15A53F;"></li>')
-  html.push('         <li tabindex="3" style="background: #0A5AB2;"></li>')
-  html.push('         <li tabindex="4" class="cps-show-color-active" style="background: #FFFF0B;"></li>')
-  html.push('         <li tabindex="5" style="background: #CA0081;"></li>')
-  html.push('         <li tabindex="6" style="background: #1D1D1D;"></li>')
+  html.push('         <li tabindex="1" style="background-color:#FB0006;"></li>')
+  html.push('         <li tabindex="2" style="background-color:#15A53F;"></li>')
+  html.push('         <li tabindex="3" style="background-color:#0A5AB2;"></li>')
+  html.push('         <li tabindex="4" style="background-color:#FFFF0B;"></li>')
+  html.push('         <li tabindex="5" style="background-color:#CA0081;"></li>')
+  html.push('         <li tabindex="6" style="background-color:#1D1D1D;"></li>')
   html.push('       </ul>')
   html.push('       <div style="clear:both"></div>')
   html.push('       <div class="cps-show-color-size"><input id="cpsColorSize" type="text" data-slider-handle="square"/></div>')
@@ -113,6 +128,17 @@ CustomPointSetting.prototype.initVar = function () {
   this.$submit = this.$container.find('.cps-submit');
   this.$showImg = this.$container.find('.cps-show-img');
   this.$showColor = this.$container.find('.cps-show-color');
+
+  //初始化发光颜色
+  var _$colors = this.$showColor.find('li');
+  _$colors.removeClass('cps-show-color-active');
+  for (var i = 0; i < _$colors.length; i++) {
+    var _$color = _$colors.eq(i);
+    if (_$color.attr('style').split(':')[1].indexOf(this.data.pic.color) !== -1) {
+      _$color.addClass('cps-show-color-active');
+      break;
+    }
+  }
 }
 
 /**
@@ -124,8 +150,17 @@ CustomPointSetting.prototype.bindEvent = function () {
   /**
    * 获取焦点之后,清除自定义图片
    */
-  that.$text.off().on('focus', function (e) {
-    //TODO:标题和自定义图片选中一个
+  that.$text.off().on('click', function (e) {
+    if (that.data.pic.src) {
+      layer.confirm('是否要变更设置，放弃已有设置？', {
+        btn: ['是', '否'] //按钮
+      }, function (index) {
+        that.data.pic.src = null;
+        that.$container.find('#cps-upload-img').css({left: 0});
+        that.$showImg.hide().html("");
+        layer.close(index);
+      });
+    }
   })
 
   //初始化点读点大小滑块
@@ -133,13 +168,13 @@ CustomPointSetting.prototype.bindEvent = function () {
     step: 1,
     min: 1,
     max: 10,
-    value: that.colorSize,
+    value: that.data.pic.colorSize,
     tooltip: 'hide'
   })
 
   slideSize.on('slide', function (slideEvt) {
-    that.colorSize = slideEvt.value;
-    var filter = "drop-shadow(0px 0px " + that.colorSize + "px " + that.color + ")"
+    that.data.pic.colorSize = slideEvt.value;
+    var filter = "drop-shadow(0px 0px " + that.data.pic.colorSize + "px " + that.data.pic.color + ")"
     that.$showImg.css({
       '-webkit-filter': filter,
       filter: filter
@@ -153,7 +188,7 @@ CustomPointSetting.prototype.bindEvent = function () {
     layer.confirm('是否重新选择图片？', {
       btn: ['确定', '取消'] //按钮
     }, function (index) {
-      that.data.pic = null;
+      that.data.pic.src = null;
       that.$container.find('#cps-upload-img').css({left: 0});
       that.$showImg.hide().html("");
       layer.close(index);
@@ -173,8 +208,8 @@ CustomPointSetting.prototype.bindEvent = function () {
 
     if (color) {
       color = color.replace(';', '');
-      that.color = color;
-      var filter = "drop-shadow(0px 0px " + that.colorSize + "px " + color + ")"
+      that.data.pic.color = color;
+      var filter = "drop-shadow(0px 0px " + that.data.pic.colorSize + "px " + color + ")"
       that.$showImg.css({
         '-webkit-filter': filter,
         filter: filter
@@ -190,7 +225,10 @@ CustomPointSetting.prototype.bindEvent = function () {
     width: '175px',
     height: '175px',
     onUploadSuccess: function (file, result, response) {
-      that.data.pic = result;
+      that.data.title.title = null;
+      that.$text.text("");
+
+      that.data.pic.src = result;
       //that.$upload 还是最早保存的变量,
       that.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
       that.$showImg.show().css({
@@ -205,10 +243,10 @@ CustomPointSetting.prototype.bindEvent = function () {
    * 提交[保存到点读点数据里面]
    */
   that.$submit.off().on('click', function () {
-    that.data.title = that.$text.text();
+    that.data.title.title = that.$text.text();
+    //返回的数据
     console.info("自定义点读点数据保存到 window.DD 里面", that.data)
-
     //参数2 表示, 是否设置了数据
-    that.submitCallback && that.submitCallback(that.data, !!(that.data.title || that.data.pic));
+    that.submitCallback && that.submitCallback(that.data, !!(that.data.title.title || that.data.pic.src));
   })
 }

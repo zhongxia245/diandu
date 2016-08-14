@@ -169,7 +169,8 @@ var _data = (function () {
               point_size: items[j]['point_size'],
               filename: items[j].filename,
               url: items[j].url,
-              title: items[j].title,
+              title: JSON.stringify(items[j].title),
+              pic: JSON.stringify(items[j].pic),
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
               questions: typeof items[j]['questions'] !== "string" ? JSON.stringify(items[j].questions) : items[j].questions,
@@ -277,7 +278,7 @@ var _edit = (function () {
    */
   function initEdit(id) {
     Model.getList(id, function (data) {
-      console.log("load editData success! ", data)
+      console.info("加载点读点数据完成! ", data)
       //编辑的时候,按照点读页进行排序
       ArrayUtil.sortByKey(data.pages, 'seq');
 
@@ -292,6 +293,7 @@ var _edit = (function () {
 
       //设置点读位状态, 显示或者隐藏
       _setPointState(data.pages);
+
 
       GLOBAL.ISEDIT = {
         flag: true,
@@ -356,7 +358,8 @@ var _edit = (function () {
 
     GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100;
     GLOBAL.BACK_COLOR = data['back_color'] === "0" ? 'rgb(0,0,0)' : data['back_color'];
-    console.log("GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
+
+    console.info("全局背景颜色:GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "全局点读点大小:GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
   }
 
   /**
@@ -382,28 +385,39 @@ var _edit = (function () {
     var DDPageItems = window.DD.items[pageIndex - 1]['data'];  // 获取当前点读页的数据
     var dataid = pageIndex + "_" + (DDPageItems.length + 1);  //唯一标识该点读位 1_3 第一个点读页的第三个点读位[从1开始算]
 
-    var _location = getLocation(w, h, GLOBAL.SCREENSIZE.h.width, GLOBAL.SCREENSIZE.h.height, x, y)
-
     //存放位置信息在全部变量里面，使用按比例的方式存放
     DDPageItems.push({
-      x: _location.x, //坐标的比例
-      y: _location.y,
+      x: x / w, //坐标的比例
+      y: y / h,
       id: dataid
     });
 
-    //创建点图位置小圆圈，以及上传文件的列表
-    var index = DDPageItems.length;
-    var id = dataid;
+    //默认为普通点读点,  1 普通点读点  2: 自定义标题   3. 自定义图片
+    var type = 1;
+    var pic = JSON.parse(point.pic || "{}");
+    var title = JSON.parse(point.title || "{}");
+    if (pic && pic.src) type = 3;
+    if (title && title.title) type = 2;
 
-    createCircle(pageIndex, id, index, x, y);
-    addDianDu(pageIndex, id, index, point)
+    var config = {
+      left: x,
+      top: y,
+      title: title,
+      pic: pic
+    };
 
-    //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 START】
-    var $pdiv = $('#' + id).parent();
-    new Drag($pdiv[0], function (x, y) {
-      var _dargLocation = getLocation(w, h, GLOBAL.SCREENSIZE.h.width, GLOBAL.SCREENSIZE.h.height, x, y)
-      _data.setDDItems(dataid, {x: _dargLocation.x, y: _dargLocation.y});
-    });
+    createCircle(dataid, type, config);
+    addDianDu(dataid, point)
+
+    //设置了自定义点读点的,设置按钮的状态
+    if (type !== 1) {
+      $('.upload-right-btn')
+        .find('[data-id="' + dataid + '"]')
+        .find('.img-point-setting')
+        .addClass('img-point-setting-on')
+
+      console.info("自定义点读点", dataid, type, config)
+    }
 
     //初始化视频,音频,图文的数据
     _initPointItemData(dataid, point);
@@ -479,7 +493,8 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['point_size'] = obj['point_size'];
         window.DD.items[i]['data'][j]['url'] = obj['url'];
         window.DD.items[i]['data'][j]['filename'] = obj['filename'];
-        window.DD.items[i]['data'][j]['title'] = obj['title'];
+        window.DD.items[i]['data'][j]['title'] = JSON.parse(obj['title'] || "{}");
+        window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || "{}");
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
         window.DD.items[i]['data'][j]['questions'] = obj['questions'];
@@ -589,7 +604,6 @@ function setBgImageScale(path, id) {
         bgSize = "auto auto";
       }
     }
-    console.log(id, bgSize)
     $(id).css('background-size', bgSize);
   })
 }
@@ -604,8 +618,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  //$('#btnAdd').on('click', addDianDuPageTpl);
-  $('#btnAdd').on('click', addCustomPointSetting);
+  $('#btnAdd').on('click', addDianDuPageTpl);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -662,7 +675,7 @@ function bindEvent() {
           GLOBAL.BACK_COLOR = config.color;
 
           //设置页面上的效果,去除已经设置单个大小的点读点
-          setPointSize('.radius-in:not([data-change="1"])', config.size)
+          setPointSize('.radius:not([data-change="1"])', config.size)
           setBackColor(config.color);
 
           //没有单独设置大小的点读点, 都受影响
@@ -736,16 +749,22 @@ function addDianDuPageTpl() {
  * @param  {left}  点读位置的偏移量  left
  * @param  {top}  点读位置的偏移量  top
  */
-function createCircle(pageIndex, circleid, index, left, top) {
-  left = left || 0;
-  top = top || 0;
+function createCircle(pointId, type, config) {
+  config.left = config.left || 0;
+  config.top = config.top || 0;
+  config.pointId = pointId;
+
+  var pageIndex = parseInt(config.pointId.split('_')[0]);
   var pid = "#id_bg" + pageIndex;
-  var style = "style='position:absolute; left:" + left + "px; top :" + top + "px;'";
-  var html = "";
-  html += '<div class="radius" ' + style + '>';
-  html += '    <div id="' + circleid + '" class="radius-in">' + index + '</div>';
-  html += '</div>';
+  var style = "style='position:absolute; left:" + config.left + "px; top :" + config.top + "px;'";
+
+  var html = CreatePoint.initPoint(type, config)
   $(pid).append(html);
+
+  new Drag('#' + pointId, function (x, y) {
+    var _page = window.DD.items[pageIndex - 1];
+    _data.setDDItems(pointId, {x: x / _page.w, y: y / _page.h});
+  });
 }
 
 
@@ -756,12 +775,15 @@ function createCircle(pageIndex, circleid, index, left, top) {
  * @param index 第几个点读点
  * @param point 点读点数据[编辑的时候有数据]
  */
-function addDianDu(pageIndex, dianduItemid, index, point) {
+function addDianDu(pointId, point) {
   point = point || {};
+  var pageIndex = parseInt(pointId.split('_')[0]);
+  var pointIndex = parseInt(pointId.split('_')[1]);
+
   var settingId = "#uploadSetting" + pageIndex;
   var data = {
-    id: dianduItemid,
-    index: index,
+    id: pointId,
+    index: pointIndex,
     type: point.type === "2" ? 'audio' : '',
     upload: point.url ? '1' : '0'
   }
@@ -770,15 +792,15 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
 
   //设置单个点读点的大小  2016-07-18 22:43:43  START
   var pointSize = parseInt(point['point_size']);
-  new CNumber('[data-id="' + dianduItemid + '"] .number-container', {
+  new CNumber('[data-id="' + pointId + '"] .number-container', {
     val: pointSize || GLOBAL.POINT_SIZE,
     flag: !!pointSize,
-    pointSelector: '#' + dianduItemid,
+    pointSelector: '#' + pointId,
     callback: function (val) {
-      var id = dianduItemid;
+      var id = pointId;
       _data.setDDItems(id, {point_size: val});
 
-      setPointSize('#' + dianduItemid, val);
+      setPointSize('#' + pointId, val);
       console.log("set point_size:", id, val)
     }
   })
@@ -788,15 +810,15 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
     //编辑
     if (pointSize) {
       //单独设置了大小
-      setPointSize('#' + dianduItemid, pointSize);
+      setPointSize('#' + pointId, pointSize);
     } else {
       //全局大小
-      GLOBAL.POINT_SIZE && setPointSize('#' + dianduItemid, GLOBAL.POINT_SIZE);
+      GLOBAL.POINT_SIZE && setPointSize('#' + pointId, GLOBAL.POINT_SIZE);
     }
 
   } else {
     //新增
-    GLOBAL.POINT_SIZE && setPointSize('#' + dianduItemid, GLOBAL.POINT_SIZE);
+    GLOBAL.POINT_SIZE && setPointSize('#' + pointId, GLOBAL.POINT_SIZE);
   }
 
   //设置单个点读点的大小  2016-07-18 22:43:43  END
@@ -811,11 +833,8 @@ function addDianDu(pageIndex, dianduItemid, index, point) {
  */
 function setPointSize(selector, val) {
   var scale = val / 100;
-  var size = 72 * scale;
-  var fontSize = 50 * scale;
-  var $radius_in = $(selector);
-  $radius_in.css({width: size - 10, height: size - 10, lineHeight: size - 10 + 'px', fontSize: fontSize});
-  $radius_in.parent().css({width: size, height: size});
+  var style = 'scale(' + scale + ')';
+  $(selector).css({transform: style, '-webkit-transform': style})
 }
 
 
@@ -947,7 +966,9 @@ function getImageScaleWH(w, h) {
  * @return {[type]} [description]
  */
 function bindDianDuPageEvent() {
-  $('.setting-bigimg-img').off()
+
+  // 2016-08-14 21:56:13 这里不能使用 off() , 否则编辑的时候, 点读点的mouesdown事件被清除掉, 无法移动
+  $('.setting-bigimg-img')
     .on('click', addDianDuLocation);
 
   // 点读页上下移动操作
@@ -1051,62 +1072,38 @@ function downloadFile(e) {
  */
 function addDianDuLocation(e) {
   e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
-  e.preventDefault();
 
   var $tar = $(e.target);
   var w = $tar.width();
   var h = $tar.height();
 
-  //每一个点读页用一个数组来保存
-  var pageIndex = parseInt($tar.data().index);
-
   // 添加点读位置,点读位上点击是不能添加新的点读位的
   if ($tar.hasClass('setting-bigimg-img')) {
-
+    var pageIndex = parseInt($tar.attr('data-index'));
     var xy = getValidXY(e.offsetX, e.offsetY, w, h);
     var x = xy.x;
     var y = xy.y;
 
     // 获取当前点读页的数据
     var _page = window.DD.items[pageIndex - 1];
+
+    //点读点 id 和点读点下标
     var DDPageItems = _page['data'];
-    //唯一标识该点读位
     var dataid = pageIndex + "_" + (DDPageItems.length + 1);
 
-    /**
-     * 修复点读位在展示页面, 位置偏差问题 START 2016-06-05 10:07:12
-     * 1. 创建的点读点 大小 修改成 72px
-     * 2. 点读点位置 相对于 图片的左上角来算, 不能超出图片区域
-     */
-    var location = getLocation(_page.w, _page.h, w, h, x, y)
-    /*修复点读位在展示页面, 位置偏差问题 END 2016-06-05 10:07:18*/
-
     DDPageItems.push({
-      x: location.x, //坐标的比例
-      y: location.y,
+      x: x / _page.w, //坐标的比例
+      y: y / _page.h,
       id: dataid
     });
 
-    //创建点图位置小圆圈，以及上传文件的列表
-    var index = DDPageItems.length;
-    var id = dataid;
-
-    createCircle(pageIndex, id, index, x, y);
-    addDianDu(pageIndex, id, index);
-
-    //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 START】
-    var $pdiv = $('#' + id).parent();
-    $tar.on('selectstart', function () {
-      return false;
+    //创建点读点
+    createCircle(dataid, 1, {
+      left: x,
+      top: y,
     });
-
-    new Drag($pdiv[0], function (x, y) {
-      //TODO:需要在Drag中控制移动时不能超出图片区域
-      //点读点的半径
-      var _dargLocation = getLocation(_page.w, _page.h, w, h, x, y)
-      _data.setDDItems(dataid, {x: _dargLocation.x, y: _dargLocation.y});
-    });
-    //移动点读位【引入了 drag.js 文件，并且把最新位置放到存储器中 END】
+    //创建点读点项
+    addDianDu(dataid);
   }
 }
 
@@ -1122,8 +1119,6 @@ function getLocation(imgW, imgH, w, h, x, y) {
   return {
     x: _x / _scaleImgW,
     y: _y / _scaleImgH,
-    w: _scaleImgW,
-    h: _scaleImgH,
   }
 }
 
@@ -1262,28 +1257,53 @@ function addCustomPointSetting(e) {
   var pointIndex = parseInt(dataId.split('_')[1]) - 1;
   var pointType = $(e.target).parents('.upload-right').attr('data-type');
 
+  var _data = window.DD.items[pageIndex]['data'][pointIndex];
+  _data.title = _data.title || {};
+  _data.title.type = pointType;
   //实例化 点读点大小设置页面
   new CustomPointSetting('#customPointSetting', {
     dataId: dataId,
-    pointType: pointType,
+    title: _data.title,
+    pic: _data.pic,
     submitCallback: function (data, isSetData) {
       layer.closeAll();
+      var $point = $('#' + dataId);
+      $point.remove();
+
+      var left = $point.css('left');
+      var top = $point.css('top');
 
       //是否设置了数据
       if (isSetData) {
         console.info("自定义点读点数据:", data)
         $cTar.addClass('img-point-setting-on');
 
-        $('#' + dataId)
         //保存数据到变量里面
         window.DD.items[pageIndex].data[pointIndex].pic = data.pic;
         window.DD.items[pageIndex].data[pointIndex].title = data.title;
+        //点读点类型,是自定义图片,还是自定义标题
+        var type = data.pic.src ? 3 : 2;
+        var config = {
+          left: left,
+          top: top,
+          title: data.title,
+          pic: data.pic
+        };
+
+        createCircle(dataId, type, config)
+
       }
       else {
         $cTar.removeClass('img-point-setting-on');
         //保存数据到变量里面
         window.DD.items[pageIndex].data[pointIndex].pic = null;
         window.DD.items[pageIndex].data[pointIndex].title = null;
+
+        var config = {
+          left: left,
+          top: top
+        }
+        createCircle(dataId, 1, config)
       }
     }
   })
@@ -1530,8 +1550,6 @@ var CommonUtil = (function () {
 
 /**
  * 隐藏点读位置
- * @param  {[type]} e [description]
- * @return {[type]}   [description]
  */
 function hideDDLocation(e) {
   var $currentTarget = $(e.currentTarget);
@@ -1544,10 +1562,12 @@ function hideDDLocation(e) {
   var data = $target.data();
   setHoverImgSrcx($target);
 
+
   var itemdata = $target.parent().data();
   var _dataid = itemdata.id;
 
   var $itemSortId = $('#item' + itemdata.id);  //序号
+
   // 隐藏点读位
   if ($target.attr('data-show') === "0") {
     $target.attr('data-show', "1");
@@ -1556,8 +1576,10 @@ function hideDDLocation(e) {
       'background': '#7F7F7F',
       'textDecoration': 'line-through'
     };
-    $('#' + itemdata.id).css(style);  //背景上的点读位置
+    $('#' + itemdata.id).find('.radius-in').css(style);  //背景上的点读位置
+
     $itemSortId.css(style);
+
     $itemSortId.prev().css('visibility', 'initial');  //隐藏的图片展示出来
 
     _data.setDDItems(_dataid, {hide: true});
@@ -1573,6 +1595,7 @@ function hideDDLocation(e) {
     $rightName.attr('data-class', $rightName.attr('class'));
     $rightName.removeClass().addClass('upload-right-name notselect');
   }
+
   //显示点读位
   else {
     var style = {
@@ -1581,7 +1604,7 @@ function hideDDLocation(e) {
     };
     $target.attr('data-show', "0");
 
-    $('#' + itemdata.id).css(style);
+    $('#' + itemdata.id).find('.radius-in').css(style);
     $itemSortId.css(style);
     $itemSortId.prev().css('visibility', 'hidden');
     $('#item' + itemdata.id).css(style);
@@ -1590,7 +1613,6 @@ function hideDDLocation(e) {
       var $li = $($lis[i]);
       $li.attr('style', $li.attr('data-style'));
     }
-    ;
     // 还原
     $rightName.removeClass().addClass($rightName.attr('data-class'));
     _data.setDDItems(_dataid, {hide: false});

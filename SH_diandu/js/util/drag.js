@@ -1,37 +1,19 @@
-/*****************************************************
- * 时间:2016-04-23 22:07:36
- * 作者:zhongxia
- *
- * 拖拽移动的类库[原生实现,不依赖其他类库]
- * 使用说明:
- * bar 和 target 必须为 javascript 的对象
- * new Drag($pdiv[0], function (x, y) {});
- *****************************************************/
-
-
-/**
- * PC端拖拽类,指定拖拽的div,以及回调函数
- * @param bar           允许拖拽的标签
- * @param target        拖拽后移动的容器[可选]
- * @param callback      拖拽放开后的回调函数,返回 坐标[可选]
- * @constructor
- */
-function Drag(bar, target, callback) {
+/***************************************************
+ * 时间: 8/14/16 13:12
+ * 作者: zhongxia
+ * 说明: 拖拽的类库
+ ***************************************************/
+function Drag(selector, callback) {
   this.dianduSize = 72;
-  this.bar = bar;
-  switch (arguments.length) {
-    case 1:
-      this.target = bar;
-      break;
-    case 2:
-      this.callback = target;
-      this.target = bar;
-      break;
-  }
+  this.selector = selector;
+  this.$selector = $(selector);
+
+  this.callback = callback;
 
   //获取屏幕寛高，防止点读位移除背景图
-  this.w = $(bar).parent().width();
-  this.h = $(bar).parent().height();
+  this.$container = this.$selector.parent();
+  this.w = this.$container.width();
+  this.h = this.$container.height();
 
   this.params = {
     left: 0,
@@ -42,66 +24,31 @@ function Drag(bar, target, callback) {
   };
 
   /**
-   * 获取相关CSS属性[公用的]
-   * @param  {[type]} o   [对象]
-   * @param  {[type]} key [样式名]
-   * @return {[type]}     [description]
-   */
-  var getCss = function (o, key) {
-    return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
-  };
-  /**
    * 拖拽的实现
-   * @param  {[type]}   bar      [拖拽栏]
-   * @param  {[type]}   target   [拖拽目标，如果没有拖拽栏，则设置 bar 和 callback]
-   * @param  {Function} callback [拖拽的回调函数]
-   * @return {[type]}            [description]
    */
   this.startDrag = function () {
     var that = this;
 
-    if (getCss(that.target, "left") !== "auto") {
-      that.params.left = getCss(that.target, "left");
-    }
-    if (getCss(that.target, "top") !== "auto") {
-      that.params.top = getCss(that.target, "top");
-    }
-    //o是移动对象
-    that.bar.onmousedown = function (event) {
+    that.$container.on('mousedown', selector, function (e) {
       that.params.flag = true;
-      if (!event) {
-        event = window.event;
-        //防止IE文字选中
-        that.bar.onselectstart = function () {
-          return false;
-        }
-      }
-      var e = event;
       that.params.currentX = e.clientX;
       that.params.currentY = e.clientY;
 
-      document.onmouseup = function () {
-        that.params.flag = false;
-        if (getCss(that.target, "left") !== "auto") {
-          that.params.left = getCss(that.target, "left");
-        }
-        if (getCss(that.target, "top") !== "auto") {
-          that.params.top = getCss(that.target, "top");
-        }
-        if (typeof that.callback == "function") {
-          // 返回移动控件的左上角坐标
-          that.callback(parseInt(that.params.left), parseInt(that.params.top));
-        }
-      };
-      document.onmousemove = function (event) {
-        var e = event ? event : window.event;
-        if (that.params.flag) {
-          var nowX = e.clientX,
-            nowY = e.clientY;
-          var disX = nowX - that.params.currentX,
-            disY = nowY - that.params.currentY;
+      that.params.left = that.$selector.css('left').replace('px', '');
+      that.params.top = that.$selector.css('top').replace('px', '');
 
-          // 在不需要这个功能的话，只能注释掉就可以了
+      $(document).on('mouseup', function () {
+        that.params.flag = false;
+        that.callback && that.callback(parseInt(that.params.left), parseInt(that.params.top));
+      });
+
+      $(document).on('mousemove', function (e) {
+        if (that.params.flag) {
+          var nowX = e.clientX;
+          var nowY = e.clientY;
+          var disX = nowX - that.params.currentX;
+          var disY = nowY - that.params.currentY;
+
           // 限制点读位不能超出背景图  START
           var x = parseInt(that.params.left) + disX;
           var y = parseInt(that.params.top) + disY;
@@ -119,11 +66,13 @@ function Drag(bar, target, callback) {
           }
           // 限制点读位不能超出背景图  END
 
-          that.target.style.left = x + "px";
-          that.target.style.top = y + "px";
+          that.$selector.css({
+            left: x,
+            top: y
+          })
         }
-      }
-    };
+      })
+    });
 
   };
 

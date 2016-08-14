@@ -7,13 +7,31 @@
  * 2. 带有标题的点读点
  * 3. 自定义图片的点读点
  ***************************************************/
+//加载依赖的脚本和样式
+(function () {
+  /**
+   * 获取当前脚本的目录
+   * @returns {string}
+   */
+  function getBasePath() {
+    //兼容Chrome 和 FF
+    var currentPath = document.currentScript && document.currentScript.src || '';
+    var paths = currentPath.split('/');
+    paths.pop();
+    return paths.join('/');
+  }
+
+  Util.loadCSS(getBasePath() + '/CreatePoint.css');
+})()
+
+
 window.CreatePoint = (function () {
   //带有标题的点读点类型样式, 音频,视频,图文, 考试
   var POINTTITLECLASS = {
-    audio: 'cps-point-audio',
-    video: 'cps-point-video',
-    imgtext: 'cps-point-imgtext',
-    exam: 'cps-point-exam'
+    audio: 'create-point-title-audio',
+    video: 'create-point-title-video',
+    imgtext: 'create-point-title-imgtext',
+    exam: 'create-point-title-exam'
   }
 
   /**
@@ -24,16 +42,16 @@ window.CreatePoint = (function () {
   function initPoint(type, data) {
     var html = "";
     var pointId = data.pointId;
-    var pointIndex = data.pointIndex;
-    var left = data.left;
-    var top = data.top;
+    var pointIndex = data.pointId.split('_')[1];
+    var left = data.left || "";
+    var top = data.top || "";
+    left = typeof(left) === 'number' ? left : left.replace('px', '');
+    top = typeof(top) === 'number' ? top : top.replace('px', '');
 
-    var title = data.title;
-    var pointType = data.pointType || 'audio';
-
+    var title = data.title || {};
     var pic = data.pic || {src: '', color: '', colorSize: ''};  //自定义图片需要 图片地址,发光颜色,光圈大小
 
-    var style = "style='position:absolute; left:" + left + "px; top :" + top + "px;'";
+    var style = "position:absolute; left:" + left + "px; top :" + top + "px;";
     switch (type) {
       //常规点读点
       case 1:
@@ -41,15 +59,17 @@ window.CreatePoint = (function () {
         break;
       //带有标题的点读点
       case 2:
-        html = initTitlePoint(pointId, style, pointType, title);
+        html = initTitlePoint(pointId, style, title);
         break;
       //自定义图片的点读点
       case 3:
         html = initCustomImgPoint(pointId, style, pic)
         break;
       default:
-        html = initCustomImgPoint(pointId, pointIndex, style, pic);
+        html = initCustomImgPoint(pointId, pointIndex, style);
     }
+
+    return html;
   }
 
   /**
@@ -60,8 +80,8 @@ window.CreatePoint = (function () {
    */
   function initNormalPoint(pointId, pointIndex, style) {
     var html = [];
-    html.push('<div  class="radius" ' + style + '>');
-    html.push('    <div data-type="point" id="' + pointId + '" class="radius-in">' + pointIndex + '</div>');
+    html.push('<div data-type="point" id="' + pointId + '"  class="radius" style="' + style + '">');
+    html.push('    <div class="radius-in">' + pointIndex + '</div>');
     html.push('</div>');
     return html.join('');
   }
@@ -69,13 +89,15 @@ window.CreatePoint = (function () {
   /**
    * 生成带有标题的point
    */
-  function initTitlePoint(pointId, style, pointType, title) {
+  function initTitlePoint(pointId, style, titleObj) {
+    var title = titleObj.title;
+    var pointType = titleObj.pointType || 'audio';
     var className = POINTTITLECLASS[pointType]
     var html = [];
-    html.push('       <div data-type="point" id="' + pointId + '" style="' + style + '" class="point-title">')
-    html.push('         <div class="cps-point-img ' + className + '"></div>')
-    html.push('         <div class="cps-point-line"></div>')
-    html.push('         <div class="cps-point-text">' + title + '</div>')
+    html.push('       <div data-type="point" id="' + pointId + '" style="' + style + '" class="create-point-title">')
+    html.push('         <div class="create-point-title-img ' + className + '"></div>')
+    html.push('         <div class="create-point-title-line"></div>')
+    html.push('         <div class="create-point-title-text">' + title + '</div>')
     html.push('       </div>')
     return html.join('');
   }
@@ -86,10 +108,11 @@ window.CreatePoint = (function () {
   function initCustomImgPoint(pointId, style, pic) {
     var html = [];
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
+
     style += 'background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
-    html.push('<div data-type="point" id="' + pointId + '" style="' + style + '" class="point-img"></div>)');
+    html.push('<div data-type="point" id="' + pointId + '"  style="' + style + '" class="create-point-img"></div>)');
     return html.join('');
   }
 

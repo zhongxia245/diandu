@@ -1,0 +1,62 @@
+.create-point-title {
+  width: 72px;
+  height: 72px;
+}
+
+.create-point-title-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #009EEF;
+  margin: 0 auto;
+}
+
+.create-point-title-audio {
+  background-image: url('img/audio.png');
+  background-size: 100%;
+}
+
+.create-point-title-video {
+  background-image: url('img/video.png');
+  background-size: 100%;
+}
+
+.create-point-title-exam {
+  background-image: url('img/m_exam.png');
+  background-size: 100%;
+}
+
+.create-point-title-imgtext {
+  background-image: url('img/m_imgtext.png');
+  background-size: 100%;
+}
+
+.create-point-title-line {
+  height: 50%;
+  width: 25%;
+  background: url("img/img-point-setting-line.png") no-repeat;
+  background-size: 100% 100%;
+  margin: -15px auto 0 auto;
+}
+
+.create-point-title-text {
+  padding: 0 25px;
+  font-size: 30px;
+  color: #000;
+
+  border: 5px solid #0CC688;
+  border-radius: 10px;
+
+  background: #FFF;
+
+  overflow: auto;
+  width: 250%;
+  max-height: 150px;
+  margin-left: -75%;
+
+}
+
+.create-point-img {
+  width: 150px;
+  height: 150px;
+}

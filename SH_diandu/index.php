@@ -29,6 +29,7 @@ if ($id > 0) {
     <title>创建点读页</title>
     <link rel="stylesheet" href="css/font-awesome.min.css"/>
     <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="js/components/imgtext/imgtext2.css">
     <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css">
@@ -355,12 +356,14 @@ if ($id > 0) {
 <script src="js/lib/layer/layer.js"></script>
 <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
 <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<script src="js/lib/kindeditor/kindeditor-min.js"></script>
+<script src="js/lib/kindeditor/lang/zh_CN.js"></script>
+<script src="js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css"/>
 <script type="text/javascript" src="/edu/course/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/edu/course/js/resumable.js"></script>
 <script type="text/javascript" src="/edu/course/js/common_tool.js"></script>
-<script src="js/lib/kindeditor/kindeditor-min.js"></script>
-<script src="js/lib/kindeditor/lang/zh_CN.js"></script>
 <!--custom-->
 <script src="js/model/model.js"></script>
 <script src="js/util/arrayUtil.js"></script>
@@ -373,6 +376,8 @@ if ($id > 0) {
 <script src="js/components/pointsetting/PointSetting.js"></script>
 <script src="js/components/number/CNumber.js"></script>
 <script src="js/components/globalaudio/GlobalAudio.js"></script>
+<script src="js/components/custompointsetting/CustomPointSetting.js"></script>
+<script src="js/page/create/CreatePoint/CreatePoint.js"></script>
 
 <script src="js/index.js"></script>
 

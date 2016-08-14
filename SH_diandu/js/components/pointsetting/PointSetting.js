@@ -2,6 +2,7 @@
  * 时间: 7/17/16 10:33
  * 作者: zhongxia
  * 说明: 点读点大小设置
+ * 依赖: js/lib/bootstrap-slider 组件
  ***************************************************/
 
 //加载依赖的脚本和样式
@@ -18,10 +19,8 @@
     return paths.join('/');
   }
 
-
-  Util.loadCSS(getBasePath() + '/bootstrap-slider.min.css');
   Util.loadCSS(getBasePath() + '/PointSetting.css');
-  Util.loadJS(getBasePath() + '/bootstrap-slider.min.js');
+
 })()
 
 
