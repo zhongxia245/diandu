@@ -2,6 +2,7 @@
  * 时间: 8/7/16 20:35
  * 作者: zhongxia
  * 说明: 自定义点读点风格,文字
+ * 依赖: js/lib/bootstrap-slider 组件
  ***************************************************/
 $('body').off()
   .on('focus', '[contenteditable]', function () {
@@ -43,7 +44,19 @@ function CustomPointSetting(selector, config) {
   this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
 
   config = config || {};
-  this.hideCallback = config.hideCallback;
+
+  this.submitCallback = config.submitCallback;    //关闭页面的回调
+  this.pointType = config.pointType || 'audio';  //点读点类型
+
+  this.colorSize = 5;
+  this.color = '#FFFF0B';
+
+  this.pointTypeClasses = {
+    audio: 'cps-point-audio',
+    video: 'cps-point-video',
+    imgtext: 'cps-point-imgtext',
+    exam: 'cps-point-exam'
+  }
 
   $(this.selector).html(this.render());
   this.initVar();
@@ -54,6 +67,7 @@ function CustomPointSetting(selector, config) {
  * 渲染页面
  */
 CustomPointSetting.prototype.render = function () {
+  var pointTypeClass = this.pointTypeClasses[this.pointType];
   var html = [];
   html.push('<div class="cps-container">')
   html.push('  <div class="cps-header">点读点设置</div>')
@@ -62,16 +76,26 @@ CustomPointSetting.prototype.render = function () {
   html.push('       <h4>设置点读点的注释文件</h4>')
   html.push('       <em>(建议不超过10个字)</em>')
   html.push('       <div class="cps-point">')
-  html.push('         <div class="cps-point-img"></div>')
+  html.push('         <div class="cps-point-img ' + pointTypeClass + '"></div>')
   html.push('         <div class="cps-point-line"></div>')
-  html.push('         <div class="cps-point-text" contenteditable="true">动感音频仔细聆听</div>')
+  html.push('         <div class="cps-point-text" contenteditable="true"></div>')
   html.push('       </div>')
   html.push('    </div>')
   html.push('    <div class="cps-content-right">')
   html.push('       <h4>自定制点读点按钮图案</h4>')
-  html.push('       <em>(请采用背景色透明的png图片文件,建议像素小于180*180)</em>')
+  html.push('       <em>(请采用背景色透明的png图片文件)</em>')
   html.push('       <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>')
   html.push('       <div class="cps-show-img" style="display: none;"></div>')
+  html.push('       <ul class="cps-show-color">')
+  html.push('         <li tabindex="1" style="background: #FB0006;"></li>')
+  html.push('         <li tabindex="2" style="background: #15A53F;"></li>')
+  html.push('         <li tabindex="3" style="background: #0A5AB2;"></li>')
+  html.push('         <li tabindex="4" class="cps-show-color-active" style="background: #FFFF0B;"></li>')
+  html.push('         <li tabindex="5" style="background: #CA0081;"></li>')
+  html.push('         <li tabindex="6" style="background: #1D1D1D;"></li>')
+  html.push('       </ul>')
+  html.push('       <div style="clear:both"></div>')
+  html.push('       <div class="cps-show-color-size"><input id="cpsColorSize" type="text" data-slider-handle="square"/></div>')
   html.push('    </div>')
   html.push('  </div>')
   html.push('  <div class="cps-submit">提交</div>')
@@ -88,6 +112,7 @@ CustomPointSetting.prototype.initVar = function () {
   this.$upload = this.$container.find('#cps-upload-img');
   this.$submit = this.$container.find('.cps-submit');
   this.$showImg = this.$container.find('.cps-show-img');
+  this.$showColor = this.$container.find('.cps-show-color');
 }
 
 /**
@@ -96,6 +121,30 @@ CustomPointSetting.prototype.initVar = function () {
 CustomPointSetting.prototype.bindEvent = function () {
   var that = this;
 
+  /**
+   * 获取焦点之后,清除自定义图片
+   */
+  that.$text.off().on('focus', function (e) {
+    //TODO:标题和自定义图片选中一个
+  })
+
+  //初始化点读点大小滑块
+  var slideSize = new Slider('#cpsColorSize', {
+    step: 1,
+    min: 1,
+    max: 10,
+    value: that.colorSize,
+    tooltip: 'hide'
+  })
+
+  slideSize.on('slide', function (slideEvt) {
+    that.colorSize = slideEvt.value;
+    var filter = "drop-shadow(0px 0px " + that.colorSize + "px " + that.color + ")"
+    that.$showImg.css({
+      '-webkit-filter': filter,
+      filter: filter
+    })
+  })
 
   /**
    * 重新上传图片
@@ -109,6 +158,29 @@ CustomPointSetting.prototype.bindEvent = function () {
       that.$showImg.hide().html("");
       layer.close(index);
     });
+  })
+
+  /**
+   * 选中自定义图片的发光的颜色
+   */
+  that.$showColor.off().on('click', function (e) {
+    var $tar = $(e.target);
+    var $cTar = $(e.currentTarget);
+    var color = $tar.attr('style').split(':')[1];
+
+    $cTar.find('li').removeClass('cps-show-color-active');
+    $tar.addClass('cps-show-color-active');
+
+    if (color) {
+      color = color.replace(';', '');
+      that.color = color;
+      var filter = "drop-shadow(0px 0px " + that.colorSize + "px " + color + ")"
+      that.$showImg.css({
+        '-webkit-filter': filter,
+        filter: filter
+      })
+      console.log(that.$showImg.attr('style'))
+    }
   })
 
   /**
@@ -137,6 +209,6 @@ CustomPointSetting.prototype.bindEvent = function () {
     console.info("自定义点读点数据保存到 window.DD 里面", that.data)
 
     //参数2 表示, 是否设置了数据
-    that.hideCallback && that.hideCallback(that.data, !!(that.data.title || that.data.pic));
+    that.submitCallback && that.submitCallback(that.data, !!(that.data.title || that.data.pic));
   })
 }

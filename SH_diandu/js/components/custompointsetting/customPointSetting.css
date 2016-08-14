@@ -51,6 +51,26 @@
   margin: 0 auto;
 }
 
+.cps-point-audio {
+  background-image: url('img/audio.png');
+  background-size: 100%;
+}
+
+.cps-point-video {
+  background-image: url('img/video.png');
+  background-size: 100%;
+}
+
+.cps-point-exam {
+  background-image: url('img/m_exam.png');
+  background-size: 100%;
+}
+
+.cps-point-imgtext {
+  background-image: url('img/m_imgtext.png');
+  background-size: 100%;
+}
+
 .cps-point-line {
   height: 48px;
   width: 24px;
@@ -65,6 +85,8 @@
   color: #000;
   border: 5px solid #0CC688;
   border-radius: 10px;
+  max-height: 150px;
+  overflow: auto;
 }
 
 /*uploadify只能用id选择器,so...*/
@@ -76,7 +98,7 @@
   color: #FFF;
   text-align: center;
 
-  margin: 50px auto;
+  margin: 10px auto;
 
   background: #6C6C6C;
   border-radius: 10px;
@@ -97,6 +119,8 @@
   top: 135px;
   left: 50%;
   margin-left: -86px;
+  -webkit-filter: drop-shadow(0px 0px 5px yellow);
+  filter: drop-shadow(0px 0px 6px yellow);
 }
 
 #cps-upload-img object {
@@ -120,4 +144,33 @@
   font-size: 32px;
   border-radius: 0 0 10px 10px;
   cursor: pointer;
+}
+
+.cps-show-color {
+  width: 100%;
+  margin: 20px auto;
+}
+
+.cps-show-color-size {
+  margin-top: 10px;
+}
+
+.cps-show-color-size .slider-handle {
+  border-radius: 0;
+
+}
+
+.cps-show-color li {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  float: left;
+  margin-left: 5px;
+}
+
+.cps-show-color-active {
+  outline: 3px solid #4E4E4E;
+  -webkit-outline-radius: 3px;
+  -moz-outline-radius: 3px;
+  outline-radius: 3px;
 }
