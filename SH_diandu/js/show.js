@@ -116,19 +116,9 @@ $(function () {
 });
 
 /*========================页面缩放,横竖屏切换事件 START=====================*/
-/**
- *横竖屏切换事件,重新绘制点读页
- */
-window.addEventListener("orientationchange", function () {
-  // 宣布新方向的数值
-  console.log(window.orientation);
-
-  //直接重置有BUG, 需要停顿一下
-  setTimeout(function () {
-    fn_onResize();
-  }, 100)
-
-}, false);
+$(window).on('resize', function () {
+  fn_onResize();
+})
 
 /**
  * 窗口变化时展示
@@ -136,19 +126,20 @@ window.addEventListener("orientationchange", function () {
 function fn_onResize() {
   window.W = $(window).width();
   window.H = $(window).height();
+
   $('#main').css({
     height: window.H,
     width: window.W
   });
 
   var _size;
-  if (W > H) {
+  if (window.W > window.H) {
     //横屏
     SCALE = (window.W / GLOBAL.OLDWIDTH);
     $('.cd-close').removeClass('cd-close-v');
 
-    GLOBAL.EXAM_W = $(window).width() * (1500 / 1920);
-    GLOBAL.EXAM_H = $(window).height() * (800 / 1080);
+    GLOBAL.EXAM_W = window.W * (1500 / 1920);
+    GLOBAL.EXAM_H = window.H * (800 / 1080);
 
     $('.sec-exam').css({
       height: GLOBAL.EXAM_H,
@@ -165,8 +156,8 @@ function fn_onResize() {
     SCALE = (window.H / GLOBAL.OLDWIDTH);
     $('.cd-close').addClass('cd-close-v')
 
-    GLOBAL.EXAM_W = $(window).width() * (800 / 1080);
-    GLOBAL.EXAM_H = $(window).height() * (1200 / 1920);
+    GLOBAL.EXAM_W = window.W * (800 / 1080);
+    GLOBAL.EXAM_H = window.H * (1200 / 1920);
 
     $('.sec-exam').css({
       height: GLOBAL.EXAM_H,
@@ -174,6 +165,7 @@ function fn_onResize() {
       left: (window.W - GLOBAL.EXAM_W) / 2,
       top: (window.H - GLOBAL.EXAM_H) / 2
     });
+
 
     _size = window.W * 0.5;
     isVertical = true;
@@ -229,18 +221,42 @@ function init() {
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
 
-    initDiandu(data);
-
     //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
     fn_onResize();
 
-    bindEvent();
-
-    //渲染后的操作
-    afterRenderOp(data);
-
     console.info("展示页数据:", data)
   })
+}
+
+/**
+ * 初始化点读展示页
+ * @param  {[type]} data [description]
+ */
+function initDiandu(data) {
+  //TODO:DEMO
+  $('#pages').html('');
+  $('#thumbs').html('');
+
+  initPage('pages', data);
+  initThumbs('thumbs', data['pages']);
+
+  initSwipe();
+
+  //针对早期的数据, 由于数据库默认保存 数据为 0 , 因此这边需要做处理
+  if (data['point_size'] !== "0") {
+    GLOBAL.GLOBAL_POINT_SIZE = parseInt(data['point_size']);
+  }
+  if (data['back_color'] !== "0") {
+    GLOBAL.BACK_COLOR = data['back_color'];
+  }
+  //设置背景图片空白区域的颜色
+  initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
+
+  $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
+
+  bindEvent();
+  //渲染后的操作
+  afterRenderOp(data);
 }
 
 /**
@@ -328,32 +344,6 @@ function afterRenderOp(data) {
   } else {
     GLOBAL.BGAUDIO.hideBtn()
   }
-}
-
-/**
- * 初始化点读展示页
- * @param  {[type]} data [description]
- */
-function initDiandu(data) {
-  $('#pages').html('');
-  $('#thumbs').html('');
-
-  initPage('pages', data);
-  initThumbs('thumbs', data['pages']);
-
-  initSwipe();
-
-  //针对早期的数据, 由于数据库默认保存 数据为 0 , 因此这边需要做处理
-  if (data['point_size'] !== "0") {
-    GLOBAL.GLOBAL_POINT_SIZE = parseInt(data['point_size']);
-  }
-  if (data['back_color'] !== "0") {
-    GLOBAL.BACK_COLOR = data['back_color'];
-  }
-  //设置背景图片空白区域的颜色
-  initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
-
-  $('.gallery-main').hide();  //默认透明度为0 ,会占位置,让下面的点击不到,这里用隐藏,隐藏起来
 }
 
 
@@ -560,44 +550,41 @@ function initPage(id, data) {
     var whScale = w / h;   //宽高比
     var hwScale = h / w;   //高宽比
 
-    var $wrap = $('#' + subid).find('.wrap');
     var _imgScale = 1;
     var wrapWidth = window.W;
     var wrapHeight = window.H;
-    var _flag = false;
 
+    var _flag = false;  //图片是否某一边拉伸,铺满长度 或者 宽度,  false: 没有  true: 有
+
+    //竖屏
     if (isVertical) {
+      //普通图片
       if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
-        //bgSize = '100% auto';
         wrapHeight = wrapWidth * hwScale;
         _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
         _flag = true;
       }
       else if (whScale >= GLOBAL.V_IMGSCALE) {
-        //竖屏
-        //横图
-        wrapHeight = window.W * hwScale;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
-
         //竖图,横向100%, 重新计算计算缩放比例
-        if (h / w > 1) {
+        wrapHeight = window.W * hwScale;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
+        if (hwScale > 1) {
           _imgScale = wrapHeight / GLOBAL.SCREEN.H
         }
       }
       else {
-        //竖图
-        wrapWidth = window.H * whScale;
-
         //横图,纵向100%, 重新计算计算缩放比例
+        wrapWidth = window.H * whScale;
         if (whScale > 1) {
           _imgScale = wrapWidth / GLOBAL.SCREEN.H
         }
       }
-    } else {
-
-      //横屏
+    }
+    //横屏
+    else {
+      //普通图片
       if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
-        wrapWidth = window.H * whScale;
-        _imgScale = GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H
+        wrapWidth = wrapHeight * whScale;
+        _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
         _flag = true;
       }
       else if (whScale >= GLOBAL.H_IMGSCALE) {
@@ -614,10 +601,12 @@ function initPage(id, data) {
         }
       }
     }
+
     $('#' + subid).css('background-size', 'contain');
 
     //计算点读点缩放比例
     var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
+
     if (!_flag) {
       _pointSizeScale = _pointSizeScale * _imgScale;
     } else {
@@ -636,6 +625,7 @@ function initPage(id, data) {
     }
     //针对小图, EN
 
+    var $wrap = $('#' + subid).find('.wrap');
     $wrap.css({height: wrapHeight, width: wrapWidth});
     $wrap.html('');
     $wrap.append(initPoints(i, pages[i], wrapWidth, wrapHeight, _pointSizeScale))
