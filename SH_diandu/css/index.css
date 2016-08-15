@@ -493,6 +493,7 @@ header {
   background: #FF7C80;
   border-radius: 3px;
   overflow: hidden;
+  position: relative;
 }
 
 .upload-right-name .div-file {

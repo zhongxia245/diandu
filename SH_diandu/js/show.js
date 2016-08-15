@@ -787,7 +787,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + ');';
       var type = pointDatas[i]['type'];
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
-      var pointTitle = JSON.parse(pointDatas[i]['title'] || "{}")  //TODO:等新增保存字段,替换掉
+      var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")  //TODO:等新增保存字段,替换掉
 
 
       var mediaImg = "";

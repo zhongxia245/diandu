@@ -29,7 +29,7 @@ function Drag(selector, callback) {
   this.startDrag = function () {
     var that = this;
 
-    that.$container.on('mousedown', selector, function (e) {
+    that.$selector.on('mousedown', function (e) {
       that.params.flag = true;
       that.params.currentX = e.clientX;
       that.params.currentY = e.clientY;

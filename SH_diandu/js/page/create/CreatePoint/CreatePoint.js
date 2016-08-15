@@ -108,7 +108,7 @@ window.CreatePoint = (function () {
    */
   function initTitlePoint(pointId, style, titleObj) {
     var title = titleObj.title;
-    var pointType = titleObj.pointType || 'audio';
+    var pointType = titleObj.type || 'audio';
     var className = POINTTITLECLASS[pointType]
     var id = "";
     pointId && (id = 'id="' + pointId + '"')
@@ -145,7 +145,7 @@ window.CreatePoint = (function () {
    */
   function initMNormalPoint(pointId, style, titleObj, outClassName) {
     var title = titleObj.title;
-    var pointType = titleObj.pointType || 'audio';
+    var pointType = titleObj.type || 'audio';
     var className = POINTTITLECLASS[pointType]
 
     var id = "";

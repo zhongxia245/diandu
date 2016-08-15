@@ -12,6 +12,13 @@
 window.DD = window.DD || {};
 window.DD.items = []; //点读的位置记录
 
+//点读点类型
+var TYPE = {
+  1: 'video',
+  2: 'audio',
+  3: 'imgtext',
+  4: 'exam'
+}
 
 /******************************************
  * 全局对象
@@ -169,7 +176,8 @@ var _data = (function () {
               point_size: items[j]['point_size'],
               filename: items[j].filename,
               url: items[j].url,
-              title: JSON.stringify(items[j].title),
+              title: items[j].title,
+              custom: JSON.stringify(items[j].custom),
               pic: JSON.stringify(items[j].pic),
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
@@ -395,7 +403,7 @@ var _edit = (function () {
     //默认为普通点读点,  1 普通点读点  2: 自定义标题   3. 自定义图片
     var type = 1;
     var pic = JSON.parse(point.pic || "{}");
-    var title = JSON.parse(point.title || "{}");
+    var title = JSON.parse(point.custom || "{}");
     if (pic && pic.src) type = 3;
     if (title && title.title) type = 2;
 
@@ -406,7 +414,7 @@ var _edit = (function () {
       pic: pic
     };
 
-    createCircle(dataid, type, config);
+    createPoint(dataid, type, config);
     addDianDu(dataid, point)
 
     //设置了自定义点读点的,设置按钮的状态
@@ -493,7 +501,8 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['point_size'] = obj['point_size'];
         window.DD.items[i]['data'][j]['url'] = obj['url'];
         window.DD.items[i]['data'][j]['filename'] = obj['filename'];
-        window.DD.items[i]['data'][j]['title'] = JSON.parse(obj['title'] || "{}");
+        window.DD.items[i]['data'][j]['title'] = obj['title'];
+        window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || "{}");
         window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || "{}");
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
@@ -749,7 +758,7 @@ function addDianDuPageTpl() {
  * @param  {left}  点读位置的偏移量  left
  * @param  {top}  点读位置的偏移量  top
  */
-function createCircle(pointId, type, config) {
+function createPoint(pointId, type, config) {
   config.left = config.left || 0;
   config.top = config.top || 0;
   config.pointId = pointId;
@@ -781,10 +790,11 @@ function addDianDu(pointId, point) {
   var pointIndex = parseInt(pointId.split('_')[1]);
 
   var settingId = "#uploadSetting" + pageIndex;
+
   var data = {
     id: pointId,
     index: pointIndex,
-    type: point.type === "2" ? 'audio' : '',
+    type: TYPE[point.type],
     upload: point.url ? '1' : '0'
   }
   var tpls = Handlebars.compile($("#tpl_uploadSetting").html());
@@ -968,7 +978,7 @@ function getImageScaleWH(w, h) {
 function bindDianDuPageEvent() {
 
   // 2016-08-14 21:56:13 这里不能使用 off() , 否则编辑的时候, 点读点的mouesdown事件被清除掉, 无法移动
-  $('.setting-bigimg-img')
+  $('.setting-bigimg-img').off()
     .on('click', addDianDuLocation);
 
   // 点读页上下移动操作
@@ -1098,7 +1108,7 @@ function addDianDuLocation(e) {
     });
 
     //创建点读点
-    createCircle(dataid, 1, {
+    createPoint(dataid, 1, {
       left: x,
       top: y,
     });
@@ -1150,7 +1160,7 @@ function handleUploadItem(e) {
       // 删除按钮
       case "delete":
         var itemdata = $target.parent().data();
-        $('#' + itemdata.id).parent().remove();
+        $('#' + itemdata.id).remove();
         $currentTarget.remove();
 
         //在本地数据变量里面标注，已经删除
@@ -1257,13 +1267,14 @@ function addCustomPointSetting(e) {
   var pointIndex = parseInt(dataId.split('_')[1]) - 1;
   var pointType = $(e.target).parents('.upload-right').attr('data-type');
 
+  //获取数据,编辑
   var _data = window.DD.items[pageIndex]['data'][pointIndex];
-  _data.title = _data.title || {};
-  _data.title.type = pointType;
+  _data.custom = _data.custom || {};
+  _data.custom.type = pointType;
   //实例化 点读点大小设置页面
   new CustomPointSetting('#customPointSetting', {
     dataId: dataId,
-    title: _data.title,
+    title: _data.custom,
     pic: _data.pic,
     submitCallback: function (data, isSetData) {
       layer.closeAll();
@@ -1280,7 +1291,7 @@ function addCustomPointSetting(e) {
 
         //保存数据到变量里面
         window.DD.items[pageIndex].data[pointIndex].pic = data.pic;
-        window.DD.items[pageIndex].data[pointIndex].title = data.title;
+        window.DD.items[pageIndex].data[pointIndex].custom = data.title;
         //点读点类型,是自定义图片,还是自定义标题
         var type = data.pic.src ? 3 : 2;
         var config = {
@@ -1290,20 +1301,20 @@ function addCustomPointSetting(e) {
           pic: data.pic
         };
 
-        createCircle(dataId, type, config)
+        createPoint(dataId, type, config)
 
       }
       else {
         $cTar.removeClass('img-point-setting-on');
         //保存数据到变量里面
         window.DD.items[pageIndex].data[pointIndex].pic = null;
-        window.DD.items[pageIndex].data[pointIndex].title = null;
+        window.DD.items[pageIndex].data[pointIndex].custom = null;
 
         var config = {
           left: left,
           top: top
         }
-        createCircle(dataId, 1, config)
+        createPoint(dataId, 1, config)
       }
     }
   })
