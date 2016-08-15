@@ -27,12 +27,13 @@ if ($id > 0) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>创建点读页</title>
-    <link rel="stylesheet" href="css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="js/components/imgtext/imgtext2.css">
-    <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css">
+    <link rel="stylesheet" href="js/lib/uploadify/uploadify.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="js/components/imgtext/imgtext2.css"/>
+    <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css"/>
     <link rel="stylesheet" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
     <!---add by brian 20160426-->
@@ -267,6 +268,9 @@ if ($id > 0) {
 <!--全局音频设置-->
 <div id="globalAudioSetting"></div>
 
+<!--自定义点读点-->
+<div id="customPointSetting" style="display: none;"></div>
+
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -298,9 +302,10 @@ if ($id > 0) {
       </div>
       <div class="upload-right-btn">
         <ul data-id="{{id}}" data-index="{{index}}">
-          <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
-          <li title="删除" class="img-delete" data-type="delete"></li>
-          <li title="全程音频" class="img-global-audio"  data-type="global-audio"></li>
+            <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
+            <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+            <li title="删除" class="img-delete" data-type="delete"></li>
+            <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
             <li title="设置全程音频" class="img-global-audio-setting"
                 data-type="global-audio-setting"
                 style="display:none"></li>
