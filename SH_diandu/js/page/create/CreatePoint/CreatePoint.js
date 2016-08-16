@@ -57,10 +57,6 @@ window.CreatePoint = (function () {
 
     var style = "position:absolute; left:" + left + "px; top :" + top + "px;";
 
-    if (scale !== 1) {
-      style += 'transform: scale(' + scale + ');';
-    }
-
     switch (type) {
       //常规点读点
       case 1:
@@ -76,11 +72,11 @@ window.CreatePoint = (function () {
         break;
       //展示页面  自定义标题
       case 4:
-        html = initMTitlePoint(pointId, style, title, className, outHTML)
+        html = initMTitlePoint(pointId, style, title, className, outHTML, scale)
         break;
       //展示页面  自定义图片
       case 5:
-        html = initMCustomImgPoint(pointId, style, pic, className)
+        html = initMCustomImgPoint(pointId, style, pic, className, scale)
         break;
       default:
         html = initCustomImgPoint(pointId, pointIndex, style);
@@ -126,14 +122,23 @@ window.CreatePoint = (function () {
    * 生成自定义图片的point
    */
   function initCustomImgPoint(pointId, style, pic) {
+    //debugger;
     var html = [];
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
 
     style += 'background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
+    if (pic.w && pic.h && pic.w > pic.h) {
+      var width = pic.w * 1200 / 1920;
+      var height = pic.h * 1200 / 1920;
+      style += 'width:' + width + 'px;height:' + height + 'px';
+    }
+
     var id = "";
-    pointId && (id = 'id=' + pointId)
+    if (pointId) {
+      id = 'data-id=' + pointId
+    }
 
     html.push('<div data-type="point" ' + id + '  style="' + style + '" class="create-point-img"></div>)');
     return html.join('');
@@ -149,7 +154,9 @@ window.CreatePoint = (function () {
     var className = POINTTITLECLASS[pointType]
 
     var id = "";
-    pointId && (id = 'data-id="' + pointId + '"')
+    if (pointId) {
+      id = 'data-id=' + pointId
+    }
     var html = [];
     html.push('       <div data-type="point" ' + id + ' style="' + style + '" class="create-point-title ' + outClassName + '">')
     html.push('         <div class="create-point-title-img ' + className + '"></div>')
@@ -163,14 +170,21 @@ window.CreatePoint = (function () {
    * [展示页面,移动端]生成带有标题的point
    * @param outClassName 外部传进来的样式
    */
-  function initMTitlePoint(pointId, style, titleObj, outClassName, outHTML) {
+  function initMTitlePoint(pointId, style, titleObj, outClassName, outHTML, scale) {
     var title = titleObj.title;
     //var pointType = titleObj.pointType || 'audio';
     var pointType = outClassName.replace('m-', '');
     var className = POINTTITLECLASS[pointType]
 
+    //缩放,并且使用左上角为缩放的  起始点
+    if (scale !== 1) {
+      style += 'transform: scale(' + scale + '); transform-origin:left top;';
+    }
+
     var id = "";
-    pointId && (id = 'data-id="' + pointId + '"')
+    if (pointId) {
+      id = 'data-id=' + pointId
+    }
 
     var html = [];
     html.push('       <div data-type="point" ' + id + ' style="' + style + '" class="create-point-title ' + outClassName + '">')
@@ -187,15 +201,27 @@ window.CreatePoint = (function () {
    * [展示页面,移动端]生成自定义图片的point
    * @param outClassName 外部传进来的样式
    */
-  function initMCustomImgPoint(pointId, style, pic, outClassName) {
+  function initMCustomImgPoint(pointId, style, pic, outClassName, scale) {
     var html = [];
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
 
-    style += 'background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
+    style += 'border-radius:0;background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
+    if (pic.w && pic.h && pic.w > pic.h) {
+      /**
+       * 1200/1920*scale 按1920的比例缩放计算显示需要多大.
+       * scale 是 移动端 针对 创建页面 1200 缩放的比例
+       */
+      var width = pic.w * 1200 / 1920 * scale;
+      var height = pic.h * 1200 / 1920 * scale;
+      style += 'width:' + width + 'px;height:' + height + 'px';
+    }
+
     var id = "";
-    pointId && (id = 'data-id=' + pointId)
+    if (pointId) {
+      id = 'data-id=' + pointId
+    }
 
     html.push('<div data-type="point" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>)');
     return html.join('');
