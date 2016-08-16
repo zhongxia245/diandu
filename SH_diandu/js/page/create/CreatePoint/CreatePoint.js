@@ -132,7 +132,7 @@ window.CreatePoint = (function () {
     style += 'background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
-    if (pic.w && pic.h && pic.w > pic.h) {
+    if (pic.w && pic.h) {
       var width = pic.w * 1200 / 1920;
       var height = pic.h * 1200 / 1920;
       style += 'width:' + width + 'px;height:' + height + 'px';
@@ -189,7 +189,7 @@ window.CreatePoint = (function () {
     style += 'border-radius:0;background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
-    if (pic.w && pic.h && pic.w > pic.h) {
+    if (pic.w && pic.h) {
       /**
        * 1200/1920*scale 按1920的比例缩放计算显示需要多大.
        * scale 是 移动端 针对 创建页面 1200 缩放的比例
