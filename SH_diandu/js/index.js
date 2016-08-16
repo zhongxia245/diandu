@@ -1123,21 +1123,6 @@ function addDianDuLocation(e) {
   }
 }
 
-//获取点读点 相对于图片左上角的位置
-function getLocation(imgW, imgH, w, h, x, y) {
-  var _scaleImgW = imgW;
-  var _scaleImgH = imgH;
-  var _x, _y;
-
-  _x = x - (w - _scaleImgW) / 2
-  _y = y - (h - _scaleImgH) / 2
-
-  return {
-    x: _x / _scaleImgW,
-    y: _y / _scaleImgH,
-  }
-}
-
 
 /**
  * 点读项点击事件处理

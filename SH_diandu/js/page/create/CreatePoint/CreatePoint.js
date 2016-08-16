@@ -106,10 +106,13 @@ window.CreatePoint = (function () {
     var title = titleObj.title;
     var pointType = titleObj.type || 'audio';
     var className = POINTTITLECLASS[pointType]
+
     var id = "";
-    pointId && (id = 'id="' + pointId + '"')
+    if (pointId) {
+      id = 'data-id=' + pointId
+    }
     var html = [];
-    html.push('       <div data-type="point" ' + id + ' style="' + style + '" class="create-point-title">')
+    html.push('       <div id="' + pointId + '" data-type="point" ' + id + ' style="' + style + '" class="create-point-title">')
     html.push('         <div class="create-point-title-img ' + className + '"></div>')
     html.push('         <div class="create-point-title-line"></div>')
     html.push('         <div class="create-point-title-text">' + title + '</div>')
@@ -140,29 +143,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div data-type="point" ' + id + '  style="' + style + '" class="create-point-img"></div>)');
-    return html.join('');
-  }
-
-  /**
-   * [展示页面,移动端]生成带有标题的point
-   * @param outClassName 外部传进来的样式
-   */
-  function initMNormalPoint(pointId, style, titleObj, outClassName) {
-    var title = titleObj.title;
-    var pointType = titleObj.type || 'audio';
-    var className = POINTTITLECLASS[pointType]
-
-    var id = "";
-    if (pointId) {
-      id = 'data-id=' + pointId
-    }
-    var html = [];
-    html.push('       <div data-type="point" ' + id + ' style="' + style + '" class="create-point-title ' + outClassName + '">')
-    html.push('         <div class="create-point-title-img ' + className + '"></div>')
-    html.push('         <div class="create-point-title-line"></div>')
-    html.push('         <div class="create-point-title-text">' + title + '</div>')
-    html.push('       </div>')
+    html.push('<div id="' + pointId + '" data-type="point" ' + id + '  style="' + style + '" class="create-point-img"></div>)');
     return html.join('');
   }
 
