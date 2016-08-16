@@ -10,7 +10,7 @@ window.Util = (function () {
    * @param  {Function} callback [description]
    * @return {[type]}            [description]
    */
-  function getImageWH(src, param, callback) {
+  function getImageWH(src, callback) {
     var image = new Image();
     image.src = src;
     image.onload = function () {
@@ -18,7 +18,7 @@ window.Util = (function () {
         w: image.width,
         h: image.height
       }
-      callback && callback(obj, param);
+      callback && callback(obj);
     };
   }
 
