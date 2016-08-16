@@ -584,7 +584,7 @@ var _edit = (function () {
  */
 function setBgImageScale(path, id) {
   //获取图片的宽高
-  Util.getImageWH(path, null, function (obj) {
+  Util.getImageWH(path, function (obj) {
     var bgSize = '100% auto';
     var currentScale = obj.w / obj.h;
     //竖屏
@@ -772,6 +772,7 @@ function createPoint(pointId, type, config) {
 
   new Drag('#' + pointId, function (x, y) {
     var _page = window.DD.items[pageIndex - 1];
+    console.info('location:', {x: x / _page.w, y: y / _page.h})
     _data.setDDItems(pointId, {x: x / _page.w, y: y / _page.h});
   });
 }
@@ -918,7 +919,7 @@ function addDianduPageByUpload(index, fileName, resultPath) {
     $('.bigimg-tip').hide();
 
     //获取图片的大小
-    Util.getImageWH(src, {}, function (obj) {
+    Util.getImageWH(src, function (obj) {
 
       var _scaleWH = getImageScaleWH(obj.w, obj.h)
 

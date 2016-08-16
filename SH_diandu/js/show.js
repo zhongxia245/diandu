@@ -233,7 +233,6 @@ function init() {
  * @param  {[type]} data [description]
  */
 function initDiandu(data) {
-  //TODO:DEMO
   $('#pages').html('');
   $('#thumbs').html('');
 
@@ -555,11 +554,10 @@ function initPage(id, data) {
     var wrapHeight = window.H;
 
     var _flag = false;  //图片是否某一边拉伸,铺满长度 或者 宽度,  false: 没有  true: 有
-
     //竖屏
     if (isVertical) {
       //普通图片
-      if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
+      if (whScale > GLOBAL.V_IMGSCALE && whScale <= GLOBAL.H_IMGSCALE) {
         wrapHeight = wrapWidth * hwScale;
         _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
         _flag = true;
@@ -582,7 +580,7 @@ function initPage(id, data) {
     //横屏
     else {
       //普通图片
-      if (whScale > GLOBAL.V_IMGSCALE && whScale < GLOBAL.H_IMGSCALE) {
+      if (whScale > GLOBAL.V_IMGSCALE && whScale <= GLOBAL.H_IMGSCALE) {
         wrapWidth = wrapHeight * whScale;
         _imgScale = wrapHeight / GLOBAL.PAGESIZE.H
         _flag = true;
@@ -604,8 +602,10 @@ function initPage(id, data) {
 
     $('#' + subid).css('background-size', 'contain');
 
+
     //计算点读点缩放比例
     var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
+
 
     if (!_flag) {
       _pointSizeScale = _pointSizeScale * _imgScale;
@@ -774,11 +774,11 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var pointId = pageIndex + '_' + i;
       var left = parseFloat(pointDatas[i].x) * imgW;
       var top = parseFloat(pointDatas[i].y) * imgH;
-      var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + ');';
       var type = pointDatas[i]['type'];
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
       var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")  //TODO:等新增保存字段,替换掉
 
+      var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;';
 
       var mediaImg = "";
       switch (type) {
@@ -791,7 +791,6 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           mediaImg += '  <img  class="audio-global-play" style="display:none;border-radius: 50%; width: 100%; height: 100%;" src="imgs/global_audio/global-audio-other-page-on.gif" alt="audio">'
           break;
       }
-
       //自定义点读点
       if (pic.src || pointTitle.title) {
         var config = {
