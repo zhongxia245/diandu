@@ -178,7 +178,7 @@ window.CreatePoint = (function () {
 
     //缩放,并且使用左上角为缩放的  起始点
     if (scale !== 1) {
-      style += 'transform: scale(' + scale + '); transform-origin:left top;';
+      style += 'transform: scale(' + scale + '); transform-origin:left top;-webkit-transform: scale(' + scale + '); -webkit-transform-origin:left top;';
     }
 
     var id = "";

@@ -845,7 +845,12 @@ function addDianDu(pointId, point) {
 function setPointSize(selector, val) {
   var scale = val / 100;
   var style = 'scale(' + scale + ')';
-  $(selector).css({transform: style, '-webkit-transform': style})
+  $(selector).css({
+    transform: style,
+    '-webkit-transform': style,
+    'transform-origin': 'left top',
+    '-webkit-transform-origin': 'left top'
+  })
 }
 
 
