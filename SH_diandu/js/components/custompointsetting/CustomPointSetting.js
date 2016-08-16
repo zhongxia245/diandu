@@ -225,16 +225,19 @@ CustomPointSetting.prototype.bindEvent = function () {
     width: '175px',
     height: '175px',
     onUploadSuccess: function (file, result, response) {
-      that.data.title.title = null;
-      that.$text.text("");
-
-      that.data.pic.src = result;
-      //that.$upload 还是最早保存的变量,
-      that.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
-      that.$showImg.show().css({
-        background: 'url(' + result + ') no-repeat',
-        backgroundSize: 'contain',
-        backgroundPosition: 'center'
+      Util.getImageWH(result, function (obj) {
+        that.data.title.title = null;
+        that.$text.text("");
+        that.data.pic.src = result;
+        that.data.pic.w = obj.w;
+        that.data.pic.h = obj.h;
+        //that.$upload 还是最早保存的变量,
+        that.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
+        that.$showImg.show().css({
+          background: 'url(' + result + ') no-repeat',
+          backgroundSize: 'contain',
+          backgroundPosition: 'center'
+        })
       })
     }
   });
