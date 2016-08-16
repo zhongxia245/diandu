@@ -39,6 +39,8 @@ function Drag(selector, callback) {
 
       $(document).on('mouseup', function () {
         that.params.flag = false;
+        that.params.left = that.$selector.css('left');
+        that.params.top = that.$selector.css('top');
         that.callback && that.callback(parseInt(that.params.left), parseInt(that.params.top));
       });
 
