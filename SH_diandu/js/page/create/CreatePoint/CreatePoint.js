@@ -204,7 +204,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div data-type="point" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>)');
+    html.push('<div  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>)');
     return html.join('');
   }
 

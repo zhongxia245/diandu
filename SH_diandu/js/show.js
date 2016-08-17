@@ -835,20 +835,40 @@ function initVideo() {
  * 为了解决移动端播放音频需要加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
  * @param audio
  */
-function audioPlay(audio, $tar, url) {
+function audioPlay(audio, e, url) {
+  var $cTar = $(e.currentTarget);
+
   //TODO:在移动端下 有兼容性问题
-  if ($tar.attr('isLoad')) {//音频加载结束
+  if ($cTar.attr('isLoad')) {//音频加载结束
     console.info("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
-    $tar.find('.audio-play').show();
-    $tar.find('.audio-load').hide();
+    $cTar.attr('data-play', true)
+    $cTar.find('.audio-play').show();
+    $cTar.find('.audio-load').hide();
   }
   else {
     console.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
     //音频还未加载
-    $tar.find('.audio-load').show();
-    $tar.find('.audio-play').hide();
-    $tar.css('background-size', '0')
+    if ($cTar.attr('data-type') === 'pointImg') {
+      //setInterval(function () {
+      //  if ($cTar.attr('data-loadStyle')) {
+      //    var loadStyle = $cTar.css('filter') || $cTar.css('-webkit-filter');
+      //    $cTar.attr('loadStyle', loadStyle);
+      //    var dropFilter = "drop-shadow(0px 0px 20px red)";
+      //    $cTar.css({'filter': dropFilter, '-webkit-filter': dropFilter})
+      //  } else {
+      //    var loadStyle = $cTar.css('filter') || $cTar.css('-webkit-filter');
+      //    $cTar.css({'filter': loadStyle, '-webkit-filter': loadStyle})
+      //    $cTar.attr('loadStyle', '');
+      //  }
+      //}, 500)
+    } else {
+      $cTar.find('.audio-load').show();
+      $cTar.find('.audio-play').hide();
+      $cTar.css('background-size', '0')
+    }
+
+    $cTar.attr('data-loading', true)
 
     //移动端 canplaythrough 必须 设置 play 之后, 才能触发
     audio.play()
@@ -858,15 +878,19 @@ function audioPlay(audio, $tar, url) {
 
   /*audio可以播放的事件*/
   audio.addEventListener('canplaythrough', function (e) {
-    if (!$tar.attr('isLoad')) {
+    if (!$cTar.attr('isLoad')) {
       //是当前播放的音频, 则显示 正在播放状态
       if (audio.src.indexOf(url) !== -1) {
-        $tar.find('.audio-load').hide();
-        $tar.find('.audio-play').show();
-        $tar.css('background-size', '100%')
+        $cTar.find('.audio-load').hide();
+        $cTar.find('.audio-play').show();
+        $cTar.css('background-size', '100%')
         audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
         audio.play();
-        $tar.attr('isLoad', true)
+
+        $cTar.attr('isLoad', true)   //加载结束标记
+        $cTar.attr('data-play', true) //正在播放标记
+        $cTar.attr('data-loading', false)  //正在加载中标记
+
         console.info("加载音频完成...,audio.volume:", audio.volume)
       }
     }
@@ -880,18 +904,20 @@ function audioPlay(audio, $tar, url) {
 function playOrPaused(e, isGlobalAudio, pointData) {
 
   var url = pointData.url;
-  var $tar = $(e.target);
   var $cTar = $(e.currentTarget);
 
   GLOBAL.BGAUDIO.clearTimeout();
 
-  if ($tar.attr('class') === "audio-load") { //加载状态
-    $tar.hide();
-    $tar.parent().css('background-size', '100%');
+  //正在加载中加载状态
+  if ($cTar.attr('data-loading') === 'true') {
+    $cTar.attr('data-loading', false)
+    $cTar.find('.audio-load').hide();
+    $cTar.css('background-size', '100%');
   }
-
-  else if ($tar.attr('class') === "audio-play") { //正在播放状态
-    $tar.hide();
+  //正在播放
+  else if ($cTar.attr('data-play') === 'true') {
+    $cTar.find('.audio-play').hide();
+    $cTar.attr('data-play', false)
     if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
@@ -902,19 +928,18 @@ function playOrPaused(e, isGlobalAudio, pointData) {
       GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
     }
   }
-
-  else {  //默认状态, 未播放状态
+  //未播放
+  else {
+    $cTar.attr('data-play', true)
     if (window.audio.getAttribute('src') !== url) {
       window.audio.setAttribute('src', url);
     }
-    $tar.find('.audio-load').show();
     //是全局音频
     if (ctlGlobalAudio && isGlobalAudio) {
-      $tar.find('.audio-load').hide()
       ctlGlobalAudio.play();
     }
     else {
-      if (window.audio.paused)  audioPlay(window.audio, $tar, url)
+      if (window.audio.paused)  audioPlay(window.audio, e, url)
     }
 
     GLOBAL.BGAUDIO.pause();
@@ -1131,7 +1156,6 @@ function bindEvent() {
     e.stopPropagation();
 
     var $cTar = $(e.currentTarget);
-    var $tar = $(e.target);
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
     //关闭视频,并且设置所有的 音频为默认图标状态
@@ -1152,10 +1176,7 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
-    //自定义点读点的音频图标 或者 标准点读点的音频图标才触发播放
-    if ($tar.attr('class').indexOf('create-point-title-audio') !== -1 || $tar.attr('class').indexOf('m-audio') !== -1) {
-      playOrPaused(e, isGlobalAudio, pointData)
-    }
+    playOrPaused(e, isGlobalAudio, pointData)
   })
 
 
