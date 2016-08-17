@@ -324,7 +324,6 @@ var _edit = (function () {
   function _initPages(pages) {
     for (var i = 0; i < pages.length; i++) {
       var pageIndex = i + 1;
-
       var picW = parseFloat(pages[i]['w']);
       var picH = parseFloat(pages[i]['h']);
       var picPath = pages[i]['pic']
@@ -380,23 +379,22 @@ var _edit = (function () {
    * @private
    */
   function _initPointByData(pageIndex, w, h, point) {
-
     //计算图片的宽高
     var _scaleWH = getImageScaleWH(w, h);
     w = _scaleWH.scaleW;
     h = _scaleWH.scaleH;
 
     //创建的时候,减去图片缩放后的 黑色区域宽度,  编辑的时候加上, 回显
-    var x = parseFloat(point['x']) * w + (GLOBAL.SCREENSIZE.h.width - w) / 2;
-    var y = parseFloat(point['y']) * h + (GLOBAL.SCREENSIZE.h.height - h) / 2;
+    var left = parseFloat(point['x']) * w + (GLOBAL.SCREENSIZE.h.width - w) / 2;
+    var top = parseFloat(point['y']) * h + (GLOBAL.SCREENSIZE.h.height - h) / 2;
 
     var DDPageItems = window.DD.items[pageIndex - 1]['data'];  // 获取当前点读页的数据
     var dataid = pageIndex + "_" + (DDPageItems.length + 1);  //唯一标识该点读位 1_3 第一个点读页的第三个点读位[从1开始算]
 
-    //存放位置信息在全部变量里面，使用按比例的方式存放
+    //把数据在插入到全局变量中
     DDPageItems.push({
-      x: x / w, //坐标的比例
-      y: y / h,
+      x: parseFloat(point['x']), //坐标的比例
+      y: parseFloat(point['y']),
       id: dataid
     });
 
@@ -408,8 +406,8 @@ var _edit = (function () {
     if (title && title.title) type = 2;
 
     var config = {
-      left: x,
-      top: y,
+      left: left,
+      top: top,
       title: title,
       pic: pic
     };
@@ -772,9 +770,19 @@ function createPoint(pointId, type, config) {
 
   new Drag('#' + pointId, function (x, y) {
     var _page = window.DD.items[pageIndex - 1];
-    console.info('location:', {x: x / _page.w, y: y / _page.h})
-    _data.setDDItems(pointId, {x: x / _page.w, y: y / _page.h});
+    var location = getLocation(_page.w, _page.h, x, y);
+    _data.setDDItems(pointId, {x: location.x, y: location.y});
   });
+}
+
+//获取点读点 相对于图片左上角的位置[不能去掉,否则点读点位置会有问题]
+function getLocation(imgW, imgH, x, y) {
+  var _x = x - (GLOBAL.SCREENSIZE.h.width - imgW) / 2
+  var _y = y - (GLOBAL.SCREENSIZE.h.height - imgH) / 2
+  return {
+    x: _x / imgW,
+    y: _y / imgH,
+  }
 }
 
 
