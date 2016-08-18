@@ -1,6 +1,6 @@
 /*=============================定义变量 START===========================*/
 var click = Util.IsPC() ? 'click' : 'tap';
-var bgAudio, audio, video;
+var audio, video;
 var SCALE = 1; //缩放的比例
 var isVertical = false;  //是否为竖屏
 var DATA; //用来保存请求回来的变量
@@ -18,7 +18,7 @@ var GLOBAL = {
 
   AUTOPLAYINTERVAL: 0,//图片自动轮播的时间, 0为关闭自动播放
 
-  STARTSIZE: 100,   //点读开关大小
+  STARTSIZE: 150,   //点读开关大小
   POINTSIZE: 72,  //点读位缩放前大小
 
   SEC_EXAM: '.sec-exam',  //考试展示容器
@@ -34,10 +34,10 @@ var GLOBAL = {
   SCREEN: {
     W: (function () {
       return Util.IsPC() ? 1200 : window.screen.width
-    })(),
+    }),
     H: (function () {
       return Util.IsPC() ? 675 : window.screen.height
-    })(),
+    }),
   },
   STARTBTNSIZE: 100,  //开始按钮大小
   GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
@@ -117,7 +117,10 @@ $(function () {
 
 /*========================页面缩放,横竖屏切换事件 START=====================*/
 $(window).on('resize', function () {
-  fn_onResize();
+  setTimeout(function () {
+    fn_onResize();
+    console.log('获取屏幕的宽高,横竖屏切换过快,可能导致获取出错', "W:", GLOBAL.SCREEN.W(), "H:", GLOBAL.SCREEN.H())
+  }, 100)
 })
 
 /**
@@ -222,8 +225,9 @@ function init() {
     ArrayUtil.sortByKey(data.pages, 'seq');
 
     //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
-    fn_onResize();
-
+    setTimeout(function () {
+      fn_onResize();
+    }, 100)
     console.info("展示页数据:", data)
   })
 }
@@ -373,10 +377,10 @@ function setPointSizeScale(wrap, scale) {
 
   if (isVertical) {
     //竖屏
-    GLOBAL.STARTBTNSIZE = GLOBAL.STARTSIZE * GLOBAL.SCREEN.w / 800;
+    GLOBAL.STARTBTNSIZE = GLOBAL.STARTSIZE * GLOBAL.SCREEN.W() / 800;
   } else {
     //横屏
-    GLOBAL.STARTBTNSIZE = GLOBAL.STARTSIZE * GLOBAL.SCREEN.w / 1200;
+    GLOBAL.STARTBTNSIZE = GLOBAL.STARTSIZE * GLOBAL.SCREEN.W() / 1200;
   }
   GLOBAL.STARTBTNSIZE = GLOBAL.STARTBTNSIZE > 80 ? 80 : GLOBAL.STARTBTNSIZE;
 
@@ -566,7 +570,7 @@ function initPage(id, data) {
         //竖图,横向100%, 重新计算计算缩放比例
         wrapHeight = window.W * hwScale;  //计算该宽高, 主要为是了兼容早期图片大小为1200  675  没有计算缩放后的大小
         if (hwScale > 1) {
-          _imgScale = wrapHeight / GLOBAL.SCREEN.H
+          _imgScale = wrapHeight / GLOBAL.SCREEN.H()
         }
       }
       else {
@@ -589,24 +593,21 @@ function initPage(id, data) {
         //横图
         wrapHeight = window.W * hwScale;
         if (hwScale > 1) {
-          _imgScale = wrapHeight / GLOBAL.SCREEN.H
+          _imgScale = wrapHeight / GLOBAL.SCREEN.H()
         }
       } else {
         //竖图
         wrapWidth = window.H * whScale;
         if (whScale > 1) {
-          _imgScale = wrapWidth / GLOBAL.SCREEN.H
+          _imgScale = wrapWidth / GLOBAL.SCREEN.H()
         }
       }
     }
 
     $('#' + subid).css('background-size', 'contain');
 
-
     //计算点读点缩放比例
     var _pointSizeScale = getPointSizeScale(wrapWidth, wrapHeight)
-
-
     if (!_flag) {
       _pointSizeScale = _pointSizeScale * _imgScale;
     } else {
@@ -617,12 +618,13 @@ function initPage(id, data) {
     if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
       if (whScale > window.screen.width / window.screen.height) {
         console.log("小图 宽铺满屏幕")
-        _pointSizeScale = GLOBAL.SCREEN.W / w
+        _pointSizeScale = GLOBAL.SCREEN.W() / w
       } else {
         console.log("小图 高铺满屏幕")
-        _pointSizeScale = GLOBAL.SCREEN.H / h
+        _pointSizeScale = GLOBAL.SCREEN.H() / h
       }
     }
+
     //针对小图, EN
 
     var $wrap = $('#' + subid).find('.wrap');
@@ -666,9 +668,6 @@ function initGlobalAudio(data) {
       width: GLOBAL.STARTBTNSIZE,
       height: GLOBAL.STARTBTNSIZE * 66 / 75
     });
-
-
-    console.info("全局音频:", $globalAudio)
   }
 }
 
@@ -683,9 +682,9 @@ function initGlobalAudio(data) {
  */
 function getPointSizeScale(imgW, imgH) {
   if (imgW > imgH) {
-    return GLOBAL.SCREEN.W / GLOBAL.PAGESIZE.W;
+    return GLOBAL.SCREEN.W() / GLOBAL.PAGESIZE.W;
   } else {
-    return GLOBAL.SCREEN.H / GLOBAL.PAGESIZE.H;
+    return GLOBAL.SCREEN.H() / GLOBAL.PAGESIZE.H;
   }
 }
 
@@ -850,6 +849,7 @@ function audioPlay(audio, e, url) {
     console.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
     //音频还未加载
     if ($cTar.attr('data-type') === 'pointImg') {
+      //TODO:增加自定义图片播放音频时发光的效果
       //setInterval(function () {
       //  if ($cTar.attr('data-loadStyle')) {
       //    var loadStyle = $cTar.css('filter') || $cTar.css('-webkit-filter');
@@ -1200,7 +1200,7 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
-    var $secImgText = $('.sec-imgtext');
+    var $secImgText = $('.sec-imgtext-mask');
     $secImgText.css({position: 'absolute'});
     $secImgText.show();
     var $secImgTextMain = $('.sec-imgtext-main');
@@ -1229,12 +1229,8 @@ function bindEvent() {
   /**
    * 图文展示框
    */
-  $('.sec-imgtext').off().on(click, function (e) {
-    var $tar = $(e.target);
-    if ($tar.attr('class') === "sec-imgtext") {
-      $tar.css({position: 'relative'});
-      $tar.hide();
-    }
+  $('.sec-imgtext-mask').off().on(click, function (e) {
+    $(e.currentTarget).hide();
   })
 
   /**

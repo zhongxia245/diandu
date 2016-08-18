@@ -20,7 +20,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <title>点读展示</title>
   <link rel="stylesheet" href="js/lib/frozen/css/frozen.css"/>
   <link rel="stylesheet" href="js/lib/modal/css/style.css">
-  <link rel="stylesheet" href="css/show.css?v=20160628">
+  <link rel="stylesheet" href="css/show.css">
   <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
   <link rel="stylesheet" href="js/components/slide/slide.css">
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
@@ -115,14 +115,16 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 </section>
 <!--视频 END-->
 <!--图文 START-->
-<section class="sec-imgtext">
-  <div class="sec-imgtext-main">
-    <div class="sec-imgtext-title"></div>
-    <div class="sec-imgtext-box">
-      <div class="sec-imgtext-content"></div>
-      <img class="sec-imgtext-img" src="" alt="">
+<section class="sec-imgtext-mask">
+  <section class="sec-imgtext">
+    <div class="sec-imgtext-main">
+      <div class="sec-imgtext-title"></div>
+      <div class="sec-imgtext-box">
+        <div class="sec-imgtext-content"></div>
+        <img class="sec-imgtext-img" src="" alt="">
+      </div>
     </div>
-  </div>
+  </section>
 </section>
 <!--图文 END-->
 <!--考试 START-->
@@ -160,27 +162,30 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/lib/frozen/js/frozen.js"></script>
 <script src="js/util/scale.js"></script>
 <!--custom-->
-<script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
+<script src="js/util/arrayUtil.js"></script>
 <script src="js/util/drag.js"></script>
 <script src="js/util/timeago.js"></script>
 <!--Ajax操作-->
 <script src="js/model/model.js"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
-<script src="js/components/slide/touchslide.js?version=20160807"></script>
+<script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?_version=20160807_1"></script>
-<script src="js/page/show/globalAudio.js?version=20160807_1"></script>
-<script src="js/page/show/pointOpacity.js?version=20160807_1"></script>
-<script src="js/page/create/CreatePoint/CreatePoint.js?version=20160816"></script>
+<script src="js/components/examcomment/ExamComment.js"></script>
+<script src="js/page/show/globalAudio.js"></script>
+<script src="js/page/show/pointOpacity.js"></script>
+<script src="js/page/create/CreatePoint/CreatePoint.js"></script>
 <!--页面入口-->
-<script src="js/show.js?version=20160816"></script>
+<script src="js/show.js?version=20160818"></script>
 <script>
-  var _isDebug = Util.getQueryStringByName('debug');
-  if (_isDebug) {
-    Util.loadJS("js/lib/vconsole.min.js")
-  }
+  $(function () {
+    var _isDebug = Util.getQueryStringByName('debug');
+    if (_isDebug) {
+      Util.loadJS("js/lib/vconsole.min.js")
+    }
+  })
+
 </script>
 </body>
 
