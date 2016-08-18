@@ -143,7 +143,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div id="' + pointId + '" data-type="point" ' + id + '  style="' + style + '" class="create-point-img"></div>)');
+    html.push('<div id="' + pointId + '" data-type="point" ' + id + '  style="' + style + '" class="create-point-img"></div>');
     return html.join('');
   }
 
@@ -204,7 +204,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>)');
+    html.push('<div  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>');
     return html.join('');
   }
 
