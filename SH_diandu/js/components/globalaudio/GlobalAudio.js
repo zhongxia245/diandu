@@ -275,7 +275,7 @@ GlobalAudio.prototype.bindEvent = function () {
     }, false);
 
   audio.addEventListener('ended', function (e) {
-    console.log("global audio play end ....")
+    Logger.log("global audio play end ....")
     that.$pause.click();
   })
 }

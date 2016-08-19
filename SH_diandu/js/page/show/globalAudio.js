@@ -114,7 +114,7 @@ GlobalAudioController.prototype.initData = function () {
 GlobalAudioController.prototype.render = function (currentIndex) {
   //如果已经渲染, 不重新渲染
   if ($('.ga-modal').length === 0) {
-    console.info("全程音频弹窗不存在,创建全程音频!")
+    Logger.info("全程音频弹窗不存在,创建全程音频!")
     var html = [];
     html.push('<section class="ga-modal">');
     html.push('  <div class="ga-modal-mask"></div>');
@@ -135,7 +135,7 @@ GlobalAudioController.prototype.render = function (currentIndex) {
     this.initDOM()
     this.bindEvent();
   } else {
-    console.info("全程音频弹窗已存在,显示全程音频!")
+    Logger.info("全程音频弹窗已存在,显示全程音频!")
     this.$container && this.$container.show();
   }
 }
@@ -198,7 +198,7 @@ GlobalAudioController.prototype.bindEvent = function () {
 
   //关闭全程音频功能, 隐藏全程音频按钮. 如果想要重新打开,请页面上滑,滑出面板中点击打开全程音频,重新显示全程音频
   that.$btn.off().on(that.click, function (e) {
-    console.info("音频全程音频功能!")
+    Logger.info("音频全程音频功能!")
     that.pause();
     that.$container.hide();
 
@@ -230,7 +230,7 @@ GlobalAudioController.prototype.bindEvent = function () {
   //隐藏其他点读点
   that.$btnHidePoint.off().on(this.click, function (e) {
     var flag = $(e.currentTarget).find('input').attr('checked');
-    console.info("隐藏其他点读点");
+    Logger.info("隐藏其他点读点");
     that.hideOtherPointCallback && that.hideOtherPointCallback(flag);
   })
 }
@@ -240,7 +240,7 @@ GlobalAudioController.prototype.bindEvent = function () {
  * 全局音频播放
  */
 GlobalAudioController.prototype.play = function () {
-  console.info("全局音频播放")
+  Logger.info("全局音频播放")
   var that = this;
   that.audio.play();
   that.timer = setInterval(function () {
@@ -250,7 +250,7 @@ GlobalAudioController.prototype.play = function () {
 
       if (_currentTime === _time && that.currentPageIndex != i) {
         that.currentPageIndex = i;
-        console.info("全局音频播放到特定事件,跳转到页面:", i)
+        Logger.info("全局音频播放到特定事件,跳转到页面:", i)
 
         that.setActivePage(i);
         break;
@@ -265,7 +265,7 @@ GlobalAudioController.prototype.play = function () {
     //播放结束, 则清除 正在播放的图片
     if (that.audio.ended) {
       clearInterval(that.playEndtimer);
-      console.info("全程音频结束");
+      Logger.info("全程音频结束");
       that.pauseCallback && that.pauseCallback();
     }
   }, 500)
@@ -281,7 +281,7 @@ GlobalAudioController.prototype.setActivePage = function (index, flag) {
   this.$pageItem && this.$pageItem.eq(index).addClass('active');
   var time = this.data.pageTimes && this.data.pageTimes[index];
   if (time !== null && time !== undefined && flag) {
-    console.info("点击全程音频点读页,跳转到该点读页的时间点:", index, time)
+    Logger.info("点击全程音频点读页,跳转到该点读页的时间点:", index, time)
     this.audio.currentTime = time;  //因为实时在监听音频播放的时间,会重复执行一次., 因此这里+1
   }
   this.callback && this.callback(index, time);

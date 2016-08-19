@@ -11,7 +11,7 @@ var QuestionsList = (function () {
     this.data = config.data;
     this.scale = config.scale;
 
-    console.log("scale", this.scale)
+    Logger.log("scale", this.scale)
 
     this.fnReturn = config.fnReturn;
     this.fnClose = config.fnClose;
