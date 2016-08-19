@@ -4,21 +4,39 @@
  * 功能:记录日志
  */
 "use strict";
-window.LOG = (function (LOG) {
-    LOG = {
-        pre: 'diandu:',
-        log: function (msg) {
-            console.log(this.pre + msg, arguments)
-        },
-        info: function (msg) {
-            console.info(this.pre + msg, arguments)
-        },
-        debug: function (msg) {
-            console.debug(this.pre + msg, arguments)
-        },
-        error: function (msg) {
-            console.error(this.pre + msg, arguments)
-        }
+window.Logger = (function (Logger) {
+  Logger = {
+    show: true,   //是否显示日志
+    pre: '',
+    log: function () {
+      var args = this.args2arr(arguments);
+      this.show && console.log(this.pre, args)
+    },
+    info: function () {
+      var args = this.args2arr(arguments);
+      this.show && console.info(this.pre, args)
+    },
+    debug: function () {
+      var args = this.args2arr(arguments);
+      this.show && console.debug(this.pre, args)
+    },
+    error: function () {
+      var args = this.args2arr(arguments);
+      this.show && console.error(this.pre, args)
+    },
+    /**
+     * 把参数[非数组]变成数组
+     * @param args
+     * @returns {Array}
+     */
+    args2arr: function (args) {
+      var arr = [];
+      for (var i = 0; i < args.length; i++) {
+        var item = args[i];
+        arr.push(item);
+      }
+      return arr;
     }
-    return LOG;
-})(window.LOG || {})
+  }
+  return Logger;
+})(window.Logger || {})
