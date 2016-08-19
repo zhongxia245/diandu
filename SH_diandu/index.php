@@ -355,6 +355,7 @@ if ($id > 0) {
 </script>
 <!--背景图模板 END -->
 <!--lib-->
+<script src="js/util/log.js"></script>
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/handlebars.min.js"></script>
 <script src="js/lib/autosize.min.js"></script>
