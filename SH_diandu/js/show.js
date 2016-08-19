@@ -1195,6 +1195,7 @@ function bindEvent() {
 
   // 图文
   $('.m-imgtext').off().on(click, function (e) {
+    e.stopPropagation();
     closeVideoOrAudio(false);
     var $cTar = $(e.currentTarget);
     var dataId = $cTar.attr('data-id');
@@ -1230,7 +1231,10 @@ function bindEvent() {
    * 图文展示框
    */
   $('.sec-imgtext-mask').off().on(click, function (e) {
-    $(e.currentTarget).hide();
+    var $tar = $(e.target);
+    if ($tar.hasClass('sec-imgtext-mask') || $tar.hasClass('sec-imgtext')) {
+      $(e.currentTarget).hide();
+    }
   })
 
   /**

@@ -154,7 +154,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  //  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/swipe/js/swiper.js"></script>

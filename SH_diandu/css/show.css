@@ -273,12 +273,12 @@ ul, li {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999999;
+  z-index: 9998;
 }
 
 /*图文*/
 .sec-imgtext {
-  position: relative;
+  position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
