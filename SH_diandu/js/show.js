@@ -424,6 +424,7 @@ function initSwipe() {
       autoplayStopOnLast: true,
       nextButton: '.swiper-button-next',
       prevButton: '.swiper-button-prev',
+      lazyLoading: true,
       effect: 'fade',
       fade: {
         crossFade: true,
@@ -459,6 +460,7 @@ function initSwipe() {
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
       slidesPerView: 5,
       spaceBetween: 10,
+      lazyLoading: true,
       freeMode: true,
     });
   }
@@ -633,8 +635,6 @@ function initPage(id, data) {
     $wrap.append(initPoints(i, pages[i], wrapWidth, wrapHeight, _pointSizeScale))
 
     setPointSizeScale('#' + subid, _pointSizeScale);
-    //所有点读位置生成结束
-    html += initDianDuPage(pages[i], subid);
   }
 
   //控制点读页的缩放,以及点读点的大小控制  END
@@ -697,12 +697,13 @@ function initDianDuPage(data, id) {
   var bgPath = data['pic'];
   var h = $(window).height()
   var html = "";
-  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+  //html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
+  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
   html += '        <div class="m-dd-start-comment-div"></div>'
   html += '        <div data-id="btn-start" class="m-dd-start"></div>'
   html += '        <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
   html += '    <div class="wrap">'
-
+  html += '       <img src="' + bgPath + '"/>'
   html += '    </div>'
   html += '</div>'
   return html;
