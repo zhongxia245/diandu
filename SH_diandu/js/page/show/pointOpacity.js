@@ -9,7 +9,8 @@ window.PointOpacity = {
    * @param 透明度 0~1
    */
   setOpacity: function (value) {
-    $('[data-id="all-radius"]').find('div[data-type]').css('opacity', value)
+    $('[data-id="all-radius"]').find('div[data-id]').css('opacity', value)
     $('[data-id="btn-start"]').css('opacity', value)
+
   }
 }
