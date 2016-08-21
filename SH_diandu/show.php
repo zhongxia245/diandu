@@ -154,7 +154,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  //  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+    window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="js/util/log.js"></script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
@@ -162,6 +162,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
 <script src="js/lib/frozen/js/frozen.js"></script>
 <script src="js/util/scale.js"></script>
+<!--<script src="js/lib/hammer.min.js"></script>-->
 <!--custom-->
 <script src="js/util/util.js"></script>
 <script src="js/util/arrayUtil.js"></script>
@@ -186,7 +187,6 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
       Util.loadJS("js/lib/vconsole.min.js")
     }
   })
-
 </script>
 </body>
 

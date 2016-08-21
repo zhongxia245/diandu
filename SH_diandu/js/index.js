@@ -1121,12 +1121,12 @@ function addDianDuLocation(e) {
     var DDPageItems = _page['data'];
     var dataid = pageIndex + "_" + (DDPageItems.length + 1);
 
+    var location = getLocation(_page.w, _page.h, x, y)
     DDPageItems.push({
-      x: x / _page.w, //坐标的比例
-      y: y / _page.h,
+      x: location.x, //坐标的比例
+      y: location.y,
       id: dataid
     });
-
     //创建点读点
     createPoint(dataid, 1, {
       left: x,

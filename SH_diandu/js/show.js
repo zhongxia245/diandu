@@ -41,7 +41,8 @@ var GLOBAL = {
   },
   STARTBTNSIZE: 100,  //开始按钮大小
   GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
-  BACK_COLOR: 'rgb(0,0,0)' //背景图片空白区域颜色
+  BACK_COLOR: 'rgb(0,0,0)', //背景图片空白区域颜色
+  CurrentPageIndex: 0, //当前点读页下标
 }
 /**
  * 背景音乐相关操作
@@ -63,13 +64,13 @@ GLOBAL.BGAUDIO = {
       if (flag) {
         that.timer && clearTimeout(that.timer)
         that.pause()
-        console.info("暂停背景音乐!")
+        Logger.info("暂停背景音乐!")
       }
       //播放背景音乐
       else {
         that.timer = setTimeout(function () {
           that.play();
-          console.info("间隔5秒,开始自动播放背景音乐!")
+          Logger.info("间隔5秒,开始自动播放背景音乐!")
         }, 5000)
       }
     })
@@ -83,7 +84,7 @@ GLOBAL.BGAUDIO = {
   play: function () {
     if (this.audio.paused && this.bgaudio.paused) {
       this.bgaudio.play();
-      console.info("背景音乐播放")
+      Logger.info("背景音乐播放")
       this.$btnBgAudio.attr('src', 'imgs/bg_audio_on.png')
     }
   },
@@ -99,13 +100,13 @@ GLOBAL.BGAUDIO = {
   setTimePlay: function (duration) {
     duration = duration || 5000;
     var that = this;
-    console.info("设置定时器,5秒后播放背景音乐")
+    Logger.info("设置定时器,5秒后播放背景音乐")
     that.timer = setTimeout(function () {
       that.play()
     }, duration)
   },
   clearTimeout: function () {
-    console.info("清除背景音乐定时器!")
+    Logger.info("清除背景音乐定时器!")
     this.timer && clearTimeout(this.timer)
   }
 }
@@ -116,11 +117,16 @@ $(function () {
 });
 
 /*========================页面缩放,横竖屏切换事件 START=====================*/
-$(window).on('resize', function () {
+$(window).on('resize', function (e) {
   setTimeout(function () {
-    fn_onResize();
-    console.log('获取屏幕的宽高,横竖屏切换过快,可能导致获取出错', "W:", GLOBAL.SCREEN.W(), "H:", GLOBAL.SCREEN.H())
-  }, 100)
+    //主要用户移动端,弹出输入法面板,导致触发 resize. 如果是输入法触发的resize,不做处理
+    if (!window.SHOWINPUT) {
+      fn_onResize();
+      Logger.log('获取屏幕的宽高,横竖屏切换过快,可能导致获取出错', "W:", GLOBAL.SCREEN.W(), "H:", GLOBAL.SCREEN.H())
+    } else {
+      Logger.info('输入法面板触发的resize,不做处理');
+    }
+  }, 10)
 })
 
 /**
@@ -228,7 +234,7 @@ function init() {
     setTimeout(function () {
       fn_onResize();
     }, 100)
-    console.info("展示页数据:", data)
+    Logger.info("展示页数据:", data)
   })
 }
 
@@ -362,7 +368,7 @@ function initPointSizeAndBgColor(color) {
  * 监听点击屏幕 播放背景音乐
  */
 function playBgAduio() {
-  console.log("play bg audio and remove touchstart event...")
+  Logger.log("play bg audio and remove touchstart event...")
   GLOBAL.BGAUDIO.play();
   document.removeEventListener("touchstart", playBgAduio, false)
 }
@@ -430,31 +436,41 @@ function initSwipe() {
         crossFade: true,
       },
       onTransitionEnd: function (swiper) {
-        console.info("页面跳转到第:", swiper.activeIndex, " 页")
-        $('#id_pagination_cur').text(swiper.activeIndex + 1);
+        if (GLOBAL.CurrentPageIndex !== swiper.activeIndex) {
+          Logger.info("页面跳转到第:", swiper.activeIndex, " 页")
+          GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
-        var _$thumbsSwipers = $('#thumbs>div[data-id]');
-        _$thumbsSwipers.removeClass('swiper-slide-active-custom');
-        _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+          //滑动,全程音频时间,跳转到指定时间
+          if (ctlGlobalAudio && !ctlGlobalAudio.audio.paused) {
+            ctlGlobalAudio.setActivePage(swiper.activeIndex, true)
+          }
 
-        //播放到最后一个,停止自动播放
-        if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
-          window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+          $('#id_pagination_cur').text(swiper.activeIndex + 1);
+
+          var _$thumbsSwipers = $('#thumbs>div[data-id]');
+          _$thumbsSwipers.removeClass('swiper-slide-active-custom');
+          _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+
+          //播放到最后一个,停止自动播放
+          if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+            window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+          }
         }
       },
-      onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
-        console.info("页面跳转到第:", swiper.activeIndex, " 页")
-        $('#id_pagination_cur').text(swiper.activeIndex + 1);
-
-        var _$thumbsSwipers = $('#thumbs>div[data-id]');
-        _$thumbsSwipers.removeClass('swiper-slide-active-custom');
-        _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
-
-        //播放到最后一个,停止自动播放
-        if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
-          window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
-        }
-      },
+      //onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
+      //  console.log("onSlideChangeEnd", swiper.activeIndex)
+      //  Logger.info("页面跳转到第:", swiper.activeIndex, " 页")
+      //  $('#id_pagination_cur').text(swiper.activeIndex + 1);
+      //
+      //  var _$thumbsSwipers = $('#thumbs>div[data-id]');
+      //  _$thumbsSwipers.removeClass('swiper-slide-active-custom');
+      //  _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
+      //
+      //  //播放到最后一个,停止自动播放
+      //  if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
+      //    window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
+      //  }
+      //},
     });
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
@@ -619,10 +635,10 @@ function initPage(id, data) {
     //针对小图, 创建的时候, 没有缩放的图片 START
     if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
       if (whScale > window.screen.width / window.screen.height) {
-        console.log("小图 宽铺满屏幕")
+        Logger.log("小图 宽铺满屏幕")
         _pointSizeScale = GLOBAL.SCREEN.W() / w
       } else {
-        console.log("小图 高铺满屏幕")
+        Logger.log("小图 高铺满屏幕")
         _pointSizeScale = GLOBAL.SCREEN.H() / h
       }
     }
@@ -697,13 +713,12 @@ function initDianDuPage(data, id) {
   var bgPath = data['pic'];
   var h = $(window).height()
   var html = "";
-  //html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide" style="height:' + h + 'px;background-size: 100% 100%;background-image: url(' + bgPath + ');">'
   html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
   html += '        <div class="m-dd-start-comment-div"></div>'
   html += '        <div data-id="btn-start" class="m-dd-start"></div>'
   html += '        <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
   html += '    <div class="wrap">'
-  html += '       <img src="' + bgPath + '"/>'
+  //html += '       <img src="' + bgPath + '"/>'
   html += '    </div>'
   html += '</div>'
   return html;
@@ -840,14 +855,14 @@ function audioPlay(audio, e, url) {
 
   //TODO:在移动端下 有兼容性问题
   if ($cTar.attr('isLoad')) {//音频加载结束
-    console.info("已经加载结束...,audio.volume:", audio.volume)
+    Logger.info("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
     $cTar.attr('data-play', true)
     $cTar.find('.audio-play').show();
     $cTar.find('.audio-load').hide();
   }
   else {
-    console.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
+    Logger.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
     //音频还未加载
     if ($cTar.attr('data-type') === 'pointImg') {
       //TODO:增加自定义图片播放音频时发光的效果
@@ -892,7 +907,7 @@ function audioPlay(audio, e, url) {
         $cTar.attr('data-play', true) //正在播放标记
         $cTar.attr('data-loading', false)  //正在加载中标记
 
-        console.info("加载音频完成...,audio.volume:", audio.volume)
+        Logger.info("加载音频完成...,audio.volume:", audio.volume)
       }
     }
   }, false);
@@ -922,10 +937,10 @@ function playOrPaused(e, isGlobalAudio, pointData) {
     if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
-      console.info("全程音频暂停播放")
+      Logger.info("全程音频暂停播放")
     } else {
       window.audio.pause();
-      console.info("音频点读点暂停播放,开始播放背景音乐定时器!")
+      Logger.info("音频点读点暂停播放,开始播放背景音乐定时器!")
       GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
     }
   }
@@ -1011,7 +1026,7 @@ function bindEvent() {
     var div_comment = '#' + _dianduid + " .m-dd-start-comment-div";
     $(div_comment).hide()
 
-    console.info("开始按钮类型(0: 隐藏点读点 1: 显示点读点 2:弹出评论框)", type)
+    Logger.info("开始按钮类型(0: 隐藏点读点 1: 显示点读点 2:弹出评论框)", type)
 
     switch (type) {
       //隐藏
@@ -1046,12 +1061,12 @@ function bindEvent() {
             videoid: GLOBAL.videoid,
             userid: window.__userid,
             startRecordCallback: function () {
-              console.info("暂停背景音乐")
+              Logger.info("暂停背景音乐")
               //开始录音结束背景音乐
               GLOBAL.BGAUDIO.pause();
             },
             stopRecordCallback: function () {
-              console.info("录音结束之后,定时5秒,启动背景音乐播放")
+              Logger.info("录音结束之后,定时5秒,启动背景音乐播放")
               GLOBAL.BGAUDIO.setTimePlay();
             }
           })
@@ -1263,7 +1278,7 @@ function bindEvent() {
   if (Util.IsPC()) {
     mouseUpOrDown($('body')[0], function (ev, type) {
       if (type === "up") {
-        console.log("swipeUp", $(ev.target).attr('class'))
+        Logger.log("swipeUp", $(ev.target).attr('class'))
         if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
@@ -1275,7 +1290,7 @@ function bindEvent() {
   } else {
     /*上下滑动,展示缩略图和自动播放控制轴*/
     $('body').off('swipeUp').on('swipeUp', function (ev) {
-      console.log("swipeUp", $(ev.target).attr('class'))
+      Logger.log("swipeUp", $(ev.target).attr('class'))
       //var _className = $(ev.target).attr('class');
       if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
         ev.preventDefault();
@@ -1295,12 +1310,7 @@ function bindEvent() {
       $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
       $tar.addClass('swiper-slide-active-custom');
       var pageIndex = parseInt($tar.attr('data-id'));
-
-      if (ctlGlobalAudio && !ctlGlobalAudio.audio.paused) {
-        ctlGlobalAudio.setActivePage(pageIndex, true)
-      } else {
-        window.galleryTop.slideTo(pageIndex);
-      }
+      window.galleryTop.slideTo(pageIndex);
     })
   } else {
     Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
@@ -1308,12 +1318,7 @@ function bindEvent() {
       $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
       $tar.addClass('swiper-slide-active-custom');
       var pageIndex = parseInt($tar.attr('data-id'));
-      //全程音频没有在播放, 则不设置到指定时间
-      if (ctlGlobalAudio && !ctlGlobalAudio.audio.paused) {
-        ctlGlobalAudio.setActivePage(pageIndex, true)
-      } else {
-        window.galleryTop.slideTo(pageIndex);
-      }
+      window.galleryTop.slideTo(pageIndex);
     })
   }
 }
@@ -1388,61 +1393,74 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
   var gap = 0;  //图文展示坐标，与点读位的距离
   var rW = $tar.width();
   var rH = $tar.height();
+
+
   var top = css2Float($tar.css('top'));
   var left = css2Float($tar.css('left'));
   var imgTextW = $secImgTextMain.width();
   var imgTextH = $secImgTextMain.height();
   var windowW = $(window).width();
   var windowH = $(window).height();
-  //左上点读位的角
-  var _ltx = left - imgTextW - gap;
-  var _lty = top - imgTextH;
 
-  //右上点读位的角
-  var _rtx = left + rW + gap;
-  var _rty = top - imgTextH;
+  var distTopAndBottom = 30;  //距离顶部,底部小于30px ,考虑图片放其他地方
+  var distLeftAndRight = 40;  //距离左边右边小于40,考虑图文放其他地方
 
-  //左下点读位的角
-  var _lbx = left - imgTextW - gap;
-  var _lby = top + rH + gap;
-  //右下点读位的角
-  var _rbx = left + rW + gap;
-  var _rby = top + rH + gap;
-  //如果图文展示 超出了顶部，则考虑放下下半部分
-  if (_lty > 10) {
-    //如果图文展示，超出了左边，则考虑右边部分
-    if (_ltx > 10) {
-      $secImgTextMain.css({left: _ltx, top: _lty})
+  var wrapLeft = css2Float($tar.parents('.wrap').css('margin-left'));  //背景图片黑色区域宽度
+  var wrapTop = css2Float($tar.parents('.wrap').css('margin-top'));  //黑色区域高度
+
+  var minLeft = distLeftAndRight - wrapLeft;  //图文允许放置的最左边大小
+  var maxLeft = windowW - distLeftAndRight;  //最右边
+  var minTop = distTopAndBottom - wrapTop;  //最上边
+  var maxTop = windowH - distTopAndBottom;  //最下边
+
+
+  var minX = left - imgTextW - gap;    //图文最左边位置
+  var centerX = left + -(imgTextW + gap - rW ) / 2;  //图文中间位置
+  var maxX = left + rW + gap;  //图文最右边位置
+
+  var minY = top - imgTextH - gap;  //图文最上边位置
+  var centerY = top - (imgTextH + gap - rH ) / 2;  //图文中间位置
+  var maxY = top + rH + gap;  //图文最下边位置
+
+  var imgTextLeft = left;
+  var imgTextTop = top;
+
+  //图文放在点读点右边
+  if (minX < minLeft) {
+    //图片放在点读点右边
+    if (maxX + imgTextW < maxLeft) {
+      imgTextLeft = maxX;
     }
-    else if ((_rtx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rtx - (imgTextW / 2), top: _rty})
-    }
+    //图文放在点读点中间
     else {
-      $secImgTextMain.css({left: _rtx, top: _rty})
+      imgTextLeft = centerX;
     }
   }
-  else if ((_lby + imgTextH) > ( windowH - 10)) {
-    if (_lbx > 10) {
-      $secImgTextMain.css({left: _lbx, top: _lby - (imgTextH / 2)})
-    }
-    else if ((_rbx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby - (imgTextH / 2)})
-    }
-    else {
-      $secImgTextMain.css({left: _rbx, top: _rby - (imgTextH / 2)})
-    }
-  }
+  //图文放在点读点左边
   else {
-    if (_lbx > 10) {
-      $secImgTextMain.css({left: _lbx, top: _lby})
+    imgTextLeft = minX;
+  }
+
+
+  //图文放在点读点下边
+  if (minY < minTop) {
+    //图文放在点读点下边
+    if (maxY + imgTextH < maxTop) {
+      imgTextTop = maxY;
     }
-    else if ((_rbx + imgTextW) > ( windowW - 10)) {
-      $secImgTextMain.css({left: _rbx - (imgTextW / 2), top: _rby})
-    }
+    //图文放点读点下班, 超过页面, 因此放点读点中间
     else {
-      $secImgTextMain.css({left: _rbx, top: _rby})
+      imgTextTop = centerY;
     }
   }
+  //放点读点上边
+  else {
+    imgTextTop = minY;
+  }
+
+
+  $secImgTextMain.css({left: imgTextLeft, top: imgTextTop});
+
 }
 
 /*=======================点击事件相关 END====================*/
