@@ -226,15 +226,17 @@ function init() {
    */
   Model.getList(id, function (data) {
     DATA = data;
-
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
 
-    //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
-    setTimeout(function () {
-      fn_onResize();
-    }, 100)
-    Logger.info("展示页数据:", data)
+    Util.getImageWH(data['pages'][0]['pic'],function(){
+      //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
+      setTimeout(function () {
+        fn_onResize();
+        window._load.loading("hide");
+      }, 100)
+      Logger.info("展示页数据:", data)
+    })
   })
 }
 
@@ -475,6 +477,7 @@ function initSwipe() {
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
       slidesPerView: 5,
+      lazyLoading: true,
       spaceBetween: 10,
       lazyLoading: true,
       freeMode: true,
@@ -732,7 +735,8 @@ function initThumbs(id, pages) {
   for (var i = 0; i < pages.length; i++) {
     var page = pages[i];
     var bgPath = page['pic'];
-    html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+    //html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
+    html += '<div data-id="' + i + '" class="swiper-slide  swiper-lazy" data-background="' + bgPath + '">'
     html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }

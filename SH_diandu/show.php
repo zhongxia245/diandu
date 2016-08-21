@@ -26,7 +26,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
   <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=26">
-  <link rel="stylesheet" href="js/lib/flowplayer/skin/functional.css">
+  <!--<link rel="stylesheet" href="js/lib/flowplayer/skin/functional.css">-->
 </head>
 
 <body>
@@ -158,9 +158,12 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 </script>
 <script src="js/util/log.js"></script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
+<script src="js/lib/frozen/js/frozen.js"></script>
+<script type="text/javascript">
+  window._load = $.loading({content:'加载中...'});
+</script>
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
-<script src="js/lib/frozen/js/frozen.js"></script>
 <script src="js/util/scale.js"></script>
 <!--<script src="js/lib/hammer.min.js"></script>-->
 <!--custom-->
