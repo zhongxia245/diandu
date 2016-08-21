@@ -145,6 +145,7 @@ var _data = (function () {
   function getValidItems() {
     var destArr = [];
     var delPageIds = '';
+    var isDelGlobalAudio = false;  //是否删掉了全程音频的点读点
     var srcArr = window.DD.items;
     ArrayUtil.sortByKey(srcArr, 'sort');
 
@@ -161,7 +162,7 @@ var _data = (function () {
           seq: srcArr[i]['sort']
         };
 
-        //点读位
+        //点读点
         var destItems = [];
         var items = srcArr[i]['data'];
 
@@ -197,6 +198,10 @@ var _data = (function () {
             if (_oldid) {
               destPage['delPointIds'] += _oldid + ","
             }
+            //如果删除点读点的时候,把全程音频删掉了,则需要把全程音频数据清空
+            if ((i + 1) + '_' + (j + 1) === window.DD.globalAudioId) {
+              isDelGlobalAudio = true;
+            }
           }
         }
 
@@ -215,7 +220,8 @@ var _data = (function () {
     delPageIds = delPageIds.length > 0 ? delPageIds.substr(0, delPageIds.length - 1) : '';
     return {
       data: destArr,
-      delPageIds: delPageIds
+      delPageIds: delPageIds,
+      isDelGlobalAudio: isDelGlobalAudio
     };
   }
 
@@ -1745,6 +1751,10 @@ function handleSubmit(e) {
     point_size: GLOBAL.POINT_SIZE,
     back_color: GLOBAL.BACK_COLOR,
     content: JSON.stringify(globalAudioContent)
+  }
+
+  if (pagesInfo.isDelGlobalAudio) {
+    data.content = "{}";
   }
 
   if (data.title.trim() === "") {
