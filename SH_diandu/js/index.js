@@ -91,7 +91,7 @@ var _upload = (function () {
       onUploadSuccess: function (file, data, response) { //每次成功上传后执行的回调函数，从服务端返回数据到前端
       },
       onError: function (event, queueId, fileObj, errObj) {
-        console.log('upload error', event)
+        Logger.log('upload error', event)
       }
     };
     // 合并参数
@@ -286,7 +286,7 @@ var _edit = (function () {
    */
   function initEdit(id) {
     Model.getList(id, function (data) {
-      console.info("加载点读点数据完成! ", data)
+      Logger.info("加载点读点数据完成! ", data)
       //编辑的时候,按照点读页进行排序
       ArrayUtil.sortByKey(data.pages, 'seq');
 
@@ -366,7 +366,7 @@ var _edit = (function () {
     GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100;
     GLOBAL.BACK_COLOR = data['back_color'] === "0" ? 'rgb(0,0,0)' : data['back_color'];
 
-    console.info("全局背景颜色:GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "全局点读点大小:GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
+    Logger.info("全局背景颜色:GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR, "全局点读点大小:GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE)
   }
 
   /**
@@ -422,7 +422,7 @@ var _edit = (function () {
         .find('.img-point-setting')
         .addClass('img-point-setting-on')
 
-      console.info("自定义点读点", dataid, type, config)
+      Logger.info("自定义点读点", dataid, type, config)
     }
 
     //初始化视频,音频,图文的数据
@@ -636,7 +636,7 @@ function bindEvent() {
 
   //删除点读页.   该使用方法相当于 live
   $(document).on("click", '.bigimg-h .del', function (e) {
-    console.log("del diandi page")
+    Logger.log("del diandi page")
     e.stopPropagation();
     var $bgPage = $(e.currentTarget).parent().parent().parent().parent();
     var display = $bgPage.find('.setting-bigimg-tip-h').css('display');
@@ -671,7 +671,7 @@ function bindEvent() {
 
     //实例化 点读点大小设置页面
     if ($divDPS.html() === "") {
-      console.log("GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE, "GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
+      Logger.log("GLOBAL.POINT_SIZE", GLOBAL.POINT_SIZE, "GLOBAL.BACK_COLOR", GLOBAL.BACK_COLOR)
 
       new PointSetting('#dianduPointSetting', {
         size: GLOBAL.POINT_SIZE,
@@ -820,7 +820,7 @@ function addDianDu(pointId, point) {
       _data.setDDItems(id, {point_size: val});
 
       setPointSize('#' + pointId, val);
-      console.log("set point_size:", id, val)
+      Logger.log("set point_size:", id, val)
     }
   })
 
@@ -898,7 +898,7 @@ function setUploadControl(index) {
       $('.sort-info').show();
       var _$fileBg = $("#file_bg" + oldIndex);
       _$fileBg.parent().find('.filename').text(file.name);
-      console.log("newIndex", oldIndex)
+      Logger.log("newIndex", oldIndex)
       setBgImageScale(resultPath, "#id_bg" + (oldIndex))
     }
   });
@@ -1250,7 +1250,7 @@ function addGlobalAudio(e, param) {
     skin: 'yourclass',
     content: $divGA
   });
-  console.log("设置该全局音频的参数", $tar)
+  Logger.log("设置该全局音频的参数", $tar)
 }
 
 /**
@@ -1267,7 +1267,7 @@ function addCustomPointSetting(e) {
   var pointType = $(e.target).parents('.upload-right').attr('data-type');
 
   //获取数据,编辑
-  var _data = window.DD.items[pageIndex]['data'][pointIndex];
+  var _data = window.DD.items[pageIndex]['data'][pointIndex] || {};
   _data.custom = _data.custom || {};
   _data.custom.type = pointType;
   //实例化 点读点大小设置页面
@@ -1285,7 +1285,7 @@ function addCustomPointSetting(e) {
 
       //是否设置了数据
       if (isSetData) {
-        console.info("自定义点读点数据:", data)
+        Logger.info("自定义点读点数据:", data)
         $cTar.addClass('img-point-setting-on');
 
         //保存数据到变量里面
@@ -1327,7 +1327,7 @@ function addCustomPointSetting(e) {
     shadeClose: false,
     content: $divGA
   });
-  console.info("自定义点读点样式")
+  Logger.info("自定义点读点样式")
 }
 
 
@@ -1373,7 +1373,7 @@ function fileTypeItemClick(e) {
 
   //用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
   $filemask.hide();
-  console.log("点读点的类型为 => data.fileType:", data.fileType)
+  Logger.log("点读点的类型为 => data.fileType:", data.fileType)
 
   switch (data.fileType) {
     case 'video':  //视频
@@ -1638,7 +1638,7 @@ function hideDDLocation(e) {
  * @return {[type]}   [description]
  */
 function dianduPageOperator(e) {
-  console.log("ul click")
+  Logger.log("ul click")
   var $tar = self = $(e.target);
   var $bgItem = $(e.currentTarget).parentsUntil('.diandupageitem').parent();
   var sortIndex = parseInt($bgItem.attr('data-index')); //下标
@@ -1767,7 +1767,7 @@ function handleSubmit(e) {
   var qrcode = Util.getQueryStringByName('qrcode') || ""  //尹果要求加的参数
 
   Model.addDianduPage(data, qrcode, function (result) {
-    console.log("操作成功,返回点读页的id为(videoid)= ", result)
+    Logger.log("操作成功,返回点读页的id为(videoid)= ", result)
 
     var msg = "创建成功,点击确定返回单元列表!";
     var returnUrl = "/edu/course/unit_video.php?unitid=" + data.unitid;
