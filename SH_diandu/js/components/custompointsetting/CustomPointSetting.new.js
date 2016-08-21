@@ -85,6 +85,10 @@ CustomPointSetting.prototype.render = function () {
   var pointTypeClass = this.pointTypeClasses[this.data.title.type];
   var html = [];
   html.push('<div class="cps-container">')
+  html.push('  <div class="cps-tabs">')
+  html.push('    <div class="cps-tab-point cps-tab-active">点</div>')
+  html.push('    <div class="cps-tab-playarea">播放区</div>')
+  html.push('  </div>')
   html.push('  <div class="cps-header">点读点设置</div>')
   html.push('  <div class="cps-content">')
   html.push('    <div class="cps-content-left">')

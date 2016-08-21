@@ -1,0 +1,213 @@
+.layui-layer {
+  border-radius: 10px;
+}
+
+.cps-container {
+  height: 600px;
+  width: 600px;
+  position: relative;
+}
+
+.cps-header {
+  height: 60px;
+  line-height: 60px;
+  background: #FE4E00;
+  font-size: 30px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 10px 10px 0 0;
+}
+
+.cps-content {
+  height: 450px;
+  background: #EFEFEF;
+}
+
+.cps-content-left, .cps-content-right {
+  height: 100%;
+  width: 295px;
+  float: left;
+  text-align: center;
+  padding: 60px 25px;
+  position: relative;
+}
+
+.cps-content-left {
+  border-right: 1px dotted #C9C9C9;
+}
+
+.cps-point {
+  width: 210px;
+  height: 185px;
+  text-align: center;
+  margin: 40px auto;
+}
+
+.cps-point-img {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #009EEF;
+  margin: 0 auto;
+}
+
+.cps-point-audio {
+  background-image: url('img/audio.png');
+  background-size: 100%;
+}
+
+.cps-point-video {
+  background-image: url('img/video.png');
+  background-size: 100%;
+}
+
+.cps-point-exam {
+  background-image: url('img/m_exam.png');
+  background-size: 100%;
+}
+
+.cps-point-imgtext {
+  background-image: url('img/m_imgtext.png');
+  background-size: 100%;
+}
+
+.cps-point-line {
+  height: 48px;
+  width: 24px;
+  background: url("img/img-point-setting-line.png") no-repeat;
+  background-size: 100% 100%;
+  margin: -15px auto 0 auto;
+}
+
+.cps-point-text {
+  padding: 0 30px;
+  font-size: 30px;
+  color: #000;
+  border: 5px solid #0CC688;
+  border-radius: 10px;
+  max-height: 150px;
+  overflow: auto;
+}
+
+/*uploadify只能用id选择器,so...*/
+#cps-upload-img, .cps-show-img {
+  width: 175px;
+  height: 175px;
+
+  font-size: 25px;
+  color: #FFF;
+  text-align: center;
+
+  margin: 10px auto;
+
+  background: #6C6C6C;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  overflow: hidden;
+}
+
+.cps-show-img {
+  line-height: 175px;
+  background: #000;
+  position: absolute;
+  top: 135px;
+  left: 50%;
+  margin-left: -86px;
+  -webkit-filter: drop-shadow(0px 0px 5px yellow);
+  filter: drop-shadow(0px 0px 6px yellow);
+}
+
+#cps-upload-img object {
+  top: 0;
+  left: 0;
+}
+
+#cps-upload-img-button {
+  width: 175px;
+  height: 175px;
+  background: url("img/cps-upload.png") no-repeat !important;
+  cursor: pointer;
+}
+
+.cps-submit {
+  height: 90px;
+  line-height: 90px;
+  background: #FF636B;
+  color: #FFF;
+  text-align: center;
+  font-size: 32px;
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+}
+
+.cps-show-color {
+  width: 100%;
+  margin: 20px auto;
+}
+
+.cps-show-color-size {
+  margin-top: 10px;
+}
+
+.cps-show-color-size .slider-handle {
+  border-radius: 0;
+
+}
+
+.cps-show-color li {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  float: left;
+  margin-left: 5px;
+}
+
+.cps-show-color-active {
+  outline: 3px solid #4E4E4E;
+  -webkit-outline-radius: 3px;
+  -moz-outline-radius: 3px;
+  outline-radius: 3px;
+}
+
+/*添加视频播放区域设置*/
+.cps-tabs {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 100%;
+}
+
+.cps-tab-point, .cps-tab-playarea {
+  float: left;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  text-align: center;
+  color: #FFF;
+  cursor: pointer;
+  background: #6C6C6C;
+  border: 2px solid #FFF;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.cps-tab-active {
+  background: #008887;
+}
+
+.cps-tab-point {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.cps-tab-playarea {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
