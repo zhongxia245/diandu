@@ -3,30 +3,23 @@
   <component name="ChangeListManager">
     <list id="90fea430-009e-432d-af6e-6e498abc9897" name="Default" comment="" />
     <list default="true" id="e97150c7-31da-4a69-885a-df051d0cded5" name="uploads" comment="1.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/imgs/custom_point_setting/img-point-setting-line.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/imgs/custom_point_setting/img-point-setting-on.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/imgs/custom_point_setting/img-point-setting.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-other-page-on.gif" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/DianDu1.0/js/components/slide/demo.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/DianDu1.0/js/components/slide/slide.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/DianDu1.0/js/components/slide/touchclickslide.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/DianDu1.0/js/show.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-other-page-on.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/components/slide/使用方法.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.bak.js" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-win.png" afterPath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-other-page-off.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-off.png" afterPath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-off.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-on.png" afterPath="$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-on.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/imgs/play.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/related-off.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/related.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/js/index.bak.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/js/model/model.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SH_diandu/js/show.bak.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/.gitignore" afterPath="$PROJECT_DIR$/SH_diandu/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/css/index.css" afterPath="$PROJECT_DIR$/SH_diandu/css/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/.idea/workspace.xml" afterPath="$PROJECT_DIR$/SH_diandu/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/index.html" afterPath="$PROJECT_DIR$/SH_diandu/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.new.js" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.new.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.new.css" afterPath="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.new.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/index.js" afterPath="$PROJECT_DIR$/SH_diandu/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/show.js" afterPath="$PROJECT_DIR$/SH_diandu/js/show.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/show.php" afterPath="$PROJECT_DIR$/SH_diandu/show.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/util/drag.bak.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/drag.bak.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/util/drag.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/drag.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/util/log.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/log.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SH_diandu/js/util/util.js" afterPath="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
     </list>
     <list id="c0deb888-57f8-4675-a4d8-1c7acdcacc17" name="Failed commit: uploads" comment="add way.js  uploadify" />
     <list id="3d1e1208-f981-4865-b31b-1daf19124af1" name="Failed commit: Failed commit: uploads" comment="add way.js  uploadify" />
@@ -49,42 +42,88 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="show.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/show.php">
+      <file leaf-file-name="CustomPointSetting.new.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.new.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.769231">
-              <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.35820895">
+              <caret line="392" column="31" selection-start-line="392" selection-start-column="31" selection-end-line="392" selection-end-column="31" />
               <folding>
-                <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#3;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#3;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1472488607000" expanded="true" signature="3565:3579" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="3686:3711" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="3767:3792" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="3848:3873" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="3929:3954" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="4010:4035" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="4091:4116" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="4186:4196" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="4445:4458" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="5194:5240" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="5194:5264" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="5194:5276" placeholder="..." />
+                <marker date="1472488607000" expanded="true" signature="5194:5293" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomPointSetting.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js">
+      <file leaf-file-name="globalAudio.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-36.11111">
-              <caret line="127" column="8" selection-start-line="127" selection-start-column="8" selection-end-line="127" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="video.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/test/video.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.5384616">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
               <folding>
-                <marker date="1470843555000" expanded="true" signature="2262:2276" placeholder="..." />
+                <element signature="n#style#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
+      <file leaf-file-name="util.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70149255">
-              <caret line="1273" column="23" selection-start-line="1273" selection-start-column="23" selection-end-line="1273" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="drag.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/drag.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="drag.bak.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/drag.bak.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="29" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="customPointSetting.new.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="9.230769">
+              <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -93,28 +132,28 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.730769">
-              <caret line="167" column="52" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="52" />
+            <state vertical-scroll-proportion="-23.23077">
+              <caret line="236" column="25" selection-start-line="236" selection-start-column="25" selection-end-line="236" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+      <file leaf-file-name="index.bak.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.bak.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.73077">
-              <caret line="594" column="39" selection-start-line="594" selection-start-column="19" selection-end-line="594" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="customPointSetting.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="44.692307">
-              <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1282" column="13" selection-start-line="1282" selection-start-column="4" selection-end-line="1282" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -135,57 +174,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DianDu1.0/js/index.js" />
-        <option value="$PROJECT_DIR$/DianDu1.0/js/show.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examshowlist/ExamShowList.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/imgtext/ImgText2.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examcreate/ExamCreate.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examcreate/ExamCreate.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examshowlist/ExamShowList.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/lib/zepto.min.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/lib/vconsole.min.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/test/video.html" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/util/scale.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examcomment/ExamComment.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/test/videoEvent.html" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/lib/kindeditor/user.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/lib/jweixin.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/demo.php" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/pointsetting/index.html" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/number/cnumber.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/test/Number.html" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/number/CNumber.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/number/CNumber.js" />
         <option value="$PROJECT_DIR$/SH_diandu/php/uploadify.php" />
         <option value="$PROJECT_DIR$/SH_diandu/js/lib/layer/layer.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/.gitignore" />
         <option value="$PROJECT_DIR$/SH_diandu/js/page/show/index.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/examcomment/ExamComment.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/index.php" />
         <option value="$PROJECT_DIR$/SH_diandu/js/lib/zepto.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.bak.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/page/show/pointOpacity.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/slide/slideBar.css" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/slide/SlideBar.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/slide/slide.css" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/slide/index.html" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/slide/touchslide.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.js" />
-        <option value="$PROJECT_DIR$/SH_diandu/index.html" />
-        <option value="$PROJECT_DIR$/SH_diandu/css/show.css" />
         <option value="$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/create/generatorPoint.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/index.bak.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-slider/bootstrap-slider.min.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/drag1.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint/CreatePoint.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/css/index.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/orientationchange.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint/CreatePoint.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/test/mobiletextarea.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/index.php" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/scale.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/lib/hammer.min.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/page/show/pointOpacity.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/css/show.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/examcomment/ExamComment.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/log.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/lib/frozen/css/frozen.css" />
         <option value="$PROJECT_DIR$/SH_diandu/js/show.js" />
         <option value="$PROJECT_DIR$/SH_diandu/show.php" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/css/index.css" />
-        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/test/hammer.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/.gitignore" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/drag.bak.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/index.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/drag.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/test/video.html" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/util/util.js" />
         <option value="$PROJECT_DIR$/SH_diandu/js/index.js" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.new.css" />
+        <option value="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.new.js" />
       </list>
     </option>
   </component>
@@ -258,6 +297,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -275,8 +315,36 @@
               <option name="myItemId" value="diandu" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="SH_diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SH_diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -316,33 +384,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="page" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="show" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="diandu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="diandu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SH_diandu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="page" />
+              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -365,6 +407,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SH_diandu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="examcomment" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -408,13 +476,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="custompointsetting" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="img" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -424,43 +503,55 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="101" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="109" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="213" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="221" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="116" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="137" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="799" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="922" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="101" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="141" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="111" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="151" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="116" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="156" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="901" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="941" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="jsx.switch.disabled" value="true" />
     <property name="FullScreen" value="true" />
+    <property name="prop_add_unversioned_files" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/SH_diandu/imgs/global_audio" />
-      <recent name="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img" />
-      <recent name="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting" />
-      <recent name="$PROJECT_DIR$/SH_diandu/imgs/custom_point_setting" />
-      <recent name="$PROJECT_DIR$/SH_diandu/js/components/slide" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint" />
+      <recent name="$PROJECT_DIR$/SH_diandu/js/lib/slider" />
       <recent name="$PROJECT_DIR$/SH_diandu/imgs" />
       <recent name="$PROJECT_DIR$/SH_diandu" />
       <recent name="$PROJECT_DIR$/SH_diandu/js/lib/kindeditor" />
-      <recent name="$PROJECT_DIR$/SH_diandu/php" />
-      <recent name="$PROJECT_DIR$/SH_diandu/js/components/imgtext" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img" />
+      <recent name="$PROJECT_DIR$/SH_diandu/js" />
+      <recent name="$PROJECT_DIR$/SH_diandu/imgs" />
+      <recent name="$PROJECT_DIR$/SH_diandu/js/lib/frozen/img" />
+      <recent name="$PROJECT_DIR$/SH_diandu/js/components/custompointsetting" />
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
       <envs />
       <method />
@@ -494,198 +585,6 @@
       <created>1460584304594</created>
       <option name="number" value="Default" />
       <updated>1460584304594</updated>
-    </task>
-    <task id="LOCAL-00038" summary="1. 图文上传, 使用富文本框 ( 替换完成 )&#10;2. 图文测试可以, 视频, 音频, 考试 还没有测试">
-      <created>1465834823029</created>
-      <option name="number" value="00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1465834823030</updated>
-    </task>
-    <task id="LOCAL-00039" summary="1. index.php 传递一个参数 qrcode">
-      <created>1466089782956</created>
-      <option name="number" value="00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1466089782956</updated>
-    </task>
-    <task id="LOCAL-00040" summary="1. 点读BUG修改  BUG383  390">
-      <created>1466327969211</created>
-      <option name="number" value="00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1466327969212</updated>
-    </task>
-    <task id="LOCAL-00041" summary="1. 修改评论默认头像的地址">
-      <created>1466329808033</created>
-      <option name="number" value="00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1466329808033</updated>
-    </task>
-    <task id="LOCAL-00042" summary="1. 评论点击大图, 全屏展示&#10;2. 考试样式i修改, 题目文字大小, 答案选项大小, 选项之间的间距">
-      <created>1466475444900</created>
-      <option name="number" value="00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1466475444900</updated>
-    </task>
-    <task id="LOCAL-00043" summary="BUG412修复&#10;1. 图文上传之后没有显示 图文已上传,已经修改. &#10;原因: 图文上传使用了富文本框, ImgText 的参数变动, 导致回调函数没有被调用">
-      <created>1466714169482</created>
-      <option name="number" value="00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1466714169482</updated>
-    </task>
-    <task id="LOCAL-00044" summary="1. 考试展示列表  横屏 左侧题目 不能滚动   添加 exam打头的样式即可">
-      <created>1466715828014</created>
-      <option name="number" value="00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1466715828014</updated>
-    </task>
-    <task id="LOCAL-00045" summary="1. 任务, 播放音频 先显示 load 效果, 加载完在播放&#10;2. 任务, 录音播放, 使用 gif 图片 , 可能存在问题, 还没有听完, 就继续点击结束">
-      <created>1466866488353</created>
-      <option name="number" value="00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1466866488353</updated>
-    </task>
-    <task id="LOCAL-00046" summary="1. 创建考试 文本框随内容自增高&#10;2. 考试展示页面  一大串英文 自动换行,  系统会认为一大串英文是一个单词, 不换行, 必须设置样式 style=&quot;word-wrap: break-word;word-break: break-all;&quot;">
-      <created>1466954282390</created>
-      <option name="number" value="00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1466954282390</updated>
-    </task>
-    <task id="LOCAL-00047" summary="1. add code">
-      <created>1467305597667</created>
-      <option name="number" value="00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1467305597667</updated>
-    </task>
-    <task id="LOCAL-00048" summary="1. 修复BUG, 增加图片的放大缩小 移动">
-      <created>1467555109608</created>
-      <option name="number" value="00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1467555109608</updated>
-    </task>
-    <task id="LOCAL-00049" summary="1. 音频BUG, 播放 canplaythrough 在移动端需要 play 状态下, 才能触发">
-      <created>1467561987386</created>
-      <option name="number" value="00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1467561987386</updated>
-    </task>
-    <task id="LOCAL-00050" summary="1. 图文图片上传, 设置图片的大小为 100%&#10;由于上传在线的图片可以设置宽高, 但是上传本地的无法设置宽高, 因此默认100%">
-      <created>1468161375985</created>
-      <option name="number" value="00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1468161375986</updated>
-    </task>
-    <task id="LOCAL-00051" summary="1. 去掉 富文本框编辑器, 对图片宽高的设置">
-      <created>1468201084193</created>
-      <option name="number" value="00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1468201084193</updated>
-    </task>
-    <task id="LOCAL-00052" summary="1. 修复 播放 语音评论时, 暂停背景音乐&#10;2. 修复 语音评论无法 暂停关闭">
-      <created>1468427158615</created>
-      <option name="number" value="00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1468427158618</updated>
-    </task>
-    <task id="LOCAL-00053" summary="1. 上传字体图标">
-      <created>1468747044512</created>
-      <option name="number" value="00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1468747044512</updated>
-    </task>
-    <task id="LOCAL-00054" summary="1. 上传 点读点大小设置 组件">
-      <created>1468747068573</created>
-      <option name="number" value="00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1468747068573</updated>
-    </task>
-    <task id="LOCAL-00055" summary="1. 点读点设置大小, 颜色代码上传">
-      <created>1468747133408</created>
-      <option name="number" value="00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1468747133408</updated>
-    </task>
-    <task id="LOCAL-00056" summary="1. 每个点读点设置大小  上传">
-      <created>1468767454005</created>
-      <option name="number" value="00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1468767454005</updated>
-    </task>
-    <task id="LOCAL-00057" summary="1. 点读点大小设置 完成">
-      <created>1468767479391</created>
-      <option name="number" value="00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1468767479391</updated>
-    </task>
-    <task id="LOCAL-00058" summary="1. 设置 debug 是可以根据参数动态加载的 debug =1 就可以加载">
-      <created>1468767513391</created>
-      <option name="number" value="00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1468767513391</updated>
-    </task>
-    <task id="LOCAL-00059" summary="1. 点读点设置  , 图片上传">
-      <created>1468767564829</created>
-      <option name="number" value="00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1468767564830</updated>
-    </task>
-    <task id="LOCAL-00060" summary="1. 点读点大小修改, 直接在页面上展示最新效果&#10;2. 点读点大小和颜色  编辑的时候回显&#10;3. 点读点颜色在展示页面回显&#10;存在问题:&#10;1. 全局的大小和单个的大小如何影响到页面上(创建的时候)">
-      <created>1468858843050</created>
-      <option name="number" value="00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1468858843050</updated>
-    </task>
-    <task id="LOCAL-00061" summary="1.点读点设置, 全局会影响所有非修改过的点读点&#10;2. 点读点 单个设置的大小, 不受全局大小影响(只需要修改过, 都算设置了单个大小, 不受全局影响)&#10;3. 编辑的时候回显 全局的值, 和单个点读点大小的值&#10;4. 展示页面展示增加 点读点大小控制的 功能&#10;">
-      <created>1469027770250</created>
-      <option name="number" value="00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1469027770252</updated>
-    </task>
-    <task id="LOCAL-00062" summary="1. 修改点读点大小设置对 音频, 视频, 考试类型的点无效, 针对这几类做了特殊处理,导致&#10;2. 针对早期创建的数据, 由于数据库默认保存 大小为0 , 需要做一个默认值处理&#10;3. 编辑和展示页面都需要做">
-      <created>1469114134712</created>
-      <option name="number" value="00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1469114134715</updated>
-    </task>
-    <task id="LOCAL-00063" summary="开始全局音频设置前,代码保存">
-      <created>1469368025439</created>
-      <option name="number" value="00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1469368025441</updated>
-    </task>
-    <task id="LOCAL-00064" summary="upload img">
-      <created>1469463161265</created>
-      <option name="number" value="00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1469463161265</updated>
-    </task>
-    <task id="LOCAL-00065" summary="add global audio setting src upload">
-      <created>1469463322181</created>
-      <option name="number" value="00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1469463322182</updated>
-    </task>
-    <task id="LOCAL-00066" summary="全局音频组件">
-      <created>1469550839552</created>
-      <option name="number" value="00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1469550839552</updated>
-    </task>
-    <task id="LOCAL-00067" summary="全局音频代码上传">
-      <created>1469550869901</created>
-      <option name="number" value="00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1469550869901</updated>
-    </task>
-    <task id="LOCAL-00068" summary="1. 全局音频进度条点击控制进度完成&#10;2. 动态生成点读页, 双击可以设置事件, 单击获取音频的当前时间 完成&#10;&#10;还差: &#10;1. 把数据保存起来&#10;2. 音频名称&#10;3. 默认index 之前的点读页, disable">
-      <created>1469640859531</created>
-      <option name="number" value="00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1469640859532</updated>
-    </task>
-    <task id="LOCAL-00069" summary="点读代码提交 &#10;完成&#10;1. 根据点读页生成全局音频里面的设置&#10;2. 根据点击的点, 获取音频&#10;3. 还差如何判断选中哪一个音频">
-      <created>1469755404325</created>
-      <option name="number" value="00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1469755404327</updated>
     </task>
     <task id="LOCAL-00070" summary="全局音频 创建 代码完成">
       <created>1469933156278</created>
@@ -789,30 +688,222 @@
       <option name="project" value="LOCAL" />
       <updated>1470700167887</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="1. 准备替换生成点读点的方法, git备份代码">
+      <created>1471138628256</created>
+      <option name="number" value="00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1471138628258</updated>
+    </task>
+    <task id="LOCAL-00088" summary="1. 自定义点读点页面, 以及在背景图片中展示效果的 代码上传">
+      <created>1471138691530</created>
+      <option name="number" value="00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1471138691530</updated>
+    </task>
+    <task id="LOCAL-00089" summary="1. 自定义点读点 创建, 编辑完成&#10;TODO: 隐藏自定义点读点, 还需要完善一下">
+      <created>1471184614728</created>
+      <option name="number" value="00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1471184614728</updated>
+    </task>
+    <task id="LOCAL-00090" summary="1. 展示页面,点读点展示功能, 基本展示完成, 但是点击相关事件, 还需要改进&#10;2. 生成点读点的功能,考虑把普通点读点, 写到 CreatePoint.js 里面">
+      <created>1471192644568</created>
+      <option name="number" value="00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1471192644568</updated>
+    </task>
+    <task id="LOCAL-00091" summary="1. 自定义点读点, 已经大体跑通&#10;TODO:&#10;1. 自定义图片播放的状态&#10;2. 横竖屏切换的BUG&#10;3. Title字段还需要替换一下&#10;">
+      <created>1471219169044</created>
+      <option name="number" value="00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1471219169044</updated>
+    </task>
+    <task id="LOCAL-00092" summary="1. 自定义点读点, 上传到DEV环境">
+      <created>1471229301214</created>
+      <option name="number" value="00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1471229301214</updated>
+    </task>
+    <task id="LOCAL-00093" summary="1. 替换数据保存的字段完成, 从title ==&gt; custom">
+      <created>1471271725805</created>
+      <option name="number" value="00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1471271725805</updated>
+    </task>
+    <task id="LOCAL-00094" summary="1. 点读点, 横竖屏切换 功能完成">
+      <created>1471279701852</created>
+      <option name="number" value="00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1471279701852</updated>
+    </task>
+    <task id="LOCAL-00095" summary="1. 修复点读点移动的时候, 位置没有记录完全的BUG">
+      <created>1471364382893</created>
+      <option name="number" value="00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1471364382894</updated>
+    </task>
+    <task id="LOCAL-00096" summary="1. 上传自定义点读点图片, 增加获取图片的狂傲, 并保存到数据库功能">
+      <created>1471366625011</created>
+      <option name="number" value="00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1471366625011</updated>
+    </task>
+    <task id="LOCAL-00097" summary="1. 创建自定义点读点, 缩放功能, 新增 缩放的起始点 transfrom-origion: left top ;">
+      <created>1471366682711</created>
+      <option name="number" value="00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1471366682711</updated>
+    </task>
+    <task id="LOCAL-00098" summary="1. 获取图片宽高,只需要传图片地址即可 去掉无用的参数">
+      <created>1471366713794</created>
+      <option name="number" value="00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1471366713795</updated>
+    </task>
+    <task id="LOCAL-00099" summary="1. 自定义点读点位置偏移BUG修改">
+      <created>1471366748615</created>
+      <option name="number" value="00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1471366748615</updated>
+    </task>
+    <task id="LOCAL-00100" summary="CSS3 样式, 新增 -webkit- 兼容">
+      <created>1471367035383</created>
+      <option name="number" value="00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1471367035384</updated>
+    </task>
+    <task id="LOCAL-00101" summary="1. 编辑的时候, 自定义点读点, 不能移动BUG修改">
+      <created>1471367700289</created>
+      <option name="number" value="00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1471367700289</updated>
+    </task>
+    <task id="LOCAL-00102" summary="1. 自定义图片上传根据1920 的比例缩小">
+      <created>1471368454874</created>
+      <option name="number" value="00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1471368454875</updated>
+    </task>
+    <task id="LOCAL-00103" summary="1. 上次自定义图片的播放 功能">
+      <created>1471393738469</created>
+      <option name="number" value="00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1471393738469</updated>
+    </task>
+    <task id="LOCAL-00104" summary="1. 点读点创建,编辑时, 位置没有减去背景图片黑色区域.  已修复 .  把早起的 getLocation 方法还原了.">
+      <created>1471451259632</created>
+      <option name="number" value="00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1471451259632</updated>
+    </task>
+    <task id="LOCAL-00105" summary="1. 修复点击空白区域无法关闭图文, 以及图文弹出之后, 还可以切换页面&#10;解决方案: 新增一层遮罩层, 置顶,让用户在弹出图文的时候, 无法对其他进行操作">
+      <created>1471540058889</created>
+      <option name="number" value="00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1471540058890</updated>
+    </task>
+    <task id="LOCAL-00106" summary="1.去掉点读点上多余的一个 &quot;(&quot;  &#10;">
+      <created>1471542045084</created>
+      <option name="number" value="00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1471542045086</updated>
+    </task>
+    <task id="LOCAL-00107" summary="1. 图文BUG修改, 点击图文窗口关闭了图文框, 修改成点击空白处关闭">
+      <created>1471570987312</created>
+      <option name="number" value="00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1471570987314</updated>
+    </task>
+    <task id="LOCAL-00108" summary="1. 添加简单的日志控制,控制是否输入日志">
+      <created>1471650964887</created>
+      <option name="number" value="00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1471650964889</updated>
+    </task>
+    <task id="LOCAL-00109" summary="1.  添加日志控制">
+      <created>1471650998307</created>
+      <option name="number" value="00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1471650998307</updated>
+    </task>
+    <task id="LOCAL-00110" summary="1. 添加日志控制">
+      <created>1471651024393</created>
+      <option name="number" value="00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1471651024394</updated>
+    </task>
+    <task id="LOCAL-00111" summary="1.设置了点读背景图 Lazy延迟加载">
+      <created>1471657477602</created>
+      <option name="number" value="00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1471657477602</updated>
+    </task>
+    <task id="LOCAL-00112" summary="1. 自定义点读点, 替换 console 变成可控的">
+      <created>1471744478192</created>
+      <option name="number" value="00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1471744478193</updated>
+    </task>
+    <task id="LOCAL-00113" summary="1. 创建页面  替换 console">
+      <created>1471744588020</created>
+      <option name="number" value="00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1471744588020</updated>
+    </task>
+    <task id="LOCAL-00114" summary="1. 自定义点读点托米透明度对 普通点读点, 全程音频不起作用 BUG修改">
+      <created>1471747264260</created>
+      <option name="number" value="00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1471747264260</updated>
+    </task>
+    <task id="LOCAL-00115" summary="1. 创建点读点时, 如果设置了全程音频,然后在删除全程音频点读点, 需要去掉全程音频相关数据 BUG 修改">
+      <created>1471747319976</created>
+      <option name="number" value="00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1471747319976</updated>
+    </task>
+    <task id="LOCAL-00116" summary="1.BUG修改&#10;a. 图文展示位置的算法重写&#10;b. 点读页滑动翻页,全程音频设置事件&#10;c. 创建时, 点读点位置错位问题&#10;d.  评论的文字无法输入, resize 问题,和 横竖屏切换冲突[ 使用 input 获取焦点时, 设置标识, resize 则误操作]">
+      <created>1471787018405</created>
+      <option name="number" value="00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1471787018406</updated>
+    </task>
+    <task id="LOCAL-00117" summary="frozen添加load组件">
+      <created>1471794666689</created>
+      <option name="number" value="00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1471794666690</updated>
+    </task>
+    <task id="LOCAL-00118" summary="1. 展示页面添加load效果">
+      <created>1471794999127</created>
+      <option name="number" value="00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1471794999128</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17477097" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2501762" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33614457" sideWeight="0.5059571" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31971154" sideWeight="0.4940429" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31730768" sideWeight="0.4940429" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.58237547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.58052886" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39903846" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49563146" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32771084" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39903846" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -850,173 +941,192 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="1. 点读点大小修改, 直接在页面上展示最新效果&#10;2. 点读点大小和颜色  编辑的时候回显&#10;3. 点读点颜色在展示页面回显&#10;存在问题:&#10;1. 全局的大小和单个的大小如何影响到页面上(创建的时候)" />
-    <MESSAGE value="1.点读点设置, 全局会影响所有非修改过的点读点&#10;2. 点读点 单个设置的大小, 不受全局大小影响(只需要修改过, 都算设置了单个大小, 不受全局影响)&#10;3. 编辑的时候回显 全局的值, 和单个点读点大小的值&#10;4. 展示页面展示增加 点读点大小控制的 功能&#10;" />
-    <MESSAGE value="1. 修改点读点大小设置对 音频, 视频, 考试类型的点无效, 针对这几类做了特殊处理,导致&#10;2. 针对早期创建的数据, 由于数据库默认保存 大小为0 , 需要做一个默认值处理&#10;3. 编辑和展示页面都需要做" />
-    <MESSAGE value="开始全局音频设置前,代码保存" />
-    <MESSAGE value="upload img" />
-    <MESSAGE value="add global audio setting src upload" />
-    <MESSAGE value="全局音频组件" />
-    <MESSAGE value="全局音频代码上传" />
-    <MESSAGE value="1. 全局音频进度条点击控制进度完成&#10;2. 动态生成点读页, 双击可以设置事件, 单击获取音频的当前时间 完成&#10;&#10;还差: &#10;1. 把数据保存起来&#10;2. 音频名称&#10;3. 默认index 之前的点读页, disable" />
-    <MESSAGE value="点读代码提交 &#10;完成&#10;1. 根据点读页生成全局音频里面的设置&#10;2. 根据点击的点, 获取音频&#10;3. 还差如何判断选中哪一个音频" />
-    <MESSAGE value="全局音频 创建 代码完成" />
-    <MESSAGE value="1. 全局音频设置  编辑 ok,  上传" />
-    <MESSAGE value="删除没有必要的文件" />
-    <MESSAGE value="1. show.php  优化生成点读点" />
-    <MESSAGE value="1. 全程音频差不多完成, 还差 反向操作" />
-    <MESSAGE value="1. 全程音频 图片资源上传" />
-    <MESSAGE value="1. 全程音频展示, 基本跑通, 还待测试,以及,创建的一些BUG修改" />
-    <MESSAGE value="1. 点读BUG修改&#10;全程音频多次编辑BUG, 删除点读页之后, 还显示BUG,  全程音频当前页时间应该为 00:00 BUG, &#10;&#10;语音评论停止背景音乐, 录音结束定时5秒开启背景音乐" />
-    <MESSAGE value="1. 全程音频BUG:  没有全程音频的点读页, 编辑的时候, audio 类型, 无法hover显示全程音频按钮, BUG 修复" />
-    <MESSAGE value="1. 全程音频  和 背景音乐不允许同时使用, 目前还差, 定时开启的时候, 判断是启动 全程音频, 还是背景音乐" />
-    <MESSAGE value="1. 全程音频做了一些修改, 缩略图点击, 全程音频定位到指定时间" />
-    <MESSAGE value="1. 全程音频 完成, BUG修改&#10;2. 点读点透明度 任务 完成&#10;3. 样式兼容性  PC端 移动端兼容(大概, 细节差挺多)" />
-    <MESSAGE value="1. 自定义点读点 创建页面完成&#10;2." />
-    <MESSAGE value="1." />
-    <MESSAGE value="1. 修复 swiper effect =  fade  的BUG, 切换到第二页, 还能看到第一页的图片. &#10;需要设置属性 crossFade: true" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. 修复 swiper effect =  fade  的BUG, 切换到第二页, 还能看到第一页的图片. &#10;需要设置属性 crossFade: true" />
+    <MESSAGE value="1. 点读点, 横竖屏切换 功能完成" />
+    <MESSAGE value="1. 修复点读点移动的时候, 位置没有记录完全的BUG" />
+    <MESSAGE value="1. 上传自定义点读点图片, 增加获取图片的狂傲, 并保存到数据库功能" />
+    <MESSAGE value="1. 创建自定义点读点, 缩放功能, 新增 缩放的起始点 transfrom-origion: left top ;" />
+    <MESSAGE value="1. 获取图片宽高,只需要传图片地址即可 去掉无用的参数" />
+    <MESSAGE value="1. 自定义点读点位置偏移BUG修改" />
+    <MESSAGE value="CSS3 样式, 新增 -webkit- 兼容" />
+    <MESSAGE value="1. 编辑的时候, 自定义点读点, 不能移动BUG修改" />
+    <MESSAGE value="1. 自定义图片上传根据1920 的比例缩小" />
+    <MESSAGE value="1. 上次自定义图片的播放 功能" />
+    <MESSAGE value="1. 点读点创建,编辑时, 位置没有减去背景图片黑色区域.  已修复 .  把早起的 getLocation 方法还原了." />
+    <MESSAGE value="1. 修复点击空白区域无法关闭图文, 以及图文弹出之后, 还可以切换页面&#10;解决方案: 新增一层遮罩层, 置顶,让用户在弹出图文的时候, 无法对其他进行操作" />
+    <MESSAGE value="1.去掉点读点上多余的一个 &quot;(&quot;  &#10;" />
+    <MESSAGE value="1. 图文BUG修改, 点击图文窗口关闭了图文框, 修改成点击空白处关闭" />
+    <MESSAGE value="1. 添加简单的日志控制,控制是否输入日志" />
+    <MESSAGE value="1.  添加日志控制" />
+    <MESSAGE value="1. 添加日志控制" />
+    <MESSAGE value="1.设置了点读背景图 Lazy延迟加载" />
+    <MESSAGE value="1. 自定义点读点, 替换 console 变成可控的" />
+    <MESSAGE value="1. 创建页面  替换 console" />
+    <MESSAGE value="1. 自定义点读点托米透明度对 普通点读点, 全程音频不起作用 BUG修改" />
+    <MESSAGE value="1. 创建点读点时, 如果设置了全程音频,然后在删除全程音频点读点, 需要去掉全程音频相关数据 BUG 修改" />
+    <MESSAGE value="1.BUG修改&#10;a. 图文展示位置的算法重写&#10;b. 点读页滑动翻页,全程音频设置事件&#10;c. 创建时, 点读点位置错位问题&#10;d.  评论的文字无法输入, resize 问题,和 横竖屏切换冲突[ 使用 input 获取焦点时, 设置标识, resize 则误操作]" />
+    <MESSAGE value="frozen添加load组件" />
+    <MESSAGE value="1. 展示页面添加load效果" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. 展示页面添加load效果" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="17" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/pointsetting/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.23077">
-          <caret line="60" column="84" selection-start-line="47" selection-start-column="2" selection-end-line="60" selection-end-column="84" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/video.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/test/Number.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.461538">
-          <caret line="54" column="21" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="21" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/m_exam.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/number/CNumber.css">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/m_imgtext.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/bootstrap-slider/bootstrap-slider.min.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="14" selection-start-line="37" selection-start-column="14" selection-end-line="37" selection-end-column="14" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/number/CNumber.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35989717">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="18" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/php/uploadify.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/layer/layer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="14900" selection-start-line="1" selection-start-column="14900" selection-end-line="1" selection-end-column="14900" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/img-global-audio-setting.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/img-global-audio.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+          <caret line="159" column="7" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="24" selection-end-column="4" />
+          <caret line="69" column="21" selection-start-line="69" selection-start-column="20" selection-end-line="69" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/back-audio-off.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/pointsetting/PointSetting.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.384615">
+          <caret line="62" column="15" selection-start-line="62" selection-start-column="15" selection-end-line="62" selection-end-column="15" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/back-audio-on.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint/CreatePoint.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-gif-0.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/create/CreatePoint/CreatePoint.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="123" column="5" selection-start-line="123" selection-start-column="5" selection-end-line="123" selection-end-column="5" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-gif-1.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/SH_diandu/test/mobiletextarea.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.461538">
+          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/hammer.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.307693">
+          <caret line="153" column="21" selection-start-line="153" selection-start-column="21" selection-end-line="153" selection-end-column="21" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.923077">
-          <caret line="287" column="75" selection-start-line="287" selection-start-column="30" selection-end-line="287" selection-end-column="75" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="357" column="38" selection-start-line="357" selection-start-column="38" selection-end-line="357" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/examcomment/ExamComment.js">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="474" column="11" selection-start-line="459" selection-start-column="8" selection-end-line="474" selection-end-column="11" />
-          <folding>
-            <element signature="e#15212#15438#0" expanded="false" />
-            <marker date="1470502417000" expanded="true" signature="3495:3526" placeholder="..." />
-            <marker date="1470502417000" expanded="true" signature="4335:4348" placeholder="..." />
-            <marker date="1470502417000" expanded="true" signature="4387:4398" placeholder="..." />
-            <marker date="1470502417000" expanded="true" signature="4736:4750" placeholder="..." />
-            <marker date="1470502417000" expanded="true" signature="4820:4834" placeholder="..." />
-            <marker date="1470502417000" expanded="true" signature="6127:6197" placeholder="..." />
-          </folding>
+          <caret line="242" column="5" selection-start-line="242" selection-start-column="5" selection-end-line="242" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/zepto.js">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+          <caret line="635" column="18" selection-start-line="635" selection-start-column="5" selection-end-line="635" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/frozen/css/frozen.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="13134" selection-start-line="0" selection-start-column="13134" selection-end-line="0" selection-end-column="13134" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/log.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="15" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="239" column="0" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#css2Float#0" expanded="false" />
+            <marker date="1471794578000" expanded="true" signature="18584:18603" placeholder="..." />
+            <marker date="1471794578000" expanded="true" signature="19236:19274" placeholder="..." />
+            <marker date="1471794578000" expanded="true" signature="21245:21282" placeholder="..." />
+            <marker date="1471794578000" expanded="true" signature="21423:21477" placeholder="..." />
+            <marker date="1471794578000" expanded="true" signature="21575:21630" placeholder="..." />
+            <marker date="1471794578000" expanded="true" signature="21733:21792" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.bak.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="61" column="27" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="27" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1024,176 +1134,16 @@
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/show/pointOpacity.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="19" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="19" />
-          <folding />
+          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="292" column="36" selection-start-line="292" selection-start-column="36" selection-end-line="292" selection-end-column="36" />
-          <folding>
-            <element signature="e#1937#2951#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/slide/slide.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.923077">
-          <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/slide/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.769231">
-          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/slide/touchslide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.777778">
-          <caret line="121" column="6" selection-start-line="121" selection-start-column="6" selection-end-line="121" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/36.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/72.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/144.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/black.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/default.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/gary.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/point_setting/white.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/img-point-setting.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/img-point-setting-line.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/img-point-setting-on.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7474227">
-          <caret line="29" column="16" selection-start-line="27" selection-start-column="2" selection-end-line="29" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/imgtext/ImgText.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.518518">
-          <caret line="107" column="7" selection-start-line="94" selection-start-column="4" selection-end-line="107" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/lib/swipe/js/swiper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.024875622">
-          <caret line="2317" column="19" selection-start-line="2317" selection-start-column="19" selection-end-line="2317" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/show.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.024875622">
-          <caret line="254" column="18" selection-start-line="254" selection-start-column="4" selection-end-line="254" selection-end-column="18" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#31834#31888#0" expanded="false" />
-            <element signature="n#!!block;n#css2Float#0" expanded="false" />
-            <marker date="1470715934000" expanded="true" signature="17920:17939" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="17920:18004" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="18587:18625" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20508:20521" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20508:20545" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20734:20766" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20734:20788" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20886:20918" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="20886:20941" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="21108:21140" placeholder="..." />
-            <marker date="1470715934000" expanded="true" signature="21310:21342" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/css/show.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4344473">
-          <caret line="581" column="0" selection-start-line="581" selection-start-column="0" selection-end-line="581" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-off.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-other-page-off.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/globalaudio/GlobalAudio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.024875622">
-          <caret line="244" column="55" selection-start-line="244" selection-start-column="55" selection-end-line="244" selection-end-column="55" />
-          <folding>
-            <marker date="1470638098000" expanded="true" signature="3131:3145" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/global_audio/global-audio-point.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/show.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.769231">
-          <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="42" selection-start-line="13" selection-start-column="2" selection-end-line="18" selection-end-column="42" />
           <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1206,45 +1156,223 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.css">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/test/hammer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="44.692307">
-          <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/upload_video.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/video_on.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/video.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/imgs/play.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/uploads/0e5c18381ae7d1b3f943a4cce4acd05b.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/uploads/0dd8d7e3bcfeccaa1886f78564b5e994.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/uploads/0d994cd59b2b78929a12cf688121319f.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/examshowlist/ExamShowList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1466954142000" expanded="true" signature="2486:2506" placeholder="..." />
+            <marker date="1466954142000" expanded="true" signature="2560:2569" placeholder="..." />
+            <marker date="1466954142000" expanded="true" signature="3106:3150" placeholder="..." />
+            <marker date="1466954142000" expanded="true" signature="3333:3342" placeholder="..." />
+            <marker date="1466954142000" expanded="true" signature="3960:4004" placeholder="..." />
+            <marker date="1466954142000" expanded="true" signature="4772:4816" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/examcreate/ExamCreate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1466953811000" expanded="true" signature="1752:1768" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/scale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="366" column="25" selection-start-line="366" selection-start-column="25" selection-end-line="366" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/examcomment/ExamComment.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="273" column="24" selection-start-line="273" selection-start-column="24" selection-end-line="273" selection-end-column="24" />
+          <folding>
+            <marker date="1471771567000" expanded="true" signature="3495:3526" placeholder="..." />
+            <marker date="1471771567000" expanded="true" signature="4335:4348" placeholder="..." />
+            <marker date="1471771567000" expanded="true" signature="4387:4398" placeholder="..." />
+            <marker date="1471771567000" expanded="true" signature="4736:4750" placeholder="..." />
+            <marker date="1471771567000" expanded="true" signature="4820:4834" placeholder="..." />
+            <marker date="1471771567000" expanded="true" signature="6127:6197" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.4494382">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/img-point-setting-on.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/img-point-setting-line.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/related.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/img/related-off.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/uploads/0d1f57cf949021538d75198a3bf15a51.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.bak.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/drag.bak.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="29" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/drag.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.730769">
-          <caret line="167" column="52" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="52" />
+        <state vertical-scroll-proportion="-23.23077">
+          <caret line="236" column="25" selection-start-line="236" selection-start-column="25" selection-end-line="236" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/css/index.css">
+    <entry file="file://$PROJECT_DIR$/SH_diandu/test/video.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.73077">
-          <caret line="594" column="39" selection-start-line="594" selection-start-column="19" selection-end-line="594" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-36.11111">
-          <caret line="127" column="8" selection-start-line="127" selection-start-column="8" selection-end-line="127" selection-end-column="8" />
+        <state vertical-scroll-proportion="-1.5384616">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
-            <marker date="1470843555000" expanded="true" signature="2262:2276" placeholder="..." />
+            <element signature="n#style#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/util/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SH_diandu/js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70149255">
-          <caret line="1273" column="23" selection-start-line="1273" selection-start-column="23" selection-end-line="1273" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1282" column="13" selection-start-line="1282" selection-start-column="4" selection-end-line="1282" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/page/show/globalAudio.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/customPointSetting.new.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="9.230769">
+          <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SH_diandu/js/components/custompointsetting/CustomPointSetting.new.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35820895">
+          <caret line="392" column="31" selection-start-line="392" selection-start-column="31" selection-end-line="392" selection-end-column="31" />
+          <folding>
+            <marker date="1472488607000" expanded="true" signature="3565:3579" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="3686:3711" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="3767:3792" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="3848:3873" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="3929:3954" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="4010:4035" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="4091:4116" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="4186:4196" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="4445:4458" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="5194:5240" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="5194:5264" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="5194:5276" placeholder="..." />
+            <marker date="1472488607000" expanded="true" signature="5194:5293" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -6,7 +6,7 @@
 "use strict";
 window.Logger = (function (Logger) {
   Logger = {
-    show: true,   //是否显示日志
+    show: false,   //是否显示日志
     pre: '',
     log: function () {
       var args = this.args2arr(arguments);

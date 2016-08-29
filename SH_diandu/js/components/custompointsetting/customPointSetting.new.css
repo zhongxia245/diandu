@@ -2,6 +2,10 @@
   border-radius: 10px;
 }
 
+.cps-container *[disabled] {
+  background: #CCC;
+}
+
 .cps-container {
   height: 600px;
   width: 600px;
@@ -18,7 +22,7 @@
   border-radius: 10px 10px 0 0;
 }
 
-.cps-content {
+.cps-content-point, .cps-content-playarea {
   height: 450px;
   background: #EFEFEF;
 }
@@ -207,7 +211,76 @@
   border-bottom-left-radius: 5px;
 }
 
+/*自定义视频播放区域*/
 .cps-tab-playarea {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+
+.cps-content-playarea {
+  padding: 20px 60px;
+}
+
+.cps-content-video-size {
+  height: 40px;
+  margin: 15px 0;
+}
+
+.cps-content-playarea em {
+  float: right;
+  color: #AAA;
+}
+
+.cps-video-width, .cps-video-height {
+  height: 100%;
+  width: 115px;
+  border: 1px solid #CBCBCB;
+  float: left;
+  line-height: 40px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.cps-video-size-relate {
+  float: left;
+  width: 80px;
+  height: 100%;
+  cursor: pointer;
+  background: url('img/related.png') no-repeat center;
+}
+
+.cps-video-size-relate-off {
+  background: url('img/related-off.png') no-repeat center;
+}
+
+.cps-video-size-title {
+  float: left;
+  height: 100%;
+  width: 60px;
+  background: #008988;
+  line-height: 40px;
+  color: #EEEEEE;
+  text-align: center;
+  font-size: 20px;
+}
+
+.cps-content-video-area {
+  height: 270px;
+  width: 480px;
+  /*宽高:16:9*/
+  border: 1px solid #FFF;
+  position: relative;
+  margin-top: 20px;
+}
+
+/*视频播放区域*/
+.cps-video-location {
+  box-sizing: border-box;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background: #B1B2B1;
+  border: 3px solid #6B6B6B;
+  border-radius: 3px;
+  cursor: move;
 }

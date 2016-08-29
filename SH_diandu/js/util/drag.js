@@ -14,7 +14,6 @@ function Drag(selector, callback) {
   this.$container = this.$selector.parent();
   this.w = this.$container.width();
   this.h = this.$container.height();
-
   this.params = {
     left: 0,
     top: 0,
@@ -54,6 +53,7 @@ function Drag(selector, callback) {
           // 限制点读位不能超出背景图  START
           var x = parseInt(that.params.left) + disX;
           var y = parseInt(that.params.top) + disY;
+
           if (x < 0) {
             x = 0;
           }

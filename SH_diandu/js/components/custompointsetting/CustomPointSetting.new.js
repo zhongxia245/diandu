@@ -33,7 +33,7 @@ $('body').off()
     return paths.join('/');
   }
 
-  Util.loadCSS(getBasePath() + '/customPointSetting.css');
+  Util.loadCSS(getBasePath() + '/customPointSetting.new.css');
 })()
 
 
@@ -42,7 +42,21 @@ function CustomPointSetting(selector, config) {
 
   this.selector = selector;
   this.data = {};
+  //自定义视频播放  背景图大小,宽高
+  this.data.bgPic = config.bgPic || {};
+
+
+  //点读点数据
+  this.data.pointData = config.pointData || {};
+
+
+  //自定义视频的地址,宽高
+  this.data.videoPath = config.videoPath;
+
+  //自定义点读点标题
   this.data.title = config.title || {};
+
+  //自定义图片地址,颜色,发光大小
   this.data.pic = config.pic || {};
   this.data.pic.color = this.data.pic.color || '#FFFF0B';
   this.data.pic.colorSize = this.data.pic.colorSize || 5;
@@ -50,6 +64,12 @@ function CustomPointSetting(selector, config) {
   this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
 
   this.submitCallback = config.submitCallback;    //关闭页面的回调
+
+  this.bgPath = this.data.bgPic.pic; //'./uploads/0d1f57cf949021538d75198a3bf15a51.jpg';
+  this.isRelate = true; //宽高是否关联
+
+  this.whScale = (this.data.pointData.w / this.data.pointData.h) || 1;
+  this.hwScale = (this.data.pointData.h / this.data.pointData.w) || 1;
 
   this.pointTypeClasses = {
     audio: 'cps-point-audio',
@@ -59,23 +79,11 @@ function CustomPointSetting(selector, config) {
   }
 
   $(this.selector).html(this.render());
-  this.initVar();
-  this.bindEvent();
 
-
-  //如果是编辑,有数据,回显
-  if (this.data.pic.src) {
-    var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
-    this.$showImg.show().css({
-      background: 'url(' + this.data.pic.src + ') no-repeat',
-      backgroundSize: 'contain',
-      backgroundPosition: 'center',
-      '-webkit-filter': filter,
-      filter: filter
-    })
-
-    this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
-  }
+  this.initVar(); //初始化变量
+  this.bindEvent(); //绑定事件
+  this.initData(); //初始化数据
+  this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
 }
 
 /**
@@ -90,8 +98,8 @@ CustomPointSetting.prototype.render = function () {
   html.push('    <div class="cps-tab-playarea">播放区</div>')
   html.push('  </div>')
   html.push('  <div class="cps-header">点读点设置</div>')
-  html.push('  <div class="cps-content">')
-  html.push('    <div class="cps-content-left">')
+  html.push('  <div class="cps-content-point">')
+  html.push('     <div class="cps-content-left">')
   html.push('       <h4>设置点读点的注释文件</h4>')
   html.push('       <em>(建议不超过10个字)</em>')
   html.push('       <div class="cps-point">')
@@ -99,8 +107,8 @@ CustomPointSetting.prototype.render = function () {
   html.push('         <div class="cps-point-line"></div>')
   html.push('         <div class="cps-point-text" contenteditable="true">' + (this.data.title.title || "") + '</div>')
   html.push('       </div>')
-  html.push('    </div>')
-  html.push('    <div class="cps-content-right">')
+  html.push('     </div>')
+  html.push('     <div class="cps-content-right">')
   html.push('       <h4>自定制点读点按钮图案</h4>')
   html.push('       <em>(请采用背景色透明的png图片文件)</em>')
   html.push('       <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>')
@@ -115,8 +123,27 @@ CustomPointSetting.prototype.render = function () {
   html.push('       </ul>')
   html.push('       <div style="clear:both"></div>')
   html.push('       <div class="cps-show-color-size"><input id="cpsColorSize" type="text" data-slider-handle="square"/></div>')
-  html.push('    </div>')
+  html.push('     </div>')
   html.push('  </div>')
+
+  html.push('    <div class="cps-content-playarea" style="display:none;">')
+  html.push('       <p>请设置视频播放区域的长度和高度</p>')
+  html.push('       <div class="cps-content-video-size">')
+  html.push('         <input name="width" type="number"  class="cps-video-width"/>')
+  html.push('         <div class="cps-video-size-title" >长度</div>')
+  html.push('         <div class="cps-video-size-relate"></div>')
+  html.push('         <div class="cps-video-size-title">高度</div>')
+  html.push('         <input name="height" type="number"  class="cps-video-height"/>')
+  html.push('       </div>')
+
+
+  var subTip = parseInt(this.data.bgPic.w) + ':' + parseInt(this.data.bgPic.h);
+  html.push('       <p>请拖动改变播放区的位置<em>背景图宽高:' + subTip + '(相对1200大小)</em></p>')
+  html.push('       <div class="cps-content-video-area" style="background:url(' + this.bgPath + ') no-repeat; background-size:contain;background-position: center;">')
+  html.push('         <div class="cps-video-location"></div>')
+  html.push('       </div>')
+  html.push('    </div>')
+
   html.push('  <div class="cps-submit">提交</div>')
   html.push('</div>')
   return html.join(' ');
@@ -132,6 +159,18 @@ CustomPointSetting.prototype.initVar = function () {
   this.$submit = this.$container.find('.cps-submit');
   this.$showImg = this.$container.find('.cps-show-img');
   this.$showColor = this.$container.find('.cps-show-color');
+
+  this.$tabPoint = this.$container.find('.cps-tab-point');
+  this.$divPoint = this.$container.find('.cps-content-point');
+  this.$tabVideo = this.$container.find('.cps-tab-playarea');
+  this.$divVideo = this.$container.find('.cps-content-playarea');
+
+  this.$inputWidth = this.$container.find('input[name="width"]')
+  this.$inputHeight = this.$container.find('input[name="height"]')
+
+  this.$relate = this.$container.find('.cps-video-size-relate');
+
+  this.$videoLocation = this.$container.find('.cps-video-location');
 
   //初始化发光颜色
   var _$colors = this.$showColor.find('li');
@@ -150,6 +189,72 @@ CustomPointSetting.prototype.initVar = function () {
  */
 CustomPointSetting.prototype.bindEvent = function () {
   var that = this;
+  /**
+   * 自定义点读点区域
+   */
+  that.$tabPoint.off().on('click', function (e) {
+    that.$tabVideo.removeClass('cps-tab-active')
+    that.$tabPoint.addClass('cps-tab-active');
+    that.$divPoint.show();
+    that.$divVideo.hide();
+  })
+
+  /**
+   * 自定义播放区域
+   */
+  that.$tabVideo.off().on('click', function (e) {
+    that.$tabPoint.removeClass('cps-tab-active');
+    that.$tabVideo.addClass('cps-tab-active')
+    that.$divPoint.hide();
+    that.$divVideo.show();
+    that.initDrag();
+  })
+
+  /**
+   * 输入宽
+   */
+  that.$inputWidth.off().on('keyup mouseup', function (e) {
+    var val = e.target.value;
+    if (that.isRelate && val) {
+      that.$inputHeight.val(parseInt(val * that.hwScale))
+    }
+    that.$videoLocation.css({
+      width: that.getSacleWH(that.$inputWidth.val()),
+      height: that.getSacleWH(that.$inputHeight.val())
+    })
+    that.initDrag();
+  })
+
+  /**
+   * 输入高
+   */
+  that.$inputHeight.off().on('keyup mouseup', function (e) {
+    var val = e.target.value;
+    if (that.isRelate && val) {
+      that.$inputWidth.val(parseInt(val * that.whScale))
+    }
+    that.$videoLocation.css({
+      width: that.getSacleWH(that.$inputWidth.val()),
+      height: that.getSacleWH(that.$inputHeight.val())
+    })
+    that.initDrag();
+  })
+
+  /**
+   * 宽高是否按比例
+   */
+  that.$relate.off().on('click', function (e) {
+    if (that.$relate.hasClass('cps-video-size-relate-off')) {
+      that.$relate.removeClass('cps-video-size-relate-off');
+      that.isRelate = true;
+      that.$inputHeight.attr('disabled', true)
+    } else {
+      that.$relate.addClass('cps-video-size-relate-off');
+      that.isRelate = false;
+      that.$inputHeight.attr('disabled', false)
+    }
+  })
+
 
   /**
    * 获取焦点之后,清除自定义图片
@@ -256,4 +361,132 @@ CustomPointSetting.prototype.bindEvent = function () {
     //参数2 表示, 是否设置了数据
     that.submitCallback && that.submitCallback(that.data, !!(that.data.title.title || that.data.pic.src));
   })
+}
+
+CustomPointSetting.prototype.initData = function () {
+  //如果是编辑,有数据,回显
+  if (this.data.pic.src) {
+    var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
+    this.$showImg.show().css({
+      background: 'url(' + this.data.pic.src + ') no-repeat',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      '-webkit-filter': filter,
+      filter: filter
+    })
+  }
+
+  var _w = this.data.pointData.w;
+  var _h = this.data.pointData.h;
+  this.$inputWidth.val(_w);
+  this.$inputHeight.val(_h).attr('disabled', true);
+  if (_w >= _h) {
+    this.$videoLocation.attr("width", this.getSacleWH(_w));
+  } else {
+    this.$videoLocation.attr("height", this.getSacleWH(_h));
+  }
+
+}
+
+
+CustomPointSetting.prototype.initDrag = function () {
+  this.Drag(this.$videoLocation, function (x, y) {
+    console.log("x", x, y)
+  })
+}
+
+/**
+ * 拖拽功能[TODO:为了不影响点读点的拖拽,这里单独写一个]
+ * @param selector
+ * @param callback
+ * @constructor
+ */
+CustomPointSetting.prototype.Drag = function ($selector, callback) {
+  this.$selector = $selector;
+
+  this.callback = callback;
+
+  //获取屏幕寛高，防止点读位移除背景图
+  this.$container = this.$selector.parent();
+  this.w = this.$container.width();
+  this.h = this.$container.height();
+  this.targetW = this.$selector.width();
+  this.targetH = this.$selector.height();
+
+  console.log(this.targetW, this.targetH, this.w, this.h)
+
+  this.params = {
+    left: 0,
+    top: 0,
+    currentX: 0,
+    currentY: 0,
+    flag: false
+  };
+
+  /**
+   * 拖拽的实现
+   */
+  this.startDrag = function () {
+    var that = this;
+
+    that.$selector.on('mousedown', function (e) {
+      that.params.flag = true;
+      that.params.currentX = e.clientX;
+      that.params.currentY = e.clientY;
+
+      that.params.left = that.$selector.css('left').replace('px', '');
+      that.params.top = that.$selector.css('top').replace('px', '');
+
+      $(document).on('mouseup', function () {
+        that.params.flag = false;
+        that.params.left = that.$selector.css('left');
+        that.params.top = that.$selector.css('top');
+        that.callback && that.callback(parseInt(that.params.left), parseInt(that.params.top));
+      });
+
+      $(document).on('mousemove', function (e) {
+        if (that.params.flag) {
+          var nowX = e.clientX;
+          var nowY = e.clientY;
+          var disX = nowX - that.params.currentX;
+          var disY = nowY - that.params.currentY;
+
+          // 限制点读位不能超出背景图  START
+          var x = parseInt(that.params.left) + disX;
+          var y = parseInt(that.params.top) + disY;
+
+          if (x < 0) {
+            x = 0;
+          }
+          if (y < 0) {
+            y = 0;
+          }
+          if (x > that.w - that.targetW) {
+            x = that.w - that.targetW;
+          }
+          if (y > that.h - that.targetH) {
+            y = that.h - that.targetH;
+          }
+          // 限制点读位不能超出背景图  END
+
+          that.$selector.css({
+            left: x,
+            top: y
+          })
+        }
+      })
+    });
+
+  };
+
+  //启动拖拽
+  this.startDrag();
+}
+
+/**
+ * 传入宽高,获取等比缩放的大小
+ */
+CustomPointSetting.prototype.getSacleWH = function (val) {
+  var scale = 480 / 1200;  //1200的大小,相对于自定义弹框这边背景图的大小
+  return val * scale;
 }

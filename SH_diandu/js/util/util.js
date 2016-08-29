@@ -4,11 +4,9 @@
  */
 window.Util = (function () {
   /**
-   * 根据URL,获取文件的宽高
-   * @param  {[type]}   src      [description]
-   * @param  {[type]}   param    需要传到方法里面的参数
-   * @param  {Function} callback [description]
-   * @return {[type]}            [description]
+   * 根据URL,获取图片的宽高
+   * @param src 图片地址
+   * @param callback 回调,返回 w  h 属性
    */
   function getImageWH(src, callback) {
     var image = new Image();
@@ -23,9 +21,26 @@ window.Util = (function () {
   }
 
   /**
+   * 根据URL,获取视频的宽高
+   * @param src 视频地址
+   * @param callback 获取后的回调
+   */
+  function getVideoWH(src, callback) {
+    var video = document.createElement('video')
+    video.setAttribute('src', src);
+    video.oncanplaythrough = function () {
+      var obj = {
+        w: this.videoWidth,
+        h: this.videoHeight
+      }
+      callback && callback(obj);
+      video = null;
+    };
+  }
+
+  /**
    * 根据QueryString参数名称获取值
    * @param  {[type]} key [key]
-   * @return {[type]}      [description]
    */
   function getQueryStringByName(key) {
     var result = location.search.match(new RegExp("[\?\&]" + key + "=([^\&]+)", "i"));
@@ -142,6 +157,7 @@ window.Util = (function () {
 
   return {
     getImageWH: getImageWH,
+    getVideoWH: getVideoWH,
     getQueryStringByName: getQueryStringByName,
     closeWebPage: closeWebPage,
     Moblie_MoveOrTap: Moblie_MoveOrTap,

@@ -631,7 +631,8 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  $('#btnAdd').on('click', addDianDuPageTpl);
+  //$('#btnAdd').on('click', addDianDuPageTpl);
+  $('#btnAdd').on('click', addCustomPointSetting);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1279,8 +1280,10 @@ function addCustomPointSetting(e) {
   //实例化 点读点大小设置页面
   new CustomPointSetting('#customPointSetting', {
     dataId: dataId,
-    title: _data.custom,
-    pic: _data.pic,
+    pointData: _data,  //点读点数据
+    title: _data.custom, //点读点自定义title
+    pic: _data.pic, //点读点自定义图片
+    bgPic: window.DD.items[pageIndex], //背景图片地址
     submitCallback: function (data, isSetData) {
       layer.closeAll();
       var $point = $('#' + dataId);
@@ -1425,7 +1428,15 @@ function fileTypeItemClick(e) {
 
         $uploadRight.attr('data-upload', 1);  //标记已经上传文件
 
-        _data.setDDItems(_dataid, {url: fileSrc, filename: file.name});
+
+        //如果是视频点读点,则获取视频的宽高
+        if (data.fileType === 'video') {
+          Util.getVideoWH(fileSrc, function (obj) {
+            _data.setDDItems(_dataid, {url: fileSrc, filename: file.name, w: obj.w, h: obj.h});
+          })
+        } else {
+          _data.setDDItems(_dataid, {url: fileSrc, filename: file.name});
+        }
       }
     }
   });
