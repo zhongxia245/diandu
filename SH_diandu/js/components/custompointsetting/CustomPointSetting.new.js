@@ -42,6 +42,8 @@ function CustomPointSetting(selector, config) {
 
   this.selector = selector;
   this.data = {};
+  this.data.area = this.data.area || {};
+
   //自定义视频播放  背景图大小,宽高
   this.data.bgPic = config.bgPic || {};
 
@@ -83,7 +85,6 @@ function CustomPointSetting(selector, config) {
   this.initVar(); //初始化变量
   this.bindEvent(); //绑定事件
   this.initData(); //初始化数据
-  this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
 }
 
 /**
@@ -340,6 +341,7 @@ CustomPointSetting.prototype.bindEvent = function () {
         that.data.pic.src = result;
         that.data.pic.w = obj.w;
         that.data.pic.h = obj.h;
+
         //that.$upload 还是最早保存的变量,
         that.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
         that.$showImg.show().css({
@@ -355,15 +357,31 @@ CustomPointSetting.prototype.bindEvent = function () {
    * 提交[保存到点读点数据里面]
    */
   that.$submit.off().on('click', function () {
+
     that.data.title.title = that.$text.text();
+    that.data.area.w = that.$inputWidth.val();
+    that.data.area.h = that.$inputHeight.val();
+
+    //是否编辑了数据
+    var isEdit = !!(that.data.title.title || that.data.pic.src);
+
     //返回的数据
     Logger.info("自定义点读点数据保存到 window.DD 里面", that.data)
-    //参数2 表示, 是否设置了数据
-    that.submitCallback && that.submitCallback(that.data, !!(that.data.title.title || that.data.pic.src));
+
+    that.submitCallback && that.submitCallback(that.data, isEdit);
   })
 }
 
+/**
+ * 初始化数据
+ */
 CustomPointSetting.prototype.initData = function () {
+  //如果不是视频点读点,隐藏切换到播放区域的按钮
+  if (this.data.pointData.type !== "video") {
+    this.$tabVideo.hide();
+    this.$tabPoint.hide();
+  }
+
   //如果是编辑,有数据,回显
   if (this.data.pic.src) {
     var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
@@ -374,6 +392,8 @@ CustomPointSetting.prototype.initData = function () {
       '-webkit-filter': filter,
       filter: filter
     })
+
+    this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
   }
 
   var _w = this.data.pointData.w;
@@ -385,13 +405,18 @@ CustomPointSetting.prototype.initData = function () {
   } else {
     this.$videoLocation.attr("height", this.getSacleWH(_h));
   }
-
 }
 
 
+/**
+ * 初始化拖拽功能
+ */
 CustomPointSetting.prototype.initDrag = function () {
-  this.Drag(this.$videoLocation, function (x, y) {
-    console.log("x", x, y)
+  var that = this;
+  that.Drag(this.$videoLocation, function (x, y) {
+    that.data.area = that.data.area || {};
+    that.data.area.x = x;
+    that.data.area.y = y;
   })
 }
 

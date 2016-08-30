@@ -171,6 +171,14 @@ var _data = (function () {
         for (var j = 0; j < items.length; j++) {
 
           if (!items[j].isRemove && !isEmpty(items[j])) { //去掉删除的点读位
+
+            //自定义点读点数据
+            var _customPointData = {
+              title: items[j].custom,
+              pic: items[j].pic,
+              area: items[j].area
+            }
+
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -178,8 +186,12 @@ var _data = (function () {
               filename: items[j].filename,
               url: items[j].url,
               title: items[j].title,
-              custom: JSON.stringify(items[j].custom),
-              pic: JSON.stringify(items[j].pic),
+
+              custom: JSON.stringify(_customPointData),
+              //TODO:暂时注释掉
+              //custom: JSON.stringify(items[j].custom),
+              //pic: JSON.stringify(items[j].pic),
+
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
               questions: typeof items[j]['questions'] !== "string" ? JSON.stringify(items[j].questions) : items[j].questions,
@@ -307,7 +319,6 @@ var _edit = (function () {
 
       //设置点读位状态, 显示或者隐藏
       _setPointState(data.pages);
-
 
       GLOBAL.ISEDIT = {
         flag: true,
@@ -631,8 +642,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  //$('#btnAdd').on('click', addDianDuPageTpl);
-  $('#btnAdd').on('click', addCustomPointSetting);
+  $('#btnAdd').on('click', addDianDuPageTpl);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1292,6 +1302,9 @@ function addCustomPointSetting(e) {
       var left = $point.css('left');
       var top = $point.css('top');
 
+      //保存视频播放区域的数据
+      window.DD.items[pageIndex].data[pointIndex].area = data.area;
+
       //是否设置了数据
       if (isSetData) {
         Logger.info("自定义点读点数据:", data)
@@ -1302,15 +1315,14 @@ function addCustomPointSetting(e) {
         window.DD.items[pageIndex].data[pointIndex].custom = data.title;
         //点读点类型,是自定义图片,还是自定义标题
         var type = data.pic.src ? 3 : 2;
+
         var config = {
           left: left,
           top: top,
           title: data.title,
           pic: data.pic
         };
-
         createPoint(dataId, type, config)
-
       }
       else {
         $cTar.removeClass('img-point-setting-on');
