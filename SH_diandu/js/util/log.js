@@ -6,36 +6,18 @@
 "use strict";
 window.Logger = (function (Logger) {
   Logger = {
-    show: false,   //是否显示日志
-    pre: '',
+    show: true,   //是否显示日志
     log: function () {
-      var args = this.args2arr(arguments);
-      this.show && console.log(this.pre, args)
+      this.show && console.log.apply(null, arguments)
     },
     info: function () {
-      var args = this.args2arr(arguments);
-      this.show && console.info(this.pre, args)
+      this.show && console.info.apply(null, arguments)
     },
     debug: function () {
-      var args = this.args2arr(arguments);
-      this.show && console.debug(this.pre, args)
+      this.show && console.debug.apply(null, arguments)
     },
     error: function () {
-      var args = this.args2arr(arguments);
-      this.show && console.error(this.pre, args)
-    },
-    /**
-     * 把参数[非数组]变成数组
-     * @param args
-     * @returns {Array}
-     */
-    args2arr: function (args) {
-      var arr = [];
-      for (var i = 0; i < args.length; i++) {
-        var item = args[i];
-        arr.push(item);
-      }
-      return arr;
+      this.show && console.error.apply(null, arguments)
     }
   }
   return Logger;
