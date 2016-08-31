@@ -1,7 +1,6 @@
 /**
  * 播放视频的类
- * @param config
- * @constructor
+ * TODO: 在移动端, video 播放之后,会放在最上面,导致 关闭按钮无法点击到, 需要找解决方案
  */
 window.PlayVideo = (function (Util) {
   var click = Util.IsPC() ? 'click' : 'tap';
