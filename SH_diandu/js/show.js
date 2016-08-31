@@ -229,7 +229,7 @@ function init() {
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
 
-    Util.getImageWH(data['pages'][0]['pic'],function(){
+    Util.getImageWH(data['pages'][0]['pic'], function () {
       //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
       setTimeout(function () {
         fn_onResize();
@@ -1150,24 +1150,26 @@ function bindEvent() {
     var pointData = Util.getPointDataByIds(DATA, dataId);
     var url = pointData.url;
     var filename = pointData.filename;
+    debugger;
+    PlayVideo.show(url);
 
-    var className = 'm-video-size';
+    //var className = 'm-video-size';
 
-    triggerBouncyNav(true);
-
-    $('#video').show();
-
-    if ($cTar[0].tagName === "IMG") { // 关闭播放
-      $cTar.removeClass(className).hide();
-    } else { //开始播放
-      if (video.getAttribute('src') !== url) {
-        video.setAttribute('src', url);
-      }
-      $cTar.addClass(className)
-      $cTar.find('img').show();
-    }
-
-    return false;
+    //triggerBouncyNav(true);
+    //
+    //$('#video').show();
+    //
+    //if ($cTar[0].tagName === "IMG") { // 关闭播放
+    //  $cTar.removeClass(className).hide();
+    //} else { //开始播放
+    //  if (video.getAttribute('src') !== url) {
+    //    video.setAttribute('src', url);
+    //  }
+    //  $cTar.addClass(className)
+    //  $cTar.find('img').show();
+    //}
+    //
+    //return false;
   });
 
 

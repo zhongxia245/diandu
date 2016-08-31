@@ -607,3 +607,43 @@ ul, li {
   line-height: 50px;
   padding-left: 20px;
 }
+
+/*视频播放区域*/
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  border-radius: 3px;
+  background: #000;
+  justify-content: center;
+  align-items: center;
+  display: -webkit-flex;
+}
+
+.video-container > .vc-close {
+  position: absolute;
+  right: 10px;
+  top: -10px;
+  font-size: 50px;
+  color: red;
+  z-index: 2;
+  background: transparent;
+  cursor: pointer;
+}
+
+.video-container video {
+  position: relative;
+  top: -9999px;
+}
+
+.video-container .vc-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -37.5px;
+  margin-top: -37.5px;
+  z-index: 3;
+}
