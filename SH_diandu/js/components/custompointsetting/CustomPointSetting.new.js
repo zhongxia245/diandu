@@ -4,7 +4,8 @@
  * 说明: 自定义点读点风格,文字
  * 依赖: js/lib/bootstrap-slider 组件
  ***************************************************/
-$('body').off()
+$('body')
+  .off()
   .on('focus', '[contenteditable]', function () {
     var $this = $(this);
     $this.data('before', $this.html());
@@ -46,7 +47,6 @@ function CustomPointSetting(selector, config) {
 
   //自定义视频播放  背景图大小,宽高
   this.data.bgPic = config.bgPic || {};
-
 
   //点读点数据
   this.data.pointData = config.pointData || {};
@@ -359,11 +359,14 @@ CustomPointSetting.prototype.bindEvent = function () {
   that.$submit.off().on('click', function () {
 
     that.data.title.title = that.$text.text();
+
     that.data.area.w = that.$inputWidth.val();
     that.data.area.h = that.$inputHeight.val();
+    that.data.area.x = that.$videoLocation.css('left').replace('px', '');
+    that.data.area.y = that.$videoLocation.css('top').replace('px', '');
 
     //是否编辑了数据
-    var isEdit = !!(that.data.title.title || that.data.pic.src);
+    var isEdit = !!(that.data.title.title || that.data.pic.src || that.data.area.w);
 
     //返回的数据
     Logger.info("自定义点读点数据保存到 window.DD 里面", that.data)
@@ -376,6 +379,9 @@ CustomPointSetting.prototype.bindEvent = function () {
  * 初始化数据
  */
 CustomPointSetting.prototype.initData = function () {
+
+  var _area = this.data.pointData.area || {};
+
   //如果不是视频点读点,隐藏切换到播放区域的按钮
   if (this.data.pointData.type !== "video") {
     this.$tabVideo.hide();
@@ -383,27 +389,38 @@ CustomPointSetting.prototype.initData = function () {
   }
 
   //如果是编辑,有数据,回显
-  if (this.data.pic.src) {
-    var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
-    this.$showImg.show().css({
-      background: 'url(' + this.data.pic.src + ') no-repeat',
-      backgroundSize: 'contain',
-      backgroundPosition: 'center',
-      '-webkit-filter': filter,
-      filter: filter
-    })
+  if (this.data.pic.src || _area.w) {
 
-    this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
-  }
+    //设置了自定义图片
+    if (this.data.pic.src) {
+      var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
+      this.$showImg.show().css({
+        background: 'url(' + this.data.pic.src + ') no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        '-webkit-filter': filter,
+        filter: filter
+      })
+      this.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
+    }
 
-  var _w = this.data.pointData.w;
-  var _h = this.data.pointData.h;
-  this.$inputWidth.val(_w);
-  this.$inputHeight.val(_h).attr('disabled', true);
-  if (_w >= _h) {
-    this.$videoLocation.attr("width", this.getSacleWH(_w));
-  } else {
-    this.$videoLocation.attr("height", this.getSacleWH(_h));
+    //设置了视频播放区域
+    if (_area.w) {
+      var _w = _area.w;
+      var _h = _area.h;
+      var _x = _area.x;
+      var _y = _area.y;
+
+      this.$inputWidth.val(_w);
+      this.$inputHeight.val(_h).attr('disabled', true);
+
+      this.$videoLocation.css({
+        width: this.getSacleWH(_w) + 'px',
+        height: this.getSacleWH(_h) + 'px',
+        left: _x + 'px',
+        top: _y + 'px'
+      });
+    }
   }
 }
 
@@ -414,9 +431,10 @@ CustomPointSetting.prototype.initData = function () {
 CustomPointSetting.prototype.initDrag = function () {
   var that = this;
   that.Drag(this.$videoLocation, function (x, y) {
-    that.data.area = that.data.area || {};
-    that.data.area.x = x;
-    that.data.area.y = y;
+    //数据直接从 $videoLocation 获取 left 和 top
+    //that.data.area = that.data.area || {};
+    //that.data.area.x = x;
+    //that.data.area.y = y;
   })
 }
 

@@ -172,12 +172,6 @@ var _data = (function () {
 
           if (!items[j].isRemove && !isEmpty(items[j])) { //去掉删除的点读位
 
-            //自定义点读点数据
-            var _customPointData = {
-              title: items[j].custom,
-              pic: items[j].pic,
-              area: items[j].area
-            }
 
             var obj = {
               x: items[j].x,
@@ -187,10 +181,9 @@ var _data = (function () {
               url: items[j].url,
               title: items[j].title,
 
-              custom: JSON.stringify(_customPointData),
-              //TODO:暂时注释掉
-              //custom: JSON.stringify(items[j].custom),
-              //pic: JSON.stringify(items[j].pic),
+              area: JSON.stringify(items[j].area),
+              custom: JSON.stringify(items[j].custom),
+              pic: JSON.stringify(items[j].pic),
 
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
@@ -432,8 +425,8 @@ var _edit = (function () {
     createPoint(dataid, type, config);
     addDianDu(dataid, point)
 
-    //设置了自定义点读点的,设置按钮的状态
-    if (type !== 1) {
+    //设置了自定义图片,自定义标题,或者视频播放区域, 则设置 自定义点读点 为 激活状态
+    if (type !== 1 || (point.area && JSON.parse(point.area).w)) {
       $('.upload-right-btn')
         .find('[data-id="' + dataid + '"]')
         .find('.img-point-setting')
@@ -517,12 +510,14 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['url'] = obj['url'];
         window.DD.items[i]['data'][j]['filename'] = obj['filename'];
         window.DD.items[i]['data'][j]['title'] = obj['title'];
-        window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || "{}");
-        window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || "{}");
         window.DD.items[i]['data'][j]['content'] = obj['content'];
         window.DD.items[i]['data'][j]['type'] = obj['type'];
         window.DD.items[i]['data'][j]['questions'] = obj['questions'];
         window.DD.items[i]['data'][j]['hide'] = (obj['hide'] == "1" ? true : false);
+
+        window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || "{}");
+        window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || "{}");
+        window.DD.items[i]['data'][j]['area'] = JSON.parse(obj['area'] || "{}");
       }
     }
   }
@@ -1294,6 +1289,7 @@ function addCustomPointSetting(e) {
     title: _data.custom, //点读点自定义title
     pic: _data.pic, //点读点自定义图片
     bgPic: window.DD.items[pageIndex], //背景图片地址
+
     submitCallback: function (data, isSetData) {
       layer.closeAll();
       var $point = $('#' + dataId);
@@ -1314,7 +1310,9 @@ function addCustomPointSetting(e) {
         window.DD.items[pageIndex].data[pointIndex].pic = data.pic;
         window.DD.items[pageIndex].data[pointIndex].custom = data.title;
         //点读点类型,是自定义图片,还是自定义标题
-        var type = data.pic.src ? 3 : 2;
+        var type = 1;
+        if (data.pic.src) type = 3;
+        if (data.title.title) type = 2
 
         var config = {
           left: left,
@@ -1444,7 +1442,13 @@ function fileTypeItemClick(e) {
         //如果是视频点读点,则获取视频的宽高
         if (data.fileType === 'video') {
           Util.getVideoWH(fileSrc, function (obj) {
-            _data.setDDItems(_dataid, {url: fileSrc, filename: file.name, w: obj.w, h: obj.h});
+            _data.setDDItems(_dataid, {
+              url: fileSrc,
+              filename: file.name,
+              area: {
+                w: obj.w, h: obj.h
+              }
+            });
           })
         } else {
           _data.setDDItems(_dataid, {url: fileSrc, filename: file.name});
