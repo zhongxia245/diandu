@@ -360,11 +360,14 @@ CustomPointSetting.prototype.bindEvent = function () {
 
     that.data.title.title = that.$text.text();
 
-    that.data.area.w = that.$inputWidth.val();
-    that.data.area.h = that.$inputHeight.val();
-    that.data.area.x = that.$videoLocation.css('left').replace('px', '');
-    that.data.area.y = that.$videoLocation.css('top').replace('px', '');
-
+    if (that.$inputWidth.val()) {
+      that.data.area.w = that.$inputWidth.val();
+      that.data.area.h = that.$inputHeight.val();
+      that.data.area.x = that.$videoLocation.css('left').replace('px', '');
+      that.data.area.y = that.$videoLocation.css('top').replace('px', '');
+    } else {
+      that.data.area = {};
+    }
     //是否编辑了数据
     var isEdit = !!(that.data.title.title || that.data.pic.src || that.data.area.w);
 

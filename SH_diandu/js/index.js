@@ -181,9 +181,9 @@ var _data = (function () {
               url: items[j].url,
               title: items[j].title,
 
-              area: JSON.stringify(items[j].area),
-              custom: JSON.stringify(items[j].custom),
-              pic: JSON.stringify(items[j].pic),
+              area: items[j].area && JSON.stringify(items[j].area) || "",
+              custom: items[j].custom && JSON.stringify(items[j].custom) || "",
+              pic: items[j].pic && JSON.stringify(items[j].pic) || "",
 
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
