@@ -1,8 +1,9 @@
 /***************************************************
  * 时间: 8/7/16 20:35
  * 作者: zhongxia
- * 说明: 自定义点读点风格,文字
+ * 说明: 自定义点读点风格,文字,视频播放区域
  * 依赖: js/lib/bootstrap-slider 组件
+ *       js/util/util.js
  ***************************************************/
 $('body')
   .off()
@@ -141,6 +142,7 @@ CustomPointSetting.prototype.render = function () {
   var subTip = parseInt(this.data.bgPic.w) + ':' + parseInt(this.data.bgPic.h);
   html.push('       <p>请拖动改变播放区的位置<em>背景图宽高:' + subTip + '(相对1200大小)</em></p>')
   html.push('       <div class="cps-content-video-area" style="background:url(' + this.bgPath + ') no-repeat; background-size:contain;background-position: center;">')
+  html.push('         <div class="cps-video-point"></div>')
   html.push('         <div class="cps-video-location"></div>')
   html.push('       </div>')
   html.push('    </div>')
@@ -171,7 +173,10 @@ CustomPointSetting.prototype.initVar = function () {
 
   this.$relate = this.$container.find('.cps-video-size-relate');
 
+  this.$bgArea = this.$container.find('.cps-content-video-area')
   this.$videoLocation = this.$container.find('.cps-video-location');
+  this.$videoPoint = this.$container.find('.cps-video-point');
+
 
   //初始化发光颜色
   var _$colors = this.$showColor.find('li');
@@ -391,6 +396,12 @@ CustomPointSetting.prototype.initData = function () {
     this.$tabPoint.hide();
   }
 
+  this.$videoPoint.css({
+    left: this.data.pointData.x * this.$bgArea.width() + 'px',
+    top: this.data.pointData.y * this.$bgArea.height() + 'px',
+  })
+
+
   //如果是编辑,有数据,回显
   if (this.data.pic.src || _area.w) {
 
@@ -434,10 +445,6 @@ CustomPointSetting.prototype.initData = function () {
 CustomPointSetting.prototype.initDrag = function () {
   var that = this;
   that.Drag(this.$videoLocation, function (x, y) {
-    //数据直接从 $videoLocation 获取 left 和 top
-    //that.data.area = that.data.area || {};
-    //that.data.area.x = x;
-    //that.data.area.y = y;
   })
 }
 

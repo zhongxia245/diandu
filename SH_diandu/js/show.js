@@ -228,7 +228,6 @@ function init() {
     DATA = data;
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
-
     Util.getImageWH(data['pages'][0]['pic'], function () {
       //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
       setTimeout(function () {
@@ -1150,8 +1149,13 @@ function bindEvent() {
     var pointData = Util.getPointDataByIds(DATA, dataId);
     var url = pointData.url;
     var filename = pointData.filename;
-    debugger;
-    PlayVideo.show(url);
+    var area = null;
+    if (pointData.area) {
+      area = JSON.parse(pointData.area);
+    }
+    PlayVideo.show(url, area);
+
+    return false;
 
     //var className = 'm-video-size';
 

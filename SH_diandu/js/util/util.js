@@ -155,6 +155,26 @@ window.Util = (function () {
     head.appendChild(script);
   }
 
+  /**
+   * 移动端拖动
+   * @param selector
+   */
+  function touchDrag(selector, callback) {
+    var moveX, moveY, startX, startY;
+    $(document).on("touchstart", selector, function (event) {
+      var touchPros = event.touches[0];
+      startX = touchPros.clientX - event.currentTarget.offsetLeft;
+      startY = touchPros.clientY - event.currentTarget.offsetTop;
+      //return false;
+    }).on("touchmove", selector, function (event) {
+      var touchPros = event.touches[0];
+      moveX = touchPros.clientX - startX;
+      moveY = touchPros.clientY - startY;
+
+      callback(event, moveX, moveY)
+    });
+  }
+
   return {
     getImageWH: getImageWH,
     getVideoWH: getVideoWH,
@@ -165,6 +185,7 @@ window.Util = (function () {
     getPointDataByIds: getPointDataByIds,
     loadCSS: loadCSS,
     loadJS: loadJS,
+    touchDrag: touchDrag
   }
 })()
 

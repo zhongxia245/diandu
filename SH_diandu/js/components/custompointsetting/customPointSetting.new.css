@@ -285,3 +285,12 @@
   border-radius: 3px;
   cursor: move;
 }
+
+.cps-video-point {
+  position: absolute;
+  border-radius: 50%;
+  background-image: url('img/video.png');
+  background-size: 100%;
+  width: 29px;
+  height: 29px;
+}

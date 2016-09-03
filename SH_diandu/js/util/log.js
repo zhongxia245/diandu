@@ -6,7 +6,8 @@
 "use strict";
 window.Logger = (function (Logger) {
   Logger = {
-    show: true,   //是否显示日志
+    //TODO:如果这边为true, 在线上浏览器有问题.
+    show: false,   //是否显示日志
     log: function () {
       this.show && console.log.apply(null, arguments)
     },

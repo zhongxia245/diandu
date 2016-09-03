@@ -222,55 +222,53 @@ if ($id > 0) {
             <div class="form-group">
                 <label for="chargeStandard">收费标准</label>
 
-                <div class="input-group">
-                    <input type="text" class="form-control" id="chargeStandard">
+        <div class="input-group">
+          <input type="text" class="form-control" id="chargeStandard">
 
-                    <div class="input-group-addon">元</div>
-                    <div class="input-group-addon" style="background: none;border: 0;">
-                        <span class="note">(免费模式无需设置)</span>
-                    </div>
-                </div>
-            </div>
+          <div class="input-group-addon">元</div>
+          <div class="input-group-addon" style="background: none;border: 0;">
+            <span class="note">(免费模式无需设置)</span>
+          </div>
         </div>
-        <div class="setting-diandu">
-            <div class="baseinfo-title">
-                <span>点读页创建</span>
-                <div class="setting-diandu-icon" id="pointSetting"><i class="fa fa-cog" aria-hidden="true"></i></div>
-            </div>
-            <!-- TODO:多个点读页 -->
-            <!-- 点读页集合 START -->
-            <div id="id_diandupages" class="diandupages">
-            </div>
-            <!-- 点读页集合 END -->
-            <!-- setting btns start -->
-            <div class="setting-btns">
-                <div class="setting-btn" id="btnAdd">新增点读页</div>
-                <div style="margin: 25px 0;">
-                    <div class="setting-title" style="width: 100%;">自动播放时的音乐设置(可选)</div>
-                    <div class="setting-btn-autovideo" id="btnAutoAudio">
-                        <span>点击上传自动播放时的背景音乐(MP3格式)</span>
-                        <input type="file" id="file_btnAutoAudio" class="filehide"/>
-                        <input type="hidden" id="file_btnAutoAudio_path"/>
-                    </div>
-                </div>
-                <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
-            </div>
-            <!-- setting btns end -->
+      </div>
+    </div>
+    <div class="setting-diandu">
+      <div class="baseinfo-title">
+        <span>点读页创建</span>
+        <div class="setting-diandu-icon" id="pointSetting"><i class="fa fa-cog" aria-hidden="true"></i></div>
+      </div>
+      <!-- TODO:多个点读页 -->
+      <!-- 点读页集合 START -->
+      <div id="id_diandupages" class="diandupages">
+      </div>
+      <!-- 点读页集合 END -->
+      <!-- setting btns start -->
+      <div class="setting-btns">
+        <div class="setting-btn" id="btnAdd">新增点读页</div>
+        <div style="margin: 25px 0;">
+          <div class="setting-title" style="width: 100%;">自动播放时的音乐设置(可选)</div>
+          <div class="setting-btn-autovideo" id="btnAutoAudio">
+            <span>点击上传自动播放时的背景音乐(MP3格式)</span>
+            <input type="file" id="file_btnAutoAudio" class="filehide"/>
+            <input type="hidden" id="file_btnAutoAudio_path"/>
+          </div>
         </div>
-    </section>
-    <!-- setting end -->
+        <div class="setting-btn setting-btn-last" id="btnSubmit">提交</div>
+      </div>
+      <!-- setting btns end -->
+    </div>
+  </section>
+  <!-- setting end -->
 </div>
 <!--创建考试-->
 <div id="_examCreate"></div>
 <!--点读点大小设置-->
 <div id="dianduPointSetting"></div>
 
-<!--全局音频设置-->
-<div id="globalAudioSetting"></div>
-
+<!--点读点大小设置-->
+<div id="globalAudioSetting" style="display: none;"></div>
 <!--自定义点读点-->
 <div id="customPointSetting" style="display: none;"></div>
-
 <!--上传文件类型选择，显示隐藏，删除 模版 START-->
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
@@ -302,13 +300,13 @@ if ($id > 0) {
       </div>
       <div class="upload-right-btn">
         <ul data-id="{{id}}" data-index="{{index}}">
-            <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
-            <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
-            <li title="删除" class="img-delete" data-type="delete"></li>
-            <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
-            <li title="设置全程音频" class="img-global-audio-setting"
-                data-type="global-audio-setting"
-                style="display:none"></li>
+          <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
+          <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+          <li title="删除" class="img-delete" data-type="delete"></li>
+          <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
+          <li title="设置全程音频" class="img-global-audio-setting"
+              data-type="global-audio-setting"
+              style="display:none"></li>
         </ul>
       </div>
     </div>
@@ -317,41 +315,41 @@ if ($id > 0) {
 <!--上传文件类型选择，显示隐藏，删除 模版 END-->
 <!--背景图模板 START-->
 <script id="tpl_bg" type="text/x-handlebars-template">
-    <hr/>
-    <div class="diandupageitem" data-index="{{index}}">
-        <div class="setting-bigimg">
-            <div class="setting-bigimg-header">
-                <div class="sort-info">
-                    <span class="sort">{{index}}</span>
-                    <span class="filename"></span>
-                </div>
-                <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg"/>
-                <span class="h-tip">横屏背景图比例 16:9</span>
-                <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
-                <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
-                <ul class="bigimg-h">
-                    <li class="down hide"></li>
-                    <li class="up hide"></li>
-                    <li class="hide1 hide"></li>
-                    <li class="show1" style="display:none;"></li>
-                    <li class="del"></li>
-                </ul>
-            </div>
-            <div style="{{style}}" class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
-                <div class="_mask"></div>
-                <div class="diandu-img btn_start" style="display:none;"></div>
-                <div class="setting-bigimg-tip-h bigimg-tip">
-                    <h3>提示</h3>
-                    <p style="font-size:16px">手机横屏比例为16:9，对应像素通常为1920*1080。建议上传小于此分辨率的图片作为背景图</p>
-                    <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a
-                        选择一个文件夹下的所有图片)
-                    <p/>
-                </div>
-            </div>
+  <hr/>
+  <div class="diandupageitem" data-index="{{index}}">
+    <div class="setting-bigimg">
+      <div class="setting-bigimg-header">
+        <div class="sort-info">
+          <span class="sort">{{index}}</span>
+          <span class="filename"></span>
         </div>
-        <ul class="setting-upload" id="uploadSetting{{index}}">
+        <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg"/>
+        <span class="h-tip">横屏背景图比例 16:9</span>
+        <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
+        <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
+        <ul class="bigimg-h">
+          <li class="down hide"></li>
+          <li class="up hide"></li>
+          <li class="hide1 hide"></li>
+          <li class="show1" style="display:none;"></li>
+          <li class="del"></li>
         </ul>
+      </div>
+      <div style="{{style}}" class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
+        <div class="_mask"></div>
+        <div class="diandu-img btn_start" style="display:none;"></div>
+        <div class="setting-bigimg-tip-h bigimg-tip">
+          <h3>提示</h3>
+          <p style="font-size:16px">手机横屏比例为16:9，对应像素通常为1920*1080。建议上传小于此分辨率的图片作为背景图</p>
+          <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a
+            选择一个文件夹下的所有图片)
+          <p/>
+        </div>
+      </div>
     </div>
+    <ul class="setting-upload" id="uploadSetting{{index}}">
+    </ul>
+  </div>
 </script>
 <!--背景图模板 END -->
 <!--lib-->
@@ -382,7 +380,7 @@ if ($id > 0) {
 <script src="js/components/pointsetting/PointSetting.js"></script>
 <script src="js/components/number/CNumber.js"></script>
 <script src="js/components/globalaudio/GlobalAudio.js"></script>
-<script src="js/components/custompointsetting/CustomPointSetting.js"></script>
+<script src="js/components/custompointsetting/CustomPointSetting.new.js"></script>
 <script src="js/page/create/CreatePoint/CreatePoint.js"></script>
 
 <script src="js/index.js"></script>

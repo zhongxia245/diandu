@@ -18,6 +18,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
   <title>点读展示</title>
+  <link rel="stylesheet" href="css/font-awesome.min.css"/>
   <link rel="stylesheet" href="js/lib/frozen/css/frozen.css"/>
   <link rel="stylesheet" href="js/lib/modal/css/style.css">
   <link rel="stylesheet" href="css/show.css">
@@ -154,9 +155,9 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  //    window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<script src="js/util/log.js"></script>
+<script src="js/util/log.js?v=20160902"></script>
 <script src="js/lib/zepto.js?vvv=20160628"></script>
 <script src="js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
@@ -180,10 +181,11 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/components/examcomment/ExamComment.js"></script>
 <script src="js/page/show/globalAudio.js"></script>
 <script src="js/page/show/pointOpacity.js"></script>
-<script src="js/page/create/CreatePoint/CreatePoint.js"></script>
+<script src="js/page/create/CreatePoint/CreatePoint.js?version=20160902"></script>
 <script src="js/page/show/playVideo.js"></script>
+<!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
-<script src="js/show.js?version=20160818"></script>
+<script src="js/show.js?version=20160903"></script>
 <script>
   $(function () {
     var _isDebug = Util.getQueryStringByName('debug');
