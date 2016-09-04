@@ -1,12 +1,12 @@
 /**
- * 播放视频的类
- * TODO: 在移动端, video 播放之后,会放在最上面,导致 关闭按钮无法点击到, 需要找解决方案
+ * 播放 频的类
+ * TODO: 在移动端, video 播放之后,会放在最上面,导致 关闭按钮无法点击到, 需 找 决方案
  */
 window.PlayVideo = (function (Util) {
   var click = Util.IsPC() ? 'click' : 'tap';
 
   /**
-   * 渲染HTML页面
+   *  染HTML页面
    * @param src
    * @returns {string}
    */
@@ -16,27 +16,32 @@ window.PlayVideo = (function (Util) {
     html.push('  <div class="vc-close">&times;</div>')
     html.push('  <i class="fa fa-arrows-alt vc-fullpanel" aria-hidden="true"></i>')
     html.push('  <img class="vc-play" src="./imgs/play.png">')
-    html.push(' <div class="vc-video" ><video data-src="' + src + '" </video></div>')
+    html.push(' <div class="vc-video" ><video  controls data-src="' + src + '" </video></div>')
     html.push('</div>')
     return html.join('')
   }
 
   /**
-   * 把字符串数字转换成数字+px,并且按比例缩小
-   * @param strNum
+   * 把字符串数字 换成数字+px,并且按 例缩小
+   * @param strNum 大小
+   * @param num 修正竖屏下位置问题[创建的时候,背景图是横屏的, 因此在展示时竖屏有问题]
    */
-  function _str2Num(strNum) {
+  function _str2Num(strNum, num) {
+    num = num || 0;
     var size = parseInt(strNum);
-    size = size * window.screen.width / 1200;
+    //移动端,则把视频播放区域,按屏幕大小缩放
+    if (!Util.IsPC()) {
+      size = size * window.screen.width / 1200 + num;
+    }
     return size + 'px';
   }
 
   /**
-   * 视频播放
-   * @param src 视频地址
-   * @param config 视频展示配置, 宽高,xy
+   *  频播放
+   * @param src  频地址
+   * @param config  频展示 置, 宽高,xy
    */
-  function show(src, config) {
+  function show(src, config, wrapTop) {
     var _videoLoading;
 
     $('.video-container[data-id="__videoContainer"]').remove();
@@ -55,7 +60,7 @@ window.PlayVideo = (function (Util) {
       //$hide.css({transform: 'scale(' + _scale + ')'})
       $container.css({
         left: _str2Num(config.x),
-        top: _str2Num(config.y),
+        top: _str2Num(config.y, wrapTop),
         width: _str2Num(config.w),
         height: _str2Num(config.h),
       })

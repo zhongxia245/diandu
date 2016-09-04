@@ -665,4 +665,5 @@ ul, li {
   color: red;
   top: 40px;
   font-size: 25px;
+  cursor: pointer;
 }

@@ -233,6 +233,8 @@ function init() {
       setTimeout(function () {
         fn_onResize();
         window._load.loading("hide");
+
+        diandu.blink(0);
       }, 100)
       Logger.info("展示页数据:", data)
     })
@@ -270,7 +272,7 @@ function initDiandu(data) {
 }
 
 /**
- * 渲染之后,对页面进行一些操作
+ * 渲染之后,对页面进 一些操作
  * eg: 是否显示背景音乐按钮,是否显示全程音频按钮, 位置样式调整等
  */
 function afterRenderOp(data) {
@@ -410,7 +412,7 @@ function setScale(selector, size) {
 
 /**
  * [DO: 这个地方 必须初始化, 否则 切换 横竖屏的时候, swiper 每一个页 不占满屏幕]
- * 解决: 使用 swiper.onResize();
+ *  决: 使用 swiper.onResize();
  * 初始化左右滑动的插件
  * @return {[type]} [description]
  */
@@ -436,8 +438,12 @@ function initSwipe() {
       fade: {
         crossFade: true,
       },
-      onTransitionEnd: function (swiper) {
+      onTransitionEnd: function (swiper) {  //没有切换到另外一个点读页也会触发
+        //切换了点读页
         if (GLOBAL.CurrentPageIndex !== swiper.activeIndex) {
+          //添加点读点闪烁效果
+          diandu.blink(swiper.activeIndex);
+
           Logger.info("页面跳转到第:", swiper.activeIndex, " 页")
           GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
@@ -457,21 +463,7 @@ function initSwipe() {
             window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
           }
         }
-      },
-      //onSlideChangeEnd: function (swiper) {  //使用fade过度效果, 不是每次都触发
-      //  console.log("onSlideChangeEnd", swiper.activeIndex)
-      //  Logger.info("页面跳转到第:", swiper.activeIndex, " 页")
-      //  $('#id_pagination_cur').text(swiper.activeIndex + 1);
-      //
-      //  var _$thumbsSwipers = $('#thumbs>div[data-id]');
-      //  _$thumbsSwipers.removeClass('swiper-slide-active-custom');
-      //  _$thumbsSwipers.eq(swiper.activeIndex).addClass('swiper-slide-active-custom')
-      //
-      //  //播放到最后一个,停止自动播放
-      //  if (swiper.activeIndex + 1 === window.DATA['pages'].length) {
-      //    window.silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
-      //  }
-      //},
+      }
     });
 
     window.galleryThumbs = new Swiper('.gallery-thumbs', {
@@ -690,7 +682,7 @@ function initGlobalAudio(data) {
 }
 
 /**
- * 获取点读点的缩放比例
+ *  取点读点的缩放比例
  * 1. 创建时 横图 宽 1200  ==> 点读点 72px
  *          竖图 高 675   ==> 点读点 72px
  * 这里按比例缩放
@@ -758,7 +750,7 @@ function initThumbs(id, pages) {
 }
 
 /**
- * 生成点读位【根据类别使用不同的图标,目前只有 视频,音频,图文】
+ * 生成点读位【根据类别使用不同的图标,目前只有  频,音频,图文】
  * @param data 点读点集合数据
  * @param imgW 图片缩放后的宽
  * @param imgH 图片缩放后的高
@@ -850,7 +842,7 @@ function initVideo() {
 }
 
 /**
- * 为了解决移动端播放音频需要加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
+ * 为了 决移动端播放音频需 加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
  * @param audio
  */
 function audioPlay(audio, e, url) {
@@ -986,7 +978,7 @@ function triggerBouncyNav($bool) {
 }
 
 /**
- * 隐藏音频和视频，并且关闭播放
+ * 隐 音频和 频，并且关闭播放
  * @param flag 是否关闭自动播放
  */
 function closeVideoOrAudio(flag) {
@@ -1111,7 +1103,7 @@ function bindEvent() {
   })
 
   /**
-   * 关闭视频播放
+   * 关闭 频播放
    */
   function closeVideo() {
     triggerBouncyNav(false);
@@ -1122,7 +1114,7 @@ function bindEvent() {
 
 
   /**
-   * 视频遮罩层关闭菜单
+   *  频遮罩层关闭 单
    */
   $('.cd-bouncy-nav-modal .cd-close').off().on(click, function () {
     closeVideo();
@@ -1130,7 +1122,7 @@ function bindEvent() {
 
 
   /**
-   * 点击空白处,关闭视频播放窗口
+   * 点击空白处,关闭 频播放窗口
    */
   $('.cd-bouncy-nav-modal').off().on(click, function (event) {
     if ($(event.target).hasClass('cd-bouncy-nav-modal')) {
@@ -1153,7 +1145,14 @@ function bindEvent() {
     if (pointData.area) {
       area = JSON.parse(pointData.area);
     }
-    PlayVideo.show(url, area);
+
+    //点读点容器的高度
+    var wrapH = $cTar.parents('.wrap').height();
+    var wrapTop = 0;
+    if (!Util.IsPC()) {
+      wrapTop = (screen.height - wrapH) / 2;
+    }
+    PlayVideo.show(url, area, wrapTop);
 
     return false;
 
