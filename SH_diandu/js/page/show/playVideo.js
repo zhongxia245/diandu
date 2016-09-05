@@ -58,12 +58,28 @@ window.PlayVideo = (function (Util) {
       var _scale = window.screen.width / 1200;
       $playImg.css({transform: 'scale(' + _scale + ')'})
       //$hide.css({transform: 'scale(' + _scale + ')'})
+
+      var _left = parseFloat(config.x) * window.screen.width;
+      var _top = parseFloat(config.y || 0) * window.screen.height;
+
+      //竖屏[TODO:有BUG， 需要跟点读点位置一样的算法判断]
+      if (window.screen.height > window.screen.width) {
+        _top = parseFloat(config.y || 0) * (window.screen.height - 2 * wrapTop) + wrapTop;
+      }
+
       $container.css({
-        left: _str2Num(config.x),
-        top: _str2Num(config.y, wrapTop),
+        left: _left + 'px',
+        top: _top + 'px',
         width: _str2Num(config.w),
         height: _str2Num(config.h),
       })
+
+      //$container.css({
+      //  left: _str2Num(_left),
+      //  top: _str2Num(_top, wrapTop),
+      //  width: _str2Num(config.w),
+      //  height: _str2Num(config.h),
+      //})
     }
 
     $video.on('canplaythrough', function () {

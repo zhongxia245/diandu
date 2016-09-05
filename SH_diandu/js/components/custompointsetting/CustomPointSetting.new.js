@@ -46,6 +46,7 @@ function CustomPointSetting(selector, config) {
   this.data = {};
   this.data.area = this.data.area || {};
 
+
   //自定义视频播放  背景图大小,宽高
   this.data.bgPic = config.bgPic || {};
 
@@ -68,7 +69,14 @@ function CustomPointSetting(selector, config) {
 
   this.submitCallback = config.submitCallback;    //关闭页面的回调
 
-  this.bgPath = this.data.bgPic.pic; //'./uploads/0d1f57cf949021538d75198a3bf15a51.jpg';
+
+  //视频播放区域,放背景图片的宽高位置
+  this.bgAreaWH = {
+    w: 480,
+    h: 270
+  }
+
+  this.bgPath = this.data.bgPic.pic; //背景图片地址
   this.isRelate = true; //宽高是否关联
 
   this.whScale = (this.data.pointData.w / this.data.pointData.h) || 1;
@@ -368,11 +376,18 @@ CustomPointSetting.prototype.bindEvent = function () {
     if (that.$inputWidth.val()) {
       that.data.area.w = that.$inputWidth.val();
       that.data.area.h = that.$inputHeight.val();
+
+      //在480px 下的位置
       that.data.area.x = that.$videoLocation.css('left').replace('px', '');
       that.data.area.y = that.$videoLocation.css('top').replace('px', '');
+
+      //转换成比例保存起来
+      that.data.area.x = parseInt(that.data.area.x) / that.bgAreaWH.w;
+      that.data.area.y = parseInt(that.data.area.y) / that.bgAreaWH.h;
     } else {
       that.data.area = {};
     }
+    console.log("that.data", that.data)
     //是否编辑了数据
     var isEdit = !!(that.data.title.title || that.data.pic.src || that.data.area.w);
 
@@ -422,8 +437,8 @@ CustomPointSetting.prototype.initData = function () {
     if (_area.w) {
       var _w = _area.w;
       var _h = _area.h;
-      var _x = _area.x;
-      var _y = _area.y;
+      var _x = _area.x * this.bgAreaWH.w;
+      var _y = _area.y * this.bgAreaWH.h;
 
       this.$inputWidth.val(_w);
       this.$inputHeight.val(_h).attr('disabled', true);
