@@ -10,14 +10,14 @@
  ***************************************************/
 
 window.diandu = (function (dd) {
-  var duration = 100;  //ms
+  var duration = 300;  //ms
   var size = 10; //默认大小为10
-  var maxSize = 80;  //闪烁圆的最大半径
+  var maxSize = 50;  //闪烁圆的最大半径
   var minSize = 10;  //最小半径
   var shadowColor = 'red'; //闪烁背景的颜色
   var gap = 10; //每次变动大小
   var flag = true; //true: 大小自增  false:大小减小
-  var showTime = 3000; //闪烁时间  ms
+  var showTime = 100000000; //闪烁时间  ms
   var timer;  //定时器
   var tempTime = 0;
 
