@@ -13,8 +13,8 @@ window.PlayVideo = (function (Util) {
   function _render(src) {
     var html = [];
     html.push('<div data-id="__videoContainer" class="video-container">')
-    html.push('  <div class="vc-close">&times;</div>')
-    html.push('  <i class="fa fa-arrows-alt vc-fullpanel" aria-hidden="true"></i>')
+    html.push('  <div class="vc-btn-close">&times;</div>')
+    html.push('  <i class="fa fa-arrows-alt vc-btn-fullpanel" aria-hidden="true"></i>')
     html.push('  <img class="vc-play" src="./imgs/play.png">')
     html.push(' <div class="vc-video" ><video  controls data-src="' + src + '" </video></div>')
     html.push('</div>')
@@ -43,6 +43,8 @@ window.PlayVideo = (function (Util) {
    */
   function show(src, config, wrapTop) {
     var _videoLoading;
+    var _left;
+    var _top;
 
     $('.video-container[data-id="__videoContainer"]').remove();
     var html = _render(src);
@@ -50,21 +52,29 @@ window.PlayVideo = (function (Util) {
     $('body').append(html);
     var $container = $('.video-container[data-id="__videoContainer"]');
     var $playImg = $container.find('.vc-play');
-    var $hide = $container.find('.vc-close');
+    var $hide = $container.find('.vc-btn-close');
     var $video = $container.find('video');
-    var $fullpanel = $container.find('.vc-fullpanel')
+    var $fullpanel = $container.find('.vc-btn-fullpanel')
 
     if (config) {
       var _scale = window.screen.width / 1200;
       $playImg.css({transform: 'scale(' + _scale + ')'})
       //$hide.css({transform: 'scale(' + _scale + ')'})
 
-      var _left = parseFloat(config.x) * window.screen.width;
-      var _top = parseFloat(config.y || 0) * window.screen.height;
+      //PC端,背景图片宽度1200,高度675
+      if (Util.IsPC()) {
+        _left = parseFloat(config.x) * 1200;
+        _top = parseFloat(config.y || 0) * 675;
+      }
+      //移动端,区分横竖屏
+      else {
+        _left = parseFloat(config.x) * window.screen.width;
+        _top = parseFloat(config.y || 0) * window.screen.height;
 
-      //竖屏[TODO:有BUG， 需要跟点读点位置一样的算法判断]
-      if (window.screen.height > window.screen.width) {
-        _top = parseFloat(config.y || 0) * (window.screen.height - 2 * wrapTop) + wrapTop;
+        //竖屏[TODO:有BUG， 需要跟点读点位置一样的算法判断]
+        if (window.screen.height > window.screen.width) {
+          _top = parseFloat(config.y || 0) * (window.screen.height - 2 * wrapTop) + wrapTop;
+        }
       }
 
       $container.css({
@@ -119,16 +129,25 @@ window.PlayVideo = (function (Util) {
 
     //全屏
     $fullpanel.on(click, function () {
-      var elem = $video[0];
-      if (!elem.paused) {
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) {
-          elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) {
-          elem.webkitRequestFullscreen();
-        }
+
+      if ($container.hasClass('vc-fullpanel')) {
+        $container.removeClass('vc-fullpanel')
+      } else {
+        $container.addClass('vc-fullpanel')
       }
+
+
+      //存在兼容性,有的移动端浏览器不能全屏
+      //var elem = $video[0];
+      //if (!elem.paused) {
+      //  if (elem.requestFullscreen) {
+      //    elem.requestFullscreen();
+      //  } else if (elem.mozRequestFullScreen) {
+      //    elem.mozRequestFullScreen();
+      //  } else if (elem.webkitRequestFullscreen) {
+      //    elem.webkitRequestFullscreen();
+      //  }
+      //}
     })
 
     Util.touchDrag('.video-container[data-id="__videoContainer"]', function (evt, x, y) {
