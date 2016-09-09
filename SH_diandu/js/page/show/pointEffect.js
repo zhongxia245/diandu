@@ -10,27 +10,25 @@
  ***************************************************/
 
 window.diandu = (function (dd) {
-  var duration = 150;  //ms
-  var size = 10; //默认大小为10
-  var maxSize = 50;  //闪烁圆的最大半径
-  var minSize = 10;  //最小半径
-  var shadowColor = 'red'; //闪烁背景的颜色
-  var gap = 5; //每次变动大小
-  var flag = true; //true: 大小自增  false:大小减小
-  var showTime = 4800; //闪烁时间  ms
-  var timer;  //定时器
-  var tempTime = 0;
 
-  var playTimer;
+  var timer;  //定时器
+  var playTimer; //播放定时器
 
   /**
    * 闪烁效果
    * @param pageIndex  当前的点读页下标
    */
   dd.blink = function (pageIndex) {
-
-    //所有的点读点
-    var $point = $('#_diandu' + pageIndex).find('[data-id="all-radius"]>div')
+    var duration = 150;  //ms
+    var size = 10; //默认大小为10
+    var maxSize = 50;  //闪烁圆的最大半径
+    var minSize = 10;  //最小半径
+    var shadowColor = 'red'; //闪烁背景的颜色
+    var gap = 5; //每次变动大小
+    var flag = true; //true: 大小自增  false:大小减小
+    var showTime = 4800; //闪烁时间  ms
+    var tempTime = 0;
+    var $point = $('#_diandu' + pageIndex).find('[data-id="all-radius"]>div')  //所有的点读点
     timer = setInterval(function () {
 
       if (tempTime >= showTime) { //清除定时器和清除效果
@@ -78,13 +76,14 @@ window.diandu = (function (dd) {
     var style = $selector.css('-webkit-filter') || $selector.css('filter');
     //-webkit-filter: drop-shadow(rgb(255, 255, 11) 0px 0px 5px);
     $selector.attr('data-filter', style);
-    var tmpStyle = style.substr(0, style.length - 4);
+    var tmpStyle = style.substr(0, style.length - 4) + ' ';
 
     var size = 5;
-    var maxSize = 13;
+    var maxSize = 15;
     var minSize = 1;
     var gap = 1;
     var duration = 200;
+    var flag = true;
 
     playTimer = setInterval(function () {
       //if (!$selector.hasClass('custom-point-play')) {
