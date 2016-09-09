@@ -21,6 +21,8 @@ window.diandu = (function (dd) {
   var timer;  //定时器
   var tempTime = 0;
 
+  var playTimer;
+
   /**
    * 闪烁效果
    * @param pageIndex  当前的点读页下标
@@ -57,6 +59,59 @@ window.diandu = (function (dd) {
         $point.css(style)
       }
     }, duration)
+  }
+
+  /**
+   * 自定义图片闪烁效果
+   * @param $selector 需要动画的节点
+   * @param show 是否开启 true 有动画   false 关闭动画
+   */
+  dd.customPlay = function ($selector, show) {
+    if (show) {
+      dd._play($selector)
+    } else {
+      dd._hide($selector);
+    }
+  }
+
+  dd._play = function ($selector) {
+    var style = $selector.css('-webkit-filter') || $selector.css('filter');
+    //-webkit-filter: drop-shadow(rgb(255, 255, 11) 0px 0px 5px);
+    $selector.attr('data-filter', style);
+    var tmpStyle = style.substr(0, style.length - 4);
+
+    var size = 5;
+    var maxSize = 10;
+    var minSize = 1;
+    var gap = 1;
+    var duration = 200;
+
+    playTimer = setInterval(function () {
+      //if (!$selector.hasClass('custom-point-play')) {
+      //  $selector.addClass('custom-point-play')
+      //}
+      //闪烁到最大则变小,到最小则变大
+      if (size >= maxSize) {
+        flag = false;
+      }
+      if (size <= minSize) {
+        flag = true
+      }
+      if (flag) {
+        size += gap;
+      } else {
+        size -= gap;
+      }
+      var css = tmpStyle + size + 'px)';
+      $selector.css({'-webkit-filter': css, filter: css})
+    }, duration)
+  }
+
+  dd._hide = function ($selector) {
+    clearTimeout(playTimer)
+    var css = $selector.attr('data-filter');
+    $selector.css({'-webkit-filter': css, filter: css})
+    //$selector.removeClass('custom-point-play')
   }
 
   return dd;

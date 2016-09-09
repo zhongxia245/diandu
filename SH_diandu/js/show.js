@@ -852,27 +852,20 @@ function audioPlay(audio, e, url) {
   if ($cTar.attr('isLoad')) {//音频加载结束
     Logger.info("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
-    $cTar.attr('data-play', true)
-    $cTar.find('.audio-play').show();
-    $cTar.find('.audio-load').hide();
+    if ($cTar.attr('data-type') === 'pointImg') {
+      diandu.customPlay($cTar, true)
+    } else {
+      $cTar.attr('data-play', true)
+      $cTar.find('.audio-play').show();
+      $cTar.find('.audio-load').hide();
+    }
   }
   else {
     Logger.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
     //音频还未加载
     if ($cTar.attr('data-type') === 'pointImg') {
       //TODO:增加自定义图片播放音频时发光的效果
-      //setInterval(function () {
-      //  if ($cTar.attr('data-loadStyle')) {
-      //    var loadStyle = $cTar.css('filter') || $cTar.css('-webkit-filter');
-      //    $cTar.attr('loadStyle', loadStyle);
-      //    var dropFilter = "drop-shadow(0px 0px 20px red)";
-      //    $cTar.css({'filter': dropFilter, '-webkit-filter': dropFilter})
-      //  } else {
-      //    var loadStyle = $cTar.css('filter') || $cTar.css('-webkit-filter');
-      //    $cTar.css({'filter': loadStyle, '-webkit-filter': loadStyle})
-      //    $cTar.attr('loadStyle', '');
-      //  }
-      //}, 500)
+      diandu.customPlay($cTar, true)
     } else {
       $cTar.find('.audio-load').show();
       $cTar.find('.audio-play').hide();
@@ -935,6 +928,8 @@ function playOrPaused(e, isGlobalAudio, pointData) {
       Logger.info("全程音频暂停播放")
     } else {
       window.audio.pause();
+      diandu.customPlay($cTar, false)
+
       Logger.info("音频点读点暂停播放,开始播放背景音乐定时器!")
       GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
     }

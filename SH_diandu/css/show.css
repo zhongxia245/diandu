@@ -690,3 +690,27 @@ ul, li {
 }
 
 /*全屏 END*/
+
+/*定义一个动画效果*/
+@-webkit-keyframes rainbow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes rainbow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.custom-point-play {
+  -webkit-animation: 2s rainbow infinite ease-out;
+  animation: 2s rainbow infinite ease-out;
+}
