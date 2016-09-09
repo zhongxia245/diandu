@@ -81,7 +81,7 @@ window.diandu = (function (dd) {
     var tmpStyle = style.substr(0, style.length - 4);
 
     var size = 5;
-    var maxSize = 10;
+    var maxSize = 13;
     var minSize = 1;
     var gap = 1;
     var duration = 200;
