@@ -76,7 +76,7 @@ window.CreatePoint = (function () {
         break;
       //展示页面  自定义图片
       case 5:
-        html = initMCustomImgPoint(pointId, style, pic, className, scale)
+        html = initMCustomImgPoint(pointId, style, pic, className, outHTML, scale)
         break;
       default:
         html = initCustomImgPoint(pointId, pointIndex, style);
@@ -182,7 +182,7 @@ window.CreatePoint = (function () {
    * [展示页面,移动端]生成自定义图片的point
    * @param outClassName 外部传进来的样式
    */
-  function initMCustomImgPoint(pointId, style, pic, outClassName, scale) {
+  function initMCustomImgPoint(pointId, style, pic, outClassName, outHTML, scale) {
     var html = [];
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
     style += 'border-radius:0;background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
@@ -203,7 +203,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>');
+    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '">' + outHTML + '</div>');
     return html.join('');
   }
 

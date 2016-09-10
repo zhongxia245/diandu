@@ -785,19 +785,23 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var left = parseFloat(pointDatas[i].x) * imgW;
       var top = parseFloat(pointDatas[i].y) * imgH;
       var type = pointDatas[i]['type'];
+      //自定义图片
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
-      var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")  //TODO:等新增保存字段,替换掉
+      //自定义标题
+      var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")
 
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
       var mediaImg = "";
+      var loadImg = "";
       switch (type) {
         case "1": //视频
           mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
           break;
         case "2": //音频
           mediaImg = '    <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
-          mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
+          loadImg = '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
+          mediaImg += loadImg;
           mediaImg += '  <img  class="audio-global-play" style="display:none;border-radius: 50%; width: 100%; height: 100%;" src="imgs/global_audio/global-audio-other-page-on.gif" alt="audio">'
           break;
       }
@@ -813,9 +817,13 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           className: classNames[type],
           outHTML: mediaImg
         }
+        //自定义图片
         if (pic.src) {
+          config.outHTML = loadImg;
           html += CreatePoint.initPoint(5, config)
-        } else {
+        }
+        //自定义点读点
+        else {
           html += CreatePoint.initPoint(4, config)
         }
       }
@@ -828,6 +836,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
     }
   }
   html += '</div>'
+
   return html;
 }
 
@@ -848,7 +857,6 @@ function initVideo() {
 function audioPlay(audio, e, url) {
   var $cTar = $(e.currentTarget);
 
-  //TODO:在移动端下 有兼容性问题
   if ($cTar.attr('isLoad')) {//音频加载结束
     Logger.info("已经加载结束...,audio.volume:", audio.volume)
     audio.play();
@@ -857,15 +865,16 @@ function audioPlay(audio, e, url) {
     } else {
       $cTar.attr('data-play', true)
       $cTar.find('.audio-play').show();
-      $cTar.find('.audio-load').hide();
     }
+    $cTar.find('.audio-load').hide();
   }
   else {
     Logger.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
     //音频还未加载
     if ($cTar.attr('data-type') === 'pointImg') {
-      //TODO:增加自定义图片播放音频时发光的效果
-      diandu.customPlay($cTar, true)
+      //diandu.customPlay($cTar, true)
+      $cTar.find('.audio-load').show();
+      $cTar.css('background-size', '0')
     } else {
       $cTar.find('.audio-load').show();
       $cTar.find('.audio-play').hide();
@@ -888,6 +897,8 @@ function audioPlay(audio, e, url) {
         $cTar.find('.audio-load').hide();
         $cTar.find('.audio-play').show();
         $cTar.css('background-size', '100%')
+        diandu.customPlay($cTar, true)
+
         audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
         audio.play();
 

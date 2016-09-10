@@ -155,7 +155,6 @@ window.diandu = (function (dd) {
   dd._hide = function ($selector) {
     clearTimeout(playTimer)
     var css = $selector.attr('data-filter');
-    console.log("css", css)
     $selector.css({'-webkit-filter': css, filter: css})
     //$selector.removeClass('custom-point-play')
   }
