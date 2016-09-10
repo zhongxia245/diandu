@@ -79,8 +79,10 @@ window.diandu = (function (dd) {
       if (tempTime >= showTime) { //清除定时器和清除效果
         clearTimeout(timer)
         tempTime = 0;
-        var css = $point.attr('data-filter');
-        $point.css({'-webkit-filter': css, filter: css});
+        for (var i = 0; i < $point.length; i++) {
+          var css = $point.eq(i).attr('data-filter');
+          $point.eq(i).css({'-webkit-filter': css, filter: css});
+        }
       }
       else { //记录闪烁时间
         tempTime += duration;
