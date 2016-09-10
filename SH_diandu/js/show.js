@@ -985,6 +985,14 @@ function closeVideoOrAudio(flag) {
   $('.m-audio').css('background-size', '100%')
   window.audio.src = '';
 
+  //清除闪烁
+  var $customImgs = $('[data-type="pointImg"]');
+  for (var i = 0; i < $customImgs.length; i++) {
+    var $customImg = $($customImgs[i]);
+    diandu.customPlay($customImg, false);
+  }
+
+
   //停止视频
   window.video.pause();
   var $video = $('.m-video-size');
@@ -1179,13 +1187,14 @@ function bindEvent() {
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
     //关闭视频,并且设置所有的 音频为默认图标状态
-    closeVideoOrAudio(true);
+    closeVideoOrAudio(true, $cTar);
 
     var timer = setInterval(function () {
       //播放结束, 则清除 正在播放的图片
       if (window.audio.ended) {
         $cTar.find('img').hide();
         window.clearInterval(timer);
+        diandu.customPlay($cTar, false)
 
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();

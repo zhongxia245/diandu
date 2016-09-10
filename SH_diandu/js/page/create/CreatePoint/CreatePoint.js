@@ -185,7 +185,6 @@ window.CreatePoint = (function () {
   function initMCustomImgPoint(pointId, style, pic, outClassName, scale) {
     var html = [];
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
-
     style += 'border-radius:0;background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
@@ -204,7 +203,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>');
+    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '"></div>');
     return html.join('');
   }
 
