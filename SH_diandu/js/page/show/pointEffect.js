@@ -61,22 +61,24 @@ window.diandu = (function (dd) {
 
   /**
    * 闪烁效果[发光效果,针对透明图片]
+   * 提示时间为2秒，闪烁3个来回，头两个为0.5秒，最后一个为1秒
    * @param pageIndex  当前的点读页下标
    */
   dd.blink = function (pageIndex) {
-    var duration = 200;  //ms
+    var duration = 250;  //ms
     var size = 5; //默认大小为10
     var maxSize = 15;  //闪烁圆的最大半径
     var minSize = 5;  //最小半径
     var shadowColor = 'red'; //闪烁背景的颜色
-    var gap = 5; //每次变动大小
+    var gap = 10; //每次变动大小
     var flag = true; //true: 大小自增  false:大小减小
-    var showTime = 1500; //闪烁时间  ms
+    var showTime = 2000; //闪烁时间  ms
     var tempTime = 0;
     var $point = $('#_diandu' + pageIndex).find('[data-id="all-radius"]>div')  //所有的点读点
     timer = setInterval(function () {
 
-      if (tempTime >= showTime) { //清除定时器和清除效果
+      //闪烁结束
+      if (tempTime >= showTime) {
         clearTimeout(timer)
         tempTime = 0;
         for (var i = 0; i < $point.length; i++) {
@@ -84,8 +86,14 @@ window.diandu = (function (dd) {
           $point.eq(i).css({'-webkit-filter': css, filter: css});
         }
       }
-      else { //记录闪烁时间
+      else {
+        
         tempTime += duration;
+
+        //最后一次闪烁1s
+        if (tempTime >= showTime / 2) {
+          gap = 5;
+        }
 
         //闪烁到最大则变小,到最小则变大
         if (size >= maxSize) {
@@ -94,6 +102,7 @@ window.diandu = (function (dd) {
         if (size <= minSize) {
           flag = true
         }
+
         if (flag) {
           size += gap;
         } else {

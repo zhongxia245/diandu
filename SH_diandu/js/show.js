@@ -793,15 +793,13 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
       var mediaImg = "";
-      var loadImg = "";
       switch (type) {
         case "1": //视频
           mediaImg = '   <img  style="display:none; width:100%;height:100%;" src="imgs/video_on.png" alt="video" />';
           break;
         case "2": //音频
           mediaImg = '    <img  class="audio-play" style="display:none; border-radius:50%;width:100%;height:100%" src="imgs/audio.gif" alt="audio" />';
-          loadImg = '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
-          mediaImg += loadImg;
+          mediaImg += '   <img  class="audio-load" style="display:none; border-radius:50%;width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
           mediaImg += '  <img  class="audio-global-play" style="display:none;border-radius: 50%; width: 100%; height: 100%;" src="imgs/global_audio/global-audio-other-page-on.gif" alt="audio">'
           break;
       }
@@ -819,6 +817,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         }
         //自定义图片
         if (pic.src) {
+          var loadImg = '   <img  class="audio-load" style="display:none;" src="imgs/load.gif" alt="audio" />';
           config.outHTML = loadImg;
           html += CreatePoint.initPoint(5, config)
         }
