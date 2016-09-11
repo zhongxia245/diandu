@@ -203,7 +203,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="create-point-img ' + outClassName + '">' + outHTML + '</div>');
+    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="content-center create-point-img ' + outClassName + '">' + outHTML + '</div>');
     return html.join('');
   }
 
