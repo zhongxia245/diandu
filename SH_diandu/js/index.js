@@ -1442,6 +1442,7 @@ function fileTypeItemClick(e) {
         //如果是视频点读点,则获取视频的宽高
         if (data.fileType === 'video') {
           Util.getVideoWH(fileSrc, function (obj) {
+            console.log("Audio", obj)
             _data.setDDItems(_dataid, {
               url: fileSrc,
               filename: file.name,

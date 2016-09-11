@@ -30,7 +30,6 @@
   };
 
   ImagesZoom.prototype = {
-    // 缁欏垵濮嬪寲鏁版嵁
     init: function (param) {
       var self = this;
       var params = param || {};
@@ -52,9 +51,9 @@
       var zoomClose = document.querySelector(".imgzoom_pack .imgzoom_x");
       var imgSrc = "";
 
-      self.buffMove = 3; //缂撳啿绯绘暟
-      self.buffScale = 2; //鏀惧ぇ绯绘暟
-      self.finger = false; //瑙︽懜鎵嬫寚鐨勭姸鎬� false锛氬崟鎵嬫寚 true锛氬鎵嬫寚
+      self.buffMove = 3;
+      self.buffScale = 2;
+      self.finger = false;
 
       self._destroy();
 
@@ -65,9 +64,11 @@
 
         self._destroy();
 
+        //阻止默认行为
         document.removeEventListener("touchmove", self.eventStop, false);
       }, false);
 
+      //为所有图片添加点击事件
       for (var len = imgList.length, i = 0; i < len; i++) {
         imgList[i].addEventListener("click", function () {
           imgSrc = this.getAttribute("src");
@@ -77,7 +78,6 @@
           zoomImg.onload = function () {
             zoomImg.style.cssText = "margin-top:-" + (zoomImg.offsetHeight / 2) + "px";
 
-            // 绂佹椤甸潰婊氬姩
             document.addEventListener("touchmove", self.eventStop, false);
 
             self.imgBaseWidth = zoomImg.offsetWidth;
@@ -100,15 +100,15 @@
       self.element = document.querySelector(".imgzoom_pack img");
 
       //config set
-      self.wrapX = params.wrapX || 0; //鍙鍖哄煙瀹藉害
-      self.wrapY = params.wrapY || 0; //鍙鍖哄煙楂樺害
-      self.mapX = params.mapX || 0; //鍦板浘瀹藉害
-      self.mapY = params.mapY || 0; //鍦板浘楂樺害
+      self.wrapX = params.wrapX || 0;
+      self.wrapY = params.wrapY || 0;
+      self.mapX = params.mapX || 0;
+      self.mapY = params.mapY || 0;
 
-      self.outDistY = (self.mapY - self.wrapY) / 2; //鍥剧墖瓒呰繃涓€灞忕殑鏃跺€欐湁鐢�
+      self.outDistY = (self.mapY - self.wrapY) / 2;
 
-      self.width = self.mapX - self.wrapX; //鍦板浘鐨勫搴﹀噺鍘诲彲瑙嗗尯鍩熺殑瀹藉害
-      self.height = self.mapY - self.wrapY; //鍦板浘鐨勯珮搴﹀噺鍘诲彲瑙嗗尯鍩熺殑楂樺害
+      self.width = self.mapX - self.wrapX;
+      self.height = self.mapY - self.wrapY;
 
       self.element.addEventListener("touchstart", function (e) {
         self._touchstart(e);
@@ -120,7 +120,7 @@
         self._touchend(e);
       }, false);
     },
-    // 閲嶇疆鍧愭爣鏁版嵁
+
     _destroy: function () {
       this.distX = 0;
       this.distY = 0;
@@ -128,28 +128,23 @@
       this.newY = 0;
 
     },
-    // 鏇存柊鍦板浘淇℃伅
     _changeData: function () {
-      this.mapX = this.element.offsetWidth; //鍦板浘瀹藉害
-      this.mapY = this.element.offsetHeight; //鍦板浘楂樺害
-      // this.outDistY = (this.mapY - this.wrapY)/2; //褰撳浘鐗囬珮搴﹁秴杩囧睆骞曠殑楂樺害鏃跺€欍€傚浘鐗囨槸鍨傜洿灞呬腑鐨勶紝杩欐椂绉诲姩鏈変釜楂樺害鍋氫负缂撳啿甯�
-      this.width = this.mapX - this.wrapX; //鍦板浘鐨勫搴﹀噺鍘诲彲瑙嗗尯鍩熺殑瀹藉害
-      this.height = this.mapY - this.wrapY; //鍦板浘鐨勯珮搴﹀噺鍘诲彲瑙嗗尯鍩熺殑楂樺害
+      this.mapX = this.element.offsetWidth;
+      this.mapY = this.element.offsetHeight;
+      this.width = this.mapX - this.wrapX;
+      this.height = this.mapY - this.wrapY;
     },
     _touchstart: function (e) {
       var self = this;
 
       self.tapDefault = false;
-      // self.tapDefaultY = false;
-
       e.preventDefault();
 
-      var touchTarget = e.targetTouches.length; //鑾峰緱瑙︽帶鐐规暟
+      var touchTarget = e.targetTouches.length;
 
-      self._changeData(); //閲嶆柊鍒濆鍖栧浘鐗囥€佸彲瑙嗗尯鍩熸暟鎹紝鐢变簬鏀惧ぇ浼氫骇鐢熸柊鐨勮绠�
+      self._changeData();
 
       if (touchTarget == 1) {
-        // 鑾峰彇寮€濮嬪潗鏍�
         self.basePageX = getPage(e, "pageX");
         self.basePageY = getPage(e, "pageY");
 
@@ -171,8 +166,8 @@
       e.stopPropagation();
 
       // console.log("event.changedTouches[0].pageY: " + event.changedTouches[0].pageY);
-
-      var touchTarget = e.targetTouches.length; //鑾峰緱瑙︽帶鐐规暟
+      //触摸屏幕的位置(有可能多点触控)
+      var touchTarget = e.targetTouches.length;
 
       if (touchTarget == 1 && !self.finger) {
 
@@ -200,7 +195,7 @@
         return
       }
       ;
-      self._changeData(); //閲嶆柊璁＄畻鏁版嵁
+      self._changeData();
       if (self.finger) {
         self.distX = -self.imgNewX;
         self.distY = -self.imgNewY;
@@ -221,16 +216,15 @@
     _move: function (e) {
 
       var self = this,
-        pageX = getPage(e, "pageX"), //鑾峰彇绉诲姩鍧愭爣
+        pageX = getPage(e, "pageX"),
         pageY = getPage(e, "pageY");
 
-      // 绂佹榛樿浜嬩欢
       // e.preventDefault();
       // e.stopPropagation();
 
       /*self.tapDefaultX = pageX - self.basePageX;
        self.tapDefaultY = pageY - self.basePageY;*/
-      // 鑾峰緱绉诲姩璺濈
+
       self.distX = (pageX - self.basePageX) + self.newX;
       self.distY = (pageY - self.basePageY) + self.newY;
 
@@ -244,18 +238,17 @@
       self.movePos();
       self.finger = false;
     },
-    // 鍥剧墖缂╂斁
+
     _zoom: function (e) {
       var self = this;
       // e.preventDefault();
       // e.stopPropagation();
 
-      var nowFingerDist = self.getTouchDist(e).dist, //鑾峰緱褰撳墠闀垮害
-        ratio = nowFingerDist / self.startFingerDist, //璁＄畻缂╂斁姣�
-        imgWidth = Math.round(self.mapX * ratio), //璁＄畻鍥剧墖瀹藉害
-        imgHeight = Math.round(self.mapY * ratio); //璁＄畻鍥剧墖楂樺害
+      var nowFingerDist = self.getTouchDist(e).dist,
+        ratio = nowFingerDist / self.startFingerDist,
+        imgWidth = Math.round(self.mapX * ratio),
+        imgHeight = Math.round(self.mapY * ratio);
 
-      // 璁＄畻鍥剧墖鏂扮殑鍧愭爣
       self.imgNewX = Math.round(self.startFingerX * ratio - self.startFingerX - self.newX * ratio);
       self.imgNewY = Math.round((self.startFingerY * ratio - self.startFingerY) / 2 - self.newY * ratio);
 
@@ -271,7 +264,6 @@
 
       self.finger = true;
     },
-    // 绉诲姩鍧愭爣
     movePos: function () {
       var self = this;
 
@@ -301,7 +293,6 @@
       }
       self.refresh(self.moveX, self.moveY, "0s", "ease");
     },
-    // 閲嶇疆鏁版嵁
     reset: function () {
       var self = this,
         hideTime = ".2s";
@@ -321,14 +312,12 @@
       }
       self.refresh(self.newX, self.newY, hideTime, "ease-in-out");
     },
-    // 鎵ц鍥剧墖绉诲姩
     refresh: function (x, y, timer, type) {
       this.element.style.webkitTransitionProperty = "-webkit-transform";
       this.element.style.webkitTransitionDuration = timer;
       this.element.style.webkitTransitionTimingFunction = type;
       this.element.style.webkitTransform = getTranslate(x, y);
     },
-    // 鑾峰彇澶氱偣瑙︽帶
     getTouchDist: function (e) {
       var x1 = 0,
         y1 = 0,
@@ -370,5 +359,4 @@
   };
 
   window.ImagesZoom = new ImagesZoom();
-})(this);
-/*  |xGv00|e265149d8101b256799ca6fa116fac35 */
+})(window);

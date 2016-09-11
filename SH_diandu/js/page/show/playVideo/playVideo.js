@@ -1,3 +1,19 @@
+//加载依赖的脚本和样式
+(function () {
+  /**
+   * 获取当前脚本的目录
+   * @returns {string}
+   */
+  function getBasePath() {
+    //兼容Chrome 和 FF
+    var currentPath = document.currentScript && document.currentScript.src || '';
+    var paths = currentPath.split('/');
+    paths.pop();
+    return paths.join('/');
+  }
+
+  Util.loadCSS(getBasePath() + '/style.css');
+})()
 /**
  * 播放 频的类
  * TODO: 在移动端, video 播放之后,会放在最上面,导致 关闭按钮无法点击到, 需 找 决方案
@@ -13,8 +29,8 @@ window.PlayVideo = (function (Util) {
   function _render(src) {
     var html = [];
     html.push('<div data-id="__videoContainer" class="video-container">')
-    html.push('  <div class="vc-btn-close">&times;</div>')
-    html.push('  <i class="fa fa-arrows-alt vc-btn-fullpanel" aria-hidden="true"></i>')
+    html.push('  <div class="vc-btn-close"></div>')
+    //html.push('  <i class="fa fa-arrows-alt vc-btn-fullpanel" aria-hidden="true"></i>')
     html.push('  <img class="vc-play" src="./imgs/play.png">')
     html.push(' <div class="vc-video" ><video  controls data-src="' + src + '" </video></div>')
     html.push('</div>')
@@ -40,8 +56,9 @@ window.PlayVideo = (function (Util) {
    *  频播放
    * @param src  频地址
    * @param config  频展示 置, 宽高,xy
+   * @param closeCallback 关闭之后的回调
    */
-  function show(src, config, wrapTop) {
+  function show(src, config, wrapTop, closeCallback) {
     var _videoLoading;
     var _left;
     var _top;
@@ -52,14 +69,14 @@ window.PlayVideo = (function (Util) {
     $('body').append(html);
     var $container = $('.video-container[data-id="__videoContainer"]');
     var $playImg = $container.find('.vc-play');
-    var $hide = $container.find('.vc-btn-close');
+    var $btnClose = $container.find('.vc-btn-close');
     var $video = $container.find('video');
     var $fullpanel = $container.find('.vc-btn-fullpanel')
 
     if (config) {
       var _scale = window.screen.width / 1200;
       $playImg.css({transform: 'scale(' + _scale + ')'})
-      //$hide.css({transform: 'scale(' + _scale + ')'})
+      //$btnClose.css({transform: 'scale(' + _scale + ')'})
 
       //PC端,背景图片宽度1200,高度675
       if (Util.IsPC()) {
@@ -84,6 +101,9 @@ window.PlayVideo = (function (Util) {
         height: _str2Num(config.h),
       })
 
+      var scaleBtnClose = parseInt(config.w) / 600;
+      $btnClose.css({transform: 'scale(' + scaleBtnClose + ')'})
+
       //$container.css({
       //  left: _str2Num(_left),
       //  top: _str2Num(_top, wrapTop),
@@ -97,6 +117,7 @@ window.PlayVideo = (function (Util) {
       $video.attr('data-loaded', true)
     })
 
+    //点击暂停
     //$video.on(click, function () {
     //  $playImg.show();
     //  $video[0].pause();
@@ -106,7 +127,7 @@ window.PlayVideo = (function (Util) {
     //播放
     $playImg.on(click, function () {
       $playImg.hide();
-      $video.show().css({width: '100%', height: '100%', top: 0, opacity: 1});
+      $video.show().css({top: 0, opacity: 1});
 
       if (!$video.attr('data-loaded')) {
         _videoLoading = $.loading({content: '加载中...'});
@@ -121,33 +142,32 @@ window.PlayVideo = (function (Util) {
 
 
     //隐藏
-    $hide.on(click, function (e) {
-      console.log("hide")
+    $btnClose.on(click, function (e) {
       e.stopPropagation();
       $container.remove();
+      closeCallback();
     })
 
     //全屏
     $fullpanel.on(click, function () {
 
-      if ($container.hasClass('vc-fullpanel')) {
-        $container.removeClass('vc-fullpanel')
-      } else {
-        $container.addClass('vc-fullpanel')
-      }
-
+      //if ($container.hasClass('vc-fullpanel')) {
+      //  $container.removeClass('vc-fullpanel')
+      //} else {
+      //  $container.addClass('vc-fullpanel')
+      //}
 
       //存在兼容性,有的移动端浏览器不能全屏
-      //var elem = $video[0];
-      //if (!elem.paused) {
-      //  if (elem.requestFullscreen) {
-      //    elem.requestFullscreen();
-      //  } else if (elem.mozRequestFullScreen) {
-      //    elem.mozRequestFullScreen();
-      //  } else if (elem.webkitRequestFullscreen) {
-      //    elem.webkitRequestFullscreen();
-      //  }
-      //}
+      var elem = $video[0];
+      if (!elem.paused) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        }
+      }
     })
 
     Util.touchDrag('.video-container[data-id="__videoContainer"]', function (evt, x, y) {
@@ -176,7 +196,6 @@ window.PlayVideo = (function (Util) {
     })
 
   }
-
 
   return {
     show: show

@@ -1,0 +1,27 @@
+/*定义一个动画效果*/
+@-webkit-keyframes blink {
+  0%, 25%, 50%, 100% {
+    -webkit-filter: drop-shadow(red 0px 0px 5px);
+    filter: drop-shadow(red 0px 0px 5px);
+  }
+  12.5%, 37.5%, 75% {
+    -webkit-filter: drop-shadow(red 0px 0px 15px);
+    filter: drop-shadow(red 0px 0px 15px);
+  }
+}
+
+@keyframes blink {
+  0%, 25%, 50%, 100% {
+    -webkit-filter: drop-shadow(red 0px 0px 5px);
+    filter: drop-shadow(red 0px 0px 5px);
+  }
+  12.5%, 37.5%, 75% {
+    -webkit-filter: drop-shadow(red 0px 0px 15px);
+    filter: drop-shadow(red 0px 0px 15px);
+  }
+}
+
+.custom-point-blink {
+  -webkit-animation: 2s blink 1 ease-out;
+  animation: 2s blink 1 ease-out;
+}

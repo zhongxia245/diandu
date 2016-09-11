@@ -98,23 +98,11 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 </div>
 <!--音频 START-->
 <section class="sec-audio">
-  <audio id="bg-audio" preload="auto" loop="loop"></audio>
-  <audio id="global-audio" preload="auto"></audio>
-  <audio id="audio" preload="auto"></audio>
+  <audio id="bg-audio" loop="loop"></audio>
+  <audio id="global-audio"></audio>
+  <audio id="point-audio"></audio>
 </section>
 <!--音频 END-->
-<!--视频 START-->
-<section class="sec-video">
-  <div class="cd-bouncy-nav-modal" style="text-align:center;">
-    <div id="div_video" style="width:100%; margin:0 auto; padding:0 10px;">
-      <video style="width:100%;height:100%;" preload="auto" id="video" controls="controls">
-        your browser does not support the video tag
-      </video>
-    </div>
-    <a href="javascript:void(0);" class="cd-close">Close modal</a>
-  </div>
-</section>
-<!--视频 END-->
 <!--图文 START-->
 <section class="sec-imgtext-mask">
   <section class="sec-imgtext">
@@ -155,10 +143,10 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-  //  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+    window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<script src="js/util/log.js?v=20160902"></script>
-<script src="js/lib/zepto.js?vvv=20160628"></script>
+<script src="js/util/log.js"></script>
+<script src="js/lib/zepto.js"></script>
 <script src="js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
   window._load = $.loading({content: '加载中...'});
@@ -182,11 +170,11 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/show/globalAudio.js"></script>
 <script src="js/page/show/pointOpacity.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
-<script src="js/page/show/playVideo.js"></script>
-<script src="js/page/show/pointEffect.js?v=07"></script>
+<script src="js/page/show/playVideo/playVideo.js"></script>
+<script src="js/page/show/pointEffect/pointEffect.js"></script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
-<script src="js/show.js?v=20160907"></script>
+<script src="js/show.js"></script>
 <script>
   $(function () {
     var _isDebug = Util.getQueryStringByName('debug');

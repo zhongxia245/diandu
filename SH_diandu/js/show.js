@@ -49,7 +49,7 @@ var GLOBAL = {
  */
 GLOBAL.BGAUDIO = {
   bgaudio: document.getElementById('bg-audio'),
-  audio: document.getElementById('audio'),
+  audio: document.getElementById('point-audio'),
   $btnBgAudio: $('#btn_bgAudio'),
   setAudio: function (src) {
     var that = this;
@@ -218,9 +218,6 @@ function styleHandler() {
 function init() {
   // 点读页的ID,保存的时候会返回ID
   var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
-  initAudio();
-  initVideo();
-
   /**
    * 获取点读数据
    */
@@ -229,13 +226,16 @@ function init() {
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
     Util.getImageWH(data['pages'][0]['pic'], function () {
+
       //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
       setTimeout(function () {
         fn_onResize();
         window._load.loading("hide");
-
+        initAudio();
+        initVideo();
         diandu.blink(0);
       }, 100)
+
       Logger.info("展示页数据:", data)
     })
   })
@@ -727,7 +727,7 @@ function initThumbs(id, pages) {
     var page = pages[i];
     var bgPath = page['pic'];
     //html += '<div data-id="' + i + '" class="swiper-slide" style="background-image: url(' + bgPath + ');">'
-    html += '<div data-id="' + i + '" class="swiper-slide  swiper-lazy" data-background="' + bgPath + '">'
+    html += '<div data-id="' + i + '" style=" background-size: contain;" class="swiper-slide  swiper-lazy" data-background="' + bgPath + '">'
     html += ' <span class="thumbs-sort-id">' + (i + 1) + '</span>'
     html += '</div>'
   }
@@ -842,7 +842,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 /*************************************根据数据生成页面 END********************************/
 /*=======================音频视频播放相关 START====================*/
 function initAudio() {
-  window.audio = document.getElementById('audio');
+  window.audio = document.getElementById('point-audio');
   window.globalAudio = document.getElementById('global-audio');
 }
 function initVideo() {
@@ -853,12 +853,12 @@ function initVideo() {
  * 为了 决移动端播放音频需 加载, 加载过程 做一个优化, 展示 load 效果, 让用户知道正正在加载
  * @param audio
  */
-function audioPlay(audio, e, url) {
+function audioPlay(e, url) {
+
   var $cTar = $(e.currentTarget);
 
   if ($cTar.attr('isLoad')) {//音频加载结束
-    Logger.info("已经加载结束...,audio.volume:", audio.volume)
-    audio.play();
+    window.audio.play();
     if ($cTar.attr('data-type') === 'pointImg') {
       diandu.customPlay($cTar, true)
     } else {
@@ -867,45 +867,47 @@ function audioPlay(audio, e, url) {
     }
     $cTar.find('.audio-load').hide();
   }
-  else {
-    Logger.info("未加载音频, 正在加载中....,audio.volume:", audio.volume)
-    //音频还未加载
-    if ($cTar.attr('data-type') === 'pointImg') {
-      //diandu.customPlay($cTar, true)
-      $cTar.find('.audio-load').show();
-      $cTar.css('background-size', '0')
-    } else {
-      $cTar.find('.audio-load').show();
-      $cTar.find('.audio-play').hide();
-      $cTar.css('background-size', '0')
-    }
 
+  else {
+    //音频还未加载
+    if ($cTar.attr('data-type') !== 'pointImg') {
+      $cTar.find('.audio-play').hide();
+    }
+    $cTar.find('.audio-load').show();
+    $cTar.css('background-size', '0')
     $cTar.attr('data-loading', true)
 
     //移动端 canplaythrough 必须 设置 play 之后, 才能触发
-    audio.play()
-    audio.setAttribute('data-volume', audio.volume)
-    audio.volume = 0;
+    window.audio.play()
+    window.audio.setAttribute('data-volume', window.audio.volume)
+    window.audio.volume = 0.1;
   }
 
+
   /*audio可以播放的事件*/
-  audio.addEventListener('canplaythrough', function (e) {
+  window.audio.addEventListener('canplaythrough', function (e) {
     if (!$cTar.attr('isLoad')) {
       //是当前播放的音频, 则显示 正在播放状态
-      if (audio.src.indexOf(url) !== -1) {
+      if (window.audio.src.indexOf(url) !== -1) {
+
+        window.audio.play();
+
+        console.log('play()=>paused:', audio.paused)
+
+        window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
+
         $cTar.find('.audio-load').hide();
         $cTar.find('.audio-play').show();
         $cTar.css('background-size', '100%')
-        diandu.customPlay($cTar, true)
 
-        audio.volume = audio.getAttribute('data-volume') || 0.5;  //我们发现播放完之后这里执行了
-        audio.play();
+        if ($cTar.attr('data-type') === 'pointImg') {
+          diandu.customPlay($cTar, true)
+        }
+
 
         $cTar.attr('isLoad', true)   //加载结束标记
         $cTar.attr('data-play', true) //正在播放标记
         $cTar.attr('data-loading', false)  //正在加载中标记
-
-        Logger.info("加载音频完成...,audio.volume:", audio.volume)
       }
     }
   }, false);
@@ -931,17 +933,17 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   //正在播放
   else if ($cTar.attr('data-play') === 'true') {
     $cTar.find('.audio-play').hide();
-    $cTar.attr('data-play', false)
+    $cTar.attr('data-play', false);
     if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
-      Logger.info("全程音频暂停播放")
     } else {
       window.audio.pause();
-      diandu.customPlay($cTar, false)
 
-      Logger.info("音频点读点暂停播放,开始播放背景音乐定时器!")
-      GLOBAL.BGAUDIO.setTimePlay()  //关闭音频的时候,间隔自动播放的时间在启动
+      diandu.customPlay($cTar, false);
+
+      //关闭音频的时候,间隔自动播放的时间在启动
+      GLOBAL.BGAUDIO.setTimePlay();
     }
   }
   //未播放
@@ -955,31 +957,14 @@ function playOrPaused(e, isGlobalAudio, pointData) {
       ctlGlobalAudio.play();
     }
     else {
-      if (window.audio.paused)  audioPlay(window.audio, e, url)
+      if (window.audio.paused) {
+        audioPlay(e, url)
+      }
     }
 
+    //关闭背景音乐
     GLOBAL.BGAUDIO.pause();
   }
-}
-
-/**
- * 弹出模态框
- */
-function triggerBouncyNav($bool) {
-  if (!$bool) {
-    closeVideoOrAudio();
-  }
-  //切换菜单动画
-  $('.cd-bouncy-nav-modal')
-    .toggleClass('fade-in', $bool)
-    .toggleClass('fade-out', !$bool)
-    .find('li:last-child')
-    .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
-      $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-      if (!$bool) {
-        $('.cd-bouncy-nav-modal').removeClass('fade-out');
-      }
-    });
 }
 
 /**
@@ -1004,7 +989,7 @@ function closeVideoOrAudio(flag) {
 
 
   //停止视频
-  window.video.pause();
+  //window.video.pause();
   var $video = $('.m-video-size');
   $video.find('img').hide();
   $video.removeClass('m-video-size');
@@ -1115,35 +1100,6 @@ function bindEvent() {
     }
   })
 
-  /**
-   * 关闭 频播放
-   */
-  function closeVideo() {
-    triggerBouncyNav(false);
-    $('#video').hide();
-    //关闭音频的时候,间隔自动播放的时间在启动
-    GLOBAL.BGAUDIO.setTimePlay()
-  }
-
-
-  /**
-   *  频遮罩层关闭 单
-   */
-  $('.cd-bouncy-nav-modal .cd-close').off().on(click, function () {
-    closeVideo();
-  });
-
-
-  /**
-   * 点击空白处,关闭 频播放窗口
-   */
-  $('.cd-bouncy-nav-modal').off().on(click, function (event) {
-    if ($(event.target).hasClass('cd-bouncy-nav-modal')) {
-      closeVideo();
-    }
-  });
-
-
   // 视频
   $('.m-video').off().on(click, function (e) {
     GLOBAL.BGAUDIO.clearTimeout();  //清除背景音乐定时器,防止快速打开视频, 又关闭, 又打开, 播放背景音乐
@@ -1153,7 +1109,6 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
     var url = pointData.url;
-    var filename = pointData.filename;
     var area = null;
     if (pointData.area) {
       area = JSON.parse(pointData.area);
@@ -1162,30 +1117,18 @@ function bindEvent() {
     //点读点容器的高度
     var wrapH = $cTar.parents('.wrap').height();
     var wrapTop = 0;
+
+    //移动端,计算位置
     if (!Util.IsPC()) {
       wrapTop = (screen.height - wrapH) / 2;
     }
-    PlayVideo.show(url, area, wrapTop);
 
+    PlayVideo.show(url, area, wrapTop, function () {
+      closeVideoOrAudio();
+      //关闭音频的时候,间隔自动播放的时间在启动
+      GLOBAL.BGAUDIO.setTimePlay()
+    });
     return false;
-
-    //var className = 'm-video-size';
-
-    //triggerBouncyNav(true);
-    //
-    //$('#video').show();
-    //
-    //if ($cTar[0].tagName === "IMG") { // 关闭播放
-    //  $cTar.removeClass(className).hide();
-    //} else { //开始播放
-    //  if (video.getAttribute('src') !== url) {
-    //    video.setAttribute('src', url);
-    //  }
-    //  $cTar.addClass(className)
-    //  $cTar.find('img').show();
-    //}
-    //
-    //return false;
   });
 
 
@@ -1199,11 +1142,12 @@ function bindEvent() {
     //关闭视频,并且设置所有的 音频为默认图标状态
     closeVideoOrAudio(true, $cTar);
 
-    var timer = setInterval(function () {
+    var audioTimer = setInterval(function () {
       //播放结束, 则清除 正在播放的图片
       if (window.audio.ended) {
         $cTar.find('img').hide();
-        window.clearInterval(timer);
+        clearInterval(audioTimer);
+
         diandu.customPlay($cTar, false)
 
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
@@ -1212,9 +1156,11 @@ function bindEvent() {
       }
     }, 500)
 
+    //获取当前音频数据
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
+    //播放或者暂停
     playOrPaused(e, isGlobalAudio, pointData)
   })
 
@@ -1314,7 +1260,6 @@ function bindEvent() {
     /*上下滑动,展示缩略图和自动播放控制轴*/
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       Logger.log("swipeUp", $(ev.target).attr('class'))
-      //var _className = $(ev.target).attr('class');
       if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
         ev.preventDefault();
         $(".gallery-main").show();
@@ -1391,11 +1336,13 @@ function fnExamClick(e) {
         scale: scaleExam,
         isVertical: isVertical,
         fnReturn: function () {
+
           //题干列表返回到考生页面
           $(GLOBAL.SEC_EXAM_LIST).show();
           $(GLOBAL.SEC_QUESTION_LIST).hide();
         },
         fnQuestionClick: function (questionIndex) {
+
           //点击第几题,考生页面跳转到该题目
           $(GLOBAL.SEC_EXAM_LIST).show();
           $(GLOBAL.SEC_QUESTION_LIST).hide();
