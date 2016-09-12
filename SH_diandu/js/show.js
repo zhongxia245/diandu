@@ -218,6 +218,8 @@ function styleHandler() {
 function init() {
   // 点读页的ID,保存的时候会返回ID
   var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
+  initAudio();
+  initVideo();
   /**
    * 获取点读数据
    */
@@ -231,8 +233,6 @@ function init() {
       setTimeout(function () {
         fn_onResize();
         window._load.loading("hide");
-        initAudio();
-        initVideo();
         diandu.blink(0);
       }, 100)
 
@@ -859,6 +859,7 @@ function audioPlay(e, url) {
 
   if ($cTar.attr('isLoad')) {//音频加载结束
     window.audio.play();
+    console.log('play()=>paused:', audio.paused)
     if ($cTar.attr('data-type') === 'pointImg') {
       diandu.customPlay($cTar, true)
     } else {
@@ -891,7 +892,6 @@ function audioPlay(e, url) {
       if (window.audio.src.indexOf(url) !== -1) {
 
         window.audio.play();
-
         console.log('play()=>paused:', audio.paused)
 
         window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
@@ -918,7 +918,6 @@ function audioPlay(e, url) {
  * @param isGlobalAudio 是否为全程音频
  */
 function playOrPaused(e, isGlobalAudio, pointData) {
-
   var url = pointData.url;
   var $cTar = $(e.currentTarget);
 
@@ -1142,19 +1141,33 @@ function bindEvent() {
     //关闭视频,并且设置所有的 音频为默认图标状态
     closeVideoOrAudio(true, $cTar);
 
-    var audioTimer = setInterval(function () {
-      //播放结束, 则清除 正在播放的图片
-      if (window.audio.ended) {
+    //var audioTimer = setInterval(function () {
+    //  //播放结束, 则清除 正在播放的图片
+    //  if (window.audio.ended) {
+    //    $cTar.find('img').hide();
+    //    clearInterval(audioTimer);
+    //
+    //    diandu.customPlay($cTar, false)
+    //
+    //    if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
+    //      window.galleryTop.startAutoplay();
+    //    }
+    //  }
+    //}, 500)
+
+    window._audioEnded = true;
+    audio.addEventListener('ended', function () {
+      if (window._audioEnded) {
+        window._audioEnded = false;
+        console.log("audio ended")
         $cTar.find('img').hide();
-        clearInterval(audioTimer);
-
+        $cTar.attr('data-play', false);
         diandu.customPlay($cTar, false)
-
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }
       }
-    }, 500)
+    })
 
     //获取当前音频数据
     var dataId = $cTar.attr('data-id');

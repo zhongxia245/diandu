@@ -26,6 +26,8 @@ function CNumber(selector, config) {
   this.selector = selector;
 
   config = config || {};
+  this.maxVaule = 200;   //最大比例
+  this.minValue = 25;    //最小比例
   this.defaultValue = config.defaultValue || 100;  //默认值
   this.val = config.val; //当前值
   this.step = config.step || 25; //步长
@@ -85,7 +87,7 @@ CNumber.prototype.init = function () {
     e.stopPropagation();
     that.val = parseInt(that.$val.text()) || that.defaultValue;
     that.val += that.step;
-    that.val = that.val >= 200 ? 200 : that.val;
+    that.val = that.val >= that.maxVaule ? that.maxVaule : that.val;
 
     that.callback && that.callback(that.val)
     that.setColor();
@@ -97,7 +99,7 @@ CNumber.prototype.init = function () {
     e.stopPropagation();
     that.val = parseInt(that.$val.text()) || that.defaultValue;
     that.val -= that.step;
-    that.val = that.val <= 50 ? 50 : that.val;
+    that.val = that.val <= that.minValue ? that.minValue : that.val;
 
     that.callback && that.callback(that.val)
     that.setColor();

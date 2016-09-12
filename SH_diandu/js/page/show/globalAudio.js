@@ -243,6 +243,7 @@ GlobalAudioController.prototype.play = function () {
   Logger.info("全局音频播放")
   var that = this;
   that.audio.play();
+  console.log("globalAudio.play()=>paused", that.audio.paused)
   that.timer = setInterval(function () {
     for (var i = 0; i < that.data.pageTimes.length; i++) {
       var _time = that.data.pageTimes[i];
