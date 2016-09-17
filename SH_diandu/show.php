@@ -99,8 +99,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <!--音频 START-->
 <section class="sec-audio">
   <audio id="bg-audio" loop="loop"></audio>
-  <audio id="global-audio"></audio>
-  <audio id="point-audio"></audio>
+  <audio id="global-audio" preload="auto"></audio>
+  <audio id="point-audio" preload="auto"></audio>
 </section>
 <!--音频 END-->
 <!--图文 START-->
@@ -143,7 +143,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   });
 
   //获取用户id
-    window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
+  window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="js/util/log.js"></script>
 <script src="js/lib/zepto.js"></script>
@@ -154,7 +154,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/lib/swipe/js/swiper.js"></script>
 <script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
 <script src="js/util/scale.js"></script>
-<!--<script src="js/lib/hammer.min.js"></script>-->
+<script src="js/lib/hammer.min.js"></script>
 <!--custom-->
 <script src="js/util/util.js"></script>
 <script src="js/util/arrayUtil.js"></script>
@@ -172,6 +172,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/show/playVideo/playVideo.js"></script>
 <script src="js/page/show/pointEffect/pointEffect.js"></script>
+<script src="js/page/show/PicScale.js"></script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
 <script src="js/show.js"></script>

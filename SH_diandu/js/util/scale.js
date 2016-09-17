@@ -45,7 +45,7 @@
         document.body.appendChild(section)
       }
 
-      var imgList = document.querySelectorAll(params.elem + " img");
+      var imgList = document.querySelectorAll(params.elem);
       var zoomMask = document.querySelector(".imgzoom_pack");
       var zoomImg = document.querySelector(".imgzoom_pack .imgzoom_img img");
       var zoomClose = document.querySelector(".imgzoom_pack .imgzoom_x");
@@ -66,29 +66,44 @@
 
         //阻止默认行为
         document.removeEventListener("touchmove", self.eventStop, false);
+
       }, false);
 
       //为所有图片添加点击事件
       for (var len = imgList.length, i = 0; i < len; i++) {
-        imgList[i].addEventListener("click", function () {
-          imgSrc = this.getAttribute("src");
-          zoomMask.style.cssText = "display:block";
-          zoomImg.src = imgSrc;
+        imgList[i].addEventListener("click", function (e) {
+          e.stopPropagation();
 
-          zoomImg.onload = function () {
-            zoomImg.style.cssText = "margin-top:-" + (zoomImg.offsetHeight / 2) + "px";
+          //判断是否可以弹出背景图
+          var className = e.target.className;
+          var flag = false;
+          var allowClassNames = ['m-bg', 'wrap', 'cmt-image'];
+          for (var j = 0; j < allowClassNames.length; j++) {
+            if (className.indexOf(allowClassNames[j]) !== -1) {
+              flag = true;
+              break;
+            }
+          }
+          if (flag) {
+            imgSrc = this.getAttribute("src");
+            zoomMask.style.cssText = "display:block";
+            zoomImg.src = imgSrc;
 
-            document.addEventListener("touchmove", self.eventStop, false);
+            zoomImg.onload = function () {
+              zoomImg.style.cssText = "margin-top:-" + (zoomImg.offsetHeight / 2) + "px";
 
-            self.imgBaseWidth = zoomImg.offsetWidth;
-            self.imgBaseHeight = zoomImg.offsetHeight;
+              document.addEventListener("touchmove", self.eventStop, false);
 
-            self.addEventStart({
-              wrapX: zoomMask.offsetWidth,
-              wrapY: zoomMask.offsetHeight,
-              mapX: zoomImg.width,
-              mapY: zoomImg.height
-            });
+              self.imgBaseWidth = zoomImg.offsetWidth;
+              self.imgBaseHeight = zoomImg.offsetHeight;
+
+              self.addEventStart({
+                wrapX: zoomMask.offsetWidth,
+                wrapY: zoomMask.offsetHeight,
+                mapX: zoomImg.width,
+                mapY: zoomImg.height
+              });
+            }
           }
         }, false);
       }
@@ -169,11 +184,12 @@
       //触摸屏幕的位置(有可能多点触控)
       var touchTarget = e.targetTouches.length;
 
+      //单点,移动
       if (touchTarget == 1 && !self.finger) {
-
         self._move(e);
       }
 
+      //多点,方法缩小
       if (touchTarget >= 2) {
         self._zoom(e);
       }

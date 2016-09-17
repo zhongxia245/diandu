@@ -43,6 +43,7 @@ var GLOBAL = {
   GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
   BACK_COLOR: 'rgb(0,0,0)', //背景图片空白区域颜色
   CurrentPageIndex: 0, //当前点读页下标
+  allowSwiperUp: true, //上滑缩略图用
 }
 /**
  * 背景音乐相关操作
@@ -269,6 +270,44 @@ function initDiandu(data) {
   bindEvent();
   //渲染后的操作
   afterRenderOp(data);
+  bgScaleOp(0);
+}
+
+function bgScaleOp(currentIndex) {
+  //添加背景图的缩放
+  //ImagesZoom.init({
+  //  "elem": ".m-bg"
+  //});
+
+  GLOBAL.picScale = null;
+  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.m-bg-pic',
+    function () {
+      if (this.scale > 1) {
+        window.galleryTop.lockSwipes();
+        GLOBAL.allowSwiperUp = false;
+      } else {
+        GLOBAL.allowSwiperUp = true;
+        window.galleryTop.unlockSwipes();
+      }
+    },
+    function () {
+      if (this.scale > 1) {
+        window.galleryTop.lockSwipes();
+        GLOBAL.allowSwiperUp = false;
+      } else {
+        GLOBAL.allowSwiperUp = true;
+        window.galleryTop.unlockSwipes();
+      }
+    }
+    , function () {
+      if (this.scale > 1) {
+        
+      }
+      else {
+
+      }
+    }
+  );
 }
 
 /**
@@ -441,6 +480,8 @@ function initSwipe() {
       onTransitionEnd: function (swiper) {  //没有切换到另外一个点读页也会触发
         //切换了点读页
         if (GLOBAL.CurrentPageIndex !== swiper.activeIndex) {
+          //背景缩放移动
+          bgScaleOp(swiper.activeIndex);
           //添加点读点闪烁效果
           diandu.blink(swiper.activeIndex);
 
@@ -707,12 +748,13 @@ function initDianDuPage(data, id) {
   var bgPath = data['pic'];
   var h = $(window).height()
   var html = "";
-  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
-  html += '        <div class="m-dd-start-comment-div"></div>'
-  html += '        <div data-id="btn-start" class="m-dd-start"></div>'
-  html += '        <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
+  //html += '<div id="' + id + '" data-id="' + data['id'] + '" src="' + bgPath + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
+  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" style="height:' + h + 'px;">'
+  html += '    <div class="m-dd-start-comment-div"></div>'
+  html += '    <div data-id="btn-start" class="m-dd-start"></div>'
+  html += '    <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
+  html += '    <div class="m-bg-pic" style="background-image:url(' + bgPath + ')"></div>'
   html += '    <div class="wrap">'
-  //html += '       <img src="' + bgPath + '"/>'
   html += '    </div>'
   html += '</div>'
   return html;
@@ -1161,7 +1203,6 @@ function bindEvent() {
         window._audioEnded = false;
         console.log("audio ended")
         $cTar.find('img').hide();
-        $cTar.attr('data-play', false);
         diandu.customPlay($cTar, false)
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
@@ -1251,7 +1292,6 @@ function bindEvent() {
   //点击背景图,停止自动播放
   $('#pages').off().on(click, function (ev) {
     window.galleryTop.stopAutoplay();
-    //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
     return false;
   })
 
@@ -1259,8 +1299,23 @@ function bindEvent() {
   //上滑,出现缩略图面板
   if (Util.IsPC()) {
     mouseUpOrDown($('body')[0], function (ev, type) {
-      if (type === "up") {
-        Logger.log("swipeUp", $(ev.target).attr('class'))
+      //背景图片没有方法才可以滑动上去
+      if (GLOBAL.allowSwiperUp) {
+        if (type === "up") {
+          if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+            ev.preventDefault();
+            $(".gallery-main").show();
+            $(".gallery-main").css('opacity', 1);
+          }
+          return false;
+        }
+      }
+    })
+  } else {
+    /*上下滑动,展示缩略图和自动播放控制轴*/
+    $('body').off('swipeUp').on('swipeUp', function (ev) {
+      //背景图片没有方法才可以滑动上去
+      if (GLOBAL.allowSwiperUp) {
         if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
@@ -1268,17 +1323,6 @@ function bindEvent() {
         }
         return false;
       }
-    })
-  } else {
-    /*上下滑动,展示缩略图和自动播放控制轴*/
-    $('body').off('swipeUp').on('swipeUp', function (ev) {
-      Logger.log("swipeUp", $(ev.target).attr('class'))
-      if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
-        ev.preventDefault();
-        $(".gallery-main").show();
-        $(".gallery-main").css('opacity', 1);
-      }
-      return false;
     });
   }
 
