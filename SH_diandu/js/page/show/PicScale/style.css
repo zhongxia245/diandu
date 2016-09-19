@@ -1,0 +1,79 @@
+.pic-scale {
+
+}
+
+.pic-scale-full-btn {
+  position: absolute;
+  z-index: 999999;
+  top: 10px;
+  left: 90px;
+  width: 192px;
+  height: 65px;
+  background-image: url(showfullpage.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.pic-scale-tip {
+  color: #FFF;
+  position: absolute;
+  z-index: 999999;
+  top: 80px;
+  left: 0;
+  opacity: 0;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.pic-scale-tip-text {
+  width: 100%;
+  background: #474747;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.pic-scale-tip-btn {
+  width: 100%;
+  background: #FF636B;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+}
+
+@media screen and (orientation: landscape) {
+  .pic-scale-tip {
+
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .pic-scale-tip {
+
+  }
+}
+
+/*定义一个动画效果*/
+@-webkit-keyframes tipShow {
+  0%, 100% {
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+}
+
+@keyframes tipShow {
+  0%, 100% {
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+}
+
+.pic-scale-tip-effect {
+  -webkit-animation: 4s tipShow 1 ease-out;
+  animation: 4s tipShow 1 ease-out;
+}
+
+

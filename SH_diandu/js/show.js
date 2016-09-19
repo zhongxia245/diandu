@@ -273,14 +273,20 @@ function initDiandu(data) {
   bgScaleOp(0);
 }
 
+/**
+ * 设置背景图片缩放功能
+ * @param currentIndex
+ */
 function bgScaleOp(currentIndex) {
-  //添加背景图的缩放
-  //ImagesZoom.init({
-  //  "elem": ".m-bg"
-  //});
+  var $wrap = $('#_diandu' + currentIndex).find('.wrap');
+  var _width = $wrap.width();
+  var _height = $wrap.height();
 
   GLOBAL.picScale = null;
-  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.m-bg-pic',
+  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.m-bg-pic', _width, _height,
+    /**
+     * 移动时禁用swiper和上滑动能
+     */
     function () {
       if (this.scale > 1) {
         window.galleryTop.lockSwipes();
@@ -290,21 +296,18 @@ function bgScaleOp(currentIndex) {
         window.galleryTop.unlockSwipes();
       }
     },
+    /**
+     * 放大结束后的回调
+     */
     function () {
       if (this.scale > 1) {
+        GLOBAL.picScale.showTip();
         window.galleryTop.lockSwipes();
         GLOBAL.allowSwiperUp = false;
       } else {
+        GLOBAL.picScale.hideTip();
         GLOBAL.allowSwiperUp = true;
         window.galleryTop.unlockSwipes();
-      }
-    }
-    , function () {
-      if (this.scale > 1) {
-        
-      }
-      else {
-
       }
     }
   );
@@ -1316,7 +1319,7 @@ function bindEvent() {
     $('body').off('swipeUp').on('swipeUp', function (ev) {
       //背景图片没有方法才可以滑动上去
       if (GLOBAL.allowSwiperUp) {
-        if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+        if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
           $(".gallery-main").css('opacity', 1);

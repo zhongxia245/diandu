@@ -16,7 +16,6 @@
 })()
 /**
  * 播放 频的类
- * TODO: 在移动端, video 播放之后,会放在最上面,导致 关闭按钮无法点击到, 需 找 决方案
  */
 window.PlayVideo = (function (Util) {
   var click = Util.IsPC() ? 'click' : 'tap';

@@ -172,7 +172,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/show/playVideo/playVideo.js"></script>
 <script src="js/page/show/pointEffect/pointEffect.js"></script>
-<script src="js/page/show/PicScale.js"></script>
+<script src="js/page/show/picScale/PicScale.js"></script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
 <script src="js/show.js"></script>

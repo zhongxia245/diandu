@@ -1,11 +1,31 @@
+//加载依赖的脚本和样式
 (function () {
-  var PicScale = function (id, selector, cbStart, cbEnd) {
+  /**
+   * 获取当前脚本的目录
+   * @returns {string}
+   */
+  function getBasePath() {
+    //兼容Chrome 和 FF
+    var currentPath = document.currentScript && document.currentScript.src || '';
+    var paths = currentPath.split('/');
+    paths.pop();
+    return paths.join('/');
+  }
+
+  Util.loadCSS(getBasePath() + '/style.css');
+})()
+
+/**
+ * 背景图片放大缩小
+ */
+window.PicScale = (function () {
+  var PicScale = function (id, selector, w, h, cbStart, cbEnd) {
     this._id = document.querySelector(id);
     this._target = document.querySelector(id + '>' + selector);
-    this._w = 360;
-    this._h = 225;
-    this._screenW = window.screen.width;
-    this._screenH = window.screen.height;
+    this._w = w;
+    this._h = h;
+    this._screenW = document.documentElement.clientWidth;
+    this._screenH = document.documentElement.clientHeight;
 
     this.mc = new Hammer.Manager(this._id);
     this.timer = false;
@@ -36,6 +56,60 @@
         translateY: that._relateY,
         scale: that.scale
       })
+    },
+    /**
+     * 显示提示
+     */
+    showTip: function () {
+      var that = this;
+      var html = [];
+
+      html.push('<div class="pic-scale">')
+      html.push(' <div class="pic-scale-full-btn"></div>');
+      if (!PicScale.prototype.noShowTipText) {
+        html.push(' <div class="pic-scale-tip pic-scale-tip-effect">');
+        html.push('   <div class="pic-scale-tip-text">当前为放大状态,如果需要切换页面或上滑调用底部悬浮框,请点击全页显示</div>');
+        html.push('   <div class="pic-scale-tip-btn">不再提示</div>');
+        html.push(' </div>');
+      }
+      html.push('</div>');
+
+      var $container = $('.pic-scale');
+      if (!$container.length > 0) {
+        $('body').append(html.join(''));
+        $container = $('.pic-scale');
+        var $fullBtn = $container.find('.pic-scale-full-btn');
+        var $hideBtn = $container.find('.pic-scale-tip-btn');
+
+        $fullBtn.on('click', function (e) {
+          that.reset();
+
+          that._selfPosition();
+          that._stopCallback();
+          that.hideTip();
+        })
+
+        $hideBtn.on('click', function (e) {
+          $(e.currentTarget).parent().hide();
+          PicScale.prototype.noShowTipText = true; //记录不在提示
+        })
+      }
+    },
+
+    hideTip: function () {
+      $('.pic-scale').remove();
+    },
+    reset: function () {
+      this.timer = false;
+      this.translateX = 0;
+      this.translateY = 0;
+      this.scale = 1;
+      this.firstTouch = true; //用户第一次触摸
+      this._relateX = (document.body.clientWidth - this._id.offsetWidth) / 2;
+      this._relateY = (document.body.clientHeight - this._id.offsetHeight) / 2;
+      this._oldX = 0;
+      this._oldY = 0;
+      this._oldScale = 1;
     },
 
     /**
@@ -84,9 +158,10 @@
     _selfPosition: function (pos) {
       var that = this;
       var _pos = function () {
+        pos = pos || {};
         pos.scale = pos.scale || 1;
 
-        if (pos.scale < 1) {
+        if (pos.scale <= 1) {
           pos.scale = 1;
           pos.translateX = 0;
           pos.translateY = 0;
@@ -178,5 +253,5 @@
       };
     }
   }
-  window.PicScale = PicScale;
+  return PicScale;
 })()
