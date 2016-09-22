@@ -225,6 +225,7 @@ function init() {
    * 获取点读数据
    */
   Model.getList(id, function (data) {
+    $('title').text(data.title);
     DATA = data;
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
@@ -283,7 +284,7 @@ function bgScaleOp(currentIndex) {
   var _height = $wrap.height();
 
   GLOBAL.picScale = null;
-  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.m-bg-pic', _width, _height,
+  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.wrap', _width, _height,
     /**
      * 移动时禁用swiper和上滑动能
      */
@@ -756,8 +757,8 @@ function initDianDuPage(data, id) {
   html += '    <div class="m-dd-start-comment-div"></div>'
   html += '    <div data-id="btn-start" class="m-dd-start"></div>'
   html += '    <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
-  html += '    <div class="m-bg-pic" style="background-image:url(' + bgPath + ')"></div>'
-  html += '    <div class="wrap">'
+  //html += '    <div class="m-bg-pic" style="background-image:url(' + bgPath + ')"></div>'
+  html += '    <div class="wrap" style="background-image:url(' + bgPath + ')">'
   html += '    </div>'
   html += '</div>'
   return html;
@@ -1272,12 +1273,19 @@ function bindEvent() {
   /**
    * 图文展示框
    */
-  $('.sec-imgtext-mask').off().on(click, function (e) {
+  $('.sec-imgtext-mask').off('click').on(click, function (e) {
     var $tar = $(e.target);
     if ($tar.hasClass('sec-imgtext-mask') || $tar.hasClass('sec-imgtext')) {
       $(e.currentTarget).hide();
     }
   })
+  /**
+   * 图文展示框,防止弹出图文框之后,可以移动遮罩
+   */
+  $('.sec-imgtext-mask').off('touchmove').on('touchmove', function (e) {
+    return false;
+  })
+
 
   /**
    * 考试点读位
@@ -1418,25 +1426,40 @@ function fnExamClick(e) {
  * @param $tar
  */
 function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
-  $('.sec-imgtext').css({width: $wrap.width(), height: $wrap.height()});
+  $('.sec-imgtext').css({
+    width: $wrap.width(),
+    height: $wrap.height(),
+  });
+
+  //缩放的大小
+  var scale = GLOBAL.picScale.scale || 1;
+  var moveX = GLOBAL.picScale.maxX - GLOBAL.picScale.translateX || 0
+  var moveY = GLOBAL.picScale.translateY || 0;
+
 
   var gap = 0;  //图文展示坐标，与点读位的距离
   var rW = $tar.width();
   var rH = $tar.height();
 
 
-  var top = css2Float($tar.css('top'));
-  var left = css2Float($tar.css('left'));
+  var left = css2Float($tar.css('left')) * scale - moveX;
+  var top = css2Float($tar.css('top')) * scale + moveY;
+
   var imgTextW = $secImgTextMain.width();
   var imgTextH = $secImgTextMain.height();
+
   var windowW = $(window).width();
   var windowH = $(window).height();
+
 
   var distTopAndBottom = 30;  //距离顶部,底部小于30px ,考虑图片放其他地方
   var distLeftAndRight = 40;  //距离左边右边小于40,考虑图文放其他地方
 
-  var wrapLeft = css2Float($tar.parents('.wrap').css('margin-left'));  //背景图片黑色区域宽度
-  var wrapTop = css2Float($tar.parents('.wrap').css('margin-top'));  //黑色区域高度
+
+  //var wrapLeft = css2Float($tar.parents('.wrap').css('margin-left'));  //背景图片黑色区域宽度
+  //var wrapTop = css2Float($tar.parents('.wrap').css('margin-top'));  //黑色区域高度
+  var wrapTop = css2Float($('.sec-imgtext').css('margin-top'));  //黑色区域高度
+  var wrapLeft = css2Float($('.sec-imgtext').css('margin-left'));  //背景图片黑色区域宽度
 
   var minLeft = distLeftAndRight - wrapLeft;  //图文允许放置的最左边大小
   var maxLeft = windowW - distLeftAndRight;  //最右边
@@ -1487,7 +1510,6 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
   else {
     imgTextTop = minY;
   }
-
 
   $secImgTextMain.css({left: imgTextLeft, top: imgTextTop});
 

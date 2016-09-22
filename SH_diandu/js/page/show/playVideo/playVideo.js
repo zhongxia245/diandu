@@ -73,9 +73,11 @@ window.PlayVideo = (function (Util) {
     var $fullpanel = $container.find('.vc-btn-fullpanel')
 
     if (config) {
-      var _scale = window.screen.width / 1200;
-      $playImg.css({transform: 'scale(' + _scale + ')'})
-      //$btnClose.css({transform: 'scale(' + _scale + ')'})
+
+      // var _scale = window.screen.width / 1200;
+      //$playImg.css({transform: 'scale(' + _scale + ')'})
+      //var scaleBtnClose = parseInt(config.w) / 600;
+      //$btnClose.css({transform: 'scale(' + scaleBtnClose + ')'})
 
       //PC端,背景图片宽度1200,高度675
       if (Util.IsPC()) {
@@ -93,15 +95,33 @@ window.PlayVideo = (function (Util) {
         }
       }
 
-      $container.css({
-        left: _left + 'px',
-        top: _top + 'px',
-        width: _str2Num(config.w),
-        height: _str2Num(config.h),
-      })
+      //计算视频位置
+      //$container.css({
+      //  left: _left + 'px',
+      //  top: _top + 'px',
+      //  width: _str2Num(config.w),
+      //  height: _str2Num(config.h),
+      //})
 
-      var scaleBtnClose = parseInt(config.w) / 600;
-      $btnClose.css({transform: 'scale(' + scaleBtnClose + ')'})
+      //不计算位置,直接在屏幕中间显示
+      config.w = config.w || "1";
+      config.h = config.h || "1";
+      if (parseInt(config.w) > parseInt(config.h)) {
+        $container.css({
+          width: '90%',
+          height: parseInt(config.h) / parseInt(config.w) * 90 + '%',
+          left: '5%',
+          top: parseInt(config.h) / parseInt(config.w) * 5 + '%'
+        })
+      } else {
+        $container.css({
+          height: '90%',
+          width: parseInt(config.w) / parseInt(config.h) * 90 + '%',
+          top: '5%',
+          left: parseInt(config.w) / parseInt(config.h) * 5 + '%'
+        })
+      }
+
 
       //$container.css({
       //  left: _str2Num(_left),
