@@ -157,6 +157,12 @@ window.PicScale = (function () {
 
     _selfPosition: function (pos) {
       var that = this;
+
+      var width = that._w * that.scale;
+      var height = that._h * that.scale;
+      that.maxX = Math.abs((width - that._screenW) / 2);
+      that.maxY = Math.abs((height - that._screenH) / 2);
+
       var _pos = function () {
         pos = pos || {};
         pos.scale = pos.scale || 1;
@@ -226,7 +232,7 @@ window.PicScale = (function () {
           that.translateX = that._oldX + ev.deltaX;
           that.translateY = that._oldY + ev.deltaY;
 
-          that._limitXY();
+          //that._limitXY();
 
           var _position = {
             translateX: that.translateX,

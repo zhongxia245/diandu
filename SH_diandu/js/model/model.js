@@ -38,18 +38,19 @@
  删除评论 接口 del_review
  参数是评论的id
  **********************************************/
-window.Model = (function ($) {
+window.Model = (function($) {
   //接口地址
   var URL = {
     base: '/edu/course/api.php',
+    downloadWxRecordFile: './php/weixindownload.php',
     //base: 'http://dev.catics.org/edu/course/api.php',
-    save: 'save_touch_page',  //创建点读
-    get: 'get_touch_page_data',  //获取点读列表
-    delPage: 'del_touch_page',  //删除点读页
-    addComment: 'save_review',  //添加评论
-    getComment: 'get_review_list',  //获取评论列表
-    supportComment: 'support_review',  //点赞
-    delComment: 'del_review',  //删除评论
+    save: 'save_touch_page', //创建点读
+    get: 'get_touch_page_data', //获取点读列表
+    delPage: 'del_touch_page', //删除点读页
+    addComment: 'save_review', //添加评论
+    getComment: 'get_review_list', //获取评论列表
+    supportComment: 'support_review', //点赞
+    delComment: 'del_review', //删除评论
   };
 
   //如何是本地的测试环境
@@ -62,7 +63,7 @@ window.Model = (function ($) {
    */
   function addDianduPage(data, qrcode, callback) {
     var dataStr = JSON.stringify(data);
-    $.post(URL.base, {action: URL.save, data: dataStr, qrcode: qrcode}, function (result) {
+    $.post(URL.base, { action: URL.save, data: dataStr, qrcode: qrcode }, function(result) {
       console.log('result', result);
       callback && callback(result);
     });
@@ -76,8 +77,8 @@ window.Model = (function ($) {
       type: "POST",
       url: URL.base,
       async: false,
-      data: {action: URL.delPage, id: id},
-      success: function (result) {
+      data: { action: URL.delPage, id: id },
+      success: function(result) {
         console.log("del success!", id)
         callback && callback(result);
       }
@@ -92,7 +93,7 @@ window.Model = (function ($) {
    * @param callback      成功的回调函数
    */
   function getList(id, callback) {
-    $.post(URL.base, {action: URL.get, id: id}, function (result) {
+    $.post(URL.base, { action: URL.get, id: id }, function(result) {
       var data = JSON.parse(result);
       callback && callback(data, id)
     });
@@ -106,7 +107,7 @@ window.Model = (function ($) {
    */
   function addComment(data, callback) {
     data.action = URL.addComment;
-    $.post(URL.base, data, function (result) {
+    $.post(URL.base, data, function(result) {
       callback && callback(result)
     });
   }
@@ -117,7 +118,7 @@ window.Model = (function ($) {
    * @param callback      成功的回调函数
    */
   function delComment(id, callback) {
-    $.post(URL.base, {action: URL.delComment, id: id}, function (result) {
+    $.post(URL.base, { action: URL.delComment, id: id }, function(result) {
       callback && callback(result, id)
     });
   }
@@ -128,7 +129,7 @@ window.Model = (function ($) {
    * @param callback      成功的回调函数
    */
   function getComment(id, callback) {
-    $.post(URL.base, {action: URL.getComment, pageid: id}, function (result) {
+    $.post(URL.base, { action: URL.getComment, pageid: id }, function(result) {
       if (result !== "") {
         var data = JSON.parse(result);
         callback && callback(data, id)
@@ -142,8 +143,18 @@ window.Model = (function ($) {
    * @param callback      成功的回调函数
    */
   function support(id, callback) {
-    $.post(URL.base, {action: URL.supportComment, id: id}, function (result) {
+    $.post(URL.base, { action: URL.supportComment, id: id }, function(result) {
       callback && callback(result, id)
+    });
+  }
+
+  /**
+   * 下载微信录音文件，保存到本地服务器
+   */
+  function downloadRecordAudio(media_id, callback) {
+    $.post(URL.downloadWxRecordFile, { media_id: media_id }, function(result) {
+      var data = JSON.parse(result);
+      callback && callback(data)
     });
   }
 
@@ -156,5 +167,6 @@ window.Model = (function ($) {
     delComment: delComment,
     getComment: getComment,
     support: support,
+    downloadRecordAudio: downloadRecordAudio
   }
 })($);

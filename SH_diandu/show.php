@@ -17,7 +17,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
-  <title>点读展示</title>
+  <title></title>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
   <link rel="stylesheet" href="js/lib/frozen/css/frozen.css"/>
   <link rel="stylesheet" href="js/lib/modal/css/style.css">
@@ -161,12 +161,12 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/util/drag.js"></script>
 <script src="js/util/timeago.js"></script>
 <!--Ajax操作-->
-<script src="js/model/model.js"></script>
+<script src="js/model/model.js?v=5"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
 <script src="js/components/slide/touchslide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js"></script>
+<script src="js/components/examcomment/ExamComment.js?v=1"></script>
 <script src="js/page/show/globalAudio.js"></script>
 <script src="js/page/show/pointOpacity.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
@@ -175,7 +175,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/show/picScale/PicScale.js?v=2"></script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
-<script src="js/show.js?v=2"></script>
+<script src="js/show.js?v=3"></script>
 <script>
   $(function () {
     var _isDebug = Util.getQueryStringByName('debug');
