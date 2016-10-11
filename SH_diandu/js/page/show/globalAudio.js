@@ -15,7 +15,7 @@ function GlobalAudioController(selector, config) {
   this.pages = config.data.pages;
 
   this.timer = null;
-  this.duration = 500;
+  this.duration = 50;
   this.callback = config.callback;  //播放某个时刻,跳转页面
   this.playCallback = config.playCallback; //播放后的回调
   this.pauseCallback = config.pauseCallback; //暂停后的回调
