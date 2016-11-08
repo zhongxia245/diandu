@@ -167,7 +167,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
 <script src="js/components/examcomment/ExamComment.js?v=1"></script>
-<script src="js/page/show/globalAudio.js"></script>
+<script src="js/page/show/globalAudio.js?v=20161011"></script>
 <script src="js/page/show/pointOpacity.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/show/playVideo/playVideo.js"></script>
