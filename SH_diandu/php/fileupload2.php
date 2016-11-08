@@ -1,13 +1,14 @@
 <?php
+
 /**
- * upload.php
- *
- * Copyright 2013, Moxiecode Systems AB
- * Released under GPL License.
- *
- * License: http://www.plupload.com/license
- * Contributing: http://www.plupload.com/contributing
- */
+* upload.php
+*
+* Copyright 2013, Moxiecode Systems AB
+* Released under GPL License.
+*
+* License: http://www.plupload.com/license
+* Contributing: http://www.plupload.com/contributing
+*/
 #!! IMPORTANT:
 #!! this file is just an example, it doesn't incorporate any security checks and
 #!! is not recommended to be used in production environment as it is. Be sure to
@@ -60,11 +61,13 @@ if (!file_exists($uploadDir)) {
 //     $fileName = uniqid("file_");
 // }
 $fileName = uniqid("file_");
-
 $md5File = @file('md5list2.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $md5File = $md5File ? $md5File : array();
 if (isset($_REQUEST["md5"]) && array_search($_REQUEST["md5"], $md5File ) !== FALSE ) {
-    die('{"jsonrpc" : "2.0", "result" : null, "id" : "id", "exist": 1}');
+    die('{
+        "jsonrpc" : "2.0", "result" : null, "id" : "id", "exist": 1
+    }
+    ');
 }
 $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 $uploadPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
@@ -74,7 +77,13 @@ $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 // Remove old temp files
 if ($cleanupTargetDir) {
     if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+        die('{
+            "jsonrpc" : "2.0", "error" : {
+                "code": 100, "message": "Failed to open temp directory."
+            }
+            , "id" : "id"
+        }
+        ');
     }
     while (($file = readdir($dir)) !== false) {
         $tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
@@ -91,20 +100,44 @@ if ($cleanupTargetDir) {
 }
 // Open temp file
 if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
-    die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    die('{
+        "jsonrpc" : "2.0", "error" : {
+            "code": 102, "message": "Failed to open output stream."
+        }
+        , "id" : "id"
+    }
+    ');
 }
 if (!empty($_FILES)) {
     if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+        die('{
+            "jsonrpc" : "2.0", "error" : {
+                "code": 103, "message": "Failed to move uploaded file."
+            }
+            , "id" : "id"
+        }
+        ');
     }
     // Read binary input stream and append it to temp file
     if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        die('{
+            "jsonrpc" : "2.0", "error" : {
+                "code": 101, "message": "Failed to open input stream."
+            }
+            , "id" : "id"
+        }
+        ');
     }
 } else {
     if (!$in = @fopen("php://input", "rb")) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+    die('{
+        "jsonrpc" : "2.0", "error" : {
+            "code": 101, "message": "Failed to open input stream."
+        }
+        , "id" : "id"
     }
+    ');
+}
 }
 while ($buff = fread($in, 4096)) {
     fwrite($out, $buff);
