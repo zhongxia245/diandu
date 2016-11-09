@@ -637,7 +637,8 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit);
 
   // 添加点读页
-  $('#btnAdd').on('click', addDianDuPageTpl);
+  //$('#btnAdd').on('click', addDianDuPageTpl);
+  $('#btnAdd').on('click', fn3_onoffImgCreate);
 
   //收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1414,6 +1415,10 @@ function fileTypeItemClick(e) {
       fileTypeDesc = "Image 文件";
       $filemask.show().off().on('click', fn2_examCreate);
       break;
+    case 'on-off': //开关图
+      fileTypeExts = '*.gif;*.jpg;*.png';
+      fileTypeDesc = "Image 文件";
+      $filemask.show().off().on('click', fn3_onoffImgCreate);
   }
 
   //把文件类型，保存到变量里面
@@ -1460,6 +1465,29 @@ function fileTypeItemClick(e) {
 
   $('#__file' + id + ' object').css('left', 0);
 }
+
+/**
+ * 2016-11-09 22:40:46
+ * 上传开关图
+ * TODO: 弹框功能
+ * @param e
+ */
+function fn3_onoffImgCreate(e) {
+  //获取 id
+  var ids = CommonUtil.getIds(e);
+  var _isEdit = ids.isEdit;
+  var pageId = ids.pageId;
+  var dianduId = ids.dianduId;
+  window.imgText = new OnOffImg('body', {}, function (result) {
+    //_data.setDDItems(result.id, result);
+    ////这个不能写外面，否则会被缓存起来
+    //var ids = result.id.split('_');
+    //var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
+    //$uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
+    //$uploadRight.find('.upload-right-name span').text('开关图已上传(点击编辑)');
+  }).init();
+}
+
 
 /**
  * 上传图文[共用一个图文上传页]

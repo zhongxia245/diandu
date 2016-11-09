@@ -1,0 +1,6 @@
+php/upload
+php/upload_tmp
+php/weixinrecord
+.idea
+.vscode
+.DS_Store

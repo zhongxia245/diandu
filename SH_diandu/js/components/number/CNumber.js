@@ -26,8 +26,8 @@ function CNumber(selector, config) {
   this.selector = selector;
 
   config = config || {};
-  this.maxVaule = 200;   //最大比例
-  this.minValue = 25;    //最小比例
+  this.maxVaule = config.maxValue || 200;   //最大比例
+  this.minValue = config.minValue || 25;    //最小比例
   this.defaultValue = config.defaultValue || 100;  //默认值
   this.val = config.val; //当前值
   this.step = config.step || 25; //步长

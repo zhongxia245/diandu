@@ -438,43 +438,36 @@ header {
 
 .upload-type .video {
   background: url('../imgs/upload_video.png');
-  /*背景图片自适应大小*/
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .audio {
   background: url('../imgs/upload_audio.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .imgtext {
   background: url('../imgs/upload_imgtext.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .audioimg {
   background: url('../imgs/upload_audioimg.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .exam {
   background: url('../imgs/upload_exam.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .on-off {
-  background: url('../imgs/upload_exam.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  background: url('../imgs/onoff.png');
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
