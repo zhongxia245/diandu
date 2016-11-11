@@ -798,8 +798,8 @@ function initThumbs(id, pages) {
 /**
  * 生成点读位【根据类别使用不同的图标,目前只有  频,音频,图文】
  * @param data 点读点集合数据
- * @param imgW 图片缩放后的宽
- * @param imgH 图片缩放后的高
+ * @param imgW 背景图片缩放后的宽
+ * @param imgH 背景图片缩放后的高
  * @param scale 缩放比例
  * @returns {string}
  */
@@ -835,6 +835,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
       //自定义标题
       var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")
+      //开关图 TODO:字段名称可能需要修改
+      var switchImg = JSON.parse(pointDatas[i]['remarks'] || '{}')
 
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
@@ -849,6 +851,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           mediaImg += '  <img  class="audio-global-play" style="display:none;border-radius: 50%; width: 100%; height: 100%;" src="imgs/global_audio/global-audio-other-page-on.gif" alt="audio">'
           break;
       }
+
       //自定义点读点
       if (pic.src || pointTitle.title) {
         var config = {
@@ -870,6 +873,24 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         //自定义点读点
         else {
           html += CreatePoint.initPoint(4, config)
+        }
+      }
+      //开关图
+      else if (switchImg.img) {
+        style += 'background-image:url(' + (switchImg.img.path) + ');'
+        style += 'width:' + (switchImg.img.w ) + 'px; height:' + (switchImg.img.h ) + 'px;'
+        style += 'transform: scale(' + (switchImg.img.scale * pointScale) + ');'
+        style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px';
+        html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '"></div>'
+
+        for (var j = 0; j < switchImg.switchArea.length; j++) {
+          var area = switchImg.switchArea[j];
+          var w = imgW * parseFloat(area.scaleW);
+          var h = imgH * parseFloat(area.scaleH);
+          var x = imgW * parseFloat(area.x);
+          var y = imgH * parseFloat(area.y);
+          var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px';
+          html += '<div data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
         }
       }
       //普通点读点
@@ -1304,6 +1325,28 @@ function bindEvent() {
   $('#pages').off().on(click, function (ev) {
     window.galleryTop.stopAutoplay();
     return false;
+  })
+
+  //点击开关图,展示隐藏图片 TODO:增加展示音效,显示闪烁
+  $('.on-off-switch-area').off().on(click, function (ev) {
+    var $cTar = $(ev.currentTarget);
+    var id = $cTar.attr('data-target');
+    var isShow = $cTar.attr('data-show');
+    var $hideImg = $('#' + id);
+    if (!isShow || isShow === 'false') {
+      var audio = document.createElement('audio');
+      audio.src = 'assets/click.wav';
+      audio.play();
+      $hideImg.show();
+      $cTar.attr('data-show', true)
+      $hideImg.addClass('custom-point-blink')
+      setTimeout(function () {
+        $hideImg.removeClass('custom-point-blink')
+      }, 2000)
+    } else {
+      $hideImg.hide();
+      $cTar.attr('data-show', false)
+    }
   })
 
 

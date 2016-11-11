@@ -633,3 +633,17 @@ ul, li {
   top: 0;
   bottom: 0;
 }
+
+/*开关图*/
+.on-off-hideimg {
+  background-size: 100%;
+  transform-origin: left top;
+  position: absolute;
+  display: none;
+  z-index: 2;
+}
+
+.on-off-switch-area {
+  position: absolute;
+  z-index: 1;
+}

@@ -3,7 +3,15 @@
  * 作者: zhongxia
  * 说明: 拖拽的类库
  ***************************************************/
-function Drag(selector, callback) {
+/**
+ * 拖动
+ * @param selector 需要拖动的选择器
+ * @param callback 移动的回调
+ * @param moveFlag 是否需要移动
+ * @constructor
+ */
+function Drag(selector, callback, moveFlag) {
+  moveFlag = moveFlag || false;
   this.dianduSize = 72;
   this.selector = selector;
   this.$selector = $(selector);
@@ -29,6 +37,9 @@ function Drag(selector, callback) {
     var that = this;
 
     that.$selector.on('mousedown', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
       that.params.flag = true;
       that.params.currentX = e.clientX;
       that.params.currentY = e.clientY;
@@ -37,13 +48,20 @@ function Drag(selector, callback) {
       that.params.top = that.$selector.css('top').replace('px', '');
 
       $(document).on('mouseup', function () {
+        e.preventDefault();
+        e.stopPropagation();
+
         that.params.flag = false;
         that.params.left = that.$selector.css('left');
         that.params.top = that.$selector.css('top');
-        that.callback && that.callback(parseInt(that.params.left), parseInt(that.params.top));
+        if (!moveFlag) {
+          that.callback && that.callback(parseInt(that.params.left), parseInt(that.params.top));
+        }
       });
 
       $(document).on('mousemove', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         if (that.params.flag) {
           var nowX = e.clientX;
           var nowY = e.clientY;
@@ -68,14 +86,22 @@ function Drag(selector, callback) {
           }
           // 限制点读位不能超出背景图  END
 
-          that.$selector.css({
-            left: x,
-            top: y
-          })
+          //移动图片
+          if (!moveFlag) {
+            that.$selector.css({
+              left: x,
+              top: y
+            })
+          }
+          //不移动图片,主要做,左下角下拉,父容器大小改变
+          else {
+            var newX = parseInt(that.params.left) + disX;
+            var newY = parseInt(that.params.top) + disY;
+            callback && callback(newX, newY)
+          }
         }
       })
     });
-
   };
 
   //启动拖拽

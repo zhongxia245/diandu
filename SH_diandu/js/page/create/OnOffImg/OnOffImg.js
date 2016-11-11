@@ -32,11 +32,14 @@
 
 
 var OnOffImg = function (selector, data, fn_submit) {
-  data = {id: 1, bgPath: 'uploads/f15247fa230c653f37b290133135f2d2.jpg'}
+  data = data || {id: 1, bgPath: 'uploads/f15247fa230c653f37b290133135f2d2.jpg'}
   var that = this;
   this.basePath = "uploads/";
   this.setUploadify = _upload && _upload.setUploadify;
   this.addImageId = "on-off-img-addImage";
+  this.switchCount = 0;
+  this.switchId = 'switchImg';
+  this.submitData = {img: {}, switchArea: []}; //提交的数据
 
   this.selector = selector || "body";
   this.tpl = [
@@ -76,10 +79,34 @@ var OnOffImg = function (selector, data, fn_submit) {
 
   //提交
   this.submit = function () {
-    that.data['title'] = that.$input.val();
-    that.data['content'] = that.editor && that.editor.html()
     that.hide();
-    that.fn_submit && that.fn_submit(that.data);
+    var bgW = that.$onOffBg.width();
+    var bgH = that.$onOffBg.height();
+
+    var $hideImg = $('#' + that.addImageId);
+    that.submitData.img.x = that.parsePx2Int($hideImg.css('left')) / bgW;
+    that.submitData.img.y = that.parsePx2Int($hideImg.css('top')) / bgH;
+    that.submitData.img.x = that.submitData.img.x.toFixed(2);
+    that.submitData.img.y = that.submitData.img.y.toFixed(2);
+
+
+    var $switchBtns = $('.on-off-img-switchImg');
+    if ($switchBtns.length && $switchBtns.length > 0) {
+      for (var i = 0; i < $switchBtns.length; i++) {
+        var $switch = $switchBtns.eq(i);
+        var x = that.parsePx2Int($switch.css('left')) / bgW;
+        var y = that.parsePx2Int($switch.css('top')) / bgH;
+
+        x = x.toFixed(2);
+        y = y.toFixed(2);
+
+        var scaleW = ($switch.width() / bgW).toFixed(2);
+        var scaleH = ($switch.height() / bgH).toFixed(2);
+        that.submitData.switchArea.push({x: x, y: y, scaleW: scaleW, scaleH: scaleH})
+      }
+    }
+
+    that.fn_submit && that.fn_submit(that.submitData);
   }
 
   //隐藏
@@ -94,8 +121,56 @@ var OnOffImg = function (selector, data, fn_submit) {
 
   //下载图片,TODO:目前只是打开,最好改成下载
   this.download = function () {
-    window.open(that.data.onOffImgPath)
+    window.open(that.data.submitData.img.path)
   }
+
+  /**
+   * 增加开关位置
+   * @param $parent 放开关的容器
+   * @param resizeCallback 改变开关大小的移动回调
+   */
+  this.addSwitch = function ($parent, resizeCallback) {
+    var id = this.switchId + this.switchCount;
+    var resizeId = this.switchId + this.switchCount + 'resize';
+    var $switchImg = $('<div id="' + id + '" class="on-off-img-switchImg">拖动移动位置，拖动角标改变大小<div id="' + resizeId + '" class="on-off-img-switch-resize"></div></div>');
+    $parent.append($switchImg);
+    new Drag('#' + id);
+    new Drag('#' + resizeId, function (x, y) {
+      resizeCallback && resizeCallback($switchImg, $('#' + resizeId), x, y);
+    }, true)
+  }
+
+  /**
+   * 增加隐藏图片
+   * @param $parent
+   * @param callback
+   */
+  this.addHideImg = function ($parent, path, callback) {
+    var that = this;
+    var $divImg = $('<div>');
+    $divImg.css({backgroundImage: 'url(' + path + ')'});
+    $divImg.addClass('on-off-img-addImage')
+    $divImg.attr('id', this.addImageId)
+
+    $parent.append($divImg);
+    new Drag('#' + this.addImageId, function (x, y) {
+      callback && callback(x, y)
+    });
+
+    Util.getImageWH(path, function (wh) {
+      that.submitData.img.w = wh.w;
+      that.submitData.img.h = wh.h;
+
+      var w = 550 / 1920 * wh.w;
+      var h = 550 / 1920 * wh.h;
+      $divImg.css({width: w, height: h})
+    })
+  }
+
+  this.parsePx2Int = function (px) {
+    return parseFloat(px.replace('px', '')) || 0;
+  }
+
   return this;
 }
 
@@ -116,6 +191,7 @@ OnOffImg.prototype.init = function () {
     callback: function (val) {
       var size = val / 100;
       that.$modal.find('#' + that.addImageId).css({transform: 'scale(' + size + ')'});
+      that.submitData.img.scale = size;
     }
   })
 
@@ -167,8 +243,7 @@ OnOffImg.prototype.bindEvent = function () {
       that.$resizeNumber.show();
       that.$addOnOff.show();
       that.$fileName.text(file.name);
-      that.data.onOffImgPath = result;
-
+      that.submitData.img.path = result;
       that.addImg(result);
     }
   });
@@ -179,22 +254,14 @@ OnOffImg.prototype.bindEvent = function () {
  * @param path 开关触发区
  */
 OnOffImg.prototype.addImg = function (path) {
-  var $divImg = $('<div>');
-  this.$onOffBg.append($divImg)
-
-  $divImg.css({backgroundImage: 'url(' + path + ')'});
-  $divImg.addClass('on-off-img-addImage')
-  $divImg.attr('id', this.addImageId)
-
-  new Drag('#' + this.addImageId, function (x, y) {
-
-  });
-
-  Util.getImageWH(path, function (wh) {
-    var w = 550 / 1920 * wh.w;
-    var h = 550 / 1920 * wh.h;
-    $divImg.css({width: w, height: h})
+  var that = this;
+  that.addHideImg(that.$onOffBg, path)
+  that.addSwitch(that.$onOffBg, function ($parent, $target, x, y) {
+    var newX = x - that.parsePx2Int($target.css('left'));
+    var newY = y - that.parsePx2Int($target.css('top'));
+    $parent.css({
+      width: $parent.width() + newX,
+      height: $parent.height() + newY
+    })
   })
-
-
 }

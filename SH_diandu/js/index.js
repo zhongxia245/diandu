@@ -172,7 +172,6 @@ var _data = (function () {
 
           if (!items[j].isRemove && !isEmpty(items[j])) { //去掉删除的点读位
 
-
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -188,7 +187,10 @@ var _data = (function () {
               content: items[j].content,
               hide: items[j].hide ? 1 : 0,
               questions: typeof items[j]['questions'] !== "string" ? JSON.stringify(items[j].questions) : items[j].questions,
-              type: _data.getTypeByName(items[j].type)
+              type: _data.getTypeByName(items[j].type),
+
+              switch: JSON.stringify(items[j].switch),
+              remarks: JSON.stringify(items[j].switch)  //TODO:暂时用
             }
 
             if (items[j]['oldId']) obj['id'] = items[j]['oldId'];
@@ -244,6 +246,8 @@ var _data = (function () {
         return 3;
       case 'exam':
         return 4;
+      case 'on-off':
+        return 5;
       default:
         return 1;
     }
@@ -255,7 +259,7 @@ var _data = (function () {
    */
   function isEmpty(item) {
     //如果这些每一项都为空,则表示为空的点读位
-    if (item.content || item.filename || item.questions || item.title || item.url) {
+    if (item.content || item.filename || item.questions || item.title || item.url || item.switch) {
       return false;
     }
     return true;
@@ -1478,13 +1482,9 @@ function fn3_onoffImgCreate(e) {
   var _isEdit = ids.isEdit;
   var pageId = ids.pageId;
   var dianduId = ids.dianduId;
-  window.imgText = new OnOffImg('body', {}, function (result) {
-    //_data.setDDItems(result.id, result);
-    ////这个不能写外面，否则会被缓存起来
-    //var ids = result.id.split('_');
-    //var $uploadRight = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-right').eq(0);
-    //$uploadRight.find('.upload').removeClass('upload').addClass('uploaded-imgtext')
-    //$uploadRight.find('.upload-right-name span').text('开关图已上传(点击编辑)');
+  new OnOffImg('body', {id: ids.id, bgPath: window.DD.items[pageId].pic}, function (result) {
+    var pointData = window.DD.items[pageId].data[dianduId];
+    pointData.switch = result;
   }).init();
 }
 
@@ -1833,6 +1833,7 @@ function handleSubmit(e) {
   var qrcode = Util.getQueryStringByName('qrcode') || ""  //尹果要求加的参数
 
   Model.addDianduPage(data, qrcode, function (result) {
+    debugger;
     Logger.log("操作成功,返回点读页的id为(videoid)= ", result)
 
     var msg = "创建成功,点击确定返回单元列表!";
