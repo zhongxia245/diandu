@@ -82,6 +82,27 @@ CNumber.prototype.init = function () {
   this.$sub = this.$container.find('.c-number-op-sub');
   this.$pointSelector = $(this.pointSelector);
 
+
+  //双击,可以输入值
+  this.$val.on('click', function (e) {
+    that.$val.attr('contenteditable', true);
+  })
+  this.$val.on('keydown', function (e) {
+    if (e.keyCode === 13) {
+      var val = parseInt(that.$val.text());
+      that.setVal(val);
+      that.$val.removeAttr('contenteditable');
+      that.callback && that.callback(val);
+    }
+  })
+  this.$val.on('blur', function () {
+    var val = parseInt(that.$val.text());
+    that.setVal(parseInt(that.$val.text()));
+    that.$val.removeAttr('contenteditable');
+    that.callback && that.callback(val);
+  })
+
+
   //点击加号处理
   this.$plus.on('click', function (e) {
     e.stopPropagation();
@@ -108,20 +129,31 @@ CNumber.prototype.init = function () {
 }
 
 /**
- * 设置数值的颜色, 绿色为- , 橙色为+
+ * 设置数值的颜色和值
  */
 CNumber.prototype.setColor = function () {
-  this.$val.text(this.val)
+  this.setVal(this.val);
+}
+
+/**
+ * 设置数值的颜色, 绿色为- , 橙色为+
+ */
+CNumber.prototype.setVal = function (val) {
+
+  val = val > this.maxVaule ? this.maxVaule : val;
+  val = val < this.minValue ? this.minValue : val;
+  this.val = val;
+
+  this.$val.text(val)
   this.$val
     .removeClass('val-sub')
     .removeClass('val-default')
     .removeClass('val-plus');
 
-
-  if (this.val > this.defaultValue) {
+  if (val > this.defaultValue) {
     this.$val.addClass('val-plus')
   }
-  else if (this.val == this.defaultValue) {
+  else if (val == this.defaultValue) {
     this.$val.addClass('val-default')
   }
   else {

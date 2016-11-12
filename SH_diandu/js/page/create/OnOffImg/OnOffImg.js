@@ -1,10 +1,10 @@
 /**
  * TODO：问题
- * 1. 保存数据,接口,关联到 创建页面中去
- * 2. 图片缩放后移动
- * 3. 展示页面,逻辑编写
+ * 1. 保存数据,接口,关联到 创建页面中去   ok
+ * 2. 图片缩放后移动                   ok
+ * 3. 展示页面,逻辑编写                还差隐藏图片位置，刚进入页面的时候闪烁
  * 4. 编辑功能实现
- * 5. 开关触发区功能实现
+ * 5. 开关触发区功能实现                ok
  */
 
 /***************************************************
@@ -13,35 +13,35 @@
  * 说明: 开关图模板
  ***************************************************/
 
-//加载依赖的脚本和样式
-(function () {
+// 加载依赖的脚本和样式
+;(function () {
   /**
    * 获取当前脚本的目录
    * @returns {string}
    */
   function getBasePath() {
-    //兼容Chrome 和 FF
-    var currentPath = document.currentScript && document.currentScript.src || '';
-    var paths = currentPath.split('/');
-    paths.pop();
-    return paths.join('/');
+    // 兼容Chrome 和 FF
+    var currentPath = document.currentScript && document.currentScript.src || ''
+    var paths = currentPath.split('/')
+    paths.pop()
+    return paths.join('/')
   }
 
-  Util.loadCSS(getBasePath() + '/onoffimg.css');
+  Util.loadCSS(getBasePath() + '/onoffimg.css')
 })()
 
+//======================================MAIN==============================================
 
 var OnOffImg = function (selector, data, fn_submit) {
-  data = data || {id: 1, bgPath: 'uploads/f15247fa230c653f37b290133135f2d2.jpg'}
-  var that = this;
-  this.basePath = "uploads/";
-  this.setUploadify = _upload && _upload.setUploadify;
-  this.addImageId = "on-off-img-addImage";
-  this.switchCount = 0;
-  this.switchId = 'switchImg';
-  this.submitData = {img: {}, switchArea: []}; //提交的数据
+  var that = this
+  this.basePath = 'uploads/'
+  this.setUploadify = _upload && _upload.setUploadify
+  this.addImageId = 'on-off-img-addImage'
+  this.switchCount = 0
+  this.switchId = 'switchImg'
+  this.submitData = {img: {}, switchArea: []}; // 提交的数据
 
-  this.selector = selector || "body";
+  this.selector = selector || 'body'
   this.tpl = [
     '<div class="on-off-img-modal" data-id="{{id}}">',
     '   <div class="on-off-img-mask"></div>',
@@ -72,54 +72,22 @@ var OnOffImg = function (selector, data, fn_submit) {
     '       </div>',
     '   </div>',
     '</div>'
-  ].join('');
-  this.data = data;
+  ].join('')
+  this.data = data || {};
   this.fn_submit = fn_submit;
-  this.imgList = [];  //上传的图片列表
+  this.imgList = []; // 上传的图片列表
 
-  //提交
-  this.submit = function () {
-    that.hide();
-    var bgW = that.$onOffBg.width();
-    var bgH = that.$onOffBg.height();
-
-    var $hideImg = $('#' + that.addImageId);
-    that.submitData.img.x = that.parsePx2Int($hideImg.css('left')) / bgW;
-    that.submitData.img.y = that.parsePx2Int($hideImg.css('top')) / bgH;
-    that.submitData.img.x = that.submitData.img.x.toFixed(2);
-    that.submitData.img.y = that.submitData.img.y.toFixed(2);
-
-
-    var $switchBtns = $('.on-off-img-switchImg');
-    if ($switchBtns.length && $switchBtns.length > 0) {
-      for (var i = 0; i < $switchBtns.length; i++) {
-        var $switch = $switchBtns.eq(i);
-        var x = that.parsePx2Int($switch.css('left')) / bgW;
-        var y = that.parsePx2Int($switch.css('top')) / bgH;
-
-        x = x.toFixed(2);
-        y = y.toFixed(2);
-
-        var scaleW = ($switch.width() / bgW).toFixed(2);
-        var scaleH = ($switch.height() / bgH).toFixed(2);
-        that.submitData.switchArea.push({x: x, y: y, scaleW: scaleW, scaleH: scaleH})
-      }
-    }
-
-    that.fn_submit && that.fn_submit(that.submitData);
-  }
-
-  //隐藏
+  // 隐藏
   this.hide = function () {
-    that.$modal.hide();
+    that.$modal.remove();
   }
 
-  //展示
+  // 展示
   this.show = function () {
-    that.$modal.show();
+    that.$modal.show()
   }
 
-  //下载图片,TODO:目前只是打开,最好改成下载
+  // 下载图片,TODO:目前只是打开,最好改成下载
   this.download = function () {
     window.open(that.data.submitData.img.path)
   }
@@ -130,13 +98,13 @@ var OnOffImg = function (selector, data, fn_submit) {
    * @param resizeCallback 改变开关大小的移动回调
    */
   this.addSwitch = function ($parent, resizeCallback) {
-    var id = this.switchId + this.switchCount;
-    var resizeId = this.switchId + this.switchCount + 'resize';
-    var $switchImg = $('<div id="' + id + '" class="on-off-img-switchImg">拖动移动位置，拖动角标改变大小<div id="' + resizeId + '" class="on-off-img-switch-resize"></div></div>');
-    $parent.append($switchImg);
-    new Drag('#' + id);
+    var id = this.switchId + this.switchCount++;
+    var resizeId = this.switchId + this.switchCount + 'resize'
+    var $switchImg = $('<div id="' + id + '" class="on-off-img-switchImg">拖动移动位置，拖动角标改变大小<div id="' + resizeId + '" class="on-off-img-switch-resize"></div></div>')
+    $parent.append($switchImg)
+    new Drag('#' + id)
     new Drag('#' + resizeId, function (x, y) {
-      resizeCallback && resizeCallback($switchImg, $('#' + resizeId), x, y);
+      resizeCallback && resizeCallback($switchImg, $('#' + resizeId), x, y)
     }, true)
   }
 
@@ -146,32 +114,86 @@ var OnOffImg = function (selector, data, fn_submit) {
    * @param callback
    */
   this.addHideImg = function ($parent, path, callback) {
-    var that = this;
-    var $divImg = $('<div>');
-    $divImg.css({backgroundImage: 'url(' + path + ')'});
+    var that = this
+    var $divImg = $('<div>')
+    $divImg.css({backgroundImage: 'url(' + path + ')'})
     $divImg.addClass('on-off-img-addImage')
     $divImg.attr('id', this.addImageId)
 
-    $parent.append($divImg);
+    $parent.append($divImg)
     new Drag('#' + this.addImageId, function (x, y) {
       callback && callback(x, y)
-    });
+    })
 
     Util.getImageWH(path, function (wh) {
-      that.submitData.img.w = wh.w;
-      that.submitData.img.h = wh.h;
+      that.submitData.img.w = wh.w
+      that.submitData.img.h = wh.h
 
-      var w = 550 / 1920 * wh.w;
-      var h = 550 / 1920 * wh.h;
+      var w = 550 / 1920 * wh.w
+      var h = 550 / 1920 * wh.h
       $divImg.css({width: w, height: h})
     })
   }
 
   this.parsePx2Int = function (px) {
-    return parseFloat(px.replace('px', '')) || 0;
+    if (!px)
+      return 0;
+    return parseFloat(px.replace('px', '')) || 0
   }
 
-  return this;
+  /**
+   * 开关区域移动的回调事件
+   * @param $parent 需要移动的节点
+   * @param $target 拖动的节点
+   * @param x
+   * @param y
+   */
+  this._resizeHandler = function ($parent, $target, x, y) {
+    var newX = x - that.parsePx2Int($target.css('left'))
+    var newY = y - that.parsePx2Int($target.css('top'))
+    $parent.css({
+      width: $parent.width() + newX,
+      height: $parent.height() + newY
+    })
+  }
+
+  /**
+   * 提交
+   */
+  this.submit = function () {
+    var bgW = that.$onOffBg.width()
+    var bgH = that.$onOffBg.height()
+
+    var $hideImg = $('#' + that.addImageId)
+    that.submitData.img.x = that.parsePx2Int($hideImg.css('left')) / bgW
+    that.submitData.img.y = that.parsePx2Int($hideImg.css('top')) / bgH
+    that.submitData.img.x = that.submitData.img.x.toFixed(2)
+    that.submitData.img.y = that.submitData.img.y.toFixed(2)
+
+    var $switchBtns = $('.on-off-img-switchImg')
+    if ($switchBtns.length && $switchBtns.length > 0) {
+      for (var i = 0; i < $switchBtns.length; i++) {
+        var $switch = $switchBtns.eq(i)
+        var x = that.parsePx2Int($switch.css('left')) / bgW
+        var y = that.parsePx2Int($switch.css('top')) / bgH
+
+        x = x.toFixed(2)
+        y = y.toFixed(2)
+
+        var scaleW = ($switch.width() / bgW).toFixed(2)
+        var scaleH = ($switch.height() / bgH).toFixed(2)
+        that.submitData.switchArea.push({x: x, y: y, scaleW: scaleW, scaleH: scaleH})
+      }
+    }
+    that.submitData.img.scale = that.submitData.img.scale || that.data.img.scale || 100;
+
+    that.fn_submit && that.fn_submit(that.submitData)
+
+    //提交后移除
+    that.hide();
+  }
+
+  return this
 }
 
 /**
@@ -179,74 +201,111 @@ var OnOffImg = function (selector, data, fn_submit) {
  * @returns {OnOffImg}
  */
 OnOffImg.prototype.init = function () {
-  var that = this;
-  this.$container = $(this.selector);
+  var that = this
+  this.$container = $(this.selector)
 
-  $(this.selector).append(this.initTpl());
+  $(this.selector).append(this.initTpl())
 
-  //初始化放大小缩小组件
-  new CNumber(this.selector + ' .on-off-img-resize', {
+  // 初始化放大小缩小组件
+  this.cNumber = new CNumber(this.selector + ' .on-off-img-resize', {
     val: 100,
+    step: 1,
     maxValue: 400,
     callback: function (val) {
-      var size = val / 100;
-      that.$modal.find('#' + that.addImageId).css({transform: 'scale(' + size + ')'});
-      that.submitData.img.scale = size;
+      var size = val / 100
+      that.$modal.find('#' + that.addImageId).css({transform: 'scale(' + size + ')'})
+      that.submitData.img.scale = size
     }
   })
 
-  this.$modal = this.$container.find('.on-off-img-modal');
-  this.$close = $('.on-off-img-modal .on-off-img-close');
-  this.$btn = $('.on-off-img-modal .on-off-img-btn');
-  this.$textarea = this.$modal.find('._content');
-  this.$input = this.$modal.find('._title');
-  this.$img = this.$modal.find('._img');
-  this.$fileName = this.$modal.find('.on-off-img-filename');
-  this.$download = this.$modal.find('.on-off-img-download');
-  this.$uploadBtn = this.$modal.find('.on-off-img-unupload');
-  this.$fileInfo = this.$modal.find('.on-off-img-uploaded');
-  this.$resizeNumber = this.$modal.find('.on-off-img-resize');
-  this.$addOnOff = this.$modal.find('.on-off-img-add');
-  this.$onOffBg = this.$modal.find('.on-off-img-bg');
+  this.$modal = this.$container.find('.on-off-img-modal')
+  this.$close = $('.on-off-img-modal .on-off-img-close')
+  this.$btn = $('.on-off-img-modal .on-off-img-btn')
+  this.$textarea = this.$modal.find('._content')
+  this.$input = this.$modal.find('._title')
+  this.$img = this.$modal.find('._img')
+  this.$fileName = this.$modal.find('.on-off-img-filename')
+  this.$download = this.$modal.find('.on-off-img-download')
+  this.$uploadBtn = this.$modal.find('.on-off-img-unupload')
+  this.$fileInfo = this.$modal.find('.on-off-img-uploaded')
+  this.$resizeNumber = this.$modal.find('.on-off-img-resize')
+  this.$addOnOff = this.$modal.find('.on-off-img-add')
+  this.$onOffBg = this.$modal.find('.on-off-img-bg')
 
-  this.bindEvent();
-  return this;
+  this.bindEvent()
+
+  //刚进来先设置值,如果是编辑就把数据展示出来
+  this.setData(this.data);
+
+  return this
 }
-
 
 /**
  * 初始化模板
  */
 OnOffImg.prototype.initTpl = function () {
-  var tpl = this.tpl;
-  var tpls = Handlebars.compile(tpl);
-  return tpls(this.data);
+  var tpl = this.tpl
+  var tpls = Handlebars.compile(tpl)
+  return tpls(this.data)
 }
 
+/**
+ * 设置数据
+ */
+OnOffImg.prototype.setData = function (data) {
+  //进来就有值,则是编辑
+  if (data && data.img && data.img.path) {
+    var bgW = this.$onOffBg.width()
+    var bgH = this.$onOffBg.height()
+    var imgData = data.img || {};
+    var switchArea = data.switchArea || [];
+
+    this.uploadImgCallback(imgData.path, imgData.name)
+
+    $('#' + this.addImageId).css({
+      left: parseFloat(imgData.x) * bgW,
+      top: parseFloat(imgData.y) * bgH,
+      transform: 'scale(' + parseFloat(imgData.scale) + ')'
+    })
+
+    this.cNumber.setVal(parseFloat(imgData.scale) * 100)
+
+    for (var i = 0; i < switchArea.length; i++) {
+      if (i >= 1) {
+        this.addSwitch(this.$onOffBg, this._resizeHandler);
+      }
+      $('#' + this.switchId + i).css({
+        left: parseFloat(switchArea[i].x) * bgW,
+        top: parseFloat(switchArea[i].y) * bgH,
+        width: parseFloat(switchArea[i].scaleW) * bgW,
+        height: parseFloat(switchArea[i].scaleH) * bgH
+      })
+    }
+  }
+}
 
 /**
  * 绑定点击事件
  */
 OnOffImg.prototype.bindEvent = function () {
-  var that = this;
-  this.$close.off('click', this.hide).on('click', this.hide);
-  this.$btn.off('click', this.submit).on('click', this.submit);
+  var that = this
+  this.$close.off('click', this.hide).on('click', this.hide)
+  this.$btn.off('click', this.submit).on('click', this.submit)
 
   this.$download.off('click', this.download).on('click', this.download)
 
+  //初始化uploadify组件
   this.setUploadify($('#on-off-img-' + this.data.id), {
     width: '48px',
     height: '48px',
     onUploadSuccess: function (file, result, response) {
-      that.$uploadBtn.hide();
-      that.$fileInfo.show();
-      that.$resizeNumber.show();
-      that.$addOnOff.show();
-      that.$fileName.text(file.name);
-      that.submitData.img.path = result;
-      that.addImg(result);
+      that.uploadImgCallback(result, file.name)
     }
-  });
+  })
+
+  this.$addOnOff.off().on('click', function () {
+    that.addSwitch(that.$onOffBg, that._resizeHandler)
+  })
 }
 
 /**
@@ -255,13 +314,24 @@ OnOffImg.prototype.bindEvent = function () {
  */
 OnOffImg.prototype.addImg = function (path) {
   var that = this;
-  that.addHideImg(that.$onOffBg, path)
-  that.addSwitch(that.$onOffBg, function ($parent, $target, x, y) {
-    var newX = x - that.parsePx2Int($target.css('left'));
-    var newY = y - that.parsePx2Int($target.css('top'));
-    $parent.css({
-      width: $parent.width() + newX,
-      height: $parent.height() + newY
-    })
-  })
+  that.addHideImg(that.$onOffBg, path);
+  that.addSwitch(that.$onOffBg, that._resizeHandler);
+}
+
+/**
+ * 隐藏图上传成功的回调
+ * @param path
+ * @param filename
+ */
+OnOffImg.prototype.uploadImgCallback = function (path, filename) {
+  this.$uploadBtn.hide();
+  this.$fileInfo.show();
+  this.$resizeNumber.show();
+  this.$addOnOff.show();
+  this.$fileName.text(filename);
+
+  this.submitData.img.name = filename;
+  this.submitData.img.path = path;
+
+  this.addImg(path);
 }

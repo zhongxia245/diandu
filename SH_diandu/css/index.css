@@ -472,7 +472,6 @@ header {
   background-size: 100% 100%;
 }
 
-
 .upload-right {
   position: relative;
   float: left;
@@ -554,7 +553,7 @@ header {
 }
 
 /*图文上传成功*/
-.uploaded-imgtext, .uploaded-exam {
+.uploaded-imgtext, .uploaded-exam, .uploaded-on-off {
   background: #7F7F7F;
   position: relative;
 }
