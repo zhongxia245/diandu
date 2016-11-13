@@ -34,6 +34,7 @@
 
 var OnOffImg = function (selector, data, fn_submit) {
   var that = this
+  this.scaleWH = 550 / 1200;   //和创建页面背景页大小的比例
   this.basePath = 'uploads/'
   this.setUploadify = _upload && _upload.setUploadify
   this.addImageId = 'on-off-img-addImage'
@@ -63,7 +64,7 @@ var OnOffImg = function (selector, data, fn_submit) {
     '                 <div class="on-off-img-download"></div>',
     '             </div>',
     '           </div>',
-    '           <div class="on-off-img-bg" style="background-image:url({{bgPath}})">',
+    '           <div class="on-off-img-bg" style="background-image:url({{bg.bgPath}})">',
     '             <div class="on-off-img-add">增加开关触发区域</div>',
     '           </div>',
     '       </div>',
@@ -126,12 +127,13 @@ var OnOffImg = function (selector, data, fn_submit) {
     })
 
     Util.getImageWH(path, function (wh) {
-      that.submitData.img.w = wh.w
-      that.submitData.img.h = wh.h
-
       var w = 550 / 1920 * wh.w
       var h = 550 / 1920 * wh.h
       $divImg.css({width: w, height: h})
+
+      that.submitData.img.w = wh.w
+      that.submitData.img.h = wh.h
+      that.submitData.img.scaleW = w / that.$onOffBg.width();
     })
   }
 
@@ -185,7 +187,8 @@ var OnOffImg = function (selector, data, fn_submit) {
         that.submitData.switchArea.push({x: x, y: y, scaleW: scaleW, scaleH: scaleH})
       }
     }
-    that.submitData.img.scale = that.submitData.img.scale || that.data.img.scale || 100;
+    that.data.img = that.data.img || {}
+    that.submitData.img.scale = that.submitData.img.scale || that.data.img.scale || 1;
 
     that.fn_submit && that.fn_submit(that.submitData)
 
@@ -211,6 +214,7 @@ OnOffImg.prototype.init = function () {
     val: 100,
     step: 1,
     maxValue: 400,
+    canInput: true,
     callback: function (val) {
       var size = val / 100
       that.$modal.find('#' + that.addImageId).css({transform: 'scale(' + size + ')'})
@@ -231,6 +235,8 @@ OnOffImg.prototype.init = function () {
   this.$resizeNumber = this.$modal.find('.on-off-img-resize')
   this.$addOnOff = this.$modal.find('.on-off-img-add')
   this.$onOffBg = this.$modal.find('.on-off-img-bg')
+
+  this.$onOffBg.css({width: this.scaleWH * this.data.bg.w, height: this.scaleWH * this.data.bg.h})
 
   this.bindEvent()
 
@@ -265,7 +271,7 @@ OnOffImg.prototype.setData = function (data) {
     $('#' + this.addImageId).css({
       left: parseFloat(imgData.x) * bgW,
       top: parseFloat(imgData.y) * bgH,
-      transform: 'scale(' + parseFloat(imgData.scale) + ')'
+      transform: 'scale(' + (parseFloat(imgData.scale)) + ')'
     })
 
     this.cNumber.setVal(parseFloat(imgData.scale) * 100)

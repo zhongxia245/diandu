@@ -186,8 +186,7 @@ var _data = (function () {
               questions: typeof items[j]['questions'] !== 'string' ? JSON.stringify(items[j].questions) : items[j].questions,
               type: _data.getTypeByName(items[j].type),
 
-              switch: JSON.stringify(items[j].switch),
-              remarks: JSON.stringify(items[j].switch) // TODO:暂时用
+              remarks: JSON.stringify(items[j].remarks)
             }
 
             if (items[j]['oldId']) obj['id'] = items[j]['oldId']
@@ -252,7 +251,7 @@ var _data = (function () {
    */
   function isEmpty(item) {
     // 如果这些每一项都为空,则表示为空的点读位
-    if (item.content || item.filename || item.questions || item.title || item.url || item.switch) {
+    if (item.content || item.filename || item.questions || item.title || item.url || item.remarks) {
       return false
     }
     return true
@@ -518,6 +517,7 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || '{}')
         window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || '{}')
         window.DD.items[i]['data'][j]['area'] = JSON.parse(obj['area'] || '{}')
+
         window.DD.items[i]['data'][j]['remarks'] = JSON.parse(obj['remarks'] || '{}')   //开关图数据,暂时保存在这
       }
     }
@@ -637,8 +637,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit)
 
   // 添加点读页
-  // $('#btnAdd').on('click', addDianDuPageTpl)
-  $('#btnAdd').on('click', fn3_onoffImgCreate)
+  $('#btnAdd').on('click', addDianDuPageTpl)
 
   // 收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -1463,15 +1462,18 @@ function fn3_onoffImgCreate(e) {
   var _data = window.DD.items[pageId].data[dianduId];
 
   //编辑的时候,数据目前保存在 remarks
-  _data.switch = _data.switch || _data.remarks || {};
-
+  _data.remarks = _data.remarks || {};
   new OnOffImg('body', {
     id: ids.id,
-    bgPath: window.DD.items[pageId].pic,
-    img: _data.switch.img,
-    switchArea: _data.switch.switchArea
+    bg: {w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic},
+    img: _data.remarks.img,
+    switchArea: _data.remarks.switchArea
   }, function (result) {
-    _data.switch = result;
+    _data.remarks = result;
+    // 标识试卷已经上传
+    var $uploadRight = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-right').eq(0)
+    $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-on-off')
+    $uploadRight.find('.upload-right-name span').text('开关图已设置(点击编辑)')
   }).init()
 }
 

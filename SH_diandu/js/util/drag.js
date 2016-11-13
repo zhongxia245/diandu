@@ -78,12 +78,12 @@ function Drag(selector, callback, moveFlag) {
           if (y < 0) {
             y = 0;
           }
-          if (x > that.w - that.dianduSize) {
-            x = that.w - that.dianduSize;
-          }
-          if (y > that.h - that.dianduSize) {
-            y = that.h - that.dianduSize;
-          }
+          //if (x > that.w - that.dianduSize) {
+          //  x = that.w - that.dianduSize;
+          //}
+          //if (y > that.h - that.dianduSize) {
+          //  y = that.h - that.dianduSize;
+          //}
           // 限制点读位不能超出背景图  END
 
           //移动图片

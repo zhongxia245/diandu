@@ -195,6 +195,7 @@ ul, li {
   width: 72px;
   position: absolute;
   border-radius: 50%;
+  z-index: 3;
   /*overflow: hidden;*/
 }
 
@@ -646,4 +647,5 @@ ul, li {
 .on-off-switch-area {
   position: absolute;
   z-index: 1;
+  border: 5px solid #CCC;
 }

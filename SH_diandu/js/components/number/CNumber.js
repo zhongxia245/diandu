@@ -33,6 +33,7 @@ function CNumber(selector, config) {
   this.step = config.step || 25; //步长
   this.pointSelector = config.pointSelector || ''; //关联的点读点选择器
   this.flag = config.flag || false;  //是否需要添加修改的标识
+  this.canInput = config.canInput || false; //是否可以双击手动输入
 
   this.callback = config.callback;  //改变值之后  回调
 
@@ -83,24 +84,26 @@ CNumber.prototype.init = function () {
   this.$pointSelector = $(this.pointSelector);
 
 
-  //双击,可以输入值
-  this.$val.on('click', function (e) {
-    that.$val.attr('contenteditable', true);
-  })
-  this.$val.on('keydown', function (e) {
-    if (e.keyCode === 13) {
+  if (this.canInput) {
+    //双击,可以输入值
+    this.$val.on('click', function (e) {
+      that.$val.attr('contenteditable', true);
+    })
+    this.$val.on('keydown', function (e) {
+      if (e.keyCode === 13) {
+        var val = parseInt(that.$val.text());
+        that.setVal(val);
+        that.$val.removeAttr('contenteditable');
+        that.callback && that.callback(val);
+      }
+    })
+    this.$val.on('blur', function () {
       var val = parseInt(that.$val.text());
-      that.setVal(val);
+      that.setVal(parseInt(that.$val.text()));
       that.$val.removeAttr('contenteditable');
       that.callback && that.callback(val);
-    }
-  })
-  this.$val.on('blur', function () {
-    var val = parseInt(that.$val.text());
-    that.setVal(parseInt(that.$val.text()));
-    that.$val.removeAttr('contenteditable');
-    that.callback && that.callback(val);
-  })
+    })
+  }
 
 
   //点击加号处理

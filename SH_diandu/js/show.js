@@ -877,9 +877,11 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       }
       //开关图
       else if (switchImg.img) {
+        var _hideImgW = switchImg.img.scaleW * imgW;
+        var _hideImgH = switchImg.img.scaleW * imgW * switchImg.img.h / switchImg.img.w;
         style += 'background-image:url(' + (switchImg.img.path) + ');'
-        style += 'width:' + (switchImg.img.w ) + 'px; height:' + (switchImg.img.h ) + 'px;'
-        style += 'transform: scale(' + (switchImg.img.scale * pointScale) + ');'
+        style += 'width:' + (_hideImgW ) + 'px; height:' + (_hideImgH ) + 'px;'
+        style += 'transform: scale(' + (switchImg.img.scale ) + ');'
         style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px';
         html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '"></div>'
 
@@ -889,6 +891,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           var h = imgH * parseFloat(area.scaleH);
           var x = imgW * parseFloat(area.x);
           var y = imgH * parseFloat(area.y);
+
           var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px';
           html += '<div data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
         }
@@ -1327,25 +1330,20 @@ function bindEvent() {
     return false;
   })
 
-  //点击开关图,展示隐藏图片 TODO:增加展示音效,显示闪烁
+  //点击开关图,展示隐藏图片
   $('.on-off-switch-area').off().on(click, function (ev) {
     var $cTar = $(ev.currentTarget);
     var id = $cTar.attr('data-target');
-    var isShow = $cTar.attr('data-show');
     var $hideImg = $('#' + id);
-    if (!isShow || isShow === 'false') {
-      var audio = document.createElement('audio');
-      audio.src = 'assets/click.wav';
-      audio.play();
+    if ($hideImg.css('display') === 'none') {
+      _playShowAudio(true);
       $hideImg.show();
-      $cTar.attr('data-show', true)
-      $hideImg.addClass('custom-point-blink')
-      setTimeout(function () {
-        $hideImg.removeClass('custom-point-blink')
-      }, 2000)
-    } else {
-      $hideImg.hide();
-      $cTar.attr('data-show', false)
+      _domShowEffect($hideImg);
+
+      $hideImg.off().on(click, function () {
+        $hideImg.hide();
+        _playShowAudio(false);
+      })
     }
   })
 
@@ -1614,3 +1612,25 @@ window.mouseUpOrDown = (function () {
   };
 })();
 
+
+/**
+ * 开关图隐藏,展示的音效
+ * @private
+ */
+function _playShowAudio() {
+  var audio = document.createElement('audio');
+  audio.src = 'assets/click.wav';
+  audio.play();
+}
+
+/**
+ * DOM节点展示的时候,添加闪烁效果
+ * @param $dom
+ * @private
+ */
+function _domShowEffect($dom) {
+  $dom.addClass('custom-point-blink')
+  setTimeout(function () {
+    $dom.removeClass('custom-point-blink')
+  }, 2000)
+}

@@ -76,6 +76,7 @@
   user-select: none;
   -webkit-user-select: none;
   position: relative;
+  margin-bottom: 15px;
 }
 
 .on-off-img-upload .uploadify {
@@ -114,17 +115,19 @@
   height: 45px;
   width: 45px;
   float: right;
-  background-image: url(/imgs/download.png);
+  background-image: url(../../../../imgs/download.png);
   background-size: 100%;
 }
 
 .on-off-img-bg {
   border: 1px solid black;
-  margin-top: 15px;
-  background-size: 100%;
   position: relative;
   width: 550px;
   height: 310px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0 auto;
 }
 
 .on-off-img-add {
@@ -169,6 +172,11 @@
   background: #FFF;
   cursor: pointer;
   opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 12px;
 }
 
 .on-off-img-switch-resize {
@@ -177,7 +185,7 @@
   right: 0;
   width: 25px;
   height: 25px;
-  background-image: url(/imgs/resize.png);
+  background-image: url(../../../../imgs/resize.png);
   cursor: se-resize;
 }
 

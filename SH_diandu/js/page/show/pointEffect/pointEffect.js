@@ -31,65 +31,54 @@ window.diandu = (function (dd) {
    * @param pageIndex  当前的点读页下标
    */
   dd.blink = function (pageIndex) {
-    var duration = 250;  //ms
-    var size = 5; //默认大小为10
-    var maxSize = 15;  //闪烁圆的最大半径
-    var minSize = 5;  //最小半径
-    var shadowColor = 'red'; //闪烁背景的颜色
-    var gap = 10; //每次变动大小
-    var flag = true; //true: 大小自增  false:大小减小
-    var showTime = 2000; //闪烁时间  ms
-    var tempTime = 0;
-
-    var $point = $('#_diandu' + pageIndex).find('[data-id="all-radius"]>div')  //所有的点读点
-
+    var $page = $('#_diandu' + pageIndex);
+    var $point = $page.find('[data-id="all-radius"]>div')  //所有的点读点
     $point.addClass('custom-point-blink')
-
     setTimeout(function () {
       $point.removeClass('custom-point-blink')
     }, 2000)
 
 
-    //BUT: 使用定时器,导致 音频无法播放, 只要设置了 setInterval  , audio.play()就没有效果
-    //var blinkTimer = setInterval(function () {
-    //  //闪烁结束
-    //  if (tempTime >= showTime) {
-    //    clearInterval(blinkTimer)
-    //    tempTime = 0;
-    //
-    //    //还原发光的效果
-    //    for (var i = 0; i < $point.length; i++) {
-    //      var css = $point.eq(i).attr('data-filter');
-    //      $point.eq(i).css({'-webkit-filter': css, filter: css});
-    //    }
-    //  }
-    //  //开始闪烁
-    //  else {
-    //    tempTime += duration;
-    //
-    //    //最后一次闪烁1s
-    //    if (tempTime >= showTime / 2) {
-    //      gap = 5;
-    //    }
-    //
-    //    //闪烁到最大则变小,到最小则变大
-    //    if (size >= maxSize) {
-    //      flag = false;
-    //    }
-    //    if (size <= minSize) {
-    //      flag = true
-    //    }
-    //
-    //    if (flag) {
-    //      size += gap;
-    //    } else {
-    //      size -= gap;
-    //    }
-    //    var css = 'drop-shadow(' + shadowColor + ' 0px 0px ' + size + 'px)';
-    //    var style = {'-webkit-filter': css, filter: css};
-    //    $point.css(style)
-    //  }
-    //}, duration)
+    var $hideImg = $page.find('.on-off-hideimg');
+    var $hideArea = $page.find('.on-off-switch-area');
+    _effect($hideImg, 1);
+    _effect($hideArea, 2);
+
+  }
+
+  /**
+   * 增加动画效果
+   * @param $dom
+   * @param flag 1:显示隐藏  2:增加边框,在取消边框
+   * @private
+   */
+  function _effect($dom, flag) {
+
+    switch (flag) {
+      case 1:
+        $dom.show();
+        break;
+      case 2:
+        $dom.css('border', '3px solid red');
+    }
+    $dom.addClass('custom-point-blink')
+
+    setTimeout(function () {
+      $dom.removeClass('custom-point-blink')
+
+      switch (flag) {
+        case 1:
+          $dom.hide();
+          break;
+        case 2:
+          $dom.css('border', '0');
+      }
+
+    }, 2000)
+  }
+
+  dd.showEffect = function ($dom) {
+    _effect($dom);
   }
 
 
