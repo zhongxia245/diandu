@@ -68,6 +68,9 @@ var OnOffImg = function (selector, data, fn_submit) {
     '             <div class="on-off-img-add">增加开关触发区域</div>',
     '           </div>',
     '       </div>',
+    '       <p class="on-off-p">拖动触发区可改变位置,拖动触发区右下角标可以修改大小</p>',
+    '       <p class="on-off-p"><label><input class="on-off-checkbox" type="checkbox" name="cbkRelation"/>触发区控制开关图显示和隐藏</label></p>',
+    '       <p class="on-off-p">(默认触发区点击展示开关图,开关图点击则隐藏自身)</p>',
     '       <div class="on-off-img-bottom">',
     '          <div class="on-off-img-btn"> 提交</div>',
     '       </div>',
@@ -101,7 +104,7 @@ var OnOffImg = function (selector, data, fn_submit) {
   this.addSwitch = function ($parent, resizeCallback) {
     var id = this.switchId + this.switchCount++;
     var resizeId = this.switchId + this.switchCount + 'resize'
-    var $switchImg = $('<div id="' + id + '" class="on-off-img-switchImg">拖动移动位置，拖动角标改变大小<div id="' + resizeId + '" class="on-off-img-switch-resize"></div></div>')
+    var $switchImg = $('<div id="' + id + '" class="on-off-img-switchImg">触发区<div id="' + resizeId + '" class="on-off-img-switch-resize"></div></div>')
     $parent.append($switchImg)
     new Drag('#' + id)
     new Drag('#' + resizeId, function (x, y) {
@@ -190,6 +193,8 @@ var OnOffImg = function (selector, data, fn_submit) {
     that.data.img = that.data.img || {}
     that.submitData.img.scale = that.submitData.img.scale || that.data.img.scale || 1;
 
+    that.submitData.controlHide = that.$cbkShowAndHide[0].checked;
+
     that.fn_submit && that.fn_submit(that.submitData)
 
     //提交后移除
@@ -235,6 +240,7 @@ OnOffImg.prototype.init = function () {
   this.$resizeNumber = this.$modal.find('.on-off-img-resize')
   this.$addOnOff = this.$modal.find('.on-off-img-add')
   this.$onOffBg = this.$modal.find('.on-off-img-bg')
+  this.$cbkShowAndHide = this.$modal.find('.on-off-checkbox')
 
   this.$onOffBg.css({width: this.scaleWH * this.data.bg.w, height: this.scaleWH * this.data.bg.h})
 
@@ -265,6 +271,7 @@ OnOffImg.prototype.setData = function (data) {
     var bgH = this.$onOffBg.height()
     var imgData = data.img || {};
     var switchArea = data.switchArea || [];
+    var controlHide = data.controlHide;
 
     this.uploadImgCallback(imgData.path, imgData.name)
 
@@ -275,6 +282,7 @@ OnOffImg.prototype.setData = function (data) {
     })
 
     this.cNumber.setVal(parseFloat(imgData.scale) * 100)
+    this.$cbkShowAndHide[0].checked = controlHide || false
 
     for (var i = 0; i < switchArea.length; i++) {
       if (i >= 1) {

@@ -171,7 +171,7 @@
   border: 1px solid #6E6E6D;
   background: #FFF;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.7;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -189,3 +189,12 @@
   cursor: se-resize;
 }
 
+.on-off-p {
+  text-align: center;
+  user-select: none;
+}
+
+.on-off-checkbox {
+  width: 20px;
+  height: 14px;
+}

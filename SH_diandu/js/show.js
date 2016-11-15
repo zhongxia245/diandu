@@ -885,6 +885,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px';
         html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '"></div>'
 
+        //触发区,控制显示隐藏
+        var controlHide = switchImg.controlHide;
         for (var j = 0; j < switchImg.switchArea.length; j++) {
           var area = switchImg.switchArea[j];
           var w = imgW * parseFloat(area.scaleW);
@@ -893,7 +895,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
           var y = imgH * parseFloat(area.y);
 
           var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px';
-          html += '<div data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
+          html += '<div data-controlHide="' + controlHide + '" data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
         }
       }
       //普通点读点
@@ -1335,15 +1337,23 @@ function bindEvent() {
     var $cTar = $(ev.currentTarget);
     var id = $cTar.attr('data-target');
     var $hideImg = $('#' + id);
+    var controlHide = $cTar.attr('data-controlHide');
+
     if ($hideImg.css('display') === 'none') {
       _playShowAudio(true);
       $hideImg.show();
       _domShowEffect($hideImg);
-
+      //if (controlHide === "false" || controlHide === 'undefined') {
       $hideImg.off().on(click, function () {
         $hideImg.hide();
         _playShowAudio(false);
       })
+      //}
+    } else {
+      if (controlHide === 'true') {
+        $hideImg.hide();
+        _playShowAudio(false);
+      }
     }
   })
 
@@ -1615,11 +1625,19 @@ window.mouseUpOrDown = (function () {
 
 /**
  * 开关图隐藏,展示的音效
+ * @param flag true 表示展示, false 表示隐藏
  * @private
  */
-function _playShowAudio() {
+function _playShowAudio(flag) {
+  flag = flag || false;
+  var showMP3 = ['assets/show/1.mp3', 'assets/show/2.mp3', 'assets/show/3.mp3']
+  var hideMP3 = ['assets/hide/1.mp3', 'assets/hide/2.mp3', 'assets/hide/3.mp3']
+
+  var index = parseInt((Math.random() * 2).toFixed(0));
+  var src = flag ? showMP3[index] : hideMP3[index];
+
   var audio = document.createElement('audio');
-  audio.src = 'assets/click.wav';
+  audio.src = src;
   audio.play();
 }
 

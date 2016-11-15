@@ -1467,7 +1467,8 @@ function fn3_onoffImgCreate(e) {
     id: ids.id,
     bg: {w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic},
     img: _data.remarks.img,
-    switchArea: _data.remarks.switchArea
+    switchArea: _data.remarks.switchArea,
+    controlHide: _data.remarks.controlHide
   }, function (result) {
     _data.remarks = result;
     // 标识试卷已经上传
@@ -1814,7 +1815,6 @@ function handleSubmit(e) {
   var qrcode = Util.getQueryStringByName('qrcode') || '' // 尹果要求加的参数
 
   Model.addDianduPage(data, qrcode, function (result) {
-    debugger
     Logger.log('操作成功,返回点读页的id为(videoid)= ', result)
 
     var msg = '创建成功,点击确定返回单元列表!'
