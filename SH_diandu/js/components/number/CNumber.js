@@ -26,13 +26,14 @@ function CNumber(selector, config) {
   this.selector = selector;
 
   config = config || {};
-  this.maxVaule = 200;   //最大比例
-  this.minValue = 25;    //最小比例
+  this.maxVaule = config.maxValue || 200;   //最大比例
+  this.minValue = config.minValue || 25;    //最小比例
   this.defaultValue = config.defaultValue || 100;  //默认值
   this.val = config.val; //当前值
   this.step = config.step || 25; //步长
   this.pointSelector = config.pointSelector || ''; //关联的点读点选择器
   this.flag = config.flag || false;  //是否需要添加修改的标识
+  this.canInput = config.canInput || false; //是否可以双击手动输入
 
   this.callback = config.callback;  //改变值之后  回调
 
@@ -82,6 +83,29 @@ CNumber.prototype.init = function () {
   this.$sub = this.$container.find('.c-number-op-sub');
   this.$pointSelector = $(this.pointSelector);
 
+
+  if (this.canInput) {
+    //双击,可以输入值
+    this.$val.on('click', function (e) {
+      that.$val.attr('contenteditable', true);
+    })
+    this.$val.on('keydown', function (e) {
+      if (e.keyCode === 13) {
+        var val = parseInt(that.$val.text());
+        that.setVal(val);
+        that.$val.removeAttr('contenteditable');
+        that.callback && that.callback(val);
+      }
+    })
+    this.$val.on('blur', function () {
+      var val = parseInt(that.$val.text());
+      that.setVal(parseInt(that.$val.text()));
+      that.$val.removeAttr('contenteditable');
+      that.callback && that.callback(val);
+    })
+  }
+
+
   //点击加号处理
   this.$plus.on('click', function (e) {
     e.stopPropagation();
@@ -108,20 +132,31 @@ CNumber.prototype.init = function () {
 }
 
 /**
- * 设置数值的颜色, 绿色为- , 橙色为+
+ * 设置数值的颜色和值
  */
 CNumber.prototype.setColor = function () {
-  this.$val.text(this.val)
+  this.setVal(this.val);
+}
+
+/**
+ * 设置数值的颜色, 绿色为- , 橙色为+
+ */
+CNumber.prototype.setVal = function (val) {
+
+  val = val > this.maxVaule ? this.maxVaule : val;
+  val = val < this.minValue ? this.minValue : val;
+  this.val = val;
+
+  this.$val.text(val)
   this.$val
     .removeClass('val-sub')
     .removeClass('val-default')
     .removeClass('val-plus');
 
-
-  if (this.val > this.defaultValue) {
+  if (val > this.defaultValue) {
     this.$val.addClass('val-plus')
   }
-  else if (this.val == this.defaultValue) {
+  else if (val == this.defaultValue) {
     this.$val.addClass('val-default')
   }
   else {

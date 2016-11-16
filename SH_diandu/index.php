@@ -278,7 +278,7 @@ if ($id > 0) {
     </div>
     <div class="upload-type">
       <ul data-id="{{id}}">
-        <li title="点读点大小" class="number-container"></li>
+        <li title="点读点大小" style="margin: -13px 22px 0 -11px;" class="number-container"></li>
         <li title="视频" class="video" data-type="uploadType" data-file-type="video"
             data-text="点击上传MP4格式的视频文件"></li>
         <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
@@ -286,6 +286,7 @@ if ($id > 0) {
         <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext"
             data-text="点击上传图文(支持文字和图片)"></li>
         <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
+        <li title="开关" class="on-off" data-type="uploadType" data-file-type="on-off" data-text="点击设置开关"></li>
       </ul>
     </div>
     <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
@@ -382,6 +383,7 @@ if ($id > 0) {
 <script src="js/components/globalaudio/GlobalAudio.js"></script>
 <script src="js/components/custompointsetting/CustomPointSetting.new.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
+<script src="js/page/create/OnOffImg/OnOffImg.js"></script>
 
 <script src="js/index.js"></script>
 

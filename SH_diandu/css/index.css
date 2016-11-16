@@ -358,7 +358,7 @@ header {
 ************************************************************/
 
 .setting-upload {
-  padding: 10px;
+  padding: 5px;
 }
 
 .upload-item {
@@ -417,7 +417,7 @@ header {
 .upload-type {
   position: relative;
   float: left;
-  width: 40%;
+  width: 45%;
   height: 40px;
   top: 50%;
   z-index: 100;
@@ -438,36 +438,36 @@ header {
 
 .upload-type .video {
   background: url('../imgs/upload_video.png');
-  /*背景图片自适应大小*/
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .audio {
   background: url('../imgs/upload_audio.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .imgtext {
   background: url('../imgs/upload_imgtext.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .audioimg {
   background: url('../imgs/upload_audioimg.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
 
 .upload-type .exam {
   background: url('../imgs/upload_exam.png');
-  filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+
+.upload-type .on-off {
+  background: url('../imgs/onoff.png');
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
 }
@@ -475,20 +475,21 @@ header {
 .upload-right {
   position: relative;
   float: left;
-  width: 655px;
+  width: 600px;
   height: 60px;
   line-height: 60px;
   top: 50%;
+  left: 15px;
   margin: 0 auto;
   margin: -30px 0 0 -30px;
   border-radius: 5px;
   color: #FFF;
   text-align: center;
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .upload-right-name {
-  width: 375px;
+  width: 315px;
   height: 100%;
   background: #FF7C80;
   border-radius: 3px;
@@ -552,7 +553,7 @@ header {
 }
 
 /*图文上传成功*/
-.uploaded-imgtext, .uploaded-exam {
+.uploaded-imgtext, .uploaded-exam, .uploaded-on-off {
   background: #7F7F7F;
   position: relative;
 }

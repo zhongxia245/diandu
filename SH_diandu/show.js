@@ -43,7 +43,6 @@ var GLOBAL = {
   GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
   BACK_COLOR: 'rgb(0,0,0)', //背景图片空白区域颜色
   CurrentPageIndex: 0, //当前点读页下标
-  allowSwiperUp: true, //上滑缩略图用
 }
 /**
  * 背景音乐相关操作
@@ -219,8 +218,6 @@ function styleHandler() {
 function init() {
   // 点读页的ID,保存的时候会返回ID
   var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
-  initAudio();
-  initVideo();
   /**
    * 获取点读数据
    */
@@ -234,6 +231,8 @@ function init() {
       setTimeout(function () {
         fn_onResize();
         window._load.loading("hide");
+        initAudio();
+        initVideo();
         diandu.blink(0);
       }, 100)
 
@@ -270,47 +269,6 @@ function initDiandu(data) {
   bindEvent();
   //渲染后的操作
   afterRenderOp(data);
-  bgScaleOp(0);
-}
-
-/**
- * 设置背景图片缩放功能
- * @param currentIndex
- */
-function bgScaleOp(currentIndex) {
-  var $wrap = $('#_diandu' + currentIndex).find('.wrap');
-  var _width = $wrap.width();
-  var _height = $wrap.height();
-
-  GLOBAL.picScale = null;
-  GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.m-bg-pic', _width, _height,
-    /**
-     * 移动时禁用swiper和上滑动能
-     */
-    function () {
-      if (this.scale > 1) {
-        window.galleryTop.lockSwipes();
-        GLOBAL.allowSwiperUp = false;
-      } else {
-        GLOBAL.allowSwiperUp = true;
-        window.galleryTop.unlockSwipes();
-      }
-    },
-    /**
-     * 放大结束后的回调
-     */
-    function () {
-      if (this.scale > 1) {
-        GLOBAL.picScale.showTip();
-        window.galleryTop.lockSwipes();
-        GLOBAL.allowSwiperUp = false;
-      } else {
-        GLOBAL.picScale.hideTip();
-        GLOBAL.allowSwiperUp = true;
-        window.galleryTop.unlockSwipes();
-      }
-    }
-  );
 }
 
 /**
@@ -483,8 +441,6 @@ function initSwipe() {
       onTransitionEnd: function (swiper) {  //没有切换到另外一个点读页也会触发
         //切换了点读页
         if (GLOBAL.CurrentPageIndex !== swiper.activeIndex) {
-          //背景缩放移动
-          bgScaleOp(swiper.activeIndex);
           //添加点读点闪烁效果
           diandu.blink(swiper.activeIndex);
 
@@ -751,13 +707,12 @@ function initDianDuPage(data, id) {
   var bgPath = data['pic'];
   var h = $(window).height()
   var html = "";
-  //html += '<div id="' + id + '" data-id="' + data['id'] + '" src="' + bgPath + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
-  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" style="height:' + h + 'px;">'
-  html += '    <div class="m-dd-start-comment-div"></div>'
-  html += '    <div data-id="btn-start" class="m-dd-start"></div>'
-  html += '    <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
-  html += '    <div class="m-bg-pic" style="background-image:url(' + bgPath + ')"></div>'
+  html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" data-background="' + bgPath + '" style="height:' + h + 'px;">'
+  html += '        <div class="m-dd-start-comment-div"></div>'
+  html += '        <div data-id="btn-start" class="m-dd-start"></div>'
+  html += '        <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
   html += '    <div class="wrap">'
+  //html += '       <img src="' + bgPath + '"/>'
   html += '    </div>'
   html += '</div>'
   return html;
@@ -904,7 +859,6 @@ function audioPlay(e, url) {
 
   if ($cTar.attr('isLoad')) {//音频加载结束
     window.audio.play();
-    console.log('play()=>paused:', audio.paused)
     if ($cTar.attr('data-type') === 'pointImg') {
       diandu.customPlay($cTar, true)
     } else {
@@ -937,6 +891,7 @@ function audioPlay(e, url) {
       if (window.audio.src.indexOf(url) !== -1) {
 
         window.audio.play();
+
         console.log('play()=>paused:', audio.paused)
 
         window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
@@ -963,6 +918,7 @@ function audioPlay(e, url) {
  * @param isGlobalAudio 是否为全程音频
  */
 function playOrPaused(e, isGlobalAudio, pointData) {
+
   var url = pointData.url;
   var $cTar = $(e.currentTarget);
 
@@ -1186,32 +1142,19 @@ function bindEvent() {
     //关闭视频,并且设置所有的 音频为默认图标状态
     closeVideoOrAudio(true, $cTar);
 
-    //var audioTimer = setInterval(function () {
-    //  //播放结束, 则清除 正在播放的图片
-    //  if (window.audio.ended) {
-    //    $cTar.find('img').hide();
-    //    clearInterval(audioTimer);
-    //
-    //    diandu.customPlay($cTar, false)
-    //
-    //    if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
-    //      window.galleryTop.startAutoplay();
-    //    }
-    //  }
-    //}, 500)
-
-    window._audioEnded = true;
-    audio.addEventListener('ended', function () {
-      if (window._audioEnded) {
-        window._audioEnded = false;
-        console.log("audio ended")
+    var audioTimer = setInterval(function () {
+      //播放结束, 则清除 正在播放的图片
+      if (window.audio.ended) {
         $cTar.find('img').hide();
+        clearInterval(audioTimer);
+
         diandu.customPlay($cTar, false)
+
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }
       }
-    })
+    }, 500)
 
     //获取当前音频数据
     var dataId = $cTar.attr('data-id');
@@ -1295,6 +1238,7 @@ function bindEvent() {
   //点击背景图,停止自动播放
   $('#pages').off().on(click, function (ev) {
     window.galleryTop.stopAutoplay();
+    //silideBar.setValue(110);  //setValue 会调通 时间进度条的 callback事件
     return false;
   })
 
@@ -1302,30 +1246,26 @@ function bindEvent() {
   //上滑,出现缩略图面板
   if (Util.IsPC()) {
     mouseUpOrDown($('body')[0], function (ev, type) {
-      //背景图片没有方法才可以滑动上去
-      if (GLOBAL.allowSwiperUp) {
-        if (type === "up") {
-          if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
-            ev.preventDefault();
-            $(".gallery-main").show();
-            $(".gallery-main").css('opacity', 1);
-          }
-          return false;
-        }
-      }
-    })
-  } else {
-    /*上下滑动,展示缩略图和自动播放控制轴*/
-    $('body').off('swipeUp').on('swipeUp', function (ev) {
-      //背景图片没有方法才可以滑动上去
-      if (GLOBAL.allowSwiperUp) {
-        if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
+      if (type === "up") {
+        Logger.log("swipeUp", $(ev.target).attr('class'))
+        if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
           ev.preventDefault();
           $(".gallery-main").show();
           $(".gallery-main").css('opacity', 1);
         }
         return false;
       }
+    })
+  } else {
+    /*上下滑动,展示缩略图和自动播放控制轴*/
+    $('body').off('swipeUp').on('swipeUp', function (ev) {
+      Logger.log("swipeUp", $(ev.target).attr('class'))
+      if ($(ev.target).hasClass('swiper-slide') || $(ev.target).hasClass('wrap')) {
+        ev.preventDefault();
+        $(".gallery-main").show();
+        $(".gallery-main").css('opacity', 1);
+      }
+      return false;
     });
   }
 

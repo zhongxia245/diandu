@@ -1,0 +1,200 @@
+.on-off-img-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.6;
+  z-index: 100;
+}
+
+.on-off-img {
+  width: 600px;
+  border-radius: 5px;
+  position: fixed;
+  z-index: 1000;
+  top: 75px;
+  left: 50%;
+  margin-left: -300px;
+  float: left;
+  padding-bottom: 5px;
+  background: #E9E9E9;
+}
+
+/*title*/
+.on-off-img-top {
+  height: 55px;
+  line-height: 55px;
+  background: #875323;
+  text-align: center;
+  color: #FFF;
+  font-size: 30px;
+  border-radius: 5px;
+}
+
+/*关闭按钮*/
+.on-off-img-close {
+  position: absolute;
+  right: 5px;
+  color: #FF7C80;
+  font-size: 30px;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+/*提交按钮*/
+.on-off-img-btn {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  font-size: 25px;
+  margin: 0;
+  background: #FF7C80;
+  color: #FFF;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.on-off-img-content {
+  height: 400px;
+  padding: 15px 15px 15px 30px;
+}
+
+.on-off-img-upload {
+  height: 45px;
+  line-height: 45px;
+  width: 460px;
+  border-radius: 5px;
+  background: #FF636B;
+  color: #FCFCFC;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.on-off-img-upload .uploadify {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.on-off-img-upload object {
+  height: 100%;
+  width: 100%;
+  left: 0;
+}
+
+.on-off-img-unupload, .on-off-img-uploaded {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.on-off-img-uploaded {
+  display: none;
+}
+
+.on-off-img-filename {
+  width: 415px;
+  text-align: center;
+  background: #6C6C6C;
+  cursor: default;
+  float: left;
+}
+
+.on-off-img-download {
+  height: 45px;
+  width: 45px;
+  float: right;
+  background-image: url(../../../../imgs/download.png);
+  background-size: 100%;
+}
+
+.on-off-img-bg {
+  border: 1px solid black;
+  position: relative;
+  width: 550px;
+  height: 310px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0 auto;
+}
+
+.on-off-img-add {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 60px;
+  height: 40px;
+  background-color: #FF636B;
+  color: #FFF;
+  text-align: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  display: none;
+}
+
+/*上传后,增加在背景图片的隐藏图片*/
+.on-off-img-addImage {
+  background-size: 100%;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  transform-origin: left top;
+}
+
+.on-off-img-resize {
+  position: absolute;
+  right: 15px;
+  top: 60px;
+  display: none;
+}
+
+.on-off-img-switchImg {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  border: 1px solid #6E6E6D;
+  background: #FFF;
+  cursor: pointer;
+  opacity: 0.7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 12px;
+}
+
+.on-off-img-switch-resize {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background-image: url(../../../../imgs/resize.png);
+  cursor: se-resize;
+}
+
+.on-off-p {
+  text-align: center;
+  user-select: none;
+}
+
+.on-off-checkbox {
+  width: 20px;
+  height: 14px;
+}
