@@ -649,3 +649,21 @@ ul, li {
   z-index: 1;
   border: 5px solid #CCC;
 }
+
+.btn-fullscreen {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 70px;
+  height: 70px;
+  border: 1px solid black;
+  cursor: pointer;
+  z-index: 999999999;
+  background-image: url(../imgs/fullscreen.png);
+  background-size: contain;
+}
+
+.normal-screen{
+  background-image: url(../imgs/normalscreen.png);
+}
