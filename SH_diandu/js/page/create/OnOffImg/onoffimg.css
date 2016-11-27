@@ -63,7 +63,7 @@
   padding: 15px 15px 15px 30px;
 }
 
-.on-off-img-upload {
+.on-off-img-upload, .on-off-mp3-upload {
   height: 45px;
   line-height: 45px;
   width: 460px;
@@ -79,7 +79,11 @@
   margin-bottom: 15px;
 }
 
-.on-off-img-upload .uploadify {
+.on-off-mp3-upload {
+  margin: 10px auto;
+}
+
+.on-off-img-upload .uploadify, .on-off-mp3-upload .uploadify {
   position: absolute;
   top: 0;
   left: 0;
@@ -87,23 +91,23 @@
   height: 100%;
 }
 
-.on-off-img-upload object {
+.on-off-img-upload object, .on-off-mp3-upload object {
   height: 100%;
   width: 100%;
   left: 0;
 }
 
-.on-off-img-unupload, .on-off-img-uploaded {
+.on-off-img-unupload, .on-off-img-uploaded, .on-off-mp3-unupload {
   position: absolute;
   height: 100%;
   width: 100%;
 }
 
-.on-off-img-uploaded {
+.on-off-img-uploaded, .on-off-mp3-uploaded {
   display: none;
 }
 
-.on-off-img-filename {
+.on-off-img-filename, .on-off-mp3-filename {
   width: 415px;
   text-align: center;
   background: #6C6C6C;
@@ -111,7 +115,7 @@
   float: left;
 }
 
-.on-off-img-download {
+.on-off-img-download, .on-off-mp3-download {
   height: 45px;
   width: 45px;
   float: right;
@@ -160,7 +164,7 @@
 .on-off-img-resize {
   position: absolute;
   right: 15px;
-  top: 60px;
+  top: 65px;
   display: none;
 }
 
@@ -197,4 +201,12 @@
 .on-off-checkbox {
   width: 20px;
   height: 14px;
+}
+
+.on-off-hide-area{
+  margin-right: 100px;
+}
+
+.on-off-default-show{
+  
 }

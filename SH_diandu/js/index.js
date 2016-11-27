@@ -18,7 +18,8 @@ var TYPE = {
   2: 'audio',
   3: 'imgtext',
   4: 'exam',
-  5: 'on-off'
+  5: 'on-off',
+  6: 'set-url'
 }
 
 /******************************************
@@ -240,6 +241,8 @@ var _data = (function () {
         return 4
       case 'on-off':
         return 5
+      case 'set-url':
+        return 6
       default:
         return 1
     }
@@ -251,7 +254,7 @@ var _data = (function () {
    */
   function isEmpty(item) {
     // 如果这些每一项都为空,则表示为空的点读位
-    if (item.content || item.filename || item.questions || item.title || item.url || item.remarks) {
+    if (item.content || item.filename || item.questions || item.title || item.url || item.remarks || item.pic) {
       return false
     }
     return true
@@ -444,13 +447,14 @@ var _edit = (function () {
     var fileName = point['filename']
     var url = point['url']
     var hide = point['hide'] == '1' ? true : false
+    var $target, className
 
     var ids = dataid.split('_')
     var $currentTarget = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).eq(0)
     var $rightName = $currentTarget.find('.upload-right-name').eq(0)
     var $filemask = $currentTarget.find('.div-file-mask'); // 文件上传按钮的遮罩层，用于图文
+
     $filemask.attr('data-type', type)
-    var $target, className
     $rightName.removeClass('notselect')
 
     switch (type) {
@@ -480,8 +484,14 @@ var _edit = (function () {
         className = '.on-off'
         point['type'] = 'on-off'
         $rightName.addClass('uploaded-on-off').find('span').eq(0).text('开关图已设置(点击编辑)')
-        $filemask.show().off().on('click', fn2_examCreate)
+        $filemask.show().off().on('click', fn3_onoffImgCreate)
         break
+      case '6':
+        className = '.set-url'
+        point['type'] = 'set-url'
+        $rightName.addClass('uploaded-set-url').find('span').eq(0).text('超链接已设置(点击编辑)')
+        $filemask.show().off().on('click', fn3_setUrl)
+        break;
     }
     $target = $currentTarget.find(className).eq(0)
     var pdata = $target.parent().data(); // 点读位文件类型列表data-数据(文件列表的ul)
@@ -1014,6 +1024,8 @@ function bindDianDuPageEvent() {
         fn2_examCreate(e)
       } else if (type === '5') {
         fn3_onoffImgCreate(e)
+      } else if (type === '6') {
+        fn3_setUrl(e)
       }
     })
 }
@@ -1389,19 +1401,18 @@ function fileTypeItemClick(e) {
       $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
       break
     case 'imgtext': // 图文
-      fileTypeExts = '*.gif;*.jpg;*.png'
-      fileTypeDesc = 'Image 文件'
       $filemask.show().off().on('click', fn2_uploadImgText)
       break
     case 'exam': // 考试
-      fileTypeExts = '*.gif;*.jpg;*.png'
-      fileTypeDesc = 'Image 文件'
       $filemask.show().off().on('click', fn2_examCreate)
       break
     case 'on-off': // 开关图
-      fileTypeExts = '*.gif;*.jpg;*.png'
-      fileTypeDesc = 'Image 文件'
       $filemask.show().off().on('click', fn3_onoffImgCreate)
+      break
+    case 'set-url': //设置超链接
+      $filemask.show().off().on('click', fn3_setUrl)
+      break
+
   }
 
   // 把文件类型，保存到变量里面
@@ -1449,9 +1460,24 @@ function fileTypeItemClick(e) {
 }
 
 /**
+ * 2016-11-21 00:12:19
+ * 设置超级链接点读点
+ * @param e
+ */
+function fn3_setUrl(e) {
+  // 获取 id
+  var ids = CommonUtil.getIds(e)
+  var pageId = ids.pageId
+  var dianduId = ids.dianduId
+  var _pointData = window.DD.items[pageId].data[dianduId]
+  new UrlPoint('body', _pointData.url, function (val) {
+    _pointData.url = val;
+  })
+}
+
+/**
  * 2016-11-09 22:40:46
  * 上传开关图
- * TODO: 弹框功能
  * @param e
  */
 function fn3_onoffImgCreate(e) {
@@ -1468,7 +1494,8 @@ function fn3_onoffImgCreate(e) {
     bg: {w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic},
     img: _data.remarks.img,
     switchArea: _data.remarks.switchArea,
-    controlHide: _data.remarks.controlHide
+    mp3: _data.remarks.mp3,
+    hideSwitchArea: _data.remarks.hideSwitchArea
   }, function (result) {
     _data.remarks = result;
     // 标识试卷已经上传

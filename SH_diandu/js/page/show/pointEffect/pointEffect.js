@@ -38,10 +38,18 @@ window.diandu = (function (dd) {
       $point.removeClass('custom-point-blink')
     }, 2000)
 
-
-    var $hideImg = $page.find('.on-off-hideimg');
+    //开关图闪烁,然后隐藏,如果默认显示,则闪烁,不隐藏
+    var $hideImgs = $page.find('.on-off-hideimg');
     var $hideArea = $page.find('.on-off-switch-area');
-    _effect($hideImg, 1);
+
+    for (var i = 0; i < $hideImgs.length; i++) {
+      var $hideImg = $($hideImgs[i])
+      if ($hideImg.attr('data-show') === 'true') {
+        _effect($hideImg, 3);
+      } else {
+        _effect($hideImg, 1);
+      }
+    }
     _effect($hideArea, 2);
 
   }
@@ -53,10 +61,10 @@ window.diandu = (function (dd) {
    * @private
    */
   function _effect($dom, flag) {
-
     switch (flag) {
       case 1:
-        $dom.show();
+      case 3:
+        $dom.css('opacity', 1);
         break;
       case 2:
         $dom.css('border', '3px solid red');
@@ -65,15 +73,13 @@ window.diandu = (function (dd) {
 
     setTimeout(function () {
       $dom.removeClass('custom-point-blink')
-
       switch (flag) {
         case 1:
-          $dom.hide();
+          $dom.css('opacity', 0);
           break;
         case 2:
           $dom.css('border', '0');
       }
-
     }, 2000)
   }
 

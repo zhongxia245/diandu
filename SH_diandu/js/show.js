@@ -489,7 +489,6 @@ function initSwipe() {
           //添加点读点闪烁效果
           diandu.blink(swiper.activeIndex);
 
-          Logger.info("页面跳转到第:", swiper.activeIndex, " 页")
           GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
           //滑动,全程音频时间,跳转到指定时间
@@ -812,7 +811,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
     1: "m-video",
     2: "m-audio",
     3: "m-imgtext",
-    4: "m-exam"
+    4: "m-exam",
+    6: "m-seturl"
   };
 
   var html = "";
@@ -882,20 +882,24 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         style += 'background-image:url(' + (switchImg.img.path) + ');'
         style += 'width:' + (_hideImgW ) + 'px; height:' + (_hideImgH ) + 'px;'
         style += 'transform: scale(' + (switchImg.img.scale ) + ');'
-        style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px';
-        html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '"></div>'
+        style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px;';
 
-        //触发区,控制显示隐藏
-        var controlHide = switchImg.controlHide;
-        for (var j = 0; j < switchImg.switchArea.length; j++) {
-          var area = switchImg.switchArea[j];
-          var w = imgW * parseFloat(area.scaleW);
-          var h = imgH * parseFloat(area.scaleH);
-          var x = imgW * parseFloat(area.x);
-          var y = imgH * parseFloat(area.y);
+        switchImg.mp3 = switchImg.mp3 || {}
+        html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '" data-show="' + switchImg.img.defaultShow + '" data-mp3="' + switchImg.mp3.path + '"></div>'
 
-          var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px';
-          html += '<div data-controlHide="' + controlHide + '" data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
+        //隐藏触发区
+        var hideSwitchArea = switchImg.hideSwitchArea;
+        if (!hideSwitchArea) {
+          for (var j = 0; j < switchImg.switchArea.length; j++) {
+            var area = switchImg.switchArea[j];
+            var w = imgW * parseFloat(area.scaleW);
+            var h = imgH * parseFloat(area.scaleH);
+            var x = imgW * parseFloat(area.x);
+            var y = imgH * parseFloat(area.y);
+
+            var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px';
+            html += '<div data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
+          }
         }
       }
       //普通点读点
@@ -1312,12 +1316,27 @@ function bindEvent() {
     return false;
   })
 
-
   /**
    * 考试点读位
    */
   $('.m-exam').off().on(click, function (e) {
     fnExamClick(e)
+  })
+
+  /**
+   * 超链接点读点
+   */
+  $('.m-seturl').off().on(click, function (e) {
+    var $tar = $(e.target)
+    var ids = $tar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, ids);
+
+    var url = pointData.url.replace('"', '');
+    var w = window.screen.width * 0.8;
+    var h = window.screen.height * 0.8;
+    var left = window.screen.width * 0.1;
+    var top = window.screen.height * 0.1;
+    window.open(url, '', 'width=' + w + 'px,height=' + h + 'px,top=' + left + 'px,left=' + top + 'px');
   })
 
   //关闭时间进度条
@@ -1337,23 +1356,29 @@ function bindEvent() {
     var $cTar = $(ev.currentTarget);
     var id = $cTar.attr('data-target');
     var $hideImg = $('#' + id);
-    var controlHide = $cTar.attr('data-controlHide');
+    var mp3Path = $hideImg.attr('data-mp3')
+    //mp3Path = '/uploads/8cca1674e46b72dd84699a60bd0c386c.mp3'
 
-    if ($hideImg.css('display') === 'none') {
-      _playShowAudio(true);
-      $hideImg.show();
+    if ($hideImg.css('opacity') === '0') {
+      _playShowAudio(true, mp3Path);
+      $hideImg.css('opacity', 1);
       _domShowEffect($hideImg);
-      //if (controlHide === "false" || controlHide === 'undefined') {
-      $hideImg.off().on(click, function () {
-        $hideImg.hide();
-        _playShowAudio(false);
-      })
-      //}
+    }
+  })
+
+  //开关图点击事件
+  $('.on-off-hideimg').off().on(click, function (e) {
+    var $cTar = $(e.currentTarget);
+    var mp3Path = $cTar.attr('data-mp3')
+    //mp3Path = '/uploads/8cca1674e46b72dd84699a60bd0c386c.mp3'
+
+    if ($cTar.css('opacity') === '0') {
+      _playShowAudio(true, mp3Path);
+      $cTar.css('opacity', 1);
+      _domShowEffect($cTar);
     } else {
-      if (controlHide === 'true') {
-        $hideImg.hide();
-        _playShowAudio(false);
-      }
+      $cTar.css('opacity', 0);
+      _playShowAudio(false, mp3Path);
     }
   })
 
@@ -1626,9 +1651,10 @@ window.mouseUpOrDown = (function () {
 /**
  * 开关图隐藏,展示的音效
  * @param flag true 表示展示, false 表示隐藏
+ * @param mp3Src 开关图展示1s,播放的mp3录音
  * @private
  */
-function _playShowAudio(flag) {
+function _playShowAudio(flag, mp3Src) {
   flag = flag || false;
   var showMP3 = ['assets/show/1.mp3', 'assets/show/2.mp3', 'assets/show/3.mp3']
   var hideMP3 = ['assets/hide/1.mp3', 'assets/hide/2.mp3', 'assets/hide/3.mp3']
@@ -1639,6 +1665,30 @@ function _playShowAudio(flag) {
   var audio = document.createElement('audio');
   audio.src = src;
   audio.play();
+
+
+  if (window.OnOffAudio)  window.OnOffAudio.src = '';
+  // 存在开关图mp3,则在音效播放完,播放mp3
+  if (mp3Src && mp3Src !== 'undefined') {
+    //音效结束1s,则播放mp3
+    $(audio).on('ended', function () {
+      if (flag) {
+        setTimeout(function () {
+          _playOnOffMp3(mp3Src)
+        }, 1000)
+      }
+    })
+  }
+}
+
+/**
+ * 播放开关图mp3音效
+ * @private
+ */
+function _playOnOffMp3(src) {
+  window.OnOffAudio = window.OnOffAudio || document.createElement('audio');
+  window.OnOffAudio.src = src;
+  window.OnOffAudio.play();
 }
 
 /**
