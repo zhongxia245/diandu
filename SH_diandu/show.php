@@ -122,6 +122,10 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <div class="question-list" style="height: 100%;"></div>
 </section>
 <!--考试 END-->
+<!--考试 START-->
+<section class="btn-fullscreen" >
+</section>
+<!--考试 END-->
 <!--lib-->
 <!--微信录音-->
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -181,6 +185,37 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
     var _isDebug = Util.getQueryStringByName('debug');
     if (_isDebug) {
       Util.loadJS("js/lib/vconsole.min.js")
+    }
+
+    //增加PC全屏按钮
+    if(!Util.IsPC()){
+      $('.btn-fullscreen').remove();
+    }else{
+      $('.btn-fullscreen').show();
+      $('.btn-fullscreen').on('click',function(e){
+        var $cTar = $(e.currentTarget)
+        var $ifr = $(window.parent.document.getElementsByTagName('iframe')[0]);
+        if($cTar.attr('data-flag')!=="1"){
+  //        var w = window.parent.innerWidth;
+  //        var innerHeight = window.parent.innerHeight;
+  //        var h = w * 9/16;
+  //        var top = (innerHeight - h) /2;
+          $ifr.css({
+            position:'fixed',
+            top:0,
+            left:0,
+            width:'100%',
+            height:'100%',
+            'z-index':99999999
+          })
+          $cTar.addClass('normal-screen')
+          $cTar.attr('data-flag',"1")
+        }else{
+          $ifr.attr('style','')
+          $cTar.attr('data-flag',"0")
+          $cTar.removeClass('normal-screen')
+        }
+      })
     }
   })
 </script>

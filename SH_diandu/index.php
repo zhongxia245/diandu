@@ -273,12 +273,12 @@ if ($id > 0) {
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
     <div class="upload-radius">
-      <img src="imgs/hide_t.png" style="position: relative;visibility: hidden;">
-      <div class="upload-radius-in" id="item{{id}}" style="margin-top:-90px;">{{index}}</div>
+      <img src="imgs/hide_t.png" class="upload-radius-img">
+      <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
     </div>
     <div class="upload-type">
       <ul data-id="{{id}}">
-        <li title="点读点大小" style="margin: -13px 22px 0 -11px;" class="number-container"></li>
+        <li title="点读点大小"  class="number-container"></li>
         <li title="视频" class="video" data-type="uploadType" data-file-type="video"
             data-text="点击上传MP4格式的视频文件"></li>
         <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
@@ -287,6 +287,7 @@ if ($id > 0) {
             data-text="点击上传图文(支持文字和图片)"></li>
         <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
         <li title="开关" class="on-off" data-type="uploadType" data-file-type="on-off" data-text="点击设置开关"></li>
+        <li title="超链接" class="set-url" data-type="uploadType" data-file-type="set-url" data-text="点击设置超级链接"></li>
       </ul>
     </div>
     <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
@@ -384,6 +385,7 @@ if ($id > 0) {
 <script src="js/components/custompointsetting/CustomPointSetting.new.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/create/OnOffImg/OnOffImg.js"></script>
+<script src="js/page/create/UrlPoint/UrlPoint.js"></script>
 
 <script src="js/index.js"></script>
 

@@ -79,8 +79,9 @@ function CustomPointSetting(selector, config) {
   this.bgPath = this.data.bgPic.pic; //背景图片地址
   this.isRelate = true; //宽高是否关联
 
-  this.whScale = (this.data.pointData.w / this.data.pointData.h) || 1;
-  this.hwScale = (this.data.pointData.h / this.data.pointData.w) || 1;
+  var _area = this.data.pointData.area || {};
+  this.whScale = (_area.w / _area.h) || 1;
+  this.hwScale = (_area.h / _area.w) || 1;
 
   this.pointTypeClasses = {
     audio: 'cps-point-audio',

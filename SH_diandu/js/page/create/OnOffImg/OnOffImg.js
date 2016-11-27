@@ -40,7 +40,7 @@ var OnOffImg = function (selector, data, fn_submit) {
   this.addImageId = 'on-off-img-addImage'
   this.switchCount = 0
   this.switchId = 'switchImg'
-  this.submitData = {img: {}, switchArea: []}; // 提交的数据
+  this.submitData = {img: {}, mp3: {}, switchArea: []}; // 提交的数据
 
   this.selector = selector || 'body'
   this.tpl = [
@@ -68,9 +68,19 @@ var OnOffImg = function (selector, data, fn_submit) {
     '             <div class="on-off-img-add">增加开关触发区域</div>',
     '           </div>',
     '       </div>',
-    '       <p class="on-off-p">拖动触发区可改变位置,拖动触发区右下角标可以修改大小</p>',
-    '       <p class="on-off-p"><label><input class="on-off-checkbox" type="checkbox" name="cbkRelation"/>触发区控制开关图显示和隐藏</label></p>',
-    '       <p class="on-off-p">(默认触发区点击展示开关图,开关图点击则隐藏自身)</p>',
+    '       <div class="on-off-p">',
+    '         <label class="on-off-hide-area"><input class="on-off-checkbox js-hide-area" type="checkbox"/>取消触发区</label>',
+    '         <label class="on-off-default-show"><input class="on-off-checkbox js-default-show" type="checkbox"/>图片初始为显示状态</label>',
+    '       </div>',
+    '       <div class="on-off-mp3-upload">',
+    '         <div class="on-off-mp3-unupload"> 上传配音(可选,限mp3格式)',
+    '           <input class="upload-input" type="file" id="on-off-mp3-{{id}}" name="upload" class="fileupload"/>',
+    '         </div>',
+    '         <div class="on-off-mp3-uploaded">',
+    '            <div class="on-off-mp3-filename"></div>',
+    '            <div class="on-off-mp3-download"></div>',
+    '         </div>',
+    '       </div>',
     '       <div class="on-off-img-bottom">',
     '          <div class="on-off-img-btn"> 提交</div>',
     '       </div>',
@@ -93,7 +103,12 @@ var OnOffImg = function (selector, data, fn_submit) {
 
   // 下载图片,TODO:目前只是打开,最好改成下载
   this.download = function () {
-    window.open(that.data.submitData.img.path)
+    window.open(that.submitData.img.path)
+  }
+
+  //下载mp3
+  this.downloadMp3 = function () {
+    window.open(that.submitData.mp3.path)
   }
 
   /**
@@ -193,7 +208,8 @@ var OnOffImg = function (selector, data, fn_submit) {
     that.data.img = that.data.img || {}
     that.submitData.img.scale = that.submitData.img.scale || that.data.img.scale || 1;
 
-    that.submitData.controlHide = that.$cbkShowAndHide[0].checked;
+    that.submitData.img.defaultShow = that.$cbkDefaultShow[0].checked
+    that.submitData.hideSwitchArea = that.$cbkHideArea[0].checked
 
     that.fn_submit && that.fn_submit(that.submitData)
 
@@ -229,7 +245,7 @@ OnOffImg.prototype.init = function () {
 
   this.$modal = this.$container.find('.on-off-img-modal')
   this.$close = $('.on-off-img-modal .on-off-img-close')
-  this.$btn = $('.on-off-img-modal .on-off-img-btn')
+  this.$submitBtn = $('.on-off-img-modal .on-off-img-btn')
   this.$textarea = this.$modal.find('._content')
   this.$input = this.$modal.find('._title')
   this.$img = this.$modal.find('._img')
@@ -237,10 +253,18 @@ OnOffImg.prototype.init = function () {
   this.$download = this.$modal.find('.on-off-img-download')
   this.$uploadBtn = this.$modal.find('.on-off-img-unupload')
   this.$fileInfo = this.$modal.find('.on-off-img-uploaded')
+
+  this.$fileNameMp3 = this.$modal.find('.on-off-mp3-filename')
+  this.$downloadMp3 = this.$modal.find('.on-off-mp3-download')
+  this.$uploadBtnMp3 = this.$modal.find('.on-off-mp3-unupload')
+  this.$fileInfoMp3 = this.$modal.find('.on-off-mp3-uploaded')
+
   this.$resizeNumber = this.$modal.find('.on-off-img-resize')
   this.$addOnOff = this.$modal.find('.on-off-img-add')
   this.$onOffBg = this.$modal.find('.on-off-img-bg')
-  this.$cbkShowAndHide = this.$modal.find('.on-off-checkbox')
+
+  this.$cbkHideArea = this.$modal.find('.js-hide-area')
+  this.$cbkDefaultShow = this.$modal.find('.js-default-show')
 
   this.$onOffBg.css({width: this.scaleWH * this.data.bg.w, height: this.scaleWH * this.data.bg.h})
 
@@ -270,10 +294,11 @@ OnOffImg.prototype.setData = function (data) {
     var bgW = this.$onOffBg.width()
     var bgH = this.$onOffBg.height()
     var imgData = data.img || {};
+    var mp3Data = data.mp3 || {};
     var switchArea = data.switchArea || [];
-    var controlHide = data.controlHide;
 
     this.uploadImgCallback(imgData.path, imgData.name)
+    this.uploadMp3Callback(mp3Data.path, mp3Data.name)
 
     $('#' + this.addImageId).css({
       left: parseFloat(imgData.x) * bgW,
@@ -282,7 +307,6 @@ OnOffImg.prototype.setData = function (data) {
     })
 
     this.cNumber.setVal(parseFloat(imgData.scale) * 100)
-    this.$cbkShowAndHide[0].checked = controlHide || false
 
     for (var i = 0; i < switchArea.length; i++) {
       if (i >= 1) {
@@ -295,6 +319,14 @@ OnOffImg.prototype.setData = function (data) {
         height: parseFloat(switchArea[i].scaleH) * bgH
       })
     }
+
+
+    var hideSwitchArea = data.hideSwitchArea || false
+    this.$cbkDefaultShow.attr('checked', imgData.defaultShow || false)
+    this.$cbkHideArea.attr('checked', hideSwitchArea)
+    if (hideSwitchArea) {
+      $('.on-off-img-switchImg').hide()
+    }
   }
 }
 
@@ -304,11 +336,12 @@ OnOffImg.prototype.setData = function (data) {
 OnOffImg.prototype.bindEvent = function () {
   var that = this
   this.$close.off('click', this.hide).on('click', this.hide)
-  this.$btn.off('click', this.submit).on('click', this.submit)
+  this.$submitBtn.off('click', this.submit).on('click', this.submit)
 
   this.$download.off('click', this.download).on('click', this.download)
+  this.$downloadMp3.off('click', this.downloadMp3).on('click', this.downloadMp3)
 
-  //初始化uploadify组件
+  //初始化uploadify组件,上传图片
   this.setUploadify($('#on-off-img-' + this.data.id), {
     width: '48px',
     height: '48px',
@@ -317,8 +350,29 @@ OnOffImg.prototype.bindEvent = function () {
     }
   })
 
+  //初始化uploadify组件,上传mp3音效
+  this.setUploadify($('#on-off-mp3-' + this.data.id), {
+    width: '48px',
+    height: '48px',
+    fileTypeDesc: 'Audio Files',
+    fileTypeExts: '*.mp3',
+    onUploadSuccess: function (file, result, response) {
+      that.uploadMp3Callback(result, file.name)
+    }
+  })
+
+  //添加触发区
   this.$addOnOff.off().on('click', function () {
     that.addSwitch(that.$onOffBg, that._resizeHandler)
+  })
+
+  //取消触发区 复选框 改变事件
+  this.$cbkHideArea.off().on('change', function (e) {
+    if (e.target.checked) {
+      $('.on-off-img-switchImg').hide()
+    } else {
+      $('.on-off-img-switchImg').show()
+    }
   })
 }
 
@@ -338,14 +392,32 @@ OnOffImg.prototype.addImg = function (path) {
  * @param filename
  */
 OnOffImg.prototype.uploadImgCallback = function (path, filename) {
-  this.$uploadBtn.hide();
-  this.$fileInfo.show();
-  this.$resizeNumber.show();
-  this.$addOnOff.show();
-  this.$fileName.text(filename);
+  if (path) {
+    this.$uploadBtn.hide();
+    this.$fileInfo.show();
+    this.$resizeNumber.show();
+    this.$addOnOff.show();
+    this.$fileName.text(filename);
 
-  this.submitData.img.name = filename;
-  this.submitData.img.path = path;
+    this.submitData.img.name = filename;
+    this.submitData.img.path = path;
 
-  this.addImg(path);
+    this.addImg(path);
+  }
+}
+
+/**
+ * 上传mp3音效的回调
+ * @param path
+ * @param filename
+ */
+OnOffImg.prototype.uploadMp3Callback = function (path, filename) {
+  if (path) {
+    this.$uploadBtnMp3.hide();
+    this.$fileInfoMp3.show();
+    this.$fileNameMp3.text(filename);
+
+    this.submitData.mp3.name = filename;
+    this.submitData.mp3.path = path;
+  }
 }

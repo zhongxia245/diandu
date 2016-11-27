@@ -1,0 +1,89 @@
+.url-point-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.6;
+  z-index: 100;
+}
+
+.url-point {
+  width: 600px;
+  border-radius: 5px;
+  position: fixed;
+  z-index: 1000;
+  top: 75px;
+  left: 50%;
+  margin-left: -300px;
+  float: left;
+  padding-bottom: 5px;
+  background: #E1E1E1;
+}
+
+/*title*/
+.url-point-top {
+  height: 55px;
+  line-height: 55px;
+  background: #B0B0B0;
+  text-align: center;
+  color: #FFF;
+  font-size: 30px;
+  border-radius: 5px;
+}
+
+/*关闭按钮*/
+.url-point-close {
+  position: absolute;
+  right: 5px;
+  color: #FF7C80;
+  font-size: 30px;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+.url-point-content {
+  height: 100px;
+  padding: 15px 15px 15px 30px;
+  display: flex;
+}
+
+.url-point-ok {
+  color: #FFF;
+  background: #FF636B;
+  width: 50px;
+  line-height: 50px;
+  font-size: 30px;
+  height: 50px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: -1px;
+}
+
+/*提交按钮*/
+.url-point-btn {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  font-size: 25px;
+  margin: 0;
+  background: #FF7C80;
+  color: #FFF;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.url-point-content input {
+  height: 50px;
+  width: 88%;
+  border: 0;
+  border-radius: 3px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  font-size: 24px;
+  padding: 0 10px;
+  outline: 0;
+}

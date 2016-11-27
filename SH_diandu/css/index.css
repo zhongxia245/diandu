@@ -364,8 +364,8 @@ header {
 .upload-item {
   position: relative;
   width: 100%;
-  height: 100px;
-  margin: 20px 0;
+  height: 80px;
+  margin-bottom: 10px;
 }
 
 /*点读点的大小*/
@@ -393,45 +393,59 @@ header {
 
 /*上传列表的序号*/
 .upload-radius {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   background: #7C7C7C;
-  padding: 7px;
   float: left;
+  position: relative;
 }
 
 .upload-radius-in {
-  height: 86px;
-  line-height: 86px;
-  width: 86px;
+  height: 65px;
+  line-height: 65px;
+  width: 65px;
   text-align: center;
-  font-size: 60px;
+  font-size: 50px;
   color: #FFF;
   border-radius: 50%;
   /*只有在选中上传类型，或者已经上传才设置这个颜色*/
   background: #66CCCC;
   cursor: move;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}
+
+.upload-radius-img {
+  position: relative;
+  visibility: initial;
+  width: 100%;
 }
 
 .upload-type {
   position: relative;
   float: left;
   width: 45%;
-  height: 40px;
+  height: 30px;
   top: 50%;
   z-index: 100;
-  margin: -20px 0 0 -25px;
+  margin: -15px 0 0 -25px;
   background: #7F7F7F;
   border: 2px #A9A9A9 solid;
   border-radius: 20px;
 }
 
+.upload-type .number-container {
+  margin-left: -10px;
+  margin-right: 20px;
+}
+
 .upload-type li {
-  margin-right: 15px;
-  margin-top: -13px;
-  width: 65px;
-  height: 65px;
+  margin-right: 13px;
+  margin-top: -15px;
+  width: 55px;
+  height: 55px;
   float: left;
   cursor: pointer;
 }
@@ -472,16 +486,22 @@ header {
   background-size: 100% 100%;
 }
 
+.upload-type .set-url {
+  background: url('../imgs/seturl.png');
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+}
+
 .upload-right {
   position: relative;
   float: left;
   width: 600px;
-  height: 60px;
-  line-height: 60px;
+  height: 55px;
+  line-height: 55px;
   top: 50%;
   left: 15px;
   margin: 0 auto;
-  margin: -30px 0 0 -30px;
+  margin: -28px 0 0 -32px;
   border-radius: 5px;
   color: #FFF;
   text-align: center;
@@ -489,7 +509,7 @@ header {
 }
 
 .upload-right-name {
-  width: 315px;
+  width: 340px;
   height: 100%;
   background: #FF7C80;
   border-radius: 3px;
@@ -553,9 +573,10 @@ header {
 }
 
 /*图文上传成功*/
-.uploaded-imgtext, .uploaded-exam, .uploaded-on-off {
+.uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url {
   background: #7F7F7F;
   position: relative;
+  cursor: pointer;
 }
 
 /*上传成功，有下载图标*/
@@ -576,15 +597,14 @@ header {
 
 .upload-right-btn {
   float: right;
-  margin-top: -53px;
+  margin-top: -56px;
 }
 
 .upload-right-btn li {
   float: left;
-  margin-top: -10px;
   cursor: pointer;
-  width: 61px;
-  height: 61px;
+  width: 55px;
+  height: 55px;
 }
 
 .upload-right-btn .img-point-setting {

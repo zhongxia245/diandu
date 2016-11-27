@@ -190,7 +190,7 @@ ul, li {
 }
 
 /*新增一个点读位类型，要在这里添加样式*/
-.m-video, .m-audio, .m-imgtext, .m-exam, .m-global-audio {
+.m-video, .m-audio, .m-imgtext, .m-exam, .m-global-audio, .m-seturl {
   height: 72px;
   width: 72px;
   position: absolute;
@@ -227,6 +227,11 @@ ul, li {
 
 .m-global-audio {
   background: url('../imgs/global_audio/global-audio-point.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+.m-seturl {
+  background: url('../imgs/seturl_default.png') no-repeat;
   background-size: 100% 100%;
 }
 
@@ -640,7 +645,7 @@ ul, li {
   background-size: 100%;
   transform-origin: left top;
   position: absolute;
-  display: none;
+  opacity: 0;
   z-index: 2;
 }
 
@@ -648,4 +653,22 @@ ul, li {
   position: absolute;
   z-index: 1;
   border: 5px solid #CCC;
+}
+
+.btn-fullscreen {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 70px;
+  height: 70px;
+  border: 1px solid black;
+  cursor: pointer;
+  z-index: 999999999;
+  background-image: url(../imgs/fullscreen.png);
+  background-size: contain;
+}
+
+.normal-screen {
+  background-image: url(../imgs/normalscreen.png);
 }
