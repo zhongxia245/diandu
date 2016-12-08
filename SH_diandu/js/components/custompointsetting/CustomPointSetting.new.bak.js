@@ -80,8 +80,8 @@ function CustomPointSetting(selector, config) {
   this.isRelate = true; //宽高是否关联
 
   var _area = this.data.pointData.area || {};
-  this.whScale = (_area.videoW / _area.videoH) || 1;
-  this.hwScale = (_area.videoH / _area.videoW) || 1;
+  this.whScale = (_area.w / _area.h) || 1;
+  this.hwScale = (_area.h / _area.w) || 1;
 
   this.pointTypeClasses = {
     audio: 'cps-point-audio',
@@ -147,25 +147,12 @@ CustomPointSetting.prototype.render = function () {
   html.push('         <input name="height" type="number"  class="cps-video-height"/>')
   html.push('       </div>')
 
-  //计算图片在自定义视频区域上的大小
-  this.bgW = parseInt(this.data.bgPic.w);
-  this.bgH = parseInt(this.data.bgPic.h);
-  var subTip = this.bgW + ':' + this.bgH;
-  var locationW = this.bgAreaWH.w;
-  var locationH = this.bgAreaWH.h;
-  if (this.bgW / this.bgH > 16 / 9) {
-    locationH = locationW * this.bgH / this.bgW;
-  } else {
-    locationW = locationH * this.bgW / this.bgH
-  }
-  var locationStyle = 'width:' + locationW + 'px;height:' + locationH + 'px;'
 
+  var subTip = parseInt(this.data.bgPic.w) + ':' + parseInt(this.data.bgPic.h);
   html.push('       <p>请拖动改变播放区的位置<em>背景图宽高:' + subTip + '(相对1200大小)</em></p>')
   html.push('       <div class="cps-content-video-area" style="background:url(' + this.bgPath + ') no-repeat; background-size:contain;background-position: center;">')
   html.push('         <div class="cps-video-point"></div>')
-  html.push('         <div class="cps-video-location-area" style="' + locationStyle + '">')
-  html.push('            <div class="cps-video-location"></div>')
-  html.push('         </div>')
+  html.push('         <div class="cps-video-location"></div>')
   html.push('       </div>')
   html.push('    </div>')
 
@@ -388,10 +375,8 @@ CustomPointSetting.prototype.bindEvent = function () {
     that.data.title.title = that.$text.text();
 
     if (that.$inputWidth.val()) {
-      that.data.area = that.data.pointData.area;
-
-      that.data.area.w = parseInt(that.$inputWidth.val()) / that.bgW;
-      that.data.area.h = parseInt(that.$inputHeight.val()) / that.bgH;
+      that.data.area.w = that.$inputWidth.val();
+      that.data.area.h = that.$inputHeight.val();
 
       //在480px 下的位置
       that.data.area.x = that.$videoLocation.css('left').replace('px', '');
@@ -418,6 +403,7 @@ CustomPointSetting.prototype.bindEvent = function () {
  * 初始化数据
  */
 CustomPointSetting.prototype.initData = function () {
+
   var _area = this.data.pointData.area || {};
 
   //如果不是视频点读点,隐藏切换到播放区域的按钮
@@ -450,16 +436,8 @@ CustomPointSetting.prototype.initData = function () {
 
     //设置了视频播放区域
     if (_area.w) {
-
-      //未设置过视频播放区域
-      if (_area.x !== undefined) {
-        var _w = _area.w * this.bgW;
-        var _h = _area.h * this.bgH;
-      } else {
-        var _w = _area.w;
-        var _h = _area.h;
-      }
-
+      var _w = _area.w;
+      var _h = _area.h;
       var _x = _area.x * this.bgAreaWH.w;
       var _y = _area.y * this.bgAreaWH.h;
 

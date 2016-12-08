@@ -29,7 +29,6 @@ window.PlayVideo = (function (Util) {
     var html = [];
     html.push('<div data-id="__videoContainer" class="video-container">')
     html.push('  <div class="vc-btn-close"></div>')
-    //html.push('  <i class="fa fa-arrows-alt vc-btn-fullpanel" aria-hidden="true"></i>')
     html.push('  <img class="vc-play" src="./imgs/play.png">')
     html.push(' <div class="vc-video" ><video  controls data-src="' + src + '" </video></div>')
     html.push('</div>')
@@ -57,7 +56,7 @@ window.PlayVideo = (function (Util) {
    * @param config  频展示 置, 宽高,xy
    * @param closeCallback 关闭之后的回调
    */
-  function show(src, config, wrapTop, closeCallback) {
+  function show($dom, src, config, wrapTop, closeCallback) {
     var _videoLoading;
     var _left;
     var _top;
@@ -65,7 +64,7 @@ window.PlayVideo = (function (Util) {
     $('.video-container[data-id="__videoContainer"]').remove();
     var html = _render(src);
 
-    $('body').append(html);
+    $dom.append(html);
     var $container = $('.video-container[data-id="__videoContainer"]');
     var $playImg = $container.find('.vc-play');
     var $btnClose = $container.find('.vc-btn-close');
@@ -74,11 +73,6 @@ window.PlayVideo = (function (Util) {
 
     if (config) {
 
-      // var _scale = window.screen.width / 1200;
-      //$playImg.css({transform: 'scale(' + _scale + ')'})
-      //var scaleBtnClose = parseInt(config.w) / 600;
-      //$btnClose.css({transform: 'scale(' + scaleBtnClose + ')'})
-
       //PC端,背景图片宽度1200,高度675
       if (Util.IsPC()) {
         _left = parseFloat(config.x) * 1200;
@@ -86,62 +80,23 @@ window.PlayVideo = (function (Util) {
       }
       //移动端,区分横竖屏
       else {
-        _left = parseFloat(config.x) * window.screen.width;
-        _top = parseFloat(config.y || 0) * window.screen.height;
-
-        //竖屏[TODO:有BUG， 需要跟点读点位置一样的算法判断]
-        if (window.screen.height > window.screen.width) {
-          _top = parseFloat(config.y || 0) * (window.screen.height - 2 * wrapTop) + wrapTop;
-        }
+        _left = parseFloat(config.x) * config.bgW;
+        _top = parseFloat(config.y || 0) * config.bgH;
       }
 
       //计算视频位置
-      //$container.css({
-      //  left: _left + 'px',
-      //  top: _top + 'px',
-      //  width: _str2Num(config.w),
-      //  height: _str2Num(config.h),
-      //})
-
-      //不计算位置,直接在屏幕中间显示
-      config.w = config.w || "1";
-      config.h = config.h || "1";
-      if (parseInt(config.w) > parseInt(config.h)) {
-        $container.css({
-          width: '90%',
-          height: parseInt(config.h) / parseInt(config.w) * 90 + '%',
-          left: '5%',
-          top: parseInt(config.h) / parseInt(config.w) * 5 + '%'
-        })
-      } else {
-        $container.css({
-          height: '90%',
-          width: parseInt(config.w) / parseInt(config.h) * 90 + '%',
-          top: '5%',
-          left: parseInt(config.w) / parseInt(config.h) * 5 + '%'
-        })
-      }
-
-
-      //$container.css({
-      //  left: _str2Num(_left),
-      //  top: _str2Num(_top, wrapTop),
-      //  width: _str2Num(config.w),
-      //  height: _str2Num(config.h),
-      //})
+      $container.css({
+        left: _left + 'px',
+        top: _top + 'px',
+        width: config.w * config.bgW,
+        height: config.h * config.bgH,
+      })
     }
 
     $video.on('canplaythrough', function () {
       _videoLoading.loading("hide");
       $video.attr('data-loaded', true)
     })
-
-    //点击暂停
-    //$video.on(click, function () {
-    //  $playImg.show();
-    //  $video[0].pause();
-    //  $video.css({top: -9999, opacity: 0});
-    //})
 
     //播放
     $playImg.on(click, function () {
@@ -169,13 +124,6 @@ window.PlayVideo = (function (Util) {
 
     //全屏
     $fullpanel.on(click, function () {
-
-      //if ($container.hasClass('vc-fullpanel')) {
-      //  $container.removeClass('vc-fullpanel')
-      //} else {
-      //  $container.addClass('vc-fullpanel')
-      //}
-
       //存在兼容性,有的移动端浏览器不能全屏
       var elem = $video[0];
       if (!elem.paused) {

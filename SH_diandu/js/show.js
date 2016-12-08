@@ -835,8 +835,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       var pic = JSON.parse(pointDatas[i]['pic'] || "{}")
       //自定义标题
       var pointTitle = JSON.parse(pointDatas[i]['custom'] || "{}")
-      //开关图 TODO:字段名称可能需要修改
-      var switchImg = JSON.parse(pointDatas[i]['remarks'] || '{}')
+      //开关图
+      var switchImg = JSON.parse(pointDatas[i]['onoff'] || '{}')
 
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
@@ -1198,7 +1198,10 @@ function bindEvent() {
       wrapTop = (screen.height - wrapH) / 2;
     }
 
-    PlayVideo.show(url, area, wrapTop, function () {
+    area.bgW = $cTar.parents('.wrap').width();
+    area.bgH = $cTar.parents('.wrap').height();
+
+    PlayVideo.show($cTar.parents('.wrap'), url, area, wrapTop, function () {
       closeVideoOrAudio();
       //关闭音频的时候,间隔自动播放的时间在启动
       GLOBAL.BGAUDIO.setTimePlay()
@@ -1331,7 +1334,7 @@ function bindEvent() {
     var ids = $tar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, ids);
 
-    var url = pointData.url.replace('"', '');
+    var url = pointData.linkurl.replace('"', '');
     var w = window.screen.width * 0.8;
     var h = window.screen.height * 0.8;
     var left = window.screen.width * 0.1;

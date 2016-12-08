@@ -187,7 +187,10 @@ var _data = (function () {
               questions: typeof items[j]['questions'] !== 'string' ? JSON.stringify(items[j].questions) : items[j].questions,
               type: _data.getTypeByName(items[j].type),
 
-              remarks: JSON.stringify(items[j].remarks)
+              remarks: JSON.stringify(items[j].remarks),
+
+              onoff: JSON.stringify(items[j].onoff),
+              linkurl: JSON.stringify(items[j].linkurl),
             }
 
             if (items[j]['oldId']) obj['id'] = items[j]['oldId']
@@ -254,7 +257,7 @@ var _data = (function () {
    */
   function isEmpty(item) {
     // 如果这些每一项都为空,则表示为空的点读位
-    if (item.content || item.filename || item.questions || item.title || item.url || item.remarks || item.pic) {
+    if (item.content || item.filename || item.questions || item.title || item.linkurl || item.url || item.remarks || item.onoff || item.pic) {
       return false
     }
     return true
@@ -528,7 +531,10 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || '{}')
         window.DD.items[i]['data'][j]['area'] = JSON.parse(obj['area'] || '{}')
 
-        window.DD.items[i]['data'][j]['remarks'] = JSON.parse(obj['remarks'] || '{}')   //开关图数据,暂时保存在这
+        window.DD.items[i]['data'][j]['remarks'] = JSON.parse(obj['remarks'] || '{}')
+
+        window.DD.items[i]['data'][j]['linkurl'] = JSON.parse(obj['linkurl'] || '{}')   //开关图数据,暂时保存在这
+        window.DD.items[i]['data'][j]['onoff'] = JSON.parse(obj['onoff'] || '{}')   //开关图数据,暂时保存在这
       }
     }
   }
@@ -1445,7 +1451,8 @@ function fileTypeItemClick(e) {
               url: fileSrc,
               filename: file.name,
               area: {
-                w: obj.w, h: obj.h
+                w: obj.w, h: obj.h,
+                videoW: obj.w, videoH: obj.h
               }
             })
           })
@@ -1470,8 +1477,8 @@ function fn3_setUrl(e) {
   var pageId = ids.pageId
   var dianduId = ids.dianduId
   var _pointData = window.DD.items[pageId].data[dianduId]
-  new UrlPoint('body', _pointData.url, function (val) {
-    _pointData.url = val;
+  new UrlPoint('body', _pointData.linkurl, function (val) {
+    _pointData.linkurl = val;
   })
 }
 
@@ -1487,17 +1494,16 @@ function fn3_onoffImgCreate(e) {
   var dianduId = ids.dianduId
   var _data = window.DD.items[pageId].data[dianduId];
 
-  //编辑的时候,数据目前保存在 remarks
-  _data.remarks = _data.remarks || {};
+  _data.onoff = _data.onoff || {};
   new OnOffImg('body', {
     id: ids.id,
     bg: {w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic},
-    img: _data.remarks.img,
-    switchArea: _data.remarks.switchArea,
-    mp3: _data.remarks.mp3,
-    hideSwitchArea: _data.remarks.hideSwitchArea
+    img: _data.onoff.img,
+    switchArea: _data.onoff.switchArea,
+    mp3: _data.onoff.mp3,
+    hideSwitchArea: _data.onoff.hideSwitchArea
   }, function (result) {
-    _data.remarks = result;
+    _data.onoff = result;
     // 标识试卷已经上传
     var $uploadRight = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-right').eq(0)
     $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-on-off')
