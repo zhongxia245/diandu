@@ -99,8 +99,31 @@ var _upload = (function () {
     $file.uploadify(config)
   }
 
+  /**
+   * 初始化 webuploader 组件
+   */
+  function initWebUpload(id, config) {
+    var defaultConfig = {
+      server: 'php/fileupload.php',
+      pick: {
+        id: id,
+        label: '选择图片'
+      },
+      auto: true,
+      threads: 1,
+      duplicate: true,
+      fileSingleSizeLimit: 1024 * 1024 * 500
+    };
+
+    // 合并参数
+    config = $.extend({}, defaultConfig, config);
+    window.WebUploader.create(config)
+      .on('uploadSuccess', config.onUploadSuccess)
+  }
+
   return {
-    setUploadify: setUploadify
+    setUploadify: setUploadify,
+    initWebUpload: initWebUpload
   }
 })()
 
@@ -896,31 +919,62 @@ function setUploadControl(index) {
   var file_bg = '#file_bg' + index
   var newIndex = index
 
-  _upload.setUploadify($(file_bg), {
+  _upload.initWebUpload(file_bg, {
     onUploadSuccess: function (file, resultPath, response) {
-      GLOBAL.ISSELECTEDSCREENTYPE = true; // 已经选中点读页的类型
-      // 移除上传按钮,显示上传的文件信息
-      var oldIndex = newIndex
-      // upload muitl image
-      if (this.queueData.filesSelected > 1) {
-        // first image not add DianduPage
+      resultPath = resultPath._raw
+      GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
+      var oldIndex = newIndex;
+
+      //上传多个文件
+      if (this.getFiles().length > 1) {
+        //第一个上传的文件，不需要新添加一个点读页
         if (newIndex !== index) {
-          addDianDuPageTpl()
+          addDianDuPageTpl();
         }
-        addDianduPageByUpload(newIndex, file.name, resultPath)
-        newIndex++
-      } else {
-        addDianduPageByUpload(index, file.name, resultPath)
+        addDianduPageByUpload(newIndex, file.name, resultPath);
+        newIndex++;
+      }
+      else {
+        addDianduPageByUpload(index, file.name, resultPath);
       }
 
-      // 设置上传的图片信息,以及修改提示信息
-      $('.sort-info').show()
-      var _$fileBg = $('#file_bg' + oldIndex)
-      _$fileBg.parent().find('.filename').text(file.name)
-      Logger.log('newIndex', oldIndex)
-      setBgImageScale(resultPath, '#id_bg' + (oldIndex))
+      //设置上传的图片信息,以及修改提示信息
+      $('.sort-info').show();
+      var _$fileBg = $("#file_bg" + oldIndex);
+      _$fileBg.parent().find('.filename').text(file.name);
+      Logger.log("newIndex", oldIndex)
+      setBgImageScale(resultPath, "#id_bg" + (oldIndex))
     }
   })
+
+  // OUT-OF-DATE：使用HTML5上传插件替换Flash插件
+  /*_upload.setUploadify($(file_bg), {
+   onUploadSuccess: function (file, resultPath, response) {
+   debugger
+   GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
+   //移除上传按钮,显示上传的文件信息
+   var oldIndex = newIndex;
+   //upload muitl image
+   if (this.queueData.filesSelected > 1) {
+   //first image not add DianduPage
+   if (newIndex !== index) {
+   addDianDuPageTpl();
+   }
+   addDianduPageByUpload(newIndex, file.name, resultPath);
+   newIndex++;
+   }
+   else {
+   addDianduPageByUpload(index, file.name, resultPath);
+   }
+
+   //设置上传的图片信息,以及修改提示信息
+   $('.sort-info').show();
+   var _$fileBg = $("#file_bg" + oldIndex);
+   _$fileBg.parent().find('.filename').text(file.name);
+   Logger.log("newIndex", oldIndex)
+   setBgImageScale(resultPath, "#id_bg" + (oldIndex))
+   }
+   });*/
 }
 
 /**

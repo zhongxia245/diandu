@@ -8,6 +8,7 @@
   <title>点读</title>
   <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="js/lib/bootstrap-slider/bootstrap-slider.min.css" />
+  <link rel="stylesheet" href="js/lib/webuploader/webuploader.css" />
   <link rel="stylesheet" href="js/lib/uploadify/uploadify.css" />
   <link rel="stylesheet" href="css/font-awesome.min.css" />
   <link rel="stylesheet" href="css/index.css" />
@@ -179,7 +180,7 @@
             <span class="sort">{{index}}</span>
             <span class="filename"></span>
           </div>
-          <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg" />
+          <div  id="file_bg{{index}}" class="file_bg"></div>
           <span class="h-tip">横屏背景图比例 16:9</span>
           <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
           <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
@@ -215,6 +216,7 @@
   <script src="js/lib/layer/layer.js"></script>
   <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
   <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+  <script src="js/lib/webuploader/webuploader.min.js"></script>
   <script src="js/lib/kindeditor/kindeditor-min.js"></script>
   <script src="js/lib/kindeditor/lang/zh_CN.js"></script>
   <script src="js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>

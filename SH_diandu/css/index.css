@@ -763,3 +763,22 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
   font-style: normal;
 }
 
+/*webuploader 按钮样式*/
+.webuploader-container {
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  height: 30px;
+  width: 100px;
+  padding: 0;
+}
+
+.webuploader-container .webuploader-pick {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  padding: 0;
+  font-style: initial;
+  background: #FF7C80;
+}
