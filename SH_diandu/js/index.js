@@ -117,8 +117,7 @@ var _upload = (function () {
 
     // 合并参数
     config = $.extend({}, defaultConfig, config);
-    window.WebUploader.create(config)
-      .on('uploadSuccess', config.onUploadSuccess)
+    window.WebUploader.create(config);
   }
 
   return {
@@ -922,6 +921,7 @@ function setUploadControl(index) {
   _upload.initWebUpload(file_bg, {
     onUploadSuccess: function (file, resultPath, response) {
       resultPath = resultPath._raw
+      console.log("resultPath",resultPath)
       GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
       var oldIndex = newIndex;
 
