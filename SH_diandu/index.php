@@ -249,7 +249,7 @@ if ($id > 0) {
           <div class="setting-title" style="width: 100%;">自动播放时的音乐设置(可选)</div>
           <div class="setting-btn-autovideo" id="btnAutoAudio">
             <span>点击上传自动播放时的背景音乐(MP3格式)</span>
-            <input type="file" id="file_btnAutoAudio" class="filehide"/>
+            <div id="file_btnAutoAudio"></div>
             <input type="hidden" id="file_btnAutoAudio_path"/>
           </div>
         </div>
@@ -296,7 +296,7 @@ if ($id > 0) {
 
         <div class="div-file">
           <div class="div-file-mask" style="display:none"></div>
-          <input type="file" id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"/>
+          <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload" ></div>
         </div>
         <img class="download" src="imgs/download.png" alt="download">
       </div>
@@ -325,7 +325,7 @@ if ($id > 0) {
           <span class="sort">{{index}}</span>
           <span class="filename"></span>
         </div>
-        <input type="file" name="file_bg" id="file_bg{{index}}" class="filehide file_bg"/>
+        <div id="file_bg{{index}}" class="file_bg"></div>
         <span class="h-tip">横屏背景图比例 16:9</span>
         <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
         <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>

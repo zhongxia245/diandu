@@ -107,7 +107,12 @@ var _upload = (function () {
       server: 'php/fileupload.php',
       pick: {
         id: id,
-        label: '选择图片'
+        label: config.label || '',
+        multiple: config.multiple || false,
+      },
+      accept: {
+        title: config.fileTypeDesc || 'Images',
+        mimeTypes: config.fileTypeExts || 'image/png,image/jpg,image/gif'
       },
       auto: true,
       threads: 1,
@@ -319,7 +324,6 @@ var _edit = (function () {
    */
   function initEdit(id) {
     Model.getList(id, function (data) {
-      Logger.info('加载点读点数据完成! ', data)
       // 编辑的时候,按照点读页进行排序
       ArrayUtil.sortByKey(data.pages, 'seq')
 
@@ -397,8 +401,6 @@ var _edit = (function () {
 
     GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100
     GLOBAL.BACK_COLOR = data['back_color'] === '0' ? 'rgb(0,0,0)' : data['back_color']
-
-    Logger.info('全局背景颜色:GLOBAL.BACK_COLOR', GLOBAL.BACK_COLOR, '全局点读点大小:GLOBAL.POINT_SIZE', GLOBAL.POINT_SIZE)
   }
 
   /**
@@ -453,8 +455,6 @@ var _edit = (function () {
         .find('[data-id="' + dataid + '"]')
         .find('.img-point-setting')
         .addClass('img-point-setting-on')
-
-      Logger.info('自定义点读点', dataid, type, config)
     }
 
     // 初始化视频,音频,图文的数据
@@ -685,7 +685,6 @@ function bindEvent() {
 
   // 删除点读页.   该使用方法相当于 live
   $(document).on('click', '.bigimg-h .del', function (e) {
-    Logger.log('del diandi page')
     e.stopPropagation()
     var $bgPage = $(e.currentTarget).parent().parent().parent().parent()
     var display = $bgPage.find('.setting-bigimg-tip-h').css('display')
@@ -699,18 +698,29 @@ function bindEvent() {
     })
   })
 
-  // 上传背景音乐
-  _upload.setUploadify($('#file_btnAutoAudio'), {
-    width: '100%',
-    height: '50',
-    multi: false,
+  _upload.initWebUpload('#file_btnAutoAudio', {
+    multiple: false,
     fileTypeDesc: 'Audio Files',
-    fileTypeExts: '*.mp3',
+    fileTypeExts: 'audio/mpeg',
     onUploadSuccess: function (file, resultPath) {
+      resultPath = resultPath._raw
       $('#file_btnAutoAudio_path').val(resultPath)
       $('#btnAutoAudio>span').text(file.name)
     }
   })
+
+  // 上传背景音乐
+  //_upload.setUploadify($('#file_btnAutoAudio'), {
+  //  width: '100%',
+  //  height: '50',
+  //  multi: false,
+  //  fileTypeDesc: 'Audio Files',
+  //  fileTypeExts: '*.mp3',
+  //  onUploadSuccess: function (file, resultPath) {
+  //    $('#file_btnAutoAudio_path').val(resultPath)
+  //    $('#btnAutoAudio>span').text(file.name)
+  //  }
+  //})
 
   // 点读点大小设置 START  2016-07-17 17:02:42
   $('#pointSetting').on('click', function (e) {
@@ -719,8 +729,6 @@ function bindEvent() {
 
     // 实例化 点读点大小设置页面
     if ($divDPS.html() === '') {
-      Logger.log('GLOBAL.POINT_SIZE', GLOBAL.POINT_SIZE, 'GLOBAL.BACK_COLOR', GLOBAL.BACK_COLOR)
-
       new PointSetting('#dianduPointSetting', {
         size: GLOBAL.POINT_SIZE,
         color: GLOBAL.BACK_COLOR,
@@ -866,7 +874,6 @@ function addDianDu(pointId, point) {
       _data.setDDItems(id, {point_size: val})
 
       setPointSize('#' + pointId, val)
-      Logger.log('set point_size:', id, val)
     }
   })
 
@@ -919,9 +926,10 @@ function setUploadControl(index) {
   var newIndex = index
 
   _upload.initWebUpload(file_bg, {
+    multiple: true,
+    label: '选择图片',
     onUploadSuccess: function (file, resultPath, response) {
       resultPath = resultPath._raw
-      console.log("resultPath",resultPath)
       GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
       var oldIndex = newIndex;
 
@@ -942,7 +950,6 @@ function setUploadControl(index) {
       $('.sort-info').show();
       var _$fileBg = $("#file_bg" + oldIndex);
       _$fileBg.parent().find('.filename').text(file.name);
-      Logger.log("newIndex", oldIndex)
       setBgImageScale(resultPath, "#id_bg" + (oldIndex))
     }
   })
@@ -971,7 +978,6 @@ function setUploadControl(index) {
    $('.sort-info').show();
    var _$fileBg = $("#file_bg" + oldIndex);
    _$fileBg.parent().find('.filename').text(file.name);
-   Logger.log("newIndex", oldIndex)
    setBgImageScale(resultPath, "#id_bg" + (oldIndex))
    }
    });*/
@@ -1210,8 +1216,10 @@ function addDianDuLocation(e) {
  * 点读项点击事件处理
  */
 function handleUploadItem(e) {
-  e.preventDefault()
-  e.stopPropagation()
+  //zhongxia
+  //这里阻止冒泡会防止 webuploader 的input file 弹出文件选择框
+  //e.preventDefault()
+  //e.stopPropagation()
   var $currentTarget = $(e.currentTarget)
   var $target = $(e.target)
   var data = $target.data()
@@ -1324,7 +1332,6 @@ function addGlobalAudio(e, param) {
     skin: 'yourclass',
     content: $divGA
   })
-  Logger.log('设置该全局音频的参数', $tar)
 }
 
 /**
@@ -1365,7 +1372,6 @@ function addCustomPointSetting(e) {
 
       // 是否设置了数据
       if (isSetData) {
-        Logger.info('自定义点读点数据:', data)
         $cTar.addClass('img-point-setting-on')
 
         // 保存数据到变量里面
@@ -1407,7 +1413,6 @@ function addCustomPointSetting(e) {
     shadeClose: false,
     content: $divGA
   })
-  Logger.info('自定义点读点样式')
 }
 
 /**
@@ -1448,15 +1453,14 @@ function fileTypeItemClick(e) {
 
   // 用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
   $filemask.hide()
-  Logger.log('点读点的类型为 => data.fileType:', data.fileType)
 
   switch (data.fileType) {
     case 'video': // 视频
-      fileTypeExts = '*.mp4'
+      fileTypeExts = 'audio/mp4,video/mp4'
       fileTypeDesc = 'MP4文件'
       break
     case 'audio': // 音频
-      fileTypeExts = '*.mp3'
+      fileTypeExts = 'audio/mpeg'
       fileTypeDesc = 'MP3文件'
       $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
       break
@@ -1480,13 +1484,11 @@ function fileTypeItemClick(e) {
 
   $('#__file' + id + '-queue').remove()
 
-  // 设置上传文件用 uploadify插件,并且透明化按钮
-  _upload.setUploadify($('#__file' + id), {
-    width: '100%',
-    height: '100%',
+  _upload.initWebUpload('#__file' + id, {
     fileTypeExts: fileTypeExts,
     fileTypeDesc: fileTypeDesc,
     onUploadSuccess: function (file, resultPath) {
+      resultPath = resultPath._raw
       if (resultPath.indexOf('error') === -1) {
         var $rightName = $('#__file' + id).parent().parent()
         var fileSrc = resultPath
@@ -1517,7 +1519,43 @@ function fileTypeItemClick(e) {
     }
   })
 
-  $('#__file' + id + ' object').css('left', 0)
+  // 设置上传文件用 uploadify插件,并且透明化按钮
+  //_upload.setUploadify($('#__file' + id), {
+  //  width: '100%',
+  //  height: '100%',
+  //  fileTypeExts: fileTypeExts,
+  //  fileTypeDesc: fileTypeDesc,
+  //  onUploadSuccess: function (file, resultPath) {
+  //    if (resultPath.indexOf('error') === -1) {
+  //      var $rightName = $('#__file' + id).parent().parent()
+  //      var fileSrc = resultPath
+  //      $rightName.attr('data-src', fileSrc)
+  //
+  //      $rightName.removeClass('upload').addClass('uploaded')
+  //      $rightName.find('span').html(file.name)
+  //
+  //      $uploadRight.attr('data-upload', 1); // 标记已经上传文件
+  //
+  //      // 如果是视频点读点,则获取视频的宽高
+  //      if (data.fileType === 'video') {
+  //        Util.getVideoWH(fileSrc, function (obj) {
+  //          console.log('Audio', obj)
+  //          _data.setDDItems(_dataid, {
+  //            url: fileSrc,
+  //            filename: file.name,
+  //            area: {
+  //              w: obj.w, h: obj.h,
+  //              videoW: obj.w, videoH: obj.h
+  //            }
+  //          })
+  //        })
+  //      } else {
+  //        _data.setDDItems(_dataid, {url: fileSrc, filename: file.name})
+  //      }
+  //    }
+  //  }
+  //})
+  //$('#__file' + id + ' object').css('left', 0)
 }
 
 /**
@@ -1670,8 +1708,8 @@ var CommonUtil = (function () {
     // 计算出当前数据的ID,然后去window.DD.items 里面获取数据 [针对点读页上下移动,重新绑定事件获取数据的方式]
     var id, _isEdit = false
 
-    if ($(e.target).parent().find('.uploadify').attr('id')) {
-      id = $(e.target).parent().find('.uploadify').attr('id')
+    if ($(e.target).parent().find('[data-fileid]').attr('id')) {
+      id = $(e.target).parent().find('[data-fileid]').attr('id')
     } else {
       id = $(e.target).parent().find('input').attr('id'); // 编辑由于没有初始化uploadify,所有获取id的方式使用这种
       _isEdit = true
@@ -1773,7 +1811,6 @@ function hideDDLocation(e) {
  * @return {[type]}   [description]
  */
 function dianduPageOperator(e) {
-  Logger.log('ul click')
   var $tar = self = $(e.target)
   var $bgItem = $(e.currentTarget).parentsUntil('.diandupageitem').parent()
   var sortIndex = parseInt($bgItem.attr('data-index')); // 下标
