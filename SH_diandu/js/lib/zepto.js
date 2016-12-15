@@ -1982,8 +1982,7 @@ window.$ === undefined && (window.$ = Zepto)
 //     (c) 2010-2016 Thomas Fuchs
 //     Zepto.js may be freely distributed under the MIT license.
 
-;
-(function ($) {
+;(function($){
   var touch = {},
     touchTimeout, tapTimeout, swipeTimeout, longTapTimeout,
     longTapDelay = 750,
@@ -2016,18 +2015,18 @@ window.$ === undefined && (window.$ = Zepto)
     touch = {}
   }
 
-  function isPrimaryTouch(event) {
+  function isPrimaryTouch(event){
     return (event.pointerType == 'touch' ||
       event.pointerType == event.MSPOINTER_TYPE_TOUCH)
       && event.isPrimary
   }
 
-  function isPointerEventType(e, type) {
-    return (e.type == 'pointer' + type ||
-    e.type.toLowerCase() == 'mspointer' + type)
+  function isPointerEventType(e, type){
+    return (e.type == 'pointer'+type ||
+    e.type.toLowerCase() == 'mspointer'+type)
   }
 
-  $(document).ready(function () {
+  $(document).ready(function(){
     var now, delta, deltaX = 0, deltaY = 0, firstTouch, _isPointerType
 
     if ('MSGesture' in window) {
@@ -2036,16 +2035,17 @@ window.$ === undefined && (window.$ = Zepto)
     }
 
     $(document)
-      .bind('MSGestureEnd', function (e) {
+      .bind('MSGestureEnd', function(e){
         var swipeDirectionFromVelocity =
-          e.velocityX > 1 ? 'Right' : e.velocityX < -1 ? 'Left' : e.velocityY > 1 ? 'Down' : e.velocityY < -1 ? 'Up' : null;
+          e.velocityX > 1 ? 'Right' : e.velocityX < -1 ? 'Left' : e.velocityY > 1 ? 'Down' : e.velocityY < -1 ? 'Up' : null
         if (swipeDirectionFromVelocity) {
           touch.el.trigger('swipe')
-          touch.el.trigger('swipe' + swipeDirectionFromVelocity)
+          touch.el.trigger('swipe'+ swipeDirectionFromVelocity)
         }
       })
-      .on('touchstart MSPointerDown pointerdown', function (e) {
-        if ((_isPointerType = isPointerEventType(e, 'down')) && !isPrimaryTouch(e)) return
+      .on('touchstart', function(e){
+        if((_isPointerType = isPointerEventType(e, 'down')) &&
+          !isPrimaryTouch(e)) return
         firstTouch = _isPointerType ? e : e.touches[0]
         if (e.touches && e.touches.length === 1 && touch.x2) {
           // Clear out touch movement data if we have it sticking around
@@ -2064,10 +2064,11 @@ window.$ === undefined && (window.$ = Zepto)
         touch.last = now
         longTapTimeout = setTimeout(longTap, longTapDelay)
         // adds the current touch contact for IE gesture recognition
-        if (gesture && _isPointerType) gesture.addPointer(e.pointerId);
+        if (gesture && _isPointerType) gesture.addPointer(e.pointerId)
       })
-      .on('touchmove MSPointerMove pointermove', function (e) {
-        if ((_isPointerType = isPointerEventType(e, 'move')) && !isPrimaryTouch(e)) return
+      .on('touchmove MSPointerMove pointermove', function(e){
+        if((_isPointerType = isPointerEventType(e, 'move')) &&
+          !isPrimaryTouch(e)) return
         firstTouch = _isPointerType ? e : e.touches[0]
         cancelLongTap()
         touch.x2 = firstTouch.pageX
@@ -2076,17 +2077,20 @@ window.$ === undefined && (window.$ = Zepto)
         deltaX += Math.abs(touch.x1 - touch.x2)
         deltaY += Math.abs(touch.y1 - touch.y2)
       })
-      .on('touchend MSPointerUp pointerup', function (e) {
-        if ((_isPointerType = isPointerEventType(e, 'up')) && !isPrimaryTouch(e)) return
+      .on('touchend', function(e){
+        if((_isPointerType = isPointerEventType(e, 'up')) &&
+          !isPrimaryTouch(e)) return
         cancelLongTap()
 
         // swipe
         if ((touch.x2 && Math.abs(touch.x1 - touch.x2) > 30) ||
           (touch.y2 && Math.abs(touch.y1 - touch.y2) > 30))
 
-          swipeTimeout = setTimeout(function () {
-            touch.el.trigger('swipe')
-            touch.el.trigger('swipe' + (swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)))
+          swipeTimeout = setTimeout(function() {
+            if (touch.el){
+              touch.el.trigger('swipe')
+              touch.el.trigger('swipe' + (swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)))
+            }
             touch = {}
           }, 0)
 
@@ -2097,13 +2101,14 @@ window.$ === undefined && (window.$ = Zepto)
           if (deltaX < 30 && deltaY < 30) {
             // delay by one tick so we can cancel the 'tap' event if 'scroll' fires
             // ('tap' fires before 'scroll')
-            tapTimeout = setTimeout(function () {
+            tapTimeout = setTimeout(function() {
 
               // trigger universal 'tap' with the option to cancelTouch()
               // (cancelTouch cancels processing of single vs double taps for faster 'tap' response)
               var event = $.Event('tap')
               event.cancelTouch = cancelAll
-              touch.el.trigger(event)
+              // [by paper] fix -> "TypeError: 'undefined' is not an object (evaluating 'touch.el.trigger'), when double tap
+              if (touch.el) touch.el.trigger(event)
 
               // trigger double tap immediately
               if (touch.isDoubleTap) {
@@ -2113,7 +2118,7 @@ window.$ === undefined && (window.$ = Zepto)
 
               // trigger single tap after 250ms of inactivity
               else {
-                touchTimeout = setTimeout(function () {
+                touchTimeout = setTimeout(function(){
                   touchTimeout = null
                   if (touch.el) touch.el.trigger('singleTap')
                   touch = {}
@@ -2136,11 +2141,8 @@ window.$ === undefined && (window.$ = Zepto)
     $(window).on('scroll', cancelAll)
   })
 
-  ;
-  ['swipe', 'swipeLeft', 'swipeRight', 'swipeUp', 'swipeDown',
-    'doubleTap', 'tap', 'singleTap', 'longTap'].forEach(function (eventName) {
-    $.fn[eventName] = function (callback) {
-      return this.on(eventName, callback)
-    }
+  ;['swipe', 'swipeLeft', 'swipeRight', 'swipeUp', 'swipeDown',
+    'doubleTap', 'tap', 'singleTap', 'longTap'].forEach(function(eventName){
+    $.fn[eventName] = function(callback){ return this.on(eventName, callback) }
   })
 })(Zepto)
