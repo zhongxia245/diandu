@@ -807,3 +807,16 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
   padding: 0;
   opacity: 1;
 }
+
+.webuploader-progress{
+  width: 0%;
+  height: 100%;
+  opacity: 0.9;
+  background: #19C587;
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  color: #FFF;
+  font-size: 16px;
+}

@@ -274,7 +274,7 @@ if ($id > 0) {
 <script id="tpl_uploadSetting" type="text/x-handlebars-template">
   <li class="upload-item item{{index}}" data-index="{{index}}">
     <div class="upload-radius">
-      <img src="imgs/hide_t.png" class="upload-radius-img">
+      <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
       <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
     </div>
     <div class="upload-type">
@@ -297,6 +297,7 @@ if ($id > 0) {
 
         <div class="div-file">
           <div class="div-file-mask" style="display:none"></div>
+          <div class="webuploader-progress" id="file__progress{{id}}"></div>
           <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload" ></div>
         </div>
         <img class="download" src="imgs/download.png" alt="download">

@@ -103,6 +103,7 @@ var _upload = (function () {
    * 初始化 webuploader 组件
    */
   function initWebUpload(id, config) {
+    var $progress = $('#file__progress' + config.id);
     var defaultConfig = {
       server: 'php/fileupload.php',
       pick: {
@@ -116,13 +117,27 @@ var _upload = (function () {
       },
       auto: true,
       threads: 1,
-      duplicate: true,
-      fileSingleSizeLimit: 1024 * 1024 * 500
+      chunked:false,
+      duplicate:true,
+      fileSingleSizeLimit: 1024 * 1024 * 500,
+      onUploadProgress: function (file, percentage) {
+        if ($progress) {
+          $progress.show()
+          var percent = parseInt(percentage * 100);
+          $progress.text(percent + '%')
+          $progress.css('width', percent + '%')
+        }
+      },
+      onUploadComplete: function () {
+        if ($progress) {
+          $progress.hide()
+        }
+      }
     };
 
     // 合并参数
     config = $.extend({}, defaultConfig, config);
-    window.WebUploader.create(config);
+    window.WebUploader.create(config)
   }
 
   return {
@@ -1422,6 +1437,7 @@ function fileTypeItemClick(e) {
   var $currentTarget = $(e.currentTarget)
   var $target = $(e.target)
   var $filemask = $currentTarget.find('.div-file-mask'); // 文件上传按钮的遮罩层，用于图文
+  var $webuploaderDiv = $currentTarget.find('[data-fileid]');
 
   var data = $target.data(); // 文件类型，和提示信息（上传什么类型文件）
   var pdata = $target.parent().data(); // 点读位文件类型列表data-数据(文件列表的ul)
@@ -1457,10 +1473,12 @@ function fileTypeItemClick(e) {
     case 'video': // 视频
       fileTypeExts = 'audio/mp4,video/mp4'
       fileTypeDesc = 'MP4文件'
+      $webuploaderDiv.show()
       break
     case 'audio': // 音频
       fileTypeExts = 'audio/mpeg'
       fileTypeDesc = 'MP3文件'
+      $webuploaderDiv.show()
       $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
       break
     case 'imgtext': // 图文
@@ -1484,6 +1502,7 @@ function fileTypeItemClick(e) {
   $('#__file' + id + '-queue').remove()
 
   _upload.initWebUpload('#__file' + id, {
+    id: id,
     fileTypeExts: fileTypeExts,
     fileTypeDesc: fileTypeDesc,
     onUploadSuccess: function (file, resultPath) {

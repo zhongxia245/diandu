@@ -341,7 +341,6 @@ OnOffImg.prototype.bindEvent = function () {
   this.$download.off('click', this.download).on('click', this.download)
   this.$downloadMp3.off('click', this.downloadMp3).on('click', this.downloadMp3)
 
-  debugger
   //初始化uploadify组件,上传图片
   this.setUploadify('#on-off-img-' + this.data.id, {
     onUploadSuccess: function (file, result) {
