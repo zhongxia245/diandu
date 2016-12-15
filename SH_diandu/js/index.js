@@ -957,7 +957,6 @@ function setUploadControl(index) {
   // OUT-OF-DATE：使用HTML5上传插件替换Flash插件
   /*_upload.setUploadify($(file_bg), {
    onUploadSuccess: function (file, resultPath, response) {
-   debugger
    GLOBAL.ISSELECTEDSCREENTYPE = true;  //已经选中点读页的类型
    //移除上传按钮,显示上传的文件信息
    var oldIndex = newIndex;

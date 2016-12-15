@@ -75,22 +75,33 @@ window.PlayVideo = (function (Util) {
 
       //PC端,背景图片宽度1200,高度675
       if (Util.IsPC()) {
-        _left = parseFloat(config.x) * 1200;
+        _left = parseFloat(config.x || 0) * 1200;
         _top = parseFloat(config.y || 0) * 675;
       }
       //移动端,区分横竖屏
       else {
-        _left = parseFloat(config.x) * config.bgW;
+        _left = parseFloat(config.x || 0) * config.bgW;
         _top = parseFloat(config.y || 0) * config.bgH;
       }
 
       //计算视频位置
-      $container.css({
-        left: _left + 'px',
-        top: _top + 'px',
-        width: config.w * config.bgW,
-        height: config.h * config.bgH,
-      })
+      //注意:如果没有设置视频播放区域大小位置,则使用默认的大小.不按比例来计算,比例可能刚好=1, 所以这里取 2[其他大于1的值也可以]
+      if(config.w < 2){
+        $container.css({
+          left: _left + 'px',
+          top: _top + 'px',
+          width:  config.w * config.bgW,
+          height: config.h * config.bgH,
+        })
+      }else{
+        $container.css({
+          left: '10%',
+          top: '10%',
+          //注意:如果没有设置视频播放区域大小位置,则使用默认的大小.不按比例来计算
+          width: '80%',
+          height: '80%',
+        })
+      }
     }
 
     $video.on('canplaythrough', function () {

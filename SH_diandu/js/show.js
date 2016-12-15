@@ -1360,7 +1360,6 @@ function bindEvent() {
     var id = $cTar.attr('data-target');
     var $hideImg = $('#' + id);
     var mp3Path = $hideImg.attr('data-mp3')
-    //mp3Path = '/uploads/8cca1674e46b72dd84699a60bd0c386c.mp3'
 
     if ($hideImg.css('opacity') === '0') {
       _playShowAudio(true, mp3Path);
@@ -1373,13 +1372,14 @@ function bindEvent() {
   $('.on-off-hideimg').off().on(click, function (e) {
     var $cTar = $(e.currentTarget);
     var mp3Path = $cTar.attr('data-mp3')
-    //mp3Path = '/uploads/8cca1674e46b72dd84699a60bd0c386c.mp3'
 
     if ($cTar.css('opacity') === '0') {
+      console.log("show")
       _playShowAudio(true, mp3Path);
       $cTar.css('opacity', 1);
       _domShowEffect($cTar);
     } else {
+      console.log("hide")
       $cTar.css('opacity', 0);
       _playShowAudio(false, mp3Path);
     }
