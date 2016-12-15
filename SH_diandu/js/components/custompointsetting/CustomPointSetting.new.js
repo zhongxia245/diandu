@@ -65,7 +65,8 @@ function CustomPointSetting(selector, config) {
   this.data.pic.color = this.data.pic.color || '#FFFF0B';
   this.data.pic.colorSize = this.data.pic.colorSize || 5;
 
-  this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
+  //this.setUploadify = config.setUploadify || (_upload && _upload.setUploadify);
+  this.setUploadify = config.setUploadify || (_upload && _upload.initWebUpload);
 
   this.submitCallback = config.submitCallback;    //关闭页面的回调
 
@@ -358,10 +359,9 @@ CustomPointSetting.prototype.bindEvent = function () {
   /**
    * 点读点自定义图片上传
    */
-  that.setUploadify(that.$upload, {
-    width: '175px',
-    height: '175px',
-    onUploadSuccess: function (file, result, response) {
+  that.setUploadify('#cps-upload-img', {
+    onUploadSuccess: function (file, result) {
+      result = result._raw
       Util.getImageWH(result, function (obj) {
         that.data.title.title = null;
         that.$text.text("");
@@ -379,6 +379,31 @@ CustomPointSetting.prototype.bindEvent = function () {
       })
     }
   });
+
+  /**
+   * 点读点自定义图片上传
+   */
+  //that.setUploadify(that.$upload, {
+  //  width: '175px',
+  //  height: '175px',
+  //  onUploadSuccess: function (file, result, response) {
+  //    Util.getImageWH(result, function (obj) {
+  //      that.data.title.title = null;
+  //      that.$text.text("");
+  //      that.data.pic.src = result;
+  //      that.data.pic.w = obj.w;
+  //      that.data.pic.h = obj.h;
+  //
+  //      //that.$upload 还是最早保存的变量,
+  //      that.$container.find('#cps-upload-img').css({left: -99999});   //记住  that.$upload !== that.$container.find('#cps-upload-img')
+  //      that.$showImg.show().css({
+  //        background: 'url(' + result + ') no-repeat',
+  //        backgroundSize: 'contain',
+  //        backgroundPosition: 'center'
+  //      })
+  //    })
+  //  }
+  //});
 
   /**
    * 提交[保存到点读点数据里面]

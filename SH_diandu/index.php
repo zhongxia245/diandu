@@ -30,6 +30,7 @@ if ($id > 0) {
     <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
     <link rel="stylesheet" href="js/lib/uploadify/uploadify.css"/>
+    <link rel="stylesheet" href="js/lib/webuploader/webuploader.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="js/components/imgtext/imgtext2.css"/>
@@ -362,6 +363,7 @@ if ($id > 0) {
 <script src="js/lib/layer/layer.js"></script>
 <script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
 <script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<script src="js/lib/webuploader/webuploader.min.js"></script>
 <script src="js/lib/kindeditor/kindeditor-min.js"></script>
 <script src="js/lib/kindeditor/lang/zh_CN.js"></script>
 <script src="js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>

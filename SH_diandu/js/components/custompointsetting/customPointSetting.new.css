@@ -96,6 +96,9 @@
 
 /*uploadify只能用id选择器,so...*/
 #cps-upload-img, .cps-show-img {
+  position: relative;
+  opacity: 1;
+  background: #CCC;
   width: 175px;
   height: 175px;
 
@@ -115,6 +118,12 @@
   user-select: none;
 
   overflow: hidden;
+}
+
+#cps-upload-img .webuploader-pick {
+  background: #999;
+  padding: 35px 20px;
+  line-height: 2;
 }
 
 .cps-show-img {
@@ -273,7 +282,8 @@
   position: relative;
   margin-top: 20px;
 }
-.cps-video-location-area{
+
+.cps-video-location-area {
   position: relative;
   width: 100%;
   height: 100%;

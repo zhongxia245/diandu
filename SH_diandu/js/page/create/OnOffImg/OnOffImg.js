@@ -36,7 +36,7 @@ var OnOffImg = function (selector, data, fn_submit) {
   var that = this
   this.scaleWH = 550 / 1200;   //和创建页面背景页大小的比例
   this.basePath = 'uploads/'
-  this.setUploadify = _upload && _upload.setUploadify
+  this.setUploadify = _upload && _upload.initWebUpload
   this.addImageId = 'on-off-img-addImage'
   this.switchCount = 0
   this.switchId = 'switchImg'
@@ -57,7 +57,7 @@ var OnOffImg = function (selector, data, fn_submit) {
     '       <div class="on-off-img-content">',
     '           <div class="on-off-img-upload">',
     '              <div class="on-off-img-unupload"> 请点击上传开关图片(建议背景透明的开关图片)',
-    '                 <input class="upload-input" type="file" id="on-off-img-{{id}}" name="upload" class="fileupload"/>',
+    '                 <div class="upload-input" id="on-off-img-{{id}}"  class="fileupload"></div>',
     '             </div>',
     '              <div class="on-off-img-uploaded">',
     '                 <div class="on-off-img-filename"></div>',
@@ -74,7 +74,7 @@ var OnOffImg = function (selector, data, fn_submit) {
     '       </div>',
     '       <div class="on-off-mp3-upload">',
     '         <div class="on-off-mp3-unupload"> 上传配音(可选,限mp3格式)',
-    '           <input class="upload-input" type="file" id="on-off-mp3-{{id}}" name="upload" class="fileupload"/>',
+    '           <div class="upload-input" id="on-off-mp3-{{id}}" class="fileupload"></div>',
     '         </div>',
     '         <div class="on-off-mp3-uploaded">',
     '            <div class="on-off-mp3-filename"></div>',
@@ -341,25 +341,44 @@ OnOffImg.prototype.bindEvent = function () {
   this.$download.off('click', this.download).on('click', this.download)
   this.$downloadMp3.off('click', this.downloadMp3).on('click', this.downloadMp3)
 
+  debugger
   //初始化uploadify组件,上传图片
-  this.setUploadify($('#on-off-img-' + this.data.id), {
-    width: '48px',
-    height: '48px',
-    onUploadSuccess: function (file, result, response) {
+  this.setUploadify('#on-off-img-' + this.data.id, {
+    onUploadSuccess: function (file, result) {
+      result = result._raw
       that.uploadImgCallback(result, file.name)
     }
   })
 
   //初始化uploadify组件,上传mp3音效
-  this.setUploadify($('#on-off-mp3-' + this.data.id), {
-    width: '48px',
-    height: '48px',
+  this.setUploadify('#on-off-mp3-' + this.data.id, {
     fileTypeDesc: 'Audio Files',
-    fileTypeExts: '*.mp3',
-    onUploadSuccess: function (file, result, response) {
+    fileTypeExts: 'audio/mpeg',
+    onUploadSuccess: function (file, result) {
+      result = result._raw
       that.uploadMp3Callback(result, file.name)
     }
   })
+
+  ////初始化uploadify组件,上传图片
+  //this.setUploadify($('#on-off-img-' + this.data.id), {
+  //  width: '48px',
+  //  height: '48px',
+  //  onUploadSuccess: function (file, result, response) {
+  //    that.uploadImgCallback(result, file.name)
+  //  }
+  //})
+  //
+  ////初始化uploadify组件,上传mp3音效
+  //this.setUploadify($('#on-off-mp3-' + this.data.id), {
+  //  width: '48px',
+  //  height: '48px',
+  //  fileTypeDesc: 'Audio Files',
+  //  fileTypeExts: '*.mp3',
+  //  onUploadSuccess: function (file, result, response) {
+  //    that.uploadMp3Callback(result, file.name)
+  //  }
+  //})
 
   //添加触发区
   this.$addOnOff.off().on('click', function () {
