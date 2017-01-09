@@ -1184,7 +1184,7 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
     var url = pointData.url;
-    var area = null;
+    var area = {};
     if (pointData.area) {
       area = JSON.parse(pointData.area);
     }

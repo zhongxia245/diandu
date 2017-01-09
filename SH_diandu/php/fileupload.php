@@ -57,13 +57,15 @@ if (!empty($_FILES)) {
 	$imgFile = array('jpg','jpeg','png');
 
 	//得到文件原名
-	$fileName = iconv("UTF-8","GB2312",$_FILES["file"]["name"]);
+	//$fileName = iconv("UTF-8","GB2312",$_FILES["file"]["name"]);
+	$fileName = $_FILES["file"]["name"];
 
 
 	//上传文件的后缀
 	$ext = pathinfo($fileName, PATHINFO_EXTENSION);
 	if (!in_array($ext, $fileTypes)) {
-		echo $fileName."--file type not allowed!";
+		echo $fileName."--file type not allowed!2";
+		exit();
 	}
 
 	$rand = md5(time() . mt_rand(1,10000));//随机文件名
