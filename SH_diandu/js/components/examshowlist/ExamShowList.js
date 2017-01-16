@@ -381,6 +381,9 @@ ExamShowList.prototype.setValue2Data = function () {
     if (questionsData[i].selected) {
       for (var k = 0; k < questionsData[i]['answers'].length; k++) {
         var _answer = questionsData[i]['answers'][k];
+        
+        //fix:如果题目有四个选项答案，但是只输入了三个，会导致判断作对题目有问题。 因为 selected 默认为 undefined
+        _answer.selected = _answer.selected || false;
         if (_answer.selected !== _answer.answer) {
           flag = false;
         }
