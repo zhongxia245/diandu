@@ -385,7 +385,7 @@ if ($id > 0) {
 <script src="js/components/pointsetting/PointSetting.js"></script>
 <script src="js/components/number/CNumber.js"></script>
 <script src="js/components/globalaudio/GlobalAudio.js"></script>
-<script src="js/components/custompointsetting/CustomPointSetting.new.js"></script>
+<script src="js/components/custompointsetting/CustomPointSetting.js"></script>
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/create/OnOffImg/OnOffImg.js"></script>
 <script src="js/page/create/UrlPoint/UrlPoint.js"></script>

@@ -35,8 +35,8 @@ var GLOBAL = {
   OLDWIDTH: 1200, // 创建页面的横屏宽度
   OLDHEIGHT: 960, // 创建页面的竖屏高度
   SCREENSIZE: {
-    h: {width: 1200, height: 675},
-    v: {width: 540, height: 960}
+    h: { width: 1200, height: 675 },
+    v: { width: 540, height: 960 }
   },
   ISEDIT: {
     flag: false // 是否为编辑页面,默认为false
@@ -117,8 +117,8 @@ var _upload = (function () {
       },
       auto: true,
       threads: 1,
-      chunked:false,
-      duplicate:true,
+      chunked: false,
+      duplicate: true,
       fileSingleSizeLimit: 1024 * 1024 * 500,
       onUploadProgress: function (file, percentage) {
         if ($progress) {
@@ -690,7 +690,8 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit)
 
   // 添加点读页
-  $('#btnAdd').on('click', addDianDuPageTpl)
+  // $('#btnAdd').on('click', addDianDuPageTpl)
+  $('#btnAdd').on('click', addCustomPointSetting)
 
   // 收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {
@@ -723,19 +724,6 @@ function bindEvent() {
       $('#btnAutoAudio>span').text(file.name)
     }
   })
-
-  // 上传背景音乐
-  //_upload.setUploadify($('#file_btnAutoAudio'), {
-  //  width: '100%',
-  //  height: '50',
-  //  multi: false,
-  //  fileTypeDesc: 'Audio Files',
-  //  fileTypeExts: '*.mp3',
-  //  onUploadSuccess: function (file, resultPath) {
-  //    $('#file_btnAutoAudio_path').val(resultPath)
-  //    $('#btnAutoAudio>span').text(file.name)
-  //  }
-  //})
 
   // 点读点大小设置 START  2016-07-17 17:02:42
   $('#pointSetting').on('click', function (e) {
@@ -794,7 +782,7 @@ function setBackColor(color) {
 function addDianDuPageTpl() {
   var style
   if (GLOBAL.SCREENTYPE) {
-    style = {style: 'width:' + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].width + 'px; height:' + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].height + 'px'}
+    style = { style: 'width:' + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].width + 'px; height:' + GLOBAL.SCREENSIZE[GLOBAL.SCREENTYPE].height + 'px' }
   }
   var data = {
     index: GLOBAL.PAGECOUNT,
@@ -841,7 +829,7 @@ function createPoint(pointId, type, config) {
   new Drag('#' + pointId, function (x, y) {
     var _page = window.DD.items[pageIndex - 1]
     var location = getLocation(_page.w, _page.h, x, y)
-    _data.setDDItems(pointId, {x: location.x, y: location.y})
+    _data.setDDItems(pointId, { x: location.x, y: location.y })
   })
 }
 
@@ -886,7 +874,7 @@ function addDianDu(pointId, point) {
     pointSelector: '#' + pointId,
     callback: function (val) {
       var id = pointId
-      _data.setDDItems(id, {point_size: val})
+      _data.setDDItems(id, { point_size: val })
 
       setPointSize('#' + pointId, val)
     }
@@ -1260,7 +1248,7 @@ function handleUploadItem(e) {
 
         // 在本地数据变量里面标注，已经删除
         var _dataid = itemdata.id
-        _data.setDDItems(_dataid, {isRemove: true})
+        _data.setDDItems(_dataid, { isRemove: true })
         break
 
       // 设置全局音频按钮
@@ -1497,7 +1485,7 @@ function fileTypeItemClick(e) {
   }
 
   // 把文件类型，保存到变量里面
-  _data.setDDItems(_dataid, {type: data.fileType})
+  _data.setDDItems(_dataid, { type: data.fileType })
 
   $('#__file' + id + '-queue').remove()
 
@@ -1531,7 +1519,7 @@ function fileTypeItemClick(e) {
             })
           })
         } else {
-          _data.setDDItems(_dataid, {url: fileSrc, filename: file.name})
+          _data.setDDItems(_dataid, { url: fileSrc, filename: file.name })
         }
       }
     }
@@ -1607,7 +1595,7 @@ function fn3_onoffImgCreate(e) {
   _data.onoff = _data.onoff || {};
   new OnOffImg('body', {
     id: ids.id,
-    bg: {w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic},
+    bg: { w: window.DD.items[pageId].w, h: window.DD.items[pageId].h, bgPath: window.DD.items[pageId].pic },
     img: _data.onoff.img,
     switchArea: _data.onoff.switchArea,
     mp3: _data.onoff.mp3,
@@ -1783,7 +1771,7 @@ function hideDDLocation(e) {
 
     $itemSortId.prev().css('visibility', 'initial'); // 隐藏的图片展示出来
 
-    _data.setDDItems(_dataid, {hide: true})
+    _data.setDDItems(_dataid, { hide: true })
 
     // 记录旧的样式，等显示在赋值上去
     for (var i = 0; i < $lis.length; i++) {
@@ -1816,7 +1804,7 @@ function hideDDLocation(e) {
     }
     // 还原
     $rightName.removeClass().addClass($rightName.attr('data-class'))
-    _data.setDDItems(_dataid, {hide: false})
+    _data.setDDItems(_dataid, { hide: false })
   }
 }
 
