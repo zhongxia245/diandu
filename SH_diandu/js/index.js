@@ -211,7 +211,7 @@ var _data = (function () {
 
         for (var j = 0; j < items.length; j++) {
           if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
-
+            debugger
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -1348,11 +1348,14 @@ function addCustomPointSetting(e) {
   var pageIndex = parseInt(dataId.split('_')[0]) - 1
   var pointIndex = parseInt(dataId.split('_')[1]) - 1
   var pointType = $(e.target).parents('.upload-right').attr('data-type')
+  var audioPath = $(e.target).parents('.upload-right').find('.upload-right-name').attr('data-src')
 
   // 获取数据,编辑
   var _data = window.DD.items[pageIndex]['data'][pointIndex] || {}
   _data.custom = _data.custom || {}
   _data.custom.type = pointType
+
+
   // 实例化 点读点大小设置页面
   new CustomPointSetting('#customPointSetting', {
     dataId: dataId,
@@ -1360,17 +1363,29 @@ function addCustomPointSetting(e) {
     title: _data.custom, // 点读点自定义title
     pic: _data.pic, // 点读点自定义图片
     bgPic: window.DD.items[pageIndex], // 背景图片地址
+    audioPath: audioPath,
 
     submitCallback: function (data, isSetData) {
       layer.closeAll()
+
       var $point = $('#' + dataId)
       $point.remove()
 
       var left = $point.css('left')
       var top = $point.css('top')
 
+      // 把音频面板设置保存到变量[直接保存到点配置里面]
+      /*TODO:后期移除掉，让后端新增一个字段，保存音频面板设置参数*/
+      data.title = data.title || {};
+      data.title.show = data.audioConfig.show;
+      data.title.lrc = data.audioConfig.lrc;
+
       // 保存视频播放区域的数据
       window.DD.items[pageIndex].data[pointIndex].area = data.area
+
+      if (data.audioConfig.lrc !== '') {
+        window.DD.items[pageIndex].data[pointIndex].audioConfig = data.audioConfig
+      }
 
       // 是否设置了数据
       if (isSetData) {
@@ -1379,6 +1394,7 @@ function addCustomPointSetting(e) {
         // 保存数据到变量里面
         window.DD.items[pageIndex].data[pointIndex].pic = data.pic
         window.DD.items[pageIndex].data[pointIndex].custom = data.title
+
         // 点读点类型,是自定义图片,还是自定义标题
         var type = 1
         if (data.pic.src) type = 3

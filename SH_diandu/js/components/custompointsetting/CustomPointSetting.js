@@ -57,6 +57,8 @@ function CustomPointSetting(selector, config) {
   //自定义视频的地址,宽高
   this.data.videoPath = config.videoPath;
 
+  this.data.audioPath = config.audioPath;
+
   //自定义点读点标题
   this.data.title = config.title || {};
 
@@ -64,6 +66,12 @@ function CustomPointSetting(selector, config) {
   this.data.pic = config.pic || {};
   this.data.pic.color = this.data.pic.color || '#FFFF0B';
   this.data.pic.colorSize = this.data.pic.colorSize || 5;
+
+  //音频面板设置
+  this.data.audioConfig = config.audio || {
+    show: true,
+    lrc: ''
+  }
 
   this.setUploadify = config.setUploadify || (_upload && _upload.initWebUpload);
 
@@ -186,6 +194,7 @@ CustomPointSetting.prototype.render = function () {
   html.push('       <div id="cps-upload-audio" class="cps-upload-audio">上传音频字幕文件(限LRC格式)</div>')
   html.push('    </div>')
 
+  html.push(' <audio preload="auto" class="cps-audio"></audio>')
 
   html.push('  <div class="cps-submit">提交</div>')
   html.push('</div>')
@@ -220,7 +229,8 @@ CustomPointSetting.prototype.initVar = function () {
   this.$videoPoint = this.$container.find('.cps-video-point');
 
   this.$audioSwitch = this.$container.find('.js-audio-switch');
-
+  this.audio = this.$container.find('.cps-audio')[0];
+  this.$audioTimes = this.$container.find('.cps-audio-time');
 
   //初始化发光颜色
   var _$colors = this.$showColor.find('li');
@@ -423,7 +433,7 @@ CustomPointSetting.prototype.bindEvent = function () {
     fileTypeExts: '	*.lrc',
     onUploadSuccess: function (file, result) {
       result = result._raw
-      that.data.lrc = result;
+      that.data.audioConfig.lrc = result;
       $('#cps-upload-audio .webuploader-pick').text(file.name)
     }
   });
@@ -438,12 +448,12 @@ CustomPointSetting.prototype.bindEvent = function () {
       $cTar.removeClass('cps-content-switch--active');
       $cTar.find('.cps-audio-on').hide();
       $cTar.find('.cps-audio-off').show();
-      that.data.audioSwitch = false;
+      that.data.audioConfig.show = false;
     } else {
       $cTar.addClass('cps-content-switch--active');
       $cTar.find('.cps-audio-on').show();
       $cTar.find('.cps-audio-off').hide();
-      that.data.audioSwitch = true;
+      that.data.audioConfig.show = true;
     }
   })
 
@@ -483,6 +493,8 @@ CustomPointSetting.prototype.bindEvent = function () {
  * 初始化数据
  */
 CustomPointSetting.prototype.initData = function () {
+  var that = this;
+
   var _area = this.data.pointData.area || {};
   //如果不是视频点读点,隐藏切换到播放区域的按钮
   if (this.data.pointData.type !== "video") {
@@ -494,6 +506,15 @@ CustomPointSetting.prototype.initData = function () {
     left: this.data.pointData.x * this.$bgArea.width() + 'px',
     top: this.data.pointData.y * this.$bgArea.height() + 'px',
   })
+
+  //设置音频面板的音频时长
+  if (this.data.audioPath) {
+    this.audio.src = this.data.audioPath;
+
+    this.audio.addEventListener("loadeddata", function () {
+      that.$audioTimes.html(that.formatTime(that.audio.duration));
+    }, false);
+  }
 
 
   //如果是编辑,有数据,回显
@@ -642,4 +663,27 @@ CustomPointSetting.prototype.Drag = function ($selector, callback) {
 CustomPointSetting.prototype.getSacleWH = function (val) {
   var scale = 480 / 1200;  //1200的大小,相对于自定义弹框这边背景图的大小
   return val * scale;
+}
+
+/**
+ * 时间格式话
+ * @param time
+ * @param timePlace
+ */
+CustomPointSetting.prototype.formatTime = function (time) {
+  //默认获取的时间是时间戳改成我们常见的时间格式
+  //分钟
+  var minute = time / 60;
+  var minutes = parseInt(minute);
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  //秒
+  var second = time % 60;
+  var seconds = parseInt(second);
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  var allTime = minutes + ":" + seconds;
+  return allTime;
 }

@@ -281,7 +281,7 @@ GlobalAudio.prototype.bindEvent = function () {
 }
 
 /**
- * 播放事件
+ * 时间格式话
  * @param time
  * @param timePlace
  */

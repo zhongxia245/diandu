@@ -322,6 +322,12 @@
 
 /*设置音频歌词*/
 
+.cps-audio-time {
+    color: #ff5050;
+    font-size: 30px;
+    padding-left: 10px;
+}
+
 .cps-content-audio {
     height: 450px;
     text-align: center;
@@ -400,4 +406,8 @@
 .cps-upload-audio>[id] {
     width: 100% !important;
     height: 100% !important;
+}
+
+.cps-audio {
+    opacity: 0;
 }
