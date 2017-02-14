@@ -196,10 +196,6 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
         var $cTar = $(e.currentTarget)
         var $ifr = $(window.parent.document.getElementsByTagName('iframe')[0]);
         if($cTar.attr('data-flag')!=="1"){
-  //        var w = window.parent.innerWidth;
-  //        var innerHeight = window.parent.innerHeight;
-  //        var h = w * 9/16;
-  //        var top = (innerHeight - h) /2;
           $ifr.css({
             position:'fixed',
             top:0,

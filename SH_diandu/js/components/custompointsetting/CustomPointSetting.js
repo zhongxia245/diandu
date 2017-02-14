@@ -68,10 +68,12 @@ function CustomPointSetting(selector, config) {
   this.data.pic.colorSize = this.data.pic.colorSize || 5;
 
   //音频面板设置
-  this.data.audioConfig = config.audio || {
+  this.data.audio_panel = config.audio_panel || {
     show: true,
     lrc: ''
   }
+
+  console.log(this.data)
 
   this.setUploadify = config.setUploadify || (_upload && _upload.initWebUpload);
 
@@ -433,7 +435,8 @@ CustomPointSetting.prototype.bindEvent = function () {
     fileTypeExts: '	*.lrc',
     onUploadSuccess: function (file, result) {
       result = result._raw
-      that.data.audioConfig.lrc = result;
+      that.data.audio_panel.lrc = result;
+      that.data.audio_panel.name = file.name;
       $('#cps-upload-audio .webuploader-pick').text(file.name)
     }
   });
@@ -448,12 +451,12 @@ CustomPointSetting.prototype.bindEvent = function () {
       $cTar.removeClass('cps-content-switch--active');
       $cTar.find('.cps-audio-on').hide();
       $cTar.find('.cps-audio-off').show();
-      that.data.audioConfig.show = false;
+      that.data.audio_panel.show = false;
     } else {
       $cTar.addClass('cps-content-switch--active');
       $cTar.find('.cps-audio-on').show();
       $cTar.find('.cps-audio-off').hide();
-      that.data.audioConfig.show = true;
+      that.data.audio_panel.show = true;
     }
   })
 
@@ -514,6 +517,20 @@ CustomPointSetting.prototype.initData = function () {
     this.audio.addEventListener("loadeddata", function () {
       that.$audioTimes.html(that.formatTime(that.audio.duration));
     }, false);
+  }
+
+  //设置音频面板的数据
+  if (this.data.audio_panel) {
+    if (this.data.audio_panel.show) {
+      this.$container.find('.cps-audio-on').show();
+      this.$container.find('.cps-audio-off').hide();
+    }
+    else {
+      this.$audioSwitch.removeClass('cps-content-switch--active')
+      this.$container.find('.cps-audio-on').hide();
+      this.$container.find('.cps-audio-off').show();
+    }
+    $('#cps-upload-audio .webuploader-pick').text(this.data.audio_panel.name)
   }
 
 

@@ -211,7 +211,6 @@ var _data = (function () {
 
         for (var j = 0; j < items.length; j++) {
           if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
-            debugger
             var obj = {
               x: items[j].x,
               y: items[j].y,
@@ -222,6 +221,7 @@ var _data = (function () {
 
               area: items[j].area && JSON.stringify(items[j].area) || '',
               custom: items[j].custom && JSON.stringify(items[j].custom) || '',
+              audio_panel: items[j].audio_panel && JSON.stringify(items[j].audio_panel) || '',
               pic: items[j].pic && JSON.stringify(items[j].pic) || '',
 
               content: items[j].content,
@@ -564,6 +564,7 @@ var _edit = (function () {
         window.DD.items[i]['data'][j]['questions'] = obj['questions']
         window.DD.items[i]['data'][j]['hide'] = (obj['hide'] == '1' ? true : false)
 
+        window.DD.items[i]['data'][j]['audio_panel'] = JSON.parse(obj['audio_panel'] || '{}')
         window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || '{}')
         window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || '{}')
         window.DD.items[i]['data'][j]['area'] = JSON.parse(obj['area'] || '{}')
@@ -1364,6 +1365,7 @@ function addCustomPointSetting(e) {
     pic: _data.pic, // 点读点自定义图片
     bgPic: window.DD.items[pageIndex], // 背景图片地址
     audioPath: audioPath,
+    audio_panel: _data.audio_panel,
 
     submitCallback: function (data, isSetData) {
       layer.closeAll()
@@ -1377,14 +1379,12 @@ function addCustomPointSetting(e) {
       // 把音频面板设置保存到变量[直接保存到点配置里面]
       /*TODO:后期移除掉，让后端新增一个字段，保存音频面板设置参数*/
       data.title = data.title || {};
-      data.title.show = data.audioConfig.show;
-      data.title.lrc = data.audioConfig.lrc;
 
       // 保存视频播放区域的数据
       window.DD.items[pageIndex].data[pointIndex].area = data.area
 
-      if (data.audioConfig.lrc !== '') {
-        window.DD.items[pageIndex].data[pointIndex].audioConfig = data.audioConfig
+      if (data.audio_panel.lrc !== '') {
+        window.DD.items[pageIndex].data[pointIndex].audio_panel = data.audio_panel
       }
 
       // 是否设置了数据
