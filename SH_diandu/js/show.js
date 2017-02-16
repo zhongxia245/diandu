@@ -1334,7 +1334,8 @@ function bindEvent() {
     var ids = $tar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, ids);
 
-    var url = pointData.linkurl.replace('"', '');
+    // FIX: url 的 " 去掉
+    var url = pointData.linkurl.replace(/"/g, '');
     var w = window.screen.width * 0.8;
     var h = window.screen.height * 0.8;
     var left = window.screen.width * 0.1;

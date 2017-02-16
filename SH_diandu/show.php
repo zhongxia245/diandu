@@ -27,7 +27,26 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
   <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=26">
-  <!--<link rel="stylesheet" href="js/lib/flowplayer/skin/functional.css">-->
+  <script>
+    // 动态计算rem的大小，参照基准 iphone6  375px
+    (function (doc, win) {
+      let docEl = doc.documentElement
+      let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+      let recalc = function () {
+        let clientWidth = docEl.clientWidth
+        if (!clientWidth) return
+        if (clientWidth >= 640) {
+          docEl.style.fontSize = '100px'
+        } else {
+          docEl.style.fontSize = 100 * (clientWidth / 375) + 'px'
+        }
+      }
+      recalc()
+      if (!doc.addEventListener) return
+      win.addEventListener(resizeEvt, recalc, false)
+      doc.addEventListener('DOMContentLoaded', recalc, false)
+    })(document, window)
+  </script>
 </head>
 
 <body>

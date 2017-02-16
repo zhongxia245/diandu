@@ -29,30 +29,31 @@ SlideBar.prototype = {
   drag: function () {
     var that = this;
     var actionBlock = document.getElementById(that.actionBlock);
-    actionBlock.onmousedown = function (evdown) {
-      evdown = evdown || event;
-      var target = evdown.currentTarget;
-      var thisBlock = this;
-      var disX = event.clientX - target.offsetLeft;
+    if (actionBlock) {
+      actionBlock.onmousedown = function (evdown) {
+        evdown = evdown || event;
+        var target = evdown.currentTarget;
+        var thisBlock = this;
+        var disX = event.clientX - target.offsetLeft;
 
-      document.onmousemove = function (evmove) {
-        evmove = evmove || event;
-        var moveX = evmove.clientX - disX;
-        if (moveX < 0) moveX = 0;
-        if (moveX > target.parentNode.offsetWidth - target.offsetWidth) moveX = target.parentNode.offsetWidth - target.offsetWidth;
-        thisBlock.style.left = moveX + 'px';
+        document.onmousemove = function (evmove) {
+          evmove = evmove || event;
+          var moveX = evmove.clientX - disX;
+          if (moveX < 0) moveX = 0;
+          if (moveX > target.parentNode.offsetWidth - target.offsetWidth) moveX = target.parentNode.offsetWidth - target.offsetWidth;
+          thisBlock.style.left = moveX + 'px';
 
-        that.value = Math.round((target.offsetLeft) / (that.barLength - target.offsetWidth) * that.maxNumber);
-        that.value = that.value === 0 ? 1 : that.value;
-        that.callback && that.callback(that.value, that);
+          that.value = Math.round((target.offsetLeft) / (that.barLength - target.offsetWidth) * that.maxNumber);
+          that.value = that.value === 0 ? 1 : that.value;
+          that.callback && that.callback(that.value, that);
+          return false;
+        }
+
+        document.onmouseup = function () {
+          document.onmousemove = document.onmouseup = null;
+        }
         return false;
       }
-
-      document.onmouseup = function () {
-        document.onmousemove = document.onmouseup = null;
-      }
-
-      return false;
     }
   },
   touchDrag: function () {
