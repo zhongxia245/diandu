@@ -1540,44 +1540,6 @@ function fileTypeItemClick(e) {
       }
     }
   })
-
-  // 设置上传文件用 uploadify插件,并且透明化按钮
-  //_upload.setUploadify($('#__file' + id), {
-  //  width: '100%',
-  //  height: '100%',
-  //  fileTypeExts: fileTypeExts,
-  //  fileTypeDesc: fileTypeDesc,
-  //  onUploadSuccess: function (file, resultPath) {
-  //    if (resultPath.indexOf('error') === -1) {
-  //      var $rightName = $('#__file' + id).parent().parent()
-  //      var fileSrc = resultPath
-  //      $rightName.attr('data-src', fileSrc)
-  //
-  //      $rightName.removeClass('upload').addClass('uploaded')
-  //      $rightName.find('span').html(file.name)
-  //
-  //      $uploadRight.attr('data-upload', 1); // 标记已经上传文件
-  //
-  //      // 如果是视频点读点,则获取视频的宽高
-  //      if (data.fileType === 'video') {
-  //        Util.getVideoWH(fileSrc, function (obj) {
-  //          console.log('Audio', obj)
-  //          _data.setDDItems(_dataid, {
-  //            url: fileSrc,
-  //            filename: file.name,
-  //            area: {
-  //              w: obj.w, h: obj.h,
-  //              videoW: obj.w, videoH: obj.h
-  //            }
-  //          })
-  //        })
-  //      } else {
-  //        _data.setDDItems(_dataid, {url: fileSrc, filename: file.name})
-  //      }
-  //    }
-  //  }
-  //})
-  //$('#__file' + id + ' object').css('left', 0)
 }
 
 /**
@@ -1593,6 +1555,11 @@ function fn3_setUrl(e) {
   var _pointData = window.DD.items[pageId].data[dianduId]
   new UrlPoint('body', _pointData.linkurl, function (val) {
     _pointData.linkurl = val;
+    if (val) {
+      var $uploadRight = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-right').eq(0)
+      $uploadRight.find('.upload').removeClass('upload').addClass('uploaded-set-url')
+      $uploadRight.find('.upload-right-name span').text('超链接已设置(点击编辑)')
+    }
   })
 }
 
