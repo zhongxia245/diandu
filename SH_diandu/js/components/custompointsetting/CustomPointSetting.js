@@ -432,7 +432,8 @@ CustomPointSetting.prototype.bindEvent = function () {
   that.setUploadify('#cps-upload-audio', {
     multiple: false,
     fileTypeDesc: 'LRC Files',
-    fileTypeExts: '	*.lrc',
+    fileTypeExts: 'lrc/*',
+    extensions: 'lrc',
     onUploadSuccess: function (file, result) {
       result = result._raw
       that.data.audio_panel.lrc = result;

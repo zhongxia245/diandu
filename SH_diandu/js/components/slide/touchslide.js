@@ -5,10 +5,12 @@
 // 构造函数
 function SlideBar(data) {
   this.data = data;
-  this.entireBar = data.entireBar || 'entire-bar';
-  this.actionBlock = data.actionBlock || 'action-block';
-  this.scrollBar = data.scrollBar || 'scroll-bar';
+  this.entireBar = data.entireBar || 'entire-bar';   //到当前刻度的进度条
+  this.actionBlock = data.actionBlock || 'action-block';  //滑块
+  this.scrollBar = data.scrollBar || 'scroll-bar'; //进度条
+
   this.callback = data.callback;
+  this.clickCallback = data.clickCallback;
   this.barLength = data.barLength || 900;
   this.maxNumber = (data.maxNumber || 100) * 90 / 70;  //底图的比例,超过这个比例,则是关闭自动播放
   this.data = data;
@@ -20,6 +22,10 @@ function SlideBar(data) {
   this.touchDrag();
   this.drag();
 
+  //是否允许点击进度条跳转到指定进度
+  if (data.allowClick) {
+    this.allowClick()
+  }
 }
 
 SlideBar.prototype = {
@@ -83,7 +89,24 @@ SlideBar.prototype = {
       }
     });
   },
+  /**
+   * 允许点击进度条，跳转到指定位置
+   */
+  allowClick: function () {
+    var that = this;
+    $('#' + that.scrollBar).on('click', function (e) {
+      var $cTar = $(e.currentTarget)
+      var $val = $('#' + that.actionBlock);
+      if ($(e.target).attr('id') !== that.actionBlock) {
+        var offsetX = e.offsetX;
+        var left = offsetX - $val.width() / 2;
+        if (left < 0) left = 0;
+        $val.css('left', left);
 
+        if (that.clickCallback) that.clickCallback(left / $cTar.width())
+      }
+    })
+  },
   setValue: function (value) {
     var _leftVal = value > this.maxNumber ? this.maxNumber * 0.9 : value;
     var $block = $('#' + this.actionBlock);

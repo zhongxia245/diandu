@@ -113,6 +113,7 @@ var _upload = (function () {
       },
       accept: {
         title: config.fileTypeDesc || 'Images',
+        extensions: config.extensions || '',
         mimeTypes: config.fileTypeExts || 'image/png,image/jpg,image/gif'
       },
       auto: true,
@@ -691,8 +692,7 @@ function bindEvent() {
   $('#btnSubmit').on('click', handleSubmit)
 
   // 添加点读页
-  // $('#btnAdd').on('click', addDianDuPageTpl)
-  $('#btnAdd').on('click', addCustomPointSetting)
+  $('#btnAdd').on('click', addDianDuPageTpl)
 
   // 收费标准验证只能输入数字和小数点
   $('#chargeStandard').on('keyup', function (e) {

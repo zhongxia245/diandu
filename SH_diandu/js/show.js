@@ -181,7 +181,7 @@ function fn_onResize() {
     isVertical = true;
   }
 
-  $('.sec-imgtext-main').css({width: _size, height: _size});
+  $('.sec-imgtext-main').css({ width: _size, height: _size });
 
   //设置顶部进度条的宽高
   styleHandler();
@@ -684,7 +684,7 @@ function initPage(id, data) {
     //针对小图, EN
 
     var $wrap = $('#' + subid).find('.wrap');
-    $wrap.css({height: wrapHeight, width: wrapWidth});
+    $wrap.css({ height: wrapHeight, width: wrapWidth });
     $wrap.html('');
     $wrap.append(initPoints(i, pages[i], wrapWidth, wrapHeight, _pointSizeScale))
 
@@ -880,8 +880,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         var _hideImgW = switchImg.img.scaleW * imgW;
         var _hideImgH = switchImg.img.scaleW * imgW * switchImg.img.h / switchImg.img.w;
         style += 'background-image:url(' + (switchImg.img.path) + ');'
-        style += 'width:' + (_hideImgW ) + 'px; height:' + (_hideImgH ) + 'px;'
-        style += 'transform: scale(' + (switchImg.img.scale ) + ');'
+        style += 'width:' + (_hideImgW) + 'px; height:' + (_hideImgH) + 'px;'
+        style += 'transform: scale(' + (switchImg.img.scale) + ');'
         style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px;';
 
         switchImg.mp3 = switchImg.mp3 || {}
@@ -1220,20 +1220,6 @@ function bindEvent() {
     //关闭视频,并且设置所有的 音频为默认图标状态
     closeVideoOrAudio(true, $cTar);
 
-    //var audioTimer = setInterval(function () {
-    //  //播放结束, 则清除 正在播放的图片
-    //  if (window.audio.ended) {
-    //    $cTar.find('img').hide();
-    //    clearInterval(audioTimer);
-    //
-    //    diandu.customPlay($cTar, false)
-    //
-    //    if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
-    //      window.galleryTop.startAutoplay();
-    //    }
-    //  }
-    //}, 500)
-
     window._audioEnded = true;
     audio.addEventListener('ended', function () {
       if (window._audioEnded) {
@@ -1247,12 +1233,21 @@ function bindEvent() {
       }
     })
 
-    //获取当前音频数据
+    // 获取当前音频数据
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
-    //播放或者暂停
-    playOrPaused(e, isGlobalAudio, pointData)
+    // TODO: 判断弹出音频面板或者是普通音频点读点
+    var audioPanelConfig = JSON.parse(pointData['audio_panel'] || "{}")
+    if (audioPanelConfig.show) {
+      new AudioPanel({
+        mp3_path: pointData.url,
+        pic_path: audioPanelConfig.lrc
+      })
+    } else {
+      //播放或者暂停
+      playOrPaused(e, isGlobalAudio, pointData)
+    }
   })
 
 
@@ -1278,7 +1273,7 @@ function bindEvent() {
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
     var $secImgText = $('.sec-imgtext-mask');
-    $secImgText.css({position: 'absolute'});
+    $secImgText.css({ position: 'absolute' });
     $secImgText.show();
     var $secImgTextMain = $('.sec-imgtext-main');
     setImgTextLocation_Scale($cTar, $secImgTextMain, $cTar.parent().parent());  //设置弹窗的位置
@@ -1471,7 +1466,7 @@ function fnExamClick(e) {
   var scaleExam = isVertical ? $secExam.width() / 320 : $secExam.width() / 1500 * 2;
 
   GLOBAL.examShowList = new ExamShowList(GLOBAL.SEC_EXAM_LIST, {
-    data: {questions: questions},
+    data: { questions: questions },
     scale: scaleExam,
     isVertical: isVertical,
     callback: function (questionData) {
@@ -1548,11 +1543,11 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
 
 
   var minX = left - imgTextW - gap;    //图文最左边位置
-  var centerX = left + -(imgTextW + gap - rW ) / 2;  //图文中间位置
+  var centerX = left + -(imgTextW + gap - rW) / 2;  //图文中间位置
   var maxX = left + rW + gap;  //图文最右边位置
 
   var minY = top - imgTextH - gap;  //图文最上边位置
-  var centerY = top - (imgTextH + gap - rH ) / 2;  //图文中间位置
+  var centerY = top - (imgTextH + gap - rH) / 2;  //图文中间位置
   var maxY = top + rH + gap;  //图文最下边位置
 
   var imgTextLeft = left;
@@ -1591,7 +1586,7 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
     imgTextTop = minY;
   }
 
-  $secImgTextMain.css({left: imgTextLeft, top: imgTextTop});
+  $secImgTextMain.css({ left: imgTextLeft, top: imgTextTop });
 
 }
 
@@ -1671,7 +1666,7 @@ function _playShowAudio(flag, mp3Src) {
   audio.play();
 
 
-  if (window.OnOffAudio)  window.OnOffAudio.src = '';
+  if (window.OnOffAudio) window.OnOffAudio.src = '';
   // 存在开关图mp3,则在音效播放完,播放mp3
   if (mp3Src && mp3Src !== 'undefined') {
     //音效结束1s,则播放mp3

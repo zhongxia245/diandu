@@ -187,6 +187,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/model/model.js?v=5"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
 <script src="js/components/slide/touchslide.js"></script>
+<script src="js/components/slide/slide.js"></script>
 <script src="js/components/examshowlist/ExamShowList.js"></script>
 <script src="js/components/questionslist/QuestionsList.js"></script>
 <script src="js/components/examcomment/ExamComment.js?v=1"></script>
@@ -195,7 +196,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
 <script src="js/page/show/playVideo/playVideo.js"></script>
 <script src="js/page/show/pointEffect/pointEffect.js"></script>
-<script src="js/page/show/picScale/PicScale.js?v=2"></script>
+<script src="js/page/show/picScale/PicScale.js"></script>
+<script src="js/page/show/audioPanel/audioPanel.js"></script>
 <!--<script src="js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
 <script src="js/show.js?v=3"></script>
