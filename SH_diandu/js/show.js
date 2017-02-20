@@ -1242,7 +1242,7 @@ function bindEvent() {
     if (audioPanelConfig.show) {
       new AudioPanel({
         mp3_path: pointData.url,
-        pic_path: audioPanelConfig.lrc
+        lrc_path: audioPanelConfig.lrc
       })
     } else {
       //播放或者暂停
