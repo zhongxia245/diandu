@@ -27,14 +27,14 @@ if ($id > 0) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>创建点读页</title>
-    <link rel="stylesheet" href="css/lib/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
-    <link rel="stylesheet" href="js/lib/uploadify/uploadify.css"/>
-    <link rel="stylesheet" href="js/lib/webuploader/webuploader.css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="css/index.css"/>
-    <link rel="stylesheet" href="js/components/imgtext/imgtext2.css"/>
-    <link rel="stylesheet" href="js/components/examcreate/ExamCreate.css"/>
+    <link rel="stylesheet" href="./css/lib/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
+    <link rel="stylesheet" href="./js/lib/uploadify/uploadify.css"/>
+    <link rel="stylesheet" href="./js/lib/webuploader/webuploader.css" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <link rel="stylesheet" href="./js/components/imgtext/imgtext2.css"/>
+    <link rel="stylesheet" href="./js/components/examcreate/ExamCreate.css"/>
     <link rel="stylesheet" href="/edu/course/js/jcrop/css/jquery.Jcrop.min.css"/>
     <link rel="stylesheet" href="/edu/course/js/jquery-ui/jquery-ui.min.css"/>
     <!---add by brian 20160426-->
@@ -194,6 +194,26 @@ if ($id > 0) {
         </div>
     </section>
     <!-- baseinfo end -->
+    <!--permissionType start-->
+    <section class="setting">
+        <div class="setting-charge">
+            <div class="setting-title">权限控制</div>
+            <div class="form-group">
+                <label for="">可访问范围</label>
+                <div class="riado-group">
+                    <div>
+                        <label style="width:300px">
+                            <input type="radio" name="permissionType" value="0" checked> 公开(首页展示)
+                        </label>
+                        <label style="width:300px">
+                            <input type="radio" name="permissionType" value="1"> 仅在组内展示(限组内成员展示)
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--permissionType end-->
     <!-- setting start-->
     <section class="setting">
         <div class="setting-charge">
@@ -357,40 +377,40 @@ if ($id > 0) {
 </script>
 <!--背景图模板 END -->
 <!--lib-->
-<script src="js/util/log.js"></script>
-<script src="js/lib/jquery.min.js"></script>
-<script src="js/lib/handlebars.min.js"></script>
-<script src="js/lib/autosize.min.js"></script>
-<script src="js/lib/layer/layer.js"></script>
-<script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
-<script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
-<script src="js/lib/webuploader/webuploader.min.js"></script>
-<script src="js/lib/kindeditor/kindeditor-min.js"></script>
-<script src="js/lib/kindeditor/lang/zh_CN.js"></script>
-<script src="js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
+<script src="./js/util/log.js"></script>
+<script src="./js/lib/jquery.min.js"></script>
+<script src="./js/lib/handlebars.min.js"></script>
+<script src="./js/lib/autosize.min.js"></script>
+<script src="./js/lib/layer/layer.js"></script>
+<script src="./js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
+<script src="./js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<script src="./js/lib/webuploader/webuploader.min.js"></script>
+<script src="./js/lib/kindeditor/kindeditor-min.js"></script>
+<script src="./js/lib/kindeditor/lang/zh_CN.js"></script>
+<script src="./js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="js/lib/uploadify/uploadify.css"/>
+<link rel="stylesheet" type="text/css" href="./js/lib/uploadify/uploadify.css"/>
 <script type="text/javascript" src="/edu/course/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/edu/course/js/resumable.js"></script>
 <script type="text/javascript" src="/edu/course/js/common_tool.js"></script>
 <!--custom-->
-<script src="js/model/model.js"></script>
-<script src="js/util/arrayUtil.js"></script>
-<script src="js/util/util.js"></script>
-<script src="js/util/drag.js"></script>
+<script src="./js/model/model.js"></script>
+<script src="./js/util/arrayUtil.js"></script>
+<script src="./js/util/util.js"></script>
+<script src="./js/util/drag.js"></script>
 
 <!--组件-->
-<script src="js/components/imgtext/ImgText2.js"></script>
-<script src="js/components/examcreate/ExamCreate.js"></script>
-<script src="js/components/pointsetting/PointSetting.js"></script>
-<script src="js/components/number/CNumber.js"></script>
-<script src="js/components/globalaudio/GlobalAudio.js"></script>
-<script src="js/components/custompointsetting/CustomPointSetting.js"></script>
-<script src="js/page/common/CreatePoint/CreatePoint.js"></script>
-<script src="js/page/create/OnOffImg/OnOffImg.js"></script>
-<script src="js/page/create/UrlPoint/UrlPoint.js"></script>
+<script src="./js/components/imgtext/ImgText2.js"></script>
+<script src="./js/components/examcreate/ExamCreate.js"></script>
+<script src="./js/components/pointsetting/PointSetting.js"></script>
+<script src="./js/components/number/CNumber.js"></script>
+<script src="./js/components/globalaudio/GlobalAudio.js"></script>
+<script src="./js/components/custompointsetting/CustomPointSetting.js"></script>
+<script src="./js/page/common/CreatePoint/CreatePoint.js"></script>
+<script src="./js/page/create/OnOffImg/OnOffImg.js"></script>
+<script src="./js/page/create/UrlPoint/UrlPoint.js"></script>
 
-<script src="js/index.js"></script>
+<script src="./js/index.js"></script>
 
 
 <script>

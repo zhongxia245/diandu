@@ -17,16 +17,18 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
+  <!--上线后去掉注释-->
+  <!--<base href="/edu/course/diandu/"></base>-->
   <title></title>
-  <link rel="stylesheet" href="css/font-awesome.min.css"/>
-  <link rel="stylesheet" href="js/lib/frozen/css/frozen.css"/>
-  <link rel="stylesheet" href="js/lib/modal/css/style.css">
-  <link rel="stylesheet" href="css/show.css">
-  <link rel="stylesheet" href="js/lib/swipe/css/swiper.min.css">
-  <link rel="stylesheet" href="js/components/slide/slide.css">
-  <link rel="stylesheet" href="js/components/examshowlist/ExamShowList.css">
-  <link rel="stylesheet" href="js/components/questionslist/QuestionsList.css">
-  <link rel="stylesheet" href="js/components/examcomment/ExamComment.css?v=26">
+  <link rel="stylesheet" href="./css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="./js/lib/frozen/css/frozen.css"/>
+  <link rel="stylesheet" href="./js/lib/modal/css/style.css">
+  <link rel="stylesheet" href="./css/show.css">
+  <link rel="stylesheet" href="./js/lib/swipe/css/swiper.min.css">
+  <link rel="stylesheet" href="./js/components/slide/slide.css">
+  <link rel="stylesheet" href="./js/components/examshowlist/ExamShowList.css">
+  <link rel="stylesheet" href="./js/components/questionslist/QuestionsList.css">
+  <link rel="stylesheet" href="./js/components/examcomment/ExamComment.css?v=26">
   <script>
     // 动态计算rem的大小，参照基准 iphone6  375px
     (function (doc, win) {
@@ -70,8 +72,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
       <img id="btn_globalAudio"
            style="margin-right: 10px;"
            class="control-global-audio"
-           data-src="imgs/global_audio/global-audio-off.png"
-           src="imgs/global_audio/global-audio-on.png" data-state="1" alt="开启全程音频">
+           data-src="./imgs/global_audio/global-audio-off.png"
+           src="./imgs/global_audio/global-audio-on.png" data-state="1" alt="开启全程音频">
       <img id="btn_bgAudio"
            class="control-bg-audio"
            src="imgs/bg_audio_on.png" alt="开启背景音乐">
@@ -168,44 +170,44 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   //获取用户id
   window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<script src="js/util/log.js"></script>
-<script src="js/lib/zepto.js"></script>
-<script src="js/lib/frozen/js/frozen.js"></script>
+<script src="./js/util/log.js"></script>
+<script src="./js/lib/zepto.js"></script>
+<script src="./js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
   window._load = $.loading({content: '加载中...'});
 </script>
-<script src="js/lib/swipe/js/swiper.js"></script>
-<script src="js/lib/webuploader/webuploader.html5only.min.js"></script>
-<script src="js/util/scale.js"></script>
-<script src="js/lib/hammer.min.js"></script>
+<script src="./js/lib/swipe/js/swiper.js"></script>
+<script src="./js/lib/webuploader/webuploader.html5only.min.js"></script>
+<script src="./js/util/scale.js"></script>
+<script src="./js/lib/hammer.min.js"></script>
 <!--custom-->
-<script src="js/util/util.js"></script>
-<script src="js/util/arrayUtil.js"></script>
-<script src="js/util/drag.js"></script>
-<script src="js/util/timeago.js"></script>
+<script src="./js/util/util.js"></script>
+<script src="./js/util/arrayUtil.js"></script>
+<script src="./js/util/drag.js"></script>
+<script src="./js/util/timeago.js"></script>
 <!--Ajax操作-->
-<script src="js/model/model.js?v=5"></script>
+<script src="./js/model/model.js?v=5"></script>
 <!--展示页面组件,定时播放滑块,考试列表,题目列表,评论列表-->
-<script src="js/components/slide/touchslide.js"></script>
-<script src="js/components/slide/slide.js"></script>
-<script src="js/components/examshowlist/ExamShowList.js"></script>
-<script src="js/components/questionslist/QuestionsList.js"></script>
-<script src="js/components/examcomment/ExamComment.js?v=1"></script>
-<script src="js/page/show/globalAudio.js?v=20161011"></script>
-<script src="js/page/show/pointOpacity.js"></script>
-<script src="js/page/common/CreatePoint/CreatePoint.js"></script>
-<script src="js/page/show/playVideo/playVideo.js"></script>
-<script src="js/page/show/pointEffect/pointEffect.js"></script>
-<script src="js/page/show/picScale/PicScale.js"></script>
-<script src="js/page/show/audioPanel/audioPanel.js"></script>
-<!--<script src="js/lib/vconsole.min.js"></script>-->
+<script src="./js/components/slide/touchslide.js"></script>
+<script src="./js/components/slide/slide.js"></script>
+<script src="./js/components/examshowlist/ExamShowList.js"></script>
+<script src="./js/components/questionslist/QuestionsList.js"></script>
+<script src="./js/components/examcomment/ExamComment.js?v=1"></script>
+<script src="./js/page/show/globalAudio.js?v=20161011"></script>
+<script src="./js/page/show/pointOpacity.js"></script>
+<script src="./js/page/common/CreatePoint/CreatePoint.js"></script>
+<script src="./js/page/show/playVideo/playVideo.js"></script>
+<script src="./js/page/show/pointEffect/pointEffect.js"></script>
+<script src="./js/page/show/picScale/PicScale.js"></script>
+<script src="./js/page/show/audioPanel/audioPanel.js"></script>
+<!--<script src="./js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
-<script src="js/show.js?v=3"></script>
+<script src="./js/show.js?v=3"></script>
 <script>
   $(function () {
     var _isDebug = Util.getQueryStringByName('debug');
     if (_isDebug) {
-      Util.loadJS("js/lib/vconsole.min.js")
+      Util.loadJS("./js/lib/vconsole.min.js")
     }
 
     //增加PC全屏按钮

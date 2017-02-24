@@ -33,16 +33,11 @@
     position: absolute;
     z-index: 1;
     right: 0.1rem;
-    top: -0.2rem;
+    top: -0.18rem;
     width: 0.3rem;
     height: 0.3rem;
-    line-height: 0.3rem;
-    text-align: center;
-    background: #ff5050;
-    color: #FFF;
-    border-radius: 50%;
-    border: 2px solid #655858;
-    font-size: 0.3rem;
+    background: url("close.png");
+    background-size: 100%;
 }
 
 .ap__container--top,
@@ -165,4 +160,19 @@
 
 .lyric_now {
     color: #e6e60e;
+}
+
+@media only screen and (orientation: landscape) {
+    .audio-panel {
+        width: 400px;
+    }
+    .ap__lrc--active {
+        height: 1.8rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .ap__lrc--active {
+        height: 350px;
+    }
 }

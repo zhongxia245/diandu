@@ -30,7 +30,7 @@ function AudioPanel(config) {
     html += '<div class="audio-panel-wrap">';
     html += '<div class="audio-panel">';
     html += '  <audio style="display: none;" id="js-ap-audio"></audio>';
-    html += '  <div class="ap__close js-ap-close">&times;</div>';
+    html += '  <div class="ap__close js-ap-close"></div>';
     html += '  <div class="ap__lrc js-container-lrc"></div>';
     html += '  <div class="ap__container">';
     html += '    <div class="ap__container--top">';

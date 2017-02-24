@@ -123,9 +123,6 @@ $(window).on('resize', function (e) {
     //主要用户移动端,弹出输入法面板,导致触发 resize. 如果是输入法触发的resize,不做处理
     if (!window.SHOWINPUT) {
       fn_onResize();
-      Logger.log('获取屏幕的宽高,横竖屏切换过快,可能导致获取出错', "W:", GLOBAL.SCREEN.W(), "H:", GLOBAL.SCREEN.H())
-    } else {
-      Logger.info('输入法面板触发的resize,不做处理');
     }
   }, 10)
 })
@@ -218,7 +215,23 @@ function styleHandler() {
  */
 function init() {
   // 点读页的ID,保存的时候会返回ID
-  var id = GLOBAL.videoid = Util.getQueryStringByName('videoid') || 1080;
+  var id = GLOBAL.videoid = Util.getQueryStringByName('videoid');
+  //如果没有获取到id，则从文件名中获取
+  if (!id) {
+    var paths = location.href.split('/')
+    var id = paths[paths.length - 1].split('.')[0]
+    try {
+      id = parseInt(id)
+      if (!id) {
+        window._load.loading("hide")
+        alert('点读页面唯一标识不存在')
+        return
+      }
+    } catch (e) {
+      return
+    }
+  }
+
   initAudio();
   initVideo();
   /**
@@ -229,17 +242,21 @@ function init() {
     DATA = data;
     //排序点读页顺序
     ArrayUtil.sortByKey(data.pages, 'seq');
-    Util.getImageWH(data['pages'][0]['pic'], function () {
-
-      //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
-      setTimeout(function () {
-        fn_onResize();
-        window._load.loading("hide");
-        diandu.blink(0);
-      }, 100)
-
-      Logger.info("展示页数据:", data)
-    })
+    data['pages'] = data['pages'] || []
+    data['pages'][0] = data['pages'][0] || {}
+    if (data['pages'][0]['pic']) {
+      Util.getImageWH(data['pages'][0]['pic'], function () {
+        //页面大小重新渲染放在这边, 微信浏览器显示就不会有问题
+        setTimeout(function () {
+          fn_onResize();
+          window._load.loading("hide");
+          diandu.blink(0);
+        }, 100)
+      })
+    } else {
+      alert('该点读页，没有内容')
+      window._load.loading("hide");
+    }
   })
 }
 

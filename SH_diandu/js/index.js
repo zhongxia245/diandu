@@ -410,6 +410,7 @@ var _edit = (function () {
     $('#name').val(data['title'])
     $('#intro').val(data['saytext'])
     $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true)
+    $('input[name="permissionType"][value="' + data['isprivate'] + '"]').attr('checked', true)
     $('#input[name="pic"]').val(data['pic'])
     $('#chargeStandard').val(data['cost'])
     $('#file_btnAutoAudio_path').val(data['background'])
@@ -1894,6 +1895,7 @@ function handleSubmit(e) {
     title: $('#name').val(),
     saytext: $('#intro').val() || ' ',
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
+    isprivate: $('input[type="radio"][name="permissionType"]:checked').val(),
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(), // 缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),

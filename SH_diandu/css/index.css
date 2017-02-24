@@ -183,6 +183,11 @@ header {
   width: 800px;
 }
 
+.riado-group input[type="radio"]{
+  position: relative;
+  top: -3px;
+}
+
 /***********************************************************
  * setting 
  * index.html big img css

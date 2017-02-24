@@ -64,6 +64,7 @@ if (!empty($_FILES)) {
 	
 	//上	传文件的后缀
 		$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+		$ext = strtolower($ext);
 	if (!in_array($ext, $fileTypes)) {
 		echo $fileName."--file type not allowed!2";
 		exit();
