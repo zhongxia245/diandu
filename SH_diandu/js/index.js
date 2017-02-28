@@ -409,6 +409,7 @@ var _edit = (function () {
   function _initFormData(data) {
     $('#name').val(data['title'])
     $('#intro').val(data['saytext'])
+    $('#keywords').val(data['keywords'])
     $('input[name="chargeType"][value="' + data['charge'] + '"]').attr('checked', true)
     $('input[name="permissionType"][value="' + data['isprivate'] + '"]').attr('checked', true)
     $('#input[name="pic"]').val(data['pic'])
@@ -1383,8 +1384,7 @@ function addCustomPointSetting(e) {
 
       // 保存视频播放区域的数据
       window.DD.items[pageIndex].data[pointIndex].area = data.area
-
-      if (data.audio_panel.lrc !== '') {
+      if (data.audio_panel.lrc !== '' || data.audio_panel.show) {
         window.DD.items[pageIndex].data[pointIndex].audio_panel = data.audio_panel
       }
 
@@ -1896,6 +1896,7 @@ function handleSubmit(e) {
     saytext: $('#intro').val() || ' ',
     charge: $('input[type="radio"][name="chargeType"]:checked').val(),
     isprivate: $('input[type="radio"][name="permissionType"]:checked').val(),
+    keywords: $('#keywords').val(),
     cost: $('#chargeStandard').val(),
     pic: $('input[name="pic"]').val(), // 缩略图地址, 多个用,隔开
     background: $('#file_btnAutoAudio_path').val(),
@@ -1929,19 +1930,23 @@ function handleSubmit(e) {
 
   var qrcode = Util.getQueryStringByName('qrcode') || '' // 尹果要求加的参数
 
-  Model.addDianduPage(data, qrcode, function (result) {
-    Logger.log('操作成功,返回点读页的id为(videoid)= ', result)
+  if (data.pages.length === 0 || !data.pages[0]['pic']) {
+    alert('至少需要有一个点读页!')
+  } else {
+    Model.addDianduPage(data, qrcode, function (result) {
+      Logger.log('操作成功,返回点读页的id为(videoid)= ', result)
 
-    var msg = '创建成功,点击确定返回单元列表!'
-    var returnUrl = '/edu/course/unit_video.php?unitid=' + data.unitid
+      var msg = '创建成功,点击确定返回单元列表!'
+      var returnUrl = '/edu/course/unit_video.php?unitid=' + data.unitid
 
-    if (GLOBAL.ISEDIT.flag) {
-      msg = '保存成功!点击确定返回展示页面!'
-      returnUrl = '/edu/course/diandu.php?id=' + id
-      // 这里的id 是 diandu.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
-    }
+      if (GLOBAL.ISEDIT.flag) {
+        msg = '保存成功!点击确定返回展示页面!'
+        returnUrl = '/edu/course/diandu.php?id=' + id
+        // 这里的id 是 diandu.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
+      }
 
-    alert(msg)
-    window.location.href = returnUrl
-  })
+      alert(msg)
+      window.location.href = returnUrl
+    })
+  }
 }

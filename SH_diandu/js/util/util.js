@@ -156,24 +156,96 @@ window.Util = (function () {
   }
 
   /**
+   * 检查样式里面是否存在某个样式名
+   * @param string className 
+   * @param array  not_allow_drag_class
+   */
+  function hasClass(className, not_allow_drag_class) {
+    if (!not_allow_drag_class) not_allow_drag_class = []
+    if (!className) className = ''
+
+    for (var i = 0; i < not_allow_drag_class.length; i++) {
+      if (className.indexOf(not_allow_drag_class[i]) !== -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * 移动端拖动
    * @param selector
    */
-  function touchDrag(selector, callback) {
-    var moveX, moveY, startX, startY;
-    $(document).on("touchstart", selector, function (event) {
-      var touchPros = event.touches[0];
-      startX = touchPros.clientX - event.currentTarget.offsetLeft;
-      startY = touchPros.clientY - event.currentTarget.offsetTop;
-      //return false;
-    }).on("touchmove", selector, function (event) {
-      var touchPros = event.touches[0];
-      moveX = touchPros.clientX - startX;
-      moveY = touchPros.clientY - startY;
+  function touchDrag(selector, callback, not_allow_drag_class) {
+    var moveX, moveY, startX, startY, left = 0, top = 0;
 
-      callback(event, moveX, moveY)
-    });
+    $(selector)
+      .on("touchstart", function (event) {
+        if (!hasClass($(event.target).attr('class'), not_allow_drag_class)) {
+          event.preventDefault();
+          var touchPros = event.touches[0];
+          startX = touchPros.clientX;
+          startY = touchPros.clientY;
+          left = parseFloat($(selector).css('left').replace('px', ''))
+          top = parseFloat($(selector).css('top').replace('px', ''))
+        }
+      })
+      .on("touchmove", function (event) {
+        if (!hasClass($(event.target).attr('class'), not_allow_drag_class)) {
+          event.preventDefault();
+          var touchPros = event.touches[0];
+          moveX = touchPros.clientX - startX + left;
+          moveY = touchPros.clientY - startY + top;
+
+          if (callback) callback(event, moveX, moveY)
+        }
+      })
   }
+
+  /**
+   * PC端拖动
+   * @param selector
+   * @param callback
+   * @param not_allow_drag_class 点击selector里面的字节点，一些子节点点击不允许拖动
+   */
+  function mouseDrag(selector, callback, not_allow_drag_class) {
+    var moveX, moveY, startX, startY, left = 0, top = 0, flag = false;
+
+    $(selector)
+      .on("mousedown", function (event) {
+        if (!hasClass($(event.target).attr('class'), not_allow_drag_class)) {
+          event.preventDefault();
+          startX = event.clientX;
+          startY = event.clientY;
+          left = parseFloat($(selector).css('left').replace('px', ''))
+          top = parseFloat($(selector).css('top').replace('px', ''))
+          flag = true;
+
+          $(document)
+            .on("mousemove", function (event) {
+              event.preventDefault();
+              if (flag) {
+                moveX = event.clientX - startX + left;
+                moveY = event.clientY - startY + top;
+
+                callback(event, moveX, moveY)
+              }
+            })
+            .on('mouseup', function () {
+              flag = false;
+            })
+        }
+      })
+  }
+
+  /**
+   * 兼容PC和移动端的拖动
+   */
+  function drag(selector, callback, not_allow_drag_class) {
+    mouseDrag(selector, callback, not_allow_drag_class);
+    touchDrag(selector, callback, not_allow_drag_class);
+  }
+
 
   return {
     getImageWH: getImageWH,
@@ -185,7 +257,9 @@ window.Util = (function () {
     getPointDataByIds: getPointDataByIds,
     loadCSS: loadCSS,
     loadJS: loadJS,
-    touchDrag: touchDrag
+    touchDrag: touchDrag,
+    mouseDrag: mouseDrag,
+    drag: drag
   }
 })()
 

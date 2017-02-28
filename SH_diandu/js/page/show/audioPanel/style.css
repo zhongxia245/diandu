@@ -38,6 +38,11 @@
     height: 0.3rem;
     background: url("close.png");
     background-size: 100%;
+    cursor: pointer;
+}
+
+.ap__close:hover {
+    background-image: url("close_hover.png")
 }
 
 .ap__container--top,
@@ -83,12 +88,13 @@
 
 .ap__progress_val {
     position: absolute;
-    width: 0.14rem;
-    height: 0.14rem;
-    margin-top: -0.04rem;
+    width: 0.24rem;
+    height: 0.24rem;
+    margin-top: -0.09rem;
     border-radius: 50%;
     background: #ffc000;
     border: 1px solid #d6bf7a;
+    cursor: pointer;
 }
 
 .ap__speed_val {
@@ -102,6 +108,7 @@
     font-size: 0.16rem;
     text-align: center;
     color: #000;
+    cursor: pointer;
 }
 
 .ap__sound {
@@ -116,6 +123,7 @@
     background-repeat: no-repeat;
     background-position: bottom;
     background-size: contain;
+    cursor: pointer;
 }
 
 .ap__btn-lrc {
@@ -127,6 +135,7 @@
     border: 2px solid #c0c0c0;
     border-radius: 5px;
     margin-left: 0.1rem;
+    cursor: pointer;
 }
 
 .ap__btn-lrc--active {

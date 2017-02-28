@@ -11,6 +11,6 @@ window.PointOpacity = {
   setOpacity: function (value) {
     $('[data-id="all-radius"]').find('div[data-id]').css('opacity', value)
     $('[data-id="btn-start"]').css('opacity', value)
-
+    $('[data-id="global-audio"]').css('opacity', value)
   }
 }

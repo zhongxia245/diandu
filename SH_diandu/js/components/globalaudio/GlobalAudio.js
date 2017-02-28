@@ -1,7 +1,7 @@
 /***************************************************
  * 时间: 7/26/16 22:52
  * 作者: zhongxia
- * 说明: 全局音频
+ * 说明: 全局音频 创建页面
  *
  ***************************************************/
 /**
@@ -223,7 +223,7 @@ GlobalAudio.prototype.bindEvent = function () {
       .text(that.formatTime(audio.currentTime))
 
     var id = parseInt($cTar.parent().attr('data-id')) - 1;
-    window.DD && ( window.DD.items[id].time = that.formatTime(audio.currentTime));
+    window.DD && (window.DD.items[id].time = that.formatTime(audio.currentTime));
   })
 
   /**
@@ -242,7 +242,7 @@ GlobalAudio.prototype.bindEvent = function () {
     var $cTar = $(e.currentTarget);
     var id = parseInt($cTar.parent().attr('data-id')) - 1;
     var timeStr = $cTar.text();
-    window.DD && ( window.DD.items[id].time = timeStr);
+    window.DD && (window.DD.items[id].time = timeStr);
   })
 
   /**

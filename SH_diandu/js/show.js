@@ -773,7 +773,6 @@ function initDianDuPage(data, id) {
   html += '    <div class="m-dd-start-comment-div"></div>'
   html += '    <div data-id="btn-start" class="m-dd-start"></div>'
   html += '    <div data-id="global-audio" data-show="1" class="global-audio-other-page-off"></div>'
-  //html += '    <div class="m-bg-pic" style="background-image:url(' + bgPath + ')"></div>'
   html += '    <div class="wrap" style="background-image:url(' + bgPath + ')">'
   html += '    </div>'
   html += '</div>'

@@ -19,11 +19,20 @@ function AudioPanel(config) {
 
   $('body').append(initHTML());
 
-  var mp3_path = config.mp3_path || './data/xianjian.mp3'
-  var lrc_path = config.lrc_path || './test/data/xianjian.lrc'
+  var mp3_path = config.mp3_path || ''
+  var lrc_path = config.lrc_path || ''
   var baseImgPath = config.baseImgPath || './imgs/audio_sound/'
 
   init(mp3_path, lrc_path, baseImgPath);
+
+  if (window.Util && window.Util.drag) {
+    Util.drag('.audio-panel', function (e, x, y) {
+      $('.audio-panel').css({
+        left: x,
+        top: y
+      })
+    }, ['js-ap-close', 'ap__progress', 'ap__progress_val', 'ap__speed_val', 'js-ap-sound', 'js-ap-lrc', 'ap__volume-li'])
+  }
 
   function initHTML() {
     var html = '';
@@ -72,12 +81,17 @@ function AudioPanel(config) {
     initSoundControl(baseImgPath, function (size) {
       getMedia().volume = size / 6;
     });
+    if (lrc_path) {
+      initLrc(lrc_path);
+    }else{
+      $btnLrc.hide();
+    }
 
-    initLrc(lrc_path);
     playSong(mp3_path);
 
     //显示歌词  
-    $btnLrc.on('click', function () {
+    $btnLrc.on('click', function (e) {
+      e.stopPropagation();
       if ($btnLrc.hasClass('ap__btn-lrc--active')) {
         $btnLrc.removeClass('ap__btn-lrc--active');
         $containerLrc.removeClass('ap__lrc--active');
@@ -88,7 +102,8 @@ function AudioPanel(config) {
     })
 
     //关闭弹窗
-    $btnClose.on('click', function () {
+    $btnClose.on('click', function (e) {
+      e.stopPropagation();
       try {
         getMedia().pause();
       } catch (error) { }
@@ -100,7 +115,7 @@ function AudioPanel(config) {
     function initSoundControl(baseImgPath, callback) {
       var htmls = [];
       for (var i = 1; i <= 6; i++) {
-        htmls.push('<li data-index="' + i + '"></li>');
+        htmls.push('<li class="ap__volume-li" data-index="' + i + '"></li>');
       }
 
       $btnSound.html(htmls.join(''));
@@ -111,6 +126,7 @@ function AudioPanel(config) {
       }
 
       $btnSound.on('click', 'li', function (e) {
+        e.stopPropagation();
         var $lis = $btnSound.find('li');
         var soundSize = $(e.target).data('index');
         if (callback) callback(soundSize)
@@ -184,7 +200,7 @@ function AudioPanel(config) {
     var llrcObj = null;
     var $lrcInfo = $('.js-container-lrc')
     var llrcId = 'llrcId'
-    var lrc_line_marginTop = '100px'
+    var lrc_line_marginTop = '1.2rem'
 
     //获取lrc歌词文件
     function initLrc(path) {
@@ -258,7 +274,7 @@ function AudioPanel(config) {
         $('.js-ap-current').text(getTimeM(currentTime))
         $('.js-ap-total').text(getTimeM(totalTime))
 
-        var left = currentTime / totalTime * $('#ap_progress').width()
+        var left = currentTime / totalTime * ($('#ap_progress').width() - $('#ap_progress_val').width())
 
         $('#ap_progress_val').css('left', left)
         if (ltime > 3) {
@@ -276,9 +292,10 @@ function AudioPanel(config) {
       var found = false;
       var mv = 0;
       var sIndex = 0;
+      var line_height = $('#lId0').height();
       for (var i = 0; i < lrcLst.length; i++) {
         if (found == false && msec >= lrcLst[i].timeId && (i == lrcLst.length - 1 || lrcLst[i + 1].timeId > msec)) {
-          mv = i * 24;
+          mv = i * line_height;
           sIndex = i;
           found = true;
         }

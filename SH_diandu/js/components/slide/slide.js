@@ -4,7 +4,7 @@
  * */
 
 // 构造函数
-function Slide (data) {
+function Slide(data) {
   var that = this
   this.data = data
 
@@ -73,16 +73,17 @@ Slide.prototype = {
       .on('touchmove', that.progressVal, function (e) {
         e.stopPropagation()
         if ($(e.currentTarget).attr('id') == that.getValId()) {
+          var allLength = $(that.progressBar).width() - $(that.progressVal).width();
           var target = e.currentTarget
           var touchPros = e.touches[0]
           moveX = touchPros.clientX - startX
 
           if (moveX < 0) moveX = 0
-          if (moveX > target.parentNode.offsetWidth - target.offsetWidth) moveX = target.parentNode.offsetWidth - target.offsetWidth
+          if (moveX > allLength) moveX = allLength
 
           $(that.progressVal).css('left', moveX)
 
-          var val = moveX / ($(that.progressBar).width() - $(that.progressVal).width())
+          var val = moveX / allLength
 
           that.callback && that.callback(val)
         }
@@ -97,9 +98,11 @@ Slide.prototype = {
       var $cTar = $(e.currentTarget)
       var $val = $(that.progressVal)
       if ($(e.target).attr('id') !== that.getValId()) {
+        var allLength = $cTar.width() - $val.width();
         var offsetX = e.offsetX
         var left = offsetX - $val.width() / 2
         if (left < 0) left = 0
+        if (left > allLength) left = allLength
         $val.css('left', left)
 
         var val = left / ($cTar.width() - $val.width())
