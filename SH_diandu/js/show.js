@@ -569,6 +569,8 @@ function initSlide() {
         GLOBAL.AUTOPLAYINTERVAL = 0;
         window.galleryTop.stopAutoplay();
       }
+      // TODO：长按出控制区
+      longTapCancleTimer()
     }
   });
   //设置 刚开始 自动播放的间隔时间
@@ -594,6 +596,9 @@ function initSlide() {
 
       $block.find('.action-block-spam').text(val);
       $block.find('.action-block-color').css('opacity', opacity)
+
+      // TODO：长按出控制区
+      longTapCancleTimer()
     }
   });
 }
@@ -1414,19 +1419,43 @@ function bindEvent() {
       }
     })
   } else {
-    /*上下滑动,展示缩略图和自动播放控制轴*/
-    $('body').off('swipeUp').on('swipeUp', function (ev) {
-      //背景图片没有方法才可以滑动上去
+
+    /**
+     * 2017-02-28 23:23:41
+     * 长按出现控制区，如果3s 未才做，则隐藏起来
+     */
+    $('body').on('longTap', function (ev) {
+      longTapCancleTimer()
+      window._galleryTimer = setTimeout(function () {
+        $(".gallery-main").hide();
+      }, 3000)
       if (GLOBAL.allowSwiperUp) {
-        if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
-          ev.preventDefault();
-          $(".gallery-main").show();
-          $(".gallery-main").css('opacity', 1);
-        }
-        return false;
+        ev.preventDefault();
+        $(".gallery-main").show();
+        $(".gallery-main").css('opacity', 1);
       }
+      return false;
     });
   }
+
+  /**
+   * 2017-02-28 23:23:17
+   * 上滑出现控制面板的方法[需要恢复，则去掉注释，删除掉上面的方法,去掉清除定时器的方法]
+   */
+  // $('body').off('swipeUp').on('swipeUp', function (ev) {
+  //   if (GLOBAL.allowSwiperUp) {
+  //     if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
+  //       ev.preventDefault();
+  //       $(".gallery-main").show();
+  //       $(".gallery-main").css('opacity', 1);
+  //     }
+  //     return false;
+  //   }
+  // });
+
+  $(".gallery-main").on(click, function () {
+    longTapCancleTimer()
+  })
 
   /**
    * 点击缩略图,跳转到该位置
@@ -1447,6 +1476,15 @@ function bindEvent() {
       var pageIndex = parseInt($tar.attr('data-id'));
       window.galleryTop.slideTo(pageIndex);
     })
+  }
+}
+
+/**
+ * 长按清除定时器
+ */
+function longTapCancleTimer() {
+  if (window._galleryTimer) {
+    clearTimeout(window._galleryTimer)
   }
 }
 

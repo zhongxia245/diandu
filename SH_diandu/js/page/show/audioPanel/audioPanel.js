@@ -27,6 +27,7 @@ function AudioPanel(config) {
 
   if (window.Util && window.Util.drag) {
     Util.drag('.audio-panel', function (e, x, y) {
+      // console.log('drag', x, y)
       $('.audio-panel').css({
         left: x,
         top: y
@@ -83,7 +84,7 @@ function AudioPanel(config) {
     });
     if (lrc_path) {
       initLrc(lrc_path);
-    }else{
+    } else {
       $btnLrc.hide();
     }
 

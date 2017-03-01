@@ -104,7 +104,7 @@ GlobalAudioController.prototype.initData = function () {
       }
       //如果不是全程音频页，则去掉该页全程音频的按钮
       if (!time) {
-        $('[data-id="global-audio"]').eq(this.data.pageTimes.length).remove()
+        $('_diandu'+i).find('[data-id="global-audio"]').remove()
       }
       if (time === 0) time = null
       this.data.pageTimes.push(time);

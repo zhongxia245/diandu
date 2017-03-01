@@ -186,17 +186,20 @@ window.Util = (function () {
           var touchPros = event.touches[0];
           startX = touchPros.clientX;
           startY = touchPros.clientY;
-          left = parseFloat($(selector).css('left').replace('px', ''))
-          top = parseFloat($(selector).css('top').replace('px', ''))
+
+          if ($(selector).css('left') !== 'auto') {
+            left = parseFloat($(selector).css('left').replace('px', '').replace('rem', ''))
+            top = parseFloat($(selector).css('top').replace('px', '').replace('rem', ''))
+          }
         }
       })
       .on("touchmove", function (event) {
         if (!hasClass($(event.target).attr('class'), not_allow_drag_class)) {
           event.preventDefault();
+
           var touchPros = event.touches[0];
           moveX = touchPros.clientX - startX + left;
           moveY = touchPros.clientY - startY + top;
-
           if (callback) callback(event, moveX, moveY)
         }
       })
@@ -217,8 +220,11 @@ window.Util = (function () {
           event.preventDefault();
           startX = event.clientX;
           startY = event.clientY;
-          left = parseFloat($(selector).css('left').replace('px', ''))
-          top = parseFloat($(selector).css('top').replace('px', ''))
+          
+          if ($(selector).css('left') !== 'auto') {
+            left = parseFloat($(selector).css('left').replace('px', '').replace('rem', ''))
+            top = parseFloat($(selector).css('top').replace('px', '').replace('rem', ''))
+          }
           flag = true;
 
           $(document)
