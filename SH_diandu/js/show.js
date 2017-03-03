@@ -1258,13 +1258,22 @@ function bindEvent() {
     var dataId = $cTar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, dataId);
 
-    // TODO: 判断弹出音频面板或者是普通音频点读点
+    // 判断弹出音频面板或者是普通音频点读点
     var audioPanelConfig = JSON.parse(pointData['audio_panel'] || "{}")
+
     if (audioPanelConfig.show) {
-      new AudioPanel({
-        mp3_path: pointData.url,
-        lrc_path: audioPanelConfig.lrc
-      })
+      if (window.GLOBAL.audio_panel) {
+        window.GLOBAL.audio_panel.show()
+      } else {
+        window.GLOBAL.audio_panel = new AudioPanel({
+          mp3_path: pointData.url,
+          lrc_path: audioPanelConfig.lrc,
+          closeCallback: function () {
+            console.log(123123)
+            window.GLOBAL.audio_panel = null;
+          }
+        })
+      }
     } else {
       //播放或者暂停
       playOrPaused(e, isGlobalAudio, pointData)
@@ -1424,68 +1433,70 @@ function bindEvent() {
      * 2017-02-28 23:23:41
      * 长按出现控制区，如果3s 未才做，则隐藏起来
      */
-    $('body').on('longTap', function (ev) {
-      longTapCancleTimer()
-      window._galleryTimer = setTimeout(function () {
-        $(".gallery-main").hide();
-      }, 3000)
+    //   $('body').on('longTap', function (ev) {
+    //     longTapCancleTimer()
+    //     window._galleryTimer = setTimeout(function () {
+    //       $(".gallery-main").hide();
+    //     }, 3000)
+    //     if (GLOBAL.allowSwiperUp) {
+    //       ev.preventDefault();
+    //       $(".gallery-main").show();
+    //       $(".gallery-main").css('opacity', 1);
+    //     }
+    //     return false;
+    //   });
+    // }
+
+    /**
+     * 2017-02-28 23:23:17
+     * 上滑出现控制面板的方法[需要恢复，则去掉注释，删除掉上面的方法,去掉清除定时器的方法]
+     */
+    $('body').off('swipeUp').on('swipeUp', function (ev) {
       if (GLOBAL.allowSwiperUp) {
-        ev.preventDefault();
-        $(".gallery-main").show();
-        $(".gallery-main").css('opacity', 1);
+        if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
+          ev.preventDefault();
+          $(".gallery-main").show();
+          $(".gallery-main").css('opacity', 1);
+        }
+        return false;
       }
-      return false;
     });
-  }
 
-  /**
-   * 2017-02-28 23:23:17
-   * 上滑出现控制面板的方法[需要恢复，则去掉注释，删除掉上面的方法,去掉清除定时器的方法]
-   */
-  // $('body').off('swipeUp').on('swipeUp', function (ev) {
-  //   if (GLOBAL.allowSwiperUp) {
-  //     if ($(ev.target).hasClass('m-bg-pic') || $(ev.target).hasClass('wrap')) {
-  //       ev.preventDefault();
-  //       $(".gallery-main").show();
-  //       $(".gallery-main").css('opacity', 1);
-  //     }
-  //     return false;
-  //   }
-  // });
+    // $(".gallery-main").on(click, function () {
+    //   longTapCancleTimer()
+    // })
 
-  $(".gallery-main").on(click, function () {
-    longTapCancleTimer()
-  })
-
-  /**
-   * 点击缩略图,跳转到该位置
-   */
-  if (Util.IsPC()) {
-    $('#thumbs .swiper-slide').off().on(click, function (e) {
-      var $tar = $(e.currentTarget)
-      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
-      $tar.addClass('swiper-slide-active-custom');
-      var pageIndex = parseInt($tar.attr('data-id'));
-      window.galleryTop.slideTo(pageIndex);
-    })
-  } else {
-    Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
-      var $tar = $(e.currentTarget)
-      $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
-      $tar.addClass('swiper-slide-active-custom');
-      var pageIndex = parseInt($tar.attr('data-id'));
-      window.galleryTop.slideTo(pageIndex);
-    })
+    /**
+     * 点击缩略图,跳转到该位置
+     */
+    if (Util.IsPC()) {
+      $('#thumbs .swiper-slide').off().on(click, function (e) {
+        var $tar = $(e.currentTarget)
+        $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+        $tar.addClass('swiper-slide-active-custom');
+        var pageIndex = parseInt($tar.attr('data-id'));
+        window.galleryTop.slideTo(pageIndex);
+      })
+    } else {
+      Util.Moblie_MoveOrTap($('#thumbs .swiper-slide'), function (e) {
+        var $tar = $(e.currentTarget)
+        $tar.parent().find('.swiper-slide').removeClass('swiper-slide-active-custom');
+        $tar.addClass('swiper-slide-active-custom');
+        var pageIndex = parseInt($tar.attr('data-id'));
+        window.galleryTop.slideTo(pageIndex);
+      })
+    }
   }
 }
 
 /**
  * 长按清除定时器
+ * 3秒内如无操作，则因此操作面板
  */
 function longTapCancleTimer() {
-  if (window._galleryTimer) {
-    clearTimeout(window._galleryTimer)
-  }
+  // if (window._galleryTimer) {
+  //   clearTimeout(window._galleryTimer)
+  // }
 }
 
 /**

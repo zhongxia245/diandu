@@ -22,8 +22,9 @@ function AudioPanel(config) {
   var mp3_path = config.mp3_path || ''
   var lrc_path = config.lrc_path || ''
   var baseImgPath = config.baseImgPath || './imgs/audio_sound/'
+  var closeCallback = config.closeCallback
 
-  init(mp3_path, lrc_path, baseImgPath);
+  init(mp3_path, lrc_path, baseImgPath, closeCallback);
 
   if (window.Util && window.Util.drag) {
     Util.drag('.audio-panel', function (e, x, y) {
@@ -99,6 +100,16 @@ function AudioPanel(config) {
       } else {
         $btnLrc.addClass('ap__btn-lrc--active');
         $containerLrc.addClass('ap__lrc--active');
+      }
+    })
+
+    $('#ap_progress_val').on('click', function () {
+      if (getMedia().paused) {
+        getMedia().play()
+        $(this).removeClass('ap_progress_val--play')
+      } else {
+        getMedia().pause()
+        $(this).addClass('ap_progress_val--play')
       }
     })
 

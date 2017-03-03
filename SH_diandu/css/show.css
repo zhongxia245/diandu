@@ -717,8 +717,8 @@ li {
 .btn-fullscreen {
     display: none;
     position: absolute;
-    left: 10px;
-    top: 10px;
+    right: 10px;
+    top: 95px;
     width: 70px;
     height: 70px;
     border: 1px solid black;

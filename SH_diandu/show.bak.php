@@ -1,12 +1,12 @@
 <!--获取wiki帐号-->
 <?php
-// session_start();
-// include_once('../course_common.php');
-// if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
-//     require_once "php/jssdk.php";
-//     $jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
-//     $signPackage = $jssdk->GetSignPackage();
-// }
+session_start();
+include_once('../course_common.php');
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
+    require_once "php/jssdk.php";
+    $jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
+    $signPackage = $jssdk->GetSignPackage();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" style="font-size: 100px">
