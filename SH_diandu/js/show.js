@@ -906,8 +906,9 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px;';
 
         switchImg.mp3 = switchImg.mp3 || {}
-        html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '" data-show="' + switchImg.img.defaultShow + '" data-mp3="' + switchImg.mp3.path + '"></div>'
 
+        html += '<div id="' + pointId + '" class="on-off-hideimg" style="' + style + '" data-hide-switch="' + switchImg.hideSwitchArea + '"  data-show="' + switchImg.img.defaultShow + '" data-mp3="' + switchImg.mp3.path + '"></div>'
+        html += '<div id="' + pointId + '_bg" class="on-off-bg"></div>'
         //隐藏触发区
         var hideSwitchArea = switchImg.hideSwitchArea;
         if (!hideSwitchArea) {
@@ -1385,12 +1386,15 @@ function bindEvent() {
     var $cTar = $(ev.currentTarget);
     var id = $cTar.attr('data-target');
     var $hideImg = $('#' + id);
-    var mp3Path = $hideImg.attr('data-mp3')
+    var $hideImgBg = $('#' + id + '_bg');
+
+    var mp3Path = $hideImg.attr('data-mp3');
 
     if ($hideImg.css('opacity') === '0') {
       _playShowAudio(true, mp3Path);
       $hideImg.css('opacity', 1);
       _domShowEffect($hideImg);
+      $hideImgBg.show();
     }
   })
 
@@ -1398,16 +1402,26 @@ function bindEvent() {
   $('.on-off-hideimg').off().on(click, function (e) {
     var $cTar = $(e.currentTarget);
     var mp3Path = $cTar.attr('data-mp3')
+    var hideSwitchArea = $cTar.data('hide-switch')
+    var $hideImgBg = $('#' + $cTar.attr('id') + '_bg');
 
-    if ($cTar.css('opacity') === '0') {
-      console.log("show")
-      _playShowAudio(true, mp3Path);
-      $cTar.css('opacity', 1);
-      _domShowEffect($cTar);
+    if (hideSwitchArea) {
+      if ($cTar.css('opacity') === '0') {
+        _playShowAudio(true, mp3Path);
+        $cTar.css('opacity', 1);
+        _domShowEffect($cTar);
+        $hideImgBg.show();
+      } else {
+        $cTar.css('opacity', 0);
+        _playShowAudio(false, mp3Path);
+        $hideImgBg.hide()
+      }
     } else {
-      console.log("hide")
-      $cTar.css('opacity', 0);
-      _playShowAudio(false, mp3Path);
+      if ($cTar.css('opacity') === '1') {
+        $cTar.css('opacity', 0);
+        _playShowAudio(false, mp3Path);
+        $hideImgBg.hide()
+      }
     }
   })
 

@@ -78,6 +78,7 @@ function AudioPanel(config) {
     var $containerLrc = $('.js-container-lrc');
     var $btnClose = $('.js-ap-close');
     var $btnSound = $('.js-ap-sound');
+    var $btnProgressVal = $('#ap_progress_val');
 
     initSlide();
     initSoundControl(baseImgPath, function (size) {
@@ -103,13 +104,13 @@ function AudioPanel(config) {
       }
     })
 
-    $('#ap_progress_val').on('click', function () {
+    $btnProgressVal.on('click', function () {
       if (getMedia().paused) {
         getMedia().play()
-        $(this).removeClass('ap_progress_val--play')
+        $btnProgressVal.removeClass('ap_progress_val--play')
       } else {
         getMedia().pause()
-        $(this).addClass('ap_progress_val--play')
+        $btnProgressVal.addClass('ap_progress_val--play')
       }
     })
 
@@ -275,7 +276,13 @@ function AudioPanel(config) {
     function getMedia() {
       var audio = $('#js-ap-audio')[0]
       audio.ontimeupdate = updateMethod;
+      audio.onended = endedMethod;
       return audio;
+    }
+
+    function endedMethod() {
+      $btnProgressVal.addClass('ap_progress_val--play')
+      $('#ap_progress_val').css('left', 0)
     }
 
     //更新当前时间和进度条

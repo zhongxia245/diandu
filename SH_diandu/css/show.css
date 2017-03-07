@@ -705,7 +705,7 @@ li {
     transform-origin: left top;
     position: absolute;
     opacity: 0;
-    z-index: 2;
+    z-index: 9;
 }
 
 .on-off-switch-area {
@@ -726,6 +726,17 @@ li {
     z-index: 999999999;
     background-image: url(../imgs/fullscreen.png);
     background-size: contain;
+}
+
+.on-off-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 8;
 }
 
 .normal-screen {
