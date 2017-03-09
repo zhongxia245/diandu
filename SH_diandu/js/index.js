@@ -414,8 +414,12 @@ var _edit = (function () {
     $('input[name="permissionType"][value="' + data['isprivate'] + '"]').attr('checked', true)
     $('#input[name="pic"]').val(data['pic'])
     $('#chargeStandard').val(data['cost'])
-    $('#file_btnAutoAudio_path').val(data['background'])
-    $('#btnAutoAudio>span').text(data['bgFileName'])
+
+    if (data['background']) {
+      $('#file_btnAutoAudio_path').val(data['background'])
+      $('#btnAutoAudio>span').text(data['bgFileName'])
+      $('.js-autovideo-btns').css({ display: 'flex' })
+    }
 
     GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100
     GLOBAL.BACK_COLOR = data['back_color'] === '0' ? 'rgb(0,0,0)' : data['back_color']
@@ -717,6 +721,7 @@ function bindEvent() {
     })
   })
 
+  //自动播放的背景音乐
   _upload.initWebUpload('#file_btnAutoAudio', {
     multiple: false,
     fileTypeDesc: 'Audio Files',
@@ -725,8 +730,39 @@ function bindEvent() {
       resultPath = resultPath._raw
       $('#file_btnAutoAudio_path').val(resultPath)
       $('#btnAutoAudio>span').text(file.name)
+      $('.js-autovideo-btns').css({ display: 'flex' })
+      $('.js-autovideo-progress').hide()
+    },
+    onUploadProgress: function (file, percentage) {
+      $('.js-autovideo-progress').show()
+      var $autoVideoProgress = $('.js-autovideo-progress');
+      var percent = parseInt(percentage * 100);
+      $autoVideoProgress.text(percent + '%');
+      $autoVideoProgress.css({ width: percent + '%' })
     }
   })
+
+  // 删除背景音乐
+  $('.js-autovideo-del').on('click', function () {
+    if (confirm('是否删除背景音乐？')) {
+      $('#file_btnAutoAudio_path').val('');
+      $('#btnAutoAudio>span').text('点击上传自动播放时的背景音乐(MP3格式)');
+      $('.js-autovideo-btns').hide()
+    }
+  })
+
+  // 下载音频
+  $('.js-autovideo-download').on('click', function () {
+    if (confirm('是否下载背景音乐？')) {
+      var autoAudioPath = $('#file_btnAutoAudio_path').val();
+      if (autoAudioPath && autoAudioPath !== '') {
+        window.open(autoAudioPath)
+      }
+    }
+  })
+
+
+
 
   // 点读点大小设置 START  2016-07-17 17:02:42
   $('#pointSetting').on('click', function (e) {

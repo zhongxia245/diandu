@@ -69,11 +69,9 @@ function CustomPointSetting(selector, config) {
 
   //音频面板设置
   this.data.audio_panel = config.audio_panel || {
-    show: true,
+    show: false,
     lrc: ''
   }
-
-  console.log(this.data)
 
   this.setUploadify = config.setUploadify || (_upload && _upload.initWebUpload);
 
@@ -188,7 +186,7 @@ CustomPointSetting.prototype.render = function () {
   html.push('    <div class="cps-content-audio" style="display:none;">')
   html.push('       <em>当前音频时长为<span class="cps-audio-time"></span></em>')
   html.push('       <em>默认音频控制面板为显示，如需修改，请点击切换</em>')
-  html.push('       <div class="cps-audio-switch cps-content-switch--active js-audio-switch">')
+  html.push('       <div class="cps-audio-switch  js-audio-switch">')
   html.push('         <div class="cps-audio-switch-content ">音频面板</div>')
   html.push('         <div class="cps-audio-on">开</div>')
   html.push('         <div class="cps-audio-off">关</div>')

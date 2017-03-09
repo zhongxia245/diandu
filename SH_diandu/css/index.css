@@ -715,6 +715,7 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
 }
 
 .setting-btn-autovideo {
+    position: relative;
     background: #FF7C80;
     width: 75%;
     margin: auto;
@@ -746,6 +747,50 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
 
 .setting-btn-autovideo>.uploadify>.uploadify-button {
     display: none;
+}
+
+.autovideo__btns {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100px;
+    display: none;
+    z-index: 999;
+}
+
+.autovideo__btn-del,
+.autovideo__btn-download {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+.autovideo__btn-del {
+    background-image: url('../imgs/index_bg_audio/del.png');
+}
+
+.autovideo__btn-del:hover {
+    background-image: url('../imgs/index_bg_audio/del-hover.png')
+}
+
+.autovideo__btn-download {
+    background-image: url('../imgs/index_bg_audio/download.png');
+}
+
+.autovideo__btn-download:hover {
+    background-image: url('../imgs/index_bg_audio/download-hover.png');
+}
+
+.autovideo__progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: #19C587;
 }
 
 .setting-btn-last {

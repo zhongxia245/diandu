@@ -887,7 +887,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         }
         //自定义图片
         if (pic.src) {
-          var loadImg = '   <img  class="audio-load" style="display:none;" src="imgs/load.gif" alt="audio" />';
+          var loadImg = '   <img  class="audio-load" style="display:none; width:100%;height:100%;" src="imgs/load.gif" alt="audio" />';
           config.outHTML = loadImg;
           html += CreatePoint.initPoint(5, config)
         }
@@ -990,7 +990,6 @@ function audioPlay(e, url) {
       if (window.audio.src.indexOf(url) !== -1) {
 
         window.audio.play();
-        console.log('play()=>paused:', audio.paused)
 
         window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
 
@@ -999,6 +998,7 @@ function audioPlay(e, url) {
         $cTar.css('background-size', '100%')
 
         if ($cTar.attr('data-type') === 'pointImg') {
+          // pointEffect
           diandu.customPlay($cTar, true)
         }
 
@@ -1245,10 +1245,12 @@ function bindEvent() {
     window._audioEnded = true;
     audio.addEventListener('ended', function () {
       if (window._audioEnded) {
-        window._audioEnded = false;
-        console.log("audio ended")
-        $cTar.find('img').hide();
+
+        window._audioEnded = false
+        $cTar.find('img').hide()
+        $cTar.attr('data-play', false)
         diandu.customPlay($cTar, false)
+
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }

@@ -95,7 +95,7 @@ window.diandu = (function (dd) {
    * @param show 是否开启 true 有动画   false 关闭动画
    */
   dd.customPlay = function ($selector, show) {
-    var tmpStyle = 'drop-shadow(rgb(255, 255, 11) 0px 0px ';
+    var tmpStyle = 'drop-shadow(rgb(251, 0, 6) 0px 0px ';
     var size = 1;
     var maxSize = 15;
     var minSize = 5;
