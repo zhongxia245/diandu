@@ -121,6 +121,10 @@
 <section class="sec-audio">
   <audio id="bg-audio" loop="loop"></audio>
   <audio id="global-audio" preload="auto"></audio>
+  <!--<audio preload="auto" controls="controls" src="http://dev.catics.org/edu/course/diandu/uploads/1da9ab71ce9ea2e3dd424015692339d6.mp3" style="position:absolute;top:0;left:0;z-index:9999;"></audio>-->
+  <!--<audio preload="auto" src="http://web.catics.org/edu/course/linzhongniao.mp3" controls="controls" style="position:absolute;top:50px;left:0;z-index:9999;"></audio>-->
+  <!--<audio preload="auto" src="http://7xryc9.com1.z0.glb.clouddn.com/linzhongniao.mp3" controls="controls" style="position:absolute;top:100px;left:0;z-index:9999;"></audio>-->
+  <!--<audio preload="auto" src="http://96.f.1ting.com/58c2162a/ceee4c92883ed07e3b799d90fb5fdd6d/zzzzzmp3/2011lDec/20L/20father/01.mp3" controls="controls" style="position:absolute;top:100px;left:0;z-index:9999;"></audio>-->
   <audio id="point-audio" preload="auto"></audio>
 </section>
 <!--音频 END-->

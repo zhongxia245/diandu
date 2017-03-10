@@ -18,13 +18,19 @@ function GlobalAudioController(selector, config) {
   this.duration = 50;
   this.callback = config.callback;  //播放某个时刻,跳转页面
   this.playCallback = config.playCallback; //播放后的回调
+  this.loadingCallback = config.loadingCallback; //播放后的回调
   this.pauseCallback = config.pauseCallback; //暂停后的回调
-  this.hideOtherPointCallback = config.hideOtherPointCallback; //暂停后的回调
+  this.hideOtherPointCallback = config.hideOtherPointCallback; //隐藏其他点读点的回调
   this.hideCallback = config.hideCallback;  //隐藏全程音频功能
 
   this.initData();
 
   var that = this;
+
+
+  that.audio.addEventListener('canplaythrough', function () {
+    that.audio_loaded = true
+  })
 
   /**
    * 页面上滑出现的,全程音频开关,点击事件
@@ -104,7 +110,7 @@ GlobalAudioController.prototype.initData = function () {
       }
       //如果不是全程音频页，则去掉该页全程音频的按钮
       if (!time) {
-        $('_diandu'+i).find('[data-id="global-audio"]').remove()
+        $('_diandu' + i).find('[data-id="global-audio"]').remove()
       }
       if (time === 0) time = null
       this.data.pageTimes.push(time);
@@ -220,7 +226,7 @@ GlobalAudioController.prototype.bindEvent = function () {
   })
 
   //点击点读页,关闭窗口,播放全程音频,并且跳转到指定页面
-  that.$pageItem.off().on(this.click, function (e) {
+  that.$pageItem.on(this.click, function (e) {
     var $cTar = $(e.currentTarget);
     var index = $cTar.attr('data-index');
     that.$container.hide();
@@ -230,7 +236,7 @@ GlobalAudioController.prototype.bindEvent = function () {
   })
 
   //隐藏其他点读点
-  that.$btnHidePoint.off().on(this.click, function (e) {
+  that.$btnHidePoint.on(this.click, function (e) {
     var flag = $(e.currentTarget).find('input').attr('checked');
     that.hideOtherPointCallback && that.hideOtherPointCallback(flag);
   })
@@ -242,7 +248,24 @@ GlobalAudioController.prototype.bindEvent = function () {
  */
 GlobalAudioController.prototype.play = function () {
   var that = this;
+
+  //可以播放后，因此loading效果
+  that.audio.addEventListener('canplaythrough', function () {
+    that.audio_loaded = true
+    if (that.playCallback && !that.audio.paused) {
+      that.playCallback()
+    }
+  })
+
+  if (that.playCallback) that.playCallback()
+
+  if (!that.audio_loaded && that.loadingCallback) {
+    that.loadingCallback()
+  }
+
   that.audio.play();
+
+
   that.timer = setInterval(function () {
     for (var i = 0; i < that.data.pageTimes.length; i++) {
       var _time = that.data.pageTimes[i];
@@ -255,7 +278,6 @@ GlobalAudioController.prototype.play = function () {
       }
     }
   }, that.duration);
-  that.playCallback && that.playCallback()
 
   clearTimeout(that.playEndtimer);
   //播放结束,清除定时器

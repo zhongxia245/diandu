@@ -348,8 +348,16 @@ function afterRenderOp(data) {
           window.galleryTop.slideTo(index);
           window.galleryThumbs.slideTo(index);
         },
+        //loading效果
+        loadingCallback: function () {
+          $('.m-global-audio').css('background-size', 0)
+          $('.m-global-audio').find('.audio-global-play').hide();
+          $('.m-global-audio').find('.audio-load').show();
+          $('.m-global-audio').find('.audio-play').hide();
+        },
         //播放后的回调
         playCallback: function () {
+          $('.m-global-audio').css('background-size', '100%')
           $('[data-id="global-audio"]').removeClass().addClass('global-audio-other-page-on');
           $('.m-global-audio').find('.audio-global-play').show();
           $('.m-global-audio').find('.audio-load').hide();
@@ -1020,7 +1028,6 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   var $cTar = $(e.currentTarget);
 
   GLOBAL.BGAUDIO.clearTimeout();
-
   //正在加载中加载状态
   if ($cTar.attr('data-loading') === 'true') {
     $cTar.attr('data-loading', false)
@@ -1031,6 +1038,7 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   else if ($cTar.attr('data-play') === 'true') {
     $cTar.find('.audio-play').hide();
     $cTar.attr('data-play', false);
+
     if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
@@ -1046,18 +1054,18 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   //未播放
   else {
     $cTar.attr('data-play', true)
-    if (window.audio.getAttribute('src') !== url) {
-      window.audio.setAttribute('src', url);
-    }
     //是全局音频
-    if (ctlGlobalAudio && isGlobalAudio) {
+    if (ctlGlobalAudio && isGlobalAudio === "1") {
       ctlGlobalAudio.play();
-    }
-    else {
+    } else {
+      if (window.audio.getAttribute('src') !== url) {
+        window.audio.setAttribute('src', url);
+      }
       if (window.audio.paused) {
         audioPlay(e, url)
       }
     }
+
 
     //关闭背景音乐
     GLOBAL.BGAUDIO.pause();
@@ -1235,7 +1243,6 @@ function bindEvent() {
   // 音频
   $('.m-audio').off().on(click, function (e) {
     e.stopPropagation();
-
     var $cTar = $(e.currentTarget);
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
@@ -1245,7 +1252,6 @@ function bindEvent() {
     window._audioEnded = true;
     audio.addEventListener('ended', function () {
       if (window._audioEnded) {
-
         window._audioEnded = false
         $cTar.find('img').hide()
         $cTar.attr('data-play', false)
