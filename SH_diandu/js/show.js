@@ -1265,11 +1265,11 @@ function bindEvent() {
 
     // 获取当前音频数据
     var dataId = $cTar.attr('data-id');
-    var pointData = Util.getPointDataByIds(DATA, dataId);
+    var pointData = Util.getPointDataByIds(DATA, dataId)
 
-    // 判断弹出音频面板或者是普通音频点读点
     var audioPanelConfig = JSON.parse(pointData['audio_panel'] || "{}")
 
+    // 需要展示音频面板
     if (audioPanelConfig.show) {
       if (window.GLOBAL.audio_panel) {
         window.GLOBAL.audio_panel.show()
@@ -1277,14 +1277,28 @@ function bindEvent() {
         window.GLOBAL.audio_panel = new AudioPanel({
           mp3_path: pointData.url,
           lrc_path: audioPanelConfig.lrc,
+          // 关闭音频面板的回调
           closeCallback: function () {
-            console.log(123123)
-            window.GLOBAL.audio_panel = null;
+            window.GLOBAL.audio_panel = null
+            $cTar.find('.audio-play').hide()
+            $cTar.find('.audio-panel__flag').remove()
+          },
+          // 音频还在播放，关闭后，展示标识
+          showFlag: function () {
+            console.log($cTar, '显示标识')
+            $cTar.find('.audio-play').show()
+            $cTar.append('<div class="audio-panel__flag"></div>')
           }
         })
       }
     } else {
-      //播放或者暂停
+      //音频面板正在播放的标识
+      if (window.GLOBAL.audio_panel) {
+        $('.m-audio .audio-panel__flag').remove()
+        window.GLOBAL.audio_panel.close()
+      }
+      
+      //普通音频点读点
       playOrPaused(e, isGlobalAudio, pointData)
     }
   })

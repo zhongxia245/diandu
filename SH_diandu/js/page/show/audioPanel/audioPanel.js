@@ -23,8 +23,9 @@ function AudioPanel(config) {
   var lrc_path = config.lrc_path || ''
   var baseImgPath = config.baseImgPath || './imgs/audio_sound/'
   var closeCallback = config.closeCallback
+  var showFlag = config.showFlag
 
-  init(mp3_path, lrc_path, baseImgPath, closeCallback);
+  init();
 
   if (window.Util && window.Util.drag) {
     Util.drag('.audio-panel', function (e, x, y) {
@@ -73,7 +74,7 @@ function AudioPanel(config) {
     return html;
   }
 
-  function init(mp3_path, lrc_path, baseImgPath) {
+  function init() {
     var $btnLrc = $('.js-ap-lrc');
     var $containerLrc = $('.js-container-lrc');
     var $btnClose = $('.js-ap-close');
@@ -116,11 +117,16 @@ function AudioPanel(config) {
 
     //关闭弹窗
     $btnClose.on('click', function (e) {
-      e.stopPropagation();
-      try {
-        getMedia().pause();
-      } catch (error) { }
-      $('.audio-panel-wrap').remove();
+      e.stopPropagation()
+      var audio = getMedia()
+      if (audio.paused) {
+        try { getMedia().pause(); } catch (error) { }
+        $('.audio-panel-wrap').remove()
+        if (closeCallback) closeCallback()
+      } else {
+        $('.audio-panel-wrap').hide();
+        if (showFlag) showFlag()
+      }
     })
 
 
@@ -344,6 +350,18 @@ function AudioPanel(config) {
       getMedia().src = url;
       try { getMedia().load(); } catch (e) { };
       getMedia().play();
+    }
+  }
+
+
+  return {
+    show: function () {
+      $('.audio-panel-wrap').show();
+    },
+    close: function () {
+      try { getMedia().pause(); } catch (error) { }
+      $('.audio-panel-wrap').remove()
+      if (closeCallback) closeCallback()
     }
   }
 }

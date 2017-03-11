@@ -99,8 +99,16 @@
     background-size: 100%;
 }
 
+.ap__progress_val:hover {
+    background-image: url('./imgs/pause_hover.png');
+}
+
 .ap_progress_val--play {
     background-image: url('./imgs/play.png');
+}
+
+.ap_progress_val--play:hover {
+    background-image: url('./imgs/play_hover.png');
 }
 
 .ap__speed_val {
@@ -190,4 +198,19 @@
     .ap__lrc--active {
         height: 350px;
     }
+}
+
+
+/*音频面板正在播放，关闭音频面板后，隐藏面板，并且显示标识*/
+
+.audio-panel__flag {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 140%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-image: url(./imgs/audio-icon-top.png);
+    z-index: -1;
 }
