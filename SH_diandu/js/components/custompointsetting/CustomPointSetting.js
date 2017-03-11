@@ -64,7 +64,7 @@ function CustomPointSetting(selector, config) {
 
   //自定义图片地址,颜色,发光大小
   this.data.pic = config.pic || {};
-  this.data.pic.color = this.data.pic.color || '#FFFF0B';
+  this.data.pic.color = this.data.pic.color || '#FB0006';
   this.data.pic.colorSize = this.data.pic.colorSize || 5;
 
   //音频面板设置
@@ -131,10 +131,15 @@ CustomPointSetting.prototype.render = function () {
   html.push('       </div>')
   html.push('     </div>')
   html.push('     <div class="cps-content-right">')
+  html.push('       <div class="cps-content-reupload js-reupload">重新上传自定义图片</div>')
   html.push('       <h4>自定制点读点按钮图案</h4>')
   html.push('       <em>(请采用背景色透明的png图片文件)</em>')
   html.push('       <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>')
   html.push('       <div class="cps-show-img" style="display: none;"></div>')
+  html.push('       <div id="cps-upload-png">')
+  html.push('         <p>gif图如需初始不动</p>')
+  html.push('         <p>请上传定图（背景透明的png）</p>')
+  html.push('       </div>')
   html.push('       <ul class="cps-show-color">')
   html.push('         <li tabindex="1" style="background-color:#FB0006;"></li>')
   html.push('         <li tabindex="2" style="background-color:#15A53F;"></li>')
@@ -208,6 +213,7 @@ CustomPointSetting.prototype.initVar = function () {
   this.$container = $(this.selector);
   this.$text = this.$container.find('.cps-point-text');
   this.$upload = this.$container.find('#cps-upload-img');
+  this.$reUpload = this.$container.find('.js-reupload');
   this.$submit = this.$container.find('.cps-submit');
   this.$showImg = this.$container.find('.cps-show-img');
   this.$showColor = this.$container.find('.cps-show-color');
@@ -366,10 +372,29 @@ CustomPointSetting.prototype.bindEvent = function () {
    * 重新上传图片
    */
   that.$showImg.off().on('click', function (e) {
+    if (that.data.pic.png) {
+      var flag = that.$showImg.attr('data-showgif') === 'true'
+
+      if (flag) {
+        that.$showImg.css({
+          backgroundImage: 'url(' + that.data.pic.png + ')'
+        })
+        that.$showImg.attr('data-showgif', false)
+      } else {
+        that.$showImg.css({
+          backgroundImage: 'url(' + that.data.pic.src + ')'
+        })
+        that.$showImg.attr('data-showgif', true)
+      }
+    }
+  })
+
+  this.$reUpload.off().on('click', function (e) {
     layer.confirm('是否重新选择图片？', {
       btn: ['确定', '取消'] //按钮
     }, function (index) {
       that.data.pic.src = null;
+      that.data.pic.png = null;
       that.$container.find('#cps-upload-img').css({ left: 0 });
       that.$showImg.hide().html("");
       layer.close(index);
@@ -399,10 +424,15 @@ CustomPointSetting.prototype.bindEvent = function () {
   })
 
   /**
-   * 点读点自定义图片上传
+   * 点读点自定义 图片上传（如果上传gif图则展示上传静态度的按钮）
    */
   that.setUploadify('#cps-upload-img', {
     onUploadSuccess: function (file, result) {
+      // 如果是动态图，则上传静态度按钮
+      if (file.type === 'image/gif') {
+
+      }
+
       result = result._raw
       Util.getImageWH(result, function (obj) {
         that.data.title.title = null;
@@ -410,22 +440,39 @@ CustomPointSetting.prototype.bindEvent = function () {
         that.data.pic.src = result;
         that.data.pic.w = obj.w;
         that.data.pic.h = obj.h;
-
         //that.$upload 还是最早保存的变量,
         that.$container.find('#cps-upload-img').css({ left: -99999 });   //记住  that.$upload !== that.$container.find('#cps-upload-img')
+
+        that.$showColor.attr('data-gif', result)
         that.$showImg.show().css({
-          background: 'url(' + result + ') no-repeat',
+          background: 'no-repeat',
           backgroundSize: 'contain',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          backgroundImage: 'url(' + result + ')'
         })
       })
     }
   });
 
+  /**
+   * 自定义点读点静态度上传
+   */
+  that.setUploadify('#cps-upload-png', {
+    onUploadSuccess: function (file, result) {
+      result = result._raw
+      that.data.pic.png = result;
+      that.$showImg.attr('data-png', result)
+      that.$showImg.show().css({
+        backgroundImage: 'url(' + result + ')'
+      })
+      that.$showImg.attr('data-showgif', false)
+      console.log(file, result)
+    }
+  });
+
 
   /**
-   * 点读点自定义图片上传
-   * TODO:过滤lrc文件不起作用
+   * 点读点自定义点读点的音频面板
    */
   that.setUploadify('#cps-upload-audio', {
     multiple: false,
@@ -538,9 +585,14 @@ CustomPointSetting.prototype.initData = function () {
 
     //设置了自定义图片
     if (this.data.pic.src) {
+      var src = this.data.pic.src
+      if (this.data.pic.png) {
+        src = this.data.pic.png
+        this.$showImg.attr('data-showgif', false)
+      }
       var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
       this.$showImg.show().css({
-        background: 'url(' + this.data.pic.src + ') no-repeat',
+        background: 'url(' + src + ') no-repeat',
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         '-webkit-filter': filter,

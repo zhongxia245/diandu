@@ -112,7 +112,7 @@ GlobalAudioController.prototype.initData = function () {
       if (!time) {
         $('_diandu' + i).find('[data-id="global-audio"]').remove()
       }
-      if (time === 0) time = null
+      // if (time === 0) time = null   //导致跳转全程音频的第一页，会不跳转00;00时间点
       this.data.pageTimes.push(time);
     }
   }

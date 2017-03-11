@@ -35,7 +35,7 @@
     width: 295px;
     float: left;
     text-align: center;
-    padding: 60px 25px;
+    padding: 25px;
     position: relative;
 }
 
@@ -125,18 +125,51 @@
     line-height: 2;
 }
 
+#cps-upload-png .webuploader-pick {
+    padding: 0;
+    line-height: 20px;
+    background: #FF636B;
+    cursor: pointer;
+}
+
+#cps-upload-png {
+    position: relative;
+    height: 50px;
+    margin-top: 25px;
+    padding: 5px;
+    background: #FF636B;
+    font-style: italic;
+    color: #FFF;
+    border-radius: 5px;
+    opacity: 1;
+    cursor: pointer;
+}
+
+#cps-upload-png p {
+    margin: 0;
+}
+
+.cps-content-reupload {
+    background: #FF636B;
+    border-radius: 5px;
+    padding: 3px 10px;
+    color: #FFF;
+    cursor: pointer;
+}
+
 .cps-show-img {
     line-height: 175px;
     background: #000;
     position: absolute;
-    top: 135px;
+    top: 120px;
     left: 50%;
     margin-left: -86px;
     -webkit-filter: drop-shadow(0px 0px 5px yellow);
     filter: drop-shadow(0px 0px 6px yellow);
 }
 
-#cps-upload-img object {
+#cps-upload-img object,
+#cps-upload-png object {
     top: 0;
     left: 0;
 }

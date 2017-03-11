@@ -721,6 +721,32 @@ function bindEvent() {
     })
   })
 
+  // 自定义点读点，点击展示动态GIF图
+  $(document).on('click', '.create-point-img', function (e) {
+    var $cTar = $(e.currentTarget)
+    var pointId = $cTar.attr('data-id');
+    var pageIndex = parseInt(pointId.split('_')[0]) - 1
+    var pointIndex = parseInt(pointId.split('_')[1]) - 1
+
+    var pointData = DD.items[pageIndex].data[pointIndex]
+    if (pointData.pic && pointData.pic.png) {
+      var flag = $cTar.attr('data-showgif') === 'true'
+      var src = pointData.pic.src
+      if (flag) {
+        src = pointData.pic.png
+        flag = false
+      } else {
+        flag = true
+      }
+
+      $cTar
+        .css({
+          backgroundImage: 'url(' + src + ')'
+        })
+        .attr('data-showgif', flag)
+    }
+  })
+
   //自动播放的背景音乐
   _upload.initWebUpload('#file_btnAutoAudio', {
     multiple: false,
@@ -762,8 +788,6 @@ function bindEvent() {
   })
 
 
-
-
   // 点读点大小设置 START  2016-07-17 17:02:42
   $('#pointSetting').on('click', function (e) {
     e.stopPropagation()
@@ -802,7 +826,6 @@ function bindEvent() {
     })
   })
   // 点读点大小设置 END
-
 }
 
 /**
@@ -1217,7 +1240,7 @@ function downloadFile(e) {
  * 添加点读位置
  */
 function addDianDuLocation(e) {
-  e.stopPropagation(); // 阻止冒泡，否则背景会触发点击事件
+  // e.stopPropagation(); // 阻止冒泡，否则背景会触发点击事件
 
   var $tar = $(e.target)
   var w = $tar.width()

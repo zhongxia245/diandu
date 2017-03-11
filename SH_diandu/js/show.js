@@ -1039,6 +1039,9 @@ function playOrPaused(e, isGlobalAudio, pointData) {
     $cTar.find('.audio-play').hide();
     $cTar.attr('data-play', false);
 
+    //自定义点读点，有静态图
+    customPng2Gif($cTar, pointData, false)
+
     if (ctlGlobalAudio && isGlobalAudio) {
       ctlGlobalAudio.pause();
       ctlGlobalAudio.render();
@@ -1053,6 +1056,7 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   }
   //未播放
   else {
+    customPng2Gif($cTar, pointData, true)
     $cTar.attr('data-play', true)
     //是全局音频
     if (ctlGlobalAudio && isGlobalAudio === "1") {
@@ -1069,6 +1073,21 @@ function playOrPaused(e, isGlobalAudio, pointData) {
 
     //关闭背景音乐
     GLOBAL.BGAUDIO.pause();
+  }
+}
+
+/**
+ * 点击自定义点读图，静态图，动态图之间切换
+ * @param $cTar 自定义点读点的DOM节点
+ * @param pointData 点读点数据
+ * @param falg true 展示动态图，否则静态图
+ */
+function customPng2Gif($cTar, pointData, flag) {
+  var customPointData = JSON.parse(pointData['pic'] || "{}")
+  if (flag && customPointData.src) {
+    $cTar.css('backgroundImage', 'url(' + customPointData.src + ')')
+  } else if (customPointData.png) {
+    $cTar.css('backgroundImage', 'url(' + customPointData.png + ')')
   }
 }
 
@@ -1260,6 +1279,8 @@ function bindEvent() {
         if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
           window.galleryTop.startAutoplay();
         }
+
+        customPng2Gif($cTar, pointData, false)
       }
     })
 
@@ -1298,7 +1319,7 @@ function bindEvent() {
         $('.m-audio .audio-panel__flag').remove()
         window.GLOBAL.audio_panel.close()
       }
-      
+
       //普通音频点读点
       playOrPaused(e, isGlobalAudio, pointData)
     }

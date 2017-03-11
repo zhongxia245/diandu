@@ -49,11 +49,11 @@ window.CreatePoint = (function () {
     var className = data.className; //展示页面  添加到点读点的样式
     var outHTML = data.outHTML; //[展示页面] 外部传进来的HTML,添加到点读点的div里面
 
-    left = typeof(left) === 'number' ? left : left.replace('px', '');
-    top = typeof(top) === 'number' ? top : top.replace('px', '');
+    left = typeof (left) === 'number' ? left : left.replace('px', '');
+    top = typeof (top) === 'number' ? top : top.replace('px', '');
 
     var title = data.title || {};
-    var pic = data.pic || {src: '', color: '', colorSize: ''};  //自定义图片需要 图片地址,发光颜色,光圈大小
+    var pic = data.pic || { src: '', color: '', colorSize: '' };  //自定义图片需要 图片地址,发光颜色,光圈大小
 
     var style = "position:absolute; left:" + left + "px; top :" + top + "px;";
 
@@ -70,11 +70,11 @@ window.CreatePoint = (function () {
       case 3:
         html = initCustomImgPoint(pointId, style, pic)
         break;
-      //展示页面  自定义标题
+      //展示页面  自定义标题[展示页面]
       case 4:
         html = initMTitlePoint(pointId, style, title, className, outHTML, scale)
         break;
-      //展示页面  自定义图片
+      //展示页面  自定义图片[展示页面]
       case 5:
         html = initMCustomImgPoint(pointId, style, pic, className, outHTML, scale)
         break;
@@ -127,9 +127,10 @@ window.CreatePoint = (function () {
   function initCustomImgPoint(pointId, style, pic) {
     //debugger;
     var html = [];
+    var src = pic.png || pic.src;
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
-
-    style += 'background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
+    
+    style += 'background: url(' + src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
     if (pic.w && pic.h) {
@@ -184,8 +185,9 @@ window.CreatePoint = (function () {
    */
   function initMCustomImgPoint(pointId, style, pic, outClassName, outHTML, scale) {
     var html = [];
+    var src = pic.png || pic.src;
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
-    style += 'border-radius:0;background: url(' + pic.src + ') no-repeat ;background-size: contain; background-position:center;';
+    style += 'border-radius:0;background: url(' + src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
     if (pic.w && pic.h) {
