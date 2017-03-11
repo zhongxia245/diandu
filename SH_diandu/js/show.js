@@ -1273,6 +1273,7 @@ function bindEvent() {
     if (audioPanelConfig.show) {
       if (window.GLOBAL.audio_panel) {
         window.GLOBAL.audio_panel.show()
+        $cTar.find('.audio-panel__flag').remove()
       } else {
         window.GLOBAL.audio_panel = new AudioPanel({
           mp3_path: pointData.url,
