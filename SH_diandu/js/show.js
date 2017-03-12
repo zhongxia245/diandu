@@ -930,6 +930,9 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         style += 'width:' + (_hideImgW) + 'px; height:' + (_hideImgH) + 'px;'
         style += 'transform: scale(' + (switchImg.img.scale) + ');'
         style += 'left:' + (switchImg.img.x * imgW) + 'px;top:' + (switchImg.img.y * imgH) + 'px;';
+        if (!switchImg.hideSwitchArea) {
+          style += 'display:none;'
+        }
 
         switchImg.mp3 = switchImg.mp3 || {}
 
@@ -1454,7 +1457,7 @@ function bindEvent() {
 
     if ($hideImg.css('opacity') === '0') {
       _playShowAudio(true, mp3Path);
-      $hideImg.css('opacity', 1);
+      $hideImg.css('opacity', 1).show();
       _domShowEffect($hideImg);
       $hideImgBg.show();
     }
@@ -1480,7 +1483,7 @@ function bindEvent() {
       }
     } else {
       if ($cTar.css('opacity') === '1') {
-        $cTar.css('opacity', 0);
+        $cTar.css('opacity', 0).hide()
         _playShowAudio(false, mp3Path);
         $hideImgBg.hide()
       }
