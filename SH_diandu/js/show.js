@@ -251,6 +251,24 @@ function init() {
           fn_onResize();
           window._load.loading("hide");
           diandu.blink(0);
+
+          //自定义GIF图片，获取第一帧，展示  zhongxia
+          var $customGifPoints = $('.create-point-img[data-dynamic="true"]');
+          for (var i = 0; i < $customGifPoints.length; i++) {
+            var $point = $customGifPoints.eq(0);
+            Util.getImageBase64($point.data('src'), function (base64) {
+              $point
+                .css({
+                  backgroundImage: 'url(' + base64 + ')'
+                })
+              var dataId = $point.attr('data-id');
+              var pointData = Util.getPointDataByIds(DATA, dataId)
+              pointData.base64 = base64;
+            })
+          }
+          // end
+
+
         }, 100)
       })
     } else {
@@ -1086,8 +1104,8 @@ function customPng2Gif($cTar, pointData, flag) {
   var customPointData = JSON.parse(pointData['pic'] || "{}")
   if (flag && customPointData.src) {
     $cTar.css('backgroundImage', 'url(' + customPointData.src + ')')
-  } else if (customPointData.png) {
-    $cTar.css('backgroundImage', 'url(' + customPointData.png + ')')
+  } else if (pointData.base64) {
+    $cTar.css('backgroundImage', 'url(' + pointData.base64 + ')')
   }
 }
 

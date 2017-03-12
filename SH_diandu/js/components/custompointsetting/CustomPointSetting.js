@@ -131,15 +131,11 @@ CustomPointSetting.prototype.render = function () {
   html.push('       </div>')
   html.push('     </div>')
   html.push('     <div class="cps-content-right">')
-  html.push('       <div class="cps-content-reupload js-reupload">重新上传自定义图片</div>')
   html.push('       <h4>自定制点读点按钮图案</h4>')
   html.push('       <em>(请采用背景色透明的png图片文件)</em>')
   html.push('       <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>')
   html.push('       <div class="cps-show-img" style="display: none;"></div>')
-  html.push('       <div id="cps-upload-png">')
-  html.push('         <p>gif图如需初始不动</p>')
-  html.push('         <p>请上传定图（背景透明的png）</p>')
-  html.push('       </div>')
+  html.push('       <div class="cps-img-dynamic js-img-dynamic"></div>')
   html.push('       <ul class="cps-show-color">')
   html.push('         <li tabindex="1" style="background-color:#FB0006;"></li>')
   html.push('         <li tabindex="2" style="background-color:#15A53F;"></li>')
@@ -213,10 +209,10 @@ CustomPointSetting.prototype.initVar = function () {
   this.$container = $(this.selector);
   this.$text = this.$container.find('.cps-point-text');
   this.$upload = this.$container.find('#cps-upload-img');
-  this.$reUpload = this.$container.find('.js-reupload');
   this.$submit = this.$container.find('.cps-submit');
   this.$showImg = this.$container.find('.cps-show-img');
   this.$showColor = this.$container.find('.cps-show-color');
+  this.$imgRun = this.$container.find('.js-img-dynamic');
 
   this.$tabPoint = this.$container.find('.cps-tab-point');
   this.$divPoint = this.$container.find('.cps-content-point');
@@ -372,33 +368,28 @@ CustomPointSetting.prototype.bindEvent = function () {
    * 重新上传图片
    */
   that.$showImg.off().on('click', function (e) {
-    if (that.data.pic.png) {
-      var flag = that.$showImg.attr('data-showgif') === 'true'
-
-      if (flag) {
-        that.$showImg.css({
-          backgroundImage: 'url(' + that.data.pic.png + ')'
-        })
-        that.$showImg.attr('data-showgif', false)
-      } else {
-        that.$showImg.css({
-          backgroundImage: 'url(' + that.data.pic.src + ')'
-        })
-        that.$showImg.attr('data-showgif', true)
-      }
-    }
-  })
-
-  this.$reUpload.off().on('click', function (e) {
     layer.confirm('是否重新选择图片？', {
       btn: ['确定', '取消'] //按钮
     }, function (index) {
       that.data.pic.src = null;
-      that.data.pic.png = null;
+      that.data.pic.dynamic = false;
       that.$container.find('#cps-upload-img').css({ left: 0 });
       that.$showImg.hide().html("");
       layer.close(index);
     });
+  })
+
+  /**
+   * 上传的为动图，则判断是否需要在展示页面就播放动图
+   */
+  that.$imgRun.on('click', function () {
+    if (that.$imgRun.hasClass('cps-img-dynamic-stop')) {
+      that.$imgRun.removeClass('cps-img-dynamic-stop')
+      that.data.pic.dynamic = false;
+    } else {
+      that.$imgRun.addClass('cps-img-dynamic-stop')
+      that.data.pic.dynamic = true;
+    }
   })
 
   /**
@@ -451,22 +442,6 @@ CustomPointSetting.prototype.bindEvent = function () {
           backgroundImage: 'url(' + result + ')'
         })
       })
-    }
-  });
-
-  /**
-   * 自定义点读点静态度上传
-   */
-  that.setUploadify('#cps-upload-png', {
-    onUploadSuccess: function (file, result) {
-      result = result._raw
-      that.data.pic.png = result;
-      that.$showImg.attr('data-png', result)
-      that.$showImg.show().css({
-        backgroundImage: 'url(' + result + ')'
-      })
-      that.$showImg.attr('data-showgif', false)
-      console.log(file, result)
     }
   });
 
@@ -585,14 +560,13 @@ CustomPointSetting.prototype.initData = function () {
 
     //设置了自定义图片
     if (this.data.pic.src) {
-      var src = this.data.pic.src
-      if (this.data.pic.png) {
-        src = this.data.pic.png
-        this.$showImg.attr('data-showgif', false)
+      if (this.data.pic.dynamic) {
+        that.$imgRun.addClass('cps-img-dynamic-stop')
       }
+
       var filter = "drop-shadow(0px 0px " + this.data.pic.colorSize + "px " + this.data.pic.color + ")"
       this.$showImg.show().css({
-        background: 'url(' + src + ') no-repeat',
+        background: 'url(' + this.data.pic.src + ') no-repeat',
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         '-webkit-filter': filter,

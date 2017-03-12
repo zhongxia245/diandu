@@ -125,11 +125,10 @@ window.CreatePoint = (function () {
    * 生成自定义图片的point
    */
   function initCustomImgPoint(pointId, style, pic) {
-    //debugger;
     var html = [];
-    var src = pic.png || pic.src;
+    var src = pic.src;
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
-    
+
     style += 'background: url(' + src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
 
@@ -185,7 +184,13 @@ window.CreatePoint = (function () {
    */
   function initMCustomImgPoint(pointId, style, pic, outClassName, outHTML, scale) {
     var html = [];
-    var src = pic.png || pic.src;
+    var src = pic.src;
+    var dynamic = pic.dynamic;  //东态图是否只展示第一帧,true 是，false 否
+    var dynamicAttr = ''
+    if (dynamic) {
+      dynamicAttr = 'data-src="' + src + '" data-dynamic="' + dynamic + '"';
+    }
+
     var dropFilter = "drop-shadow(0px 0px " + pic.colorSize + "px " + pic.color + ")"
     style += 'border-radius:0;background: url(' + src + ') no-repeat ;background-size: contain; background-position:center;';
     style += 'filter:' + dropFilter + ';-webkit-filter:' + dropFilter + ';';
@@ -205,7 +210,7 @@ window.CreatePoint = (function () {
       id = 'data-id=' + pointId
     }
 
-    html.push('<div data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="content-center create-point-img ' + outClassName + '">' + outHTML + '</div>');
+    html.push('<div ' + dynamicAttr + ' data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="content-center create-point-img ' + outClassName + '">' + outHTML + '</div>');
     return html.join('');
   }
 
