@@ -220,7 +220,7 @@ window.Util = (function () {
           event.preventDefault();
           startX = event.clientX;
           startY = event.clientY;
-          
+
           if ($(selector).css('left') !== 'auto') {
             left = parseFloat($(selector).css('left').replace('px', '').replace('rem', ''))
             top = parseFloat($(selector).css('top').replace('px', '').replace('rem', ''))
@@ -252,6 +252,31 @@ window.Util = (function () {
     touchDrag(selector, callback, not_allow_drag_class);
   }
 
+  /**
+   * 把图片转换成base64的数据格式
+   * gif图会变成静态图
+   * @param {any} path 
+   * @param {any} callback 
+   */
+  function getImageBase64(path, callback) {
+    var canvas = document.createElement('canvas');
+
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    //指定图片的URL
+    img.src = path;
+    img.onload = function (e) {
+      var width = e.target.width;
+      var height = e.target.height;
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(img, 0, 0, width, height);
+      var cropStr = canvas.toDataURL("image/jpeg", 0.7)
+      callback(cropStr)
+    }
+  }
+
 
   return {
     getImageWH: getImageWH,
@@ -265,7 +290,8 @@ window.Util = (function () {
     loadJS: loadJS,
     touchDrag: touchDrag,
     mouseDrag: mouseDrag,
-    drag: drag
+    drag: drag,
+    getImageBase64: getImageBase64
   }
 })()
 
