@@ -272,7 +272,7 @@ window.Util = (function () {
       canvas.height = height;
 
       ctx.drawImage(img, 0, 0, width, height);
-      var cropStr = canvas.toDataURL("image/jpeg", 0.7)
+      var cropStr = canvas.toDataURL("image/png", 0.7)
       callback(cropStr)
     }
   }
