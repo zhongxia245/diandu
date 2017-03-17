@@ -12,6 +12,7 @@ function Slide(data) {
   this.progressBar = data.progressBar
   this.value = data.value || 0
   this.callback = data.callback
+  this.preCallback = data.preCallback
 
   that.setValue(this.value)
   this.touchDrag()
@@ -45,6 +46,9 @@ Slide.prototype = {
           if (moveX < 0) moveX = 0
           if (moveX > target.parentNode.offsetWidth - target.offsetWidth) moveX = target.parentNode.offsetWidth - target.offsetWidth
 
+          if (that.preCallback) {
+            moveX = that.preCallback(moveX, $(that.progressBar).width() - $(that.progressVal).width())
+          }
           thisVal.style.left = moveX + 'px'
 
           var val = moveX / ($(that.progressBar).width() - $(that.progressVal).width())
@@ -80,6 +84,10 @@ Slide.prototype = {
 
           if (moveX < 0) moveX = 0
           if (moveX > allLength) moveX = allLength
+
+          if (that.preCallback) {
+            moveX = that.preCallback(moveX, allLength)
+          }
 
           $(that.progressVal).css('left', moveX)
 

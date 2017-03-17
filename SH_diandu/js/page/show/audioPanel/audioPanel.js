@@ -180,7 +180,14 @@ function AudioPanel(config) {
         value: 0.5,
         progressBar: '#ap_speed_bar',
         progressVal: '#ap_speed_val',
+        preCallback: function (val, allLength) {//默认值的位置是否要有明显的卡顿
+          if (val / allLength > 0.45 && val / allLength < 0.55) {
+            return allLength * 0.5
+          }
+          return val
+        },
         callback: function (val) {
+          //因为范围是0~2，而返回的val是 0~1的百分比，因此需要乘2
           var speed = parseFloat((2 * val).toFixed(1));
           $('#ap_speed_val').text(speed);
           if (getMedia().duration) {

@@ -56,7 +56,8 @@ GLOBAL.BGAUDIO = {
     var that = this;
     //如果已经设置了, 则不在设置背景音乐
     if (!$(this.bgaudio).attr('src')) {
-      $(this.bgaudio).attr('src', src);
+      // $(this.bgaudio).attr('src', src);
+      setAudioSource(this.bgaudio, src)
     }
 
     //停止背景音乐, 监听事件
@@ -65,13 +66,11 @@ GLOBAL.BGAUDIO = {
       if (flag) {
         that.timer && clearTimeout(that.timer)
         that.pause()
-        Logger.info("暂停背景音乐!")
       }
       //播放背景音乐
       else {
         that.timer = setTimeout(function () {
           that.play();
-          Logger.info("间隔5秒,开始自动播放背景音乐!")
         }, 5000)
       }
     })
@@ -85,7 +84,6 @@ GLOBAL.BGAUDIO = {
   play: function () {
     if (this.audio.paused && this.bgaudio.paused) {
       this.bgaudio.play();
-      Logger.info("背景音乐播放")
       this.$btnBgAudio.attr('src', 'imgs/bg_audio_on.png')
     }
   },
@@ -101,15 +99,25 @@ GLOBAL.BGAUDIO = {
   setTimePlay: function (duration) {
     duration = duration || 5000;
     var that = this;
-    Logger.info("设置定时器,5秒后播放背景音乐")
     that.timer = setTimeout(function () {
       that.play()
     }, duration)
   },
   clearTimeout: function () {
-    Logger.info("清除背景音乐定时器!")
     this.timer && clearTimeout(this.timer)
   }
+}
+
+// 设置音频的音频文件路径
+function setAudioSource(audio, src) {
+  var source = '<source src="' + src.replace('mp3', 'm3u8') + '">'
+  source += '<source src="' + src + '">'
+  $(audio).html("")
+  $(audio).append(source)
+}
+
+function getAudioSource(audio) {
+  return $(audio).find('source').eq(1).attr('src')
 }
 
 /*=============================初始化页面 START===========================*/
@@ -255,19 +263,22 @@ function init() {
           //自定义GIF图片，获取第一帧，展示  zhongxia
           var $customGifPoints = $('.create-point-img[data-dynamic="true"]');
           for (var i = 0; i < $customGifPoints.length; i++) {
-            var $point = $customGifPoints.eq(0);
-            Util.getImageBase64($point.data('src'), function (base64) {
-              $point
-                .css({
-                  backgroundImage: 'url(' + base64 + ')'
-                })
-              var dataId = $point.attr('data-id');
-              var pointData = Util.getPointDataByIds(DATA, dataId)
-              pointData.base64 = base64;
-            })
+            var $point = $customGifPoints.eq(i);
+
+            (function ($point, i) {
+              Util.getImageBase64($point.data('src'), function (base64) {
+                $point
+                  .css({
+                    backgroundImage: 'url(' + base64 + ')'
+                  })
+                var dataId = $point.attr('data-id');
+                var pointData = Util.getPointDataByIds(DATA, dataId)
+                pointData.base64 = base64;
+              })
+            })($point, i)
+
           }
           // end
-
 
         }, 100)
       })
@@ -457,7 +468,6 @@ function initPointSizeAndBgColor(color) {
  * 监听点击屏幕 播放背景音乐
  */
 function playBgAduio() {
-  Logger.log("play bg audio and remove touchstart event...")
   GLOBAL.BGAUDIO.play();
   document.removeEventListener("touchstart", playBgAduio, false)
 }
@@ -721,10 +731,8 @@ function initPage(id, data) {
     //针对小图, 创建的时候, 没有缩放的图片 START
     if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
       if (whScale > window.screen.width / window.screen.height) {
-        Logger.log("小图 宽铺满屏幕")
         _pointSizeScale = GLOBAL.SCREEN.W() / w
       } else {
-        Logger.log("小图 高铺满屏幕")
         _pointSizeScale = GLOBAL.SCREEN.H() / h
       }
     }
@@ -755,7 +763,8 @@ function initGlobalAudio(data) {
   if (globalAudioConfig && globalAudioConfig.id) {
     var pageIndex = parseInt(globalAudioConfig.id.split('_')[0]) - 1;
     var pointIndex = parseInt(globalAudioConfig.id.split('_')[1]) - 1;
-    window.globalAudio.src = globalAudioConfig.src;
+    // window.globalAudio.src = globalAudioConfig.src;
+    setAudioSource(window.globalAudio, globalAudioConfig.src)
 
     for (var i = 0; i <= pageIndex; i++) {
       //不需要显示全程音频的做上标记
@@ -1016,7 +1025,8 @@ function audioPlay(e, url) {
   window.audio.addEventListener('canplaythrough', function (e) {
     if (!$cTar.attr('isLoad')) {
       //是当前播放的音频, 则显示 正在播放状态
-      if (window.audio.src.indexOf(url) !== -1) {
+      // if (window.audio.src.indexOf(url) !== -1) {
+      if (getAudioSource(window.audio).indexOf(url) !== -1) {
 
         window.audio.play();
 
@@ -1078,13 +1088,15 @@ function playOrPaused(e, isGlobalAudio, pointData) {
   //未播放
   else {
     customPng2Gif($cTar, pointData, true)
+    $('.m-audio[data-play]').removeAttr('data-play')
     $cTar.attr('data-play', true)
     //是全局音频
     if (ctlGlobalAudio && isGlobalAudio === "1") {
       ctlGlobalAudio.play();
     } else {
-      if (window.audio.getAttribute('src') !== url) {
-        window.audio.setAttribute('src', url);
+      if (getAudioSource(window.audio) !== url) {
+        // window.audio.setAttribute('src', url);
+        setAudioSource(window.audio, url)
       }
       if (window.audio.paused) {
         audioPlay(e, url)
@@ -1123,7 +1135,7 @@ function closeVideoOrAudio(flag) {
   window.audio.pause();
   $('.m-audio img').hide(); //隐藏所有的播放GIF图
   $('.m-audio').css('background-size', '100%')
-  window.audio.src = '';
+  // window.audio.src = '';
 
   //清除闪烁
   var $customImgs = $('[data-type="pointImg"]');
@@ -1164,8 +1176,6 @@ function bindEvent() {
     var div_comment = '#' + _dianduid + " .m-dd-start-comment-div";
     $(div_comment).hide()
 
-    Logger.info("开始按钮类型(0: 隐藏点读点 1: 显示点读点 2:弹出评论框)", type)
-
     switch (type) {
       //隐藏
       case 0:
@@ -1199,12 +1209,10 @@ function bindEvent() {
             videoid: GLOBAL.videoid,
             userid: window.__userid,
             startRecordCallback: function () {
-              Logger.info("暂停背景音乐")
               //开始录音结束背景音乐
               GLOBAL.BGAUDIO.pause();
             },
             stopRecordCallback: function () {
-              Logger.info("录音结束之后,定时5秒,启动背景音乐播放")
               GLOBAL.BGAUDIO.setTimePlay();
             }
           })
@@ -1310,12 +1318,12 @@ function bindEvent() {
     var pointData = Util.getPointDataByIds(DATA, dataId)
 
     var audioPanelConfig = JSON.parse(pointData['audio_panel'] || "{}")
-
     // 需要展示音频面板
     if (audioPanelConfig.show) {
+      //点击音频点读点，则暂停音频
       if (window.GLOBAL.audio_panel) {
-        window.GLOBAL.audio_panel.show()
-        $cTar.find('.audio-panel__flag').remove()
+        $('.m-audio .audio-panel__flag').remove()
+        window.GLOBAL.audio_panel.close()
       } else {
         window.GLOBAL.audio_panel = new AudioPanel({
           mp3_path: pointData.url,
@@ -1328,19 +1336,25 @@ function bindEvent() {
           },
           // 音频还在播放，关闭后，展示标识
           showFlag: function () {
-            console.log($cTar, '显示标识')
             $cTar.find('.audio-play').show()
             $cTar.append('<div class="audio-panel__flag"></div>')
+            //点击出现音频面板
+            $cTar.find('.audio-panel__flag').on(click, function (e) {
+              e.stopPropagation()
+              if (audioPanelConfig.show) {
+                window.GLOBAL.audio_panel.show()
+                $cTar.find('.audio-panel__flag').remove()
+              }
+            })
           }
         })
       }
     } else {
       //音频面板正在播放的标识
-      if (window.GLOBAL.audio_panel) {
-        $('.m-audio .audio-panel__flag').remove()
-        window.GLOBAL.audio_panel.close()
-      }
-
+      // if (window.GLOBAL.audio_panel) {
+      //   $('.m-audio .audio-panel__flag').remove()
+      //   window.GLOBAL.audio_panel.close()
+      // }
       //普通音频点读点
       playOrPaused(e, isGlobalAudio, pointData)
     }
@@ -1810,7 +1824,8 @@ function _playShowAudio(flag, mp3Src) {
   audio.play();
 
 
-  if (window.OnOffAudio) window.OnOffAudio.src = '';
+  // if (window.OnOffAudio) window.OnOffAudio.src = '';
+  if (window.OnOffAudio) setAudioSource(window.OnOffAudio, '');
   // 存在开关图mp3,则在音效播放完,播放mp3
   if (mp3Src && mp3Src !== 'undefined') {
     //音效结束1s,则播放mp3
@@ -1830,7 +1845,8 @@ function _playShowAudio(flag, mp3Src) {
  */
 function _playOnOffMp3(src) {
   window.OnOffAudio = window.OnOffAudio || document.createElement('audio');
-  window.OnOffAudio.src = src;
+  setAudioSource(window.OnOffAudio, src)
+  // window.OnOffAudio.src = src;
   window.OnOffAudio.play();
 }
 

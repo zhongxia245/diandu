@@ -80,7 +80,8 @@ GlobalAudioController.prototype.initData = function () {
   if (this.data.id) {
     this.data.pageIndex = parseInt(this.data.id.split('_')[0]) - 1;  //全局音频页面下标
     this.data.pointIndex = parseInt(this.data.id.split('_')[1]) - 1; //全局音频点读点下标
-    this.audio.src = this.data.src;
+    // this.audio.src = this.data.src;
+    setAudioSource(this.audio, this.data.src)
 
     this.data.pageTimes = [];
     //计算页面的播放时间
