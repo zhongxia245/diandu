@@ -366,7 +366,6 @@ function AudioPanel(config) {
       $('.audio-panel-wrap').show();
     },
     close: function () {
-      try { getMedia().pause(); } catch (error) { }
       $('.audio-panel-wrap').remove()
       if (closeCallback) closeCallback()
     }

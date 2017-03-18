@@ -1124,18 +1124,23 @@ function customPng2Gif($cTar, pointData, flag) {
   }
 }
 
+
 /**
  * 隐 音频和 频，并且关闭播放
- * @param flag 是否关闭自动播放
+ * @param flag 是否关闭自动播放  默认为true
  */
 function closeVideoOrAudio(flag) {
   if (flag === undefined) flag = true;
+
+  if (window.GLOBAL.audio_panel) {
+    $('.m-audio .audio-panel__flag').remove()
+    window.GLOBAL.audio_panel.close()
+  }
 
   //停止音频
   window.audio.pause();
   $('.m-audio img').hide(); //隐藏所有的播放GIF图
   $('.m-audio').css('background-size', '100%')
-  // window.audio.src = '';
 
   //清除闪烁
   var $customImgs = $('[data-type="pointImg"]');
@@ -1144,9 +1149,7 @@ function closeVideoOrAudio(flag) {
     diandu.customPlay($customImg, false);
   }
 
-
   //停止视频
-  //window.video.pause();
   var $video = $('.m-video-size');
   $video.find('img').hide();
   $video.removeClass('m-video-size');
@@ -1294,8 +1297,10 @@ function bindEvent() {
     var $cTar = $(e.currentTarget);
     var isGlobalAudio = $cTar.attr('data-global-audio')  //是否为全程音频 是为 "1"  否:null
 
-    //关闭视频,并且设置所有的 音频为默认图标状态
-    closeVideoOrAudio(true, $cTar);
+    if ($cTar.find('.audio-panel__flag').length == 0) {
+      //关闭视频,并且设置所有的 音频为默认图标状态
+      closeVideoOrAudio(true);
+    }
 
     window._audioEnded = true;
     audio.addEventListener('ended', function () {
@@ -1350,11 +1355,6 @@ function bindEvent() {
         })
       }
     } else {
-      //音频面板正在播放的标识
-      // if (window.GLOBAL.audio_panel) {
-      //   $('.m-audio .audio-panel__flag').remove()
-      //   window.GLOBAL.audio_panel.close()
-      // }
       //普通音频点读点
       playOrPaused(e, isGlobalAudio, pointData)
     }
