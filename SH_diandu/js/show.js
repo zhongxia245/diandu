@@ -110,12 +110,16 @@ GLOBAL.BGAUDIO = {
 
 // 设置音频的音频文件路径
 function setAudioSource(audio, src) {
-  var source = '<source src="' + src.replace('mp3', 'm3u8') + '">'
+  var source = ""
+  source += '<source src="' + src.replace('mp3', 'm3u8') + '">'
   source += '<source src="' + src + '">'
   $(audio).html("")
   $(audio).append(source)
+  //注意：资源为 srouce格式的，需要重新加载，否则还是播放上一个资源。 这个是和src指定资源的区别
+  audio.load()
 }
 
+// 获取当前音频[mp3格式的地址]
 function getAudioSource(audio) {
   return $(audio).find('source').eq(1).attr('src')
 }
@@ -993,9 +997,9 @@ function audioPlay(e, url) {
 
   var $cTar = $(e.currentTarget);
 
-  if ($cTar.attr('isLoad')) {//音频加载结束
+  //音频加载结束
+  if ($cTar.attr('isLoad')) {
     window.audio.play();
-    console.log('play()=>paused:', audio.paused)
     if ($cTar.attr('data-type') === 'pointImg') {
       diandu.customPlay($cTar, true)
     } else {
@@ -1004,9 +1008,8 @@ function audioPlay(e, url) {
     }
     $cTar.find('.audio-load').hide();
   }
-
+  //音频还未加载
   else {
-    //音频还未加载
     if ($cTar.attr('data-type') !== 'pointImg') {
       $cTar.find('.audio-play').hide();
     }
@@ -1017,12 +1020,13 @@ function audioPlay(e, url) {
     //移动端 canplaythrough 必须 设置 play 之后, 才能触发
     window.audio.play()
     window.audio.setAttribute('data-volume', window.audio.volume)
-    window.audio.volume = 0.1;
+    // window.audio.volume = 0.1;
   }
 
 
   /*audio可以播放的事件*/
   window.audio.addEventListener('canplaythrough', function (e) {
+    console.log('canplaythrough')
     if (!$cTar.attr('isLoad')) {
       //是当前播放的音频, 则显示 正在播放状态
       // if (window.audio.src.indexOf(url) !== -1) {
