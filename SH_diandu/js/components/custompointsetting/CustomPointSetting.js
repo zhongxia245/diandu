@@ -99,6 +99,14 @@ function CustomPointSetting(selector, config) {
   }
 
   $(this.selector).html(this.render());
+  /**
+   * 添加下载按钮
+   */
+  this.addDownloadLrc = function (filename, url) {
+    //增加下载字幕文件
+    var downloadLrc = '<a class="cps-download-lrc" download="' + filename + '" href="' + url + '"><img src="imgs/download.png"/></a>'
+    $('#cps-upload-audio').append(downloadLrc)
+  }
 
   this.initVar(); //初始化变量
   this.bindEvent(); //绑定事件
@@ -447,7 +455,7 @@ CustomPointSetting.prototype.bindEvent = function () {
 
 
   /**
-   * 点读点自定义点读点的音频面板
+   * 点读点自定义点读点的音频面板,字幕文件
    */
   that.setUploadify('#cps-upload-audio', {
     multiple: false,
@@ -459,6 +467,8 @@ CustomPointSetting.prototype.bindEvent = function () {
       that.data.audio_panel.lrc = result;
       that.data.audio_panel.name = file.name;
       $('#cps-upload-audio .webuploader-pick').text(file.name)
+
+      that.addDownloadLrc(file.name, result)
     }
   });
 
@@ -543,6 +553,7 @@ CustomPointSetting.prototype.initData = function () {
   //设置音频面板的数据
   if (this.data.audio_panel) {
     if (this.data.audio_panel.show) {
+      this.$audioSwitch.addClass('cps-content-switch--active')
       this.$container.find('.cps-audio-on').show();
       this.$container.find('.cps-audio-off').hide();
     }
@@ -551,7 +562,11 @@ CustomPointSetting.prototype.initData = function () {
       this.$container.find('.cps-audio-on').hide();
       this.$container.find('.cps-audio-off').show();
     }
-    $('#cps-upload-audio .webuploader-pick').text(this.data.audio_panel.name)
+
+    if (this.data.audio_panel.lrc) {
+      $('#cps-upload-audio .webuploader-pick').text(this.data.audio_panel.name)
+      this.addDownloadLrc(this.data.audio_panel.name, this.data.audio_panel.lrc)
+    }
   }
 
 
