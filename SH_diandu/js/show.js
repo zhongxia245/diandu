@@ -202,7 +202,7 @@ function fn_onResize() {
 }
 
 /**
- * 横竖屏 滑动条样式处理
+ * 横竖屏 滑动条样式处理[TODO:使用样式来处理]
  */
 function styleHandler() {
   var $scrollBar = $('#scroll-bar');

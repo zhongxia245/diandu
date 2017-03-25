@@ -259,5 +259,6 @@ window.PicScale = (function () {
       };
     }
   }
+  
   return PicScale;
 })()

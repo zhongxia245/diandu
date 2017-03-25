@@ -4,8 +4,10 @@
  * 说明: 生成point点的
  * 目前需要支持三种类型的点读点
  * 1. 常规点读点
- * 2. 带有标题的点读点  [PC创建页面,展示页面都使用]
- * 3. 自定义图片的点读点 [PC创建页面,展示页面都使用]
+ * 2. 创建页面，带有标题的点读点  
+ * 3. 创建页面，自定义图片的点读点 
+ * 4. 展示页面，自定义标题
+ * 5. 展示页面，自定义图片
  ***************************************************/
 //加载依赖的脚本和样式
 (function () {
@@ -153,7 +155,6 @@ window.CreatePoint = (function () {
    */
   function initMTitlePoint(pointId, style, titleObj, outClassName, outHTML, scale) {
     var title = titleObj.title;
-    //var pointType = titleObj.pointType || 'audio';
     var pointType = outClassName.replace('m-', '');
     var className = POINTTITLECLASS[pointType]
 
@@ -185,7 +186,7 @@ window.CreatePoint = (function () {
   function initMCustomImgPoint(pointId, style, pic, outClassName, outHTML, scale) {
     var html = [];
     var src = pic.src;
-    var dynamic = pic.dynamic;  //东态图是否只展示第一帧,true 是，false 否
+    var dynamic = pic.dynamic;  //动态图是否只展示第一帧,true 是，false 否
     var dynamicAttr = ''
     if (dynamic) {
       dynamicAttr = 'data-src="' + src + '" data-dynamic="' + dynamic + '"';
