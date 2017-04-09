@@ -90,19 +90,19 @@
                     <div class="riado-group">
                         <div>
                             <label style="width:300px">
-                <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
-              </label>
+                                <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
+                            </label>
                             <label style="width:300px">
-                <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
-              </label>
+                                <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
+                            </label>
                         </div>
                         <div>
                             <label style="width:300px">
-                <input type="radio" name="chargeType" value="2"> 收费但对VIP半价
-              </label>
+                                <input type="radio" name="chargeType" value="2"> 收费但对VIP半价
+                            </label>
                             <label style="width:300px">
-                <input type="radio" name="chargeType" value="3"> 全部收费
-              </label>
+                                <input type="radio" name="chargeType" value="3"> 全部收费
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -168,6 +168,50 @@
             <div class="upload-type">
                 <ul data-id="{{id}}">
                     <li title="点读点大小" class="number-container"></li>
+                    {{#if type}}
+                    <li data-type="selectType" class="point-types__item--{{type}}-selected"></li>
+                    {{else}}
+                    <li data-type="selectType" class="point-types__item--noselect">类型选择</li>
+                    {{/if}}
+                </ul>
+                <div class="upload-file-name notselect">
+                    <span>{{fileName}}</span>
+                    <div class="div-file">
+                        <div class="div-file-mask" style="display:none"></div>
+                        <div class="webuploader-progress" id="file__progress{{id}}"></div>
+                        <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"></div>
+                    </div>
+                    <img data-type="download" class="download" src="imgs/download.png" alt="download">
+                </div>
+                <div class='point-types__setting'>
+                    <div class='point-types-setting__area' data-type="setting-area">区域</div>
+                    <div class='point-types-setting__title'>激发模式</div>
+                    <div class='point-types-setting__point' data-type="point-setting">点</div>
+                </div>
+            </div>
+            <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
+                <div class="upload-right-btn">
+                    <ul data-id="{{id}}" data-index="{{index}}">
+                        <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+                        <li title="删除" class="img-delete" data-type="delete"></li>
+                        <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
+                        <li style="display:none" title="设置全程音频" class="img-global-audio-setting" data-type="global-audio-setting"></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </script>
+    <!--上传文件类型选择，显示隐藏，删除 模版 END-->
+    <!--旧版（旧版暂时）  上传文件类型选择，显示隐藏，删除 模版  START-->
+    <script id="tpl_uploadSetting_old" type="text/x-handlebars-template">
+        <li class="upload-item item{{index}}" data-index="{{index}}">
+            <div class="upload-radius">
+                <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
+                <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
+            </div>
+            <div class="upload-type">
+                <ul data-id="{{id}}">
+                    <li title="点读点大小" class="number-container"></li>
                     <li title="视频" class="video" data-type="uploadType" data-file-type="video" data-text="点击上传MP4格式的视频文件"></li>
                     <li title="音频" class="audio" data-type="uploadType" data-file-type="audio" data-text="点击上传MP3格式的音频文件"></li>
                     <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext" data-text="点击上传图文(支持文字和图片)"></li>
@@ -177,7 +221,7 @@
                 </ul>
             </div>
             <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
-                <div class="upload-right-name notselect">
+                <div class="upload-file-name notselect">
                     <span>{{fileName}}</span>
                     <div class="div-file">
                         <div class="div-file-mask" style="display:none"></div>
@@ -198,7 +242,7 @@
             </div>
         </li>
     </script>
-    <!--上传文件类型选择，显示隐藏，删除 模版 END-->
+    <!--旧版（暂时保存） 上传文件类型选择，显示隐藏，删除 模版 END-->
     <!--背景图模板 START-->
     <script id="tpl_bg" type="text/x-handlebars-template">
         <hr/>
@@ -221,7 +265,7 @@
                         <li class="del"></li>
                     </ul>
                 </div>
-                <div style="{{style}}" class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
+                <div class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
                     <div class="_mask"></div>
                     <div class="diandu-img btn_start" style="display:none;"></div>
                     <div class="setting-bigimg-tip-h bigimg-tip">
@@ -232,13 +276,21 @@
                     </div>
                 </div>
             </div>
+            <ul class="draw-custom-area js-draw-custom-area">
+                <li>请直接在图片上绘制区域</li>
+                <li data-type="rect" class="draw-custom-area__item area__rect"></li>
+                <li data-type="roundrect" class="draw-custom-area__item area__roud"></li>
+                <li data-type="circle" class="draw-custom-area__item area__circle"></li>
+                <li data-type="oval" class="draw-custom-area__item area__oval"></li>
+                <li data-type="triangle" class="draw-custom-area__item area__triangle"></li>
+            </ul>
             <ul class="setting-upload" id="uploadSetting{{index}}">
             </ul>
         </div>
     </script>
     <!--背景图模板 END -->
+
     <!--lib-->
-    <script src="js/util/log.js"></script>
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/handlebars.min.js"></script>
     <script src="js/lib/autosize.min.js"></script>
@@ -254,6 +306,7 @@
     <script src="js/util/arrayUtil.js"></script>
     <script src="js/util/util.js"></script>
     <script src="js/util/drag.js"></script>
+    <script src="js/util/draw.js"></script>
     <!--组件-->
     <script src="js/components/imgtext/ImgText2.js"></script>
     <script src="js/components/examcreate/ExamCreate.js"></script>
@@ -264,6 +317,8 @@
     <script src="js/page/common/CreatePoint/CreatePoint.js"></script>
     <script src="js/page/create/OnOffImg/OnOffImg.js"></script>
     <script src="js/page/create/UrlPoint/UrlPoint.js"></script>
+    <script src="js/page/create/PointTypes/PointTypes.js"></script>
+    <script src="js/page/create/SwayPoint/SwayPoint.js"></script>
     <script src="js/index.js"></script>
 </body>
 

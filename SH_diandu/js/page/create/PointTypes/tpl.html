@@ -1,0 +1,14 @@
+<div class="point-types">
+  {{#each types}}
+      <!--equal指令在PointTypes里面设置了-->
+      {{#equal ../selected  type}}
+          <div class="point-types__item pt-selected" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
+      {{else}}
+          <div class="point-types__item" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
+      {{/equal}}
+      <div class="point-types__icon point-types__item--{{type}}"></div>
+      {{label}}
+  </div>
+  {{/each}}
+  <div class="point-types__tip js-pt-tip"></div>
+</div>

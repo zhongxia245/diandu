@@ -6,8 +6,7 @@ body {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
-ul,
-li {
+ul, li {
     list-style: none;
 }
 
@@ -132,13 +131,11 @@ header {
     margin-top: 10px;
 }
 
-.baseinfo .form-group input,
-.baseinfo .form-group textarea {
+.baseinfo .form-group input, .baseinfo .form-group textarea {
     width: 70%;
 }
 
-.baseinfo-title,
-.setting-title {
+.baseinfo-title, .setting-title {
     font-size: 20px;
     width: 75%;
     height: 40px;
@@ -245,8 +242,7 @@ header {
 
 /*=======操作点读页栏===========*/
 
-.bigimg-h,
-.bigimg-v {
+.bigimg-h, .bigimg-v {
     /*width: 220px;*/
     height: 40px;
 }
@@ -261,8 +257,7 @@ header {
     top: 0px;
 }
 
-.bigimg-h>li,
-.bigimg-v>li {
+.bigimg-h>li, .bigimg-v>li {
     width: 40px;
     height: 40px;
     float: left;
@@ -348,8 +343,7 @@ header {
 
 /*TODO:二期新增样式*/
 
-.setting-bigimg-img .setting-bigimg-tip-h,
-.setting-bigimg-img .setting-bigimg-tip-v {
+.setting-bigimg-img .setting-bigimg-tip-h, .setting-bigimg-img .setting-bigimg-tip-v {
     width: 70%;
     margin: 0 auto;
     padding-top: 100px;
@@ -386,6 +380,8 @@ header {
     width: 100%;
     height: 80px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -448,15 +444,12 @@ header {
 }
 
 .upload-type {
-    position: relative;
-    float: left;
-    width: 45%;
+    display: flex;
+    flex: 1;
     height: 30px;
-    top: 50%;
     z-index: 100;
-    margin: -15px 0 0 -25px;
-    background: #7F7F7F;
-    border: 2px #A9A9A9 solid;
+    margin-left: -10px;
+    background: #D8D8D8;
     border-radius: 20px;
 }
 
@@ -467,81 +460,69 @@ header {
 
 .upload-type li {
     margin-right: 13px;
-    margin-top: -15px;
+    margin-top: -13px;
     width: 55px;
     height: 55px;
     float: left;
     cursor: pointer;
+    background-size: 100% 100%;
 }
 
 .upload-type .video {
-    background: url('../imgs/upload_video.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/upload_video.png');
 }
 
 .upload-type .audio {
-    background: url('../imgs/upload_audio.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/upload_audio.png');
 }
 
 .upload-type .imgtext {
-    background: url('../imgs/upload_imgtext.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/upload_imgtext.png');
 }
 
 .upload-type .audioimg {
-    background: url('../imgs/upload_audioimg.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/upload_audioimg.png');
 }
 
 .upload-type .exam {
     background: url('../imgs/upload_exam.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
 }
 
 .upload-type .on-off {
-    background: url('../imgs/onoff.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/onoff.png');
 }
 
 .upload-type .set-url {
-    background: url('../imgs/seturl.png');
-    -moz-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background-image: url('../imgs/seturl.png');
 }
 
 .upload-right {
-    position: relative;
-    float: left;
-    width: 600px;
+    width: 250px;
     height: 55px;
     line-height: 55px;
-    top: 50%;
-    left: 15px;
-    margin: 0 auto;
-    margin: -28px 0 0 -32px;
     border-radius: 5px;
     color: #FFF;
     text-align: center;
     font-size: 20px;
 }
 
-.upload-right-name {
-    width: 340px;
-    height: 100%;
-    background: #FF7C80;
+.upload-file-name {
+    display: inline-block;
+    width: 450px;
+    height: 55px;
+    line-height: 55px;
+    border: 2px solid #d8d8d8;
     border-radius: 3px;
+    font-size: 20px;
+    margin-top: -13px;
+    background: #FF7C80;
     overflow: hidden;
     position: relative;
+    color: #FFF;
+    text-align: center;
 }
 
-.upload-right-name .div-file {
+.upload-file-name .div-file {
     position: absolute;
     top: 0;
     left: 0;
@@ -564,8 +545,7 @@ header {
     display: none;
 }
 
-.notselect .uploadify,
-.notselect input[type="file"] {
+.notselect .uploadify, .notselect input[type="file"] {
     display: none;
 }
 
@@ -603,10 +583,7 @@ header {
 
 /*图文上传成功*/
 
-.uploaded-imgtext,
-.uploaded-exam,
-.uploaded-on-off,
-.uploaded-set-url {
+.uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url, .uploaded-sway {
     background: #7F7F7F;
     position: relative;
     cursor: pointer;
@@ -618,8 +595,8 @@ header {
 .download {
     display: none;
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     right: 0;
     top: 0;
     cursor: pointer;
@@ -627,11 +604,6 @@ header {
 
 .uploaded .download {
     display: block;
-}
-
-.upload-right-btn {
-    float: right;
-    margin-top: -56px;
 }
 
 .upload-right-btn li {
@@ -642,55 +614,43 @@ header {
 }
 
 .upload-right-btn .img-point-setting {
-    background: url('../imgs/custom_point_setting/img-point-setting.png');
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
+    background-image: url('../imgs/custom_point_setting/img-point-setting.png');
     background-size: 100% 100%;
     margin-right: 10px;
 }
 
 .upload-right-btn .img-point-setting-on {
-    background: url('../imgs/custom_point_setting/img-point-setting-on.png');
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
+    background-image: url('../imgs/custom_point_setting/img-point-setting-on.png');
     background-size: 100% 100%;
 }
 
 .upload-right-btn .img-hide {
     background: url('../imgs/hide.png');
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
     background-size: 100% 100%;
     margin-right: 10px;
 }
 
 .upload-right-btn .img-delete {
-    background: url('../imgs/delete.png');
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
+    background-image: url('../imgs/delete.png');
     background-size: 100% 100%;
     margin-right: 10px;
 }
 
 .upload-right-btn .img-global-audio {
-    background: url('../imgs/img-global-audio.png') no-repeat center;
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
+    background-image: url('../imgs/img-global-audio.png') no-repeat center;
     background-size: 100% 100%;
     visibility: hidden;
 }
 
 .upload-right-btn .img-global-audio-setting {
-    background: url('../imgs/img-global-audio-setting.png') no-repeat center;
-    -webkit-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
+    background-image: url('../imgs/img-global-audio-setting.png') no-repeat center;
     background-size: 100% 100%;
 }
 
 
 /*鼠标移入右边音频名称时,显示设置全局按钮*/
 
-html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover .upload-right-btn .img-global-audio {
+html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data-upload="1"] .img-global-audio {
     visibility: visible;
 }
 
@@ -759,8 +719,7 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
     z-index: 999;
 }
 
-.autovideo__btn-del,
-.autovideo__btn-download {
+.autovideo__btn-del, .autovideo__btn-download {
     background-repeat: no-repeat;
     background-size: 100%;
     height: 50px;
@@ -933,4 +892,110 @@ html[data-selected="0"] .upload-right[data-type="audio"][data-upload="1"]:hover 
     vertical-align: top;
     cursor: pointer;
     text-decoration: none;
+}
+
+
+/*新版的类型选择 2017-04-04 18:37:57*/
+
+.point-types__item--noselect {
+    line-height: 1.1;
+    border: 2px solid #d8d8d8;
+    border-radius: 5px;
+    background: #ff7c80;
+    color: #FFF;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+}
+
+.point-types__setting {
+    display: flex;
+    width: 230px;
+    height: 55px;
+    line-height: 55px;
+    margin-top: -13px;
+    background: #7f7f7f;
+    text-align: center;
+    color: #FFF;
+    border: 2px solid #d8d8d8;
+    border-radius: 5px;
+    margin-left: 20px;
+    font-size: 24px;
+}
+
+.point-types-setting__area, .point-types-setting__point {
+    flex: 3;
+    cursor: pointer;
+}
+
+.point-types-setting__area--active, .point-types-setting__point--active {
+    background: #00cc99;
+}
+
+.point-types-setting__title {
+    width: 60px;
+    height: 110%;
+    margin-top: -1%;
+    font-size: 18px;
+    padding: 5px;
+    line-height: 25px;
+    background: #3f3f3f;
+}
+
+.draw-custom-area {
+    display: flex;
+    background: #000;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    width: 60%;
+    height: 50px;
+    margin: 10px auto;
+    border-radius: 5px;
+    display: none;
+}
+
+.draw-custom-area__item {
+    border: 1px solid #FFF;
+    width: 50px;
+    height: 30px;
+    margin-left: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.draw-custom-area__item:active {
+    opacity: 0.85;
+}
+
+.area__rect {
+    border: 1px solid #FFF;
+}
+
+.area__roud {
+    border-radius: 5px;
+}
+
+.area__circle {
+    border-radius: 50%;
+    width: 30px;
+}
+
+.area__oval {
+    border-radius: 50%;
+}
+
+.area__triangle {
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 30px solid #FFF;
+    border-left: 20px solid transparent;
+}
+
+.area__triangle:after {
+    content: '';
+    display: block;
+    background: #000;
 }

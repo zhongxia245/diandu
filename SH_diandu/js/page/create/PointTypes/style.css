@@ -1,0 +1,142 @@
+/*类型徐恩泽弹窗*/
+
+#__pointTypes__ {
+    position: absolute;
+    z-index: 999999;
+}
+
+.point-types {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 320px;
+    padding: 20px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 20px #000;
+}
+
+.point-types__tip {
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(89, 89, 89, 0.85);
+    color: #FFF;
+    text-align: center;
+    line-height: 1.5;
+    padding: 10px;
+    display: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.point-types__item {
+    float: left;
+    width: 55px;
+    height: 55px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    cursor: pointer;
+}
+
+.point-types__icon {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+}
+
+.point-types__item:nth-child(4n) {
+    margin-right: 0;
+}
+
+
+/*视频*/
+
+.point-types__item--video {
+    background-image: url('../../../../imgs/upload_video.png');
+}
+
+.pt-selected .point-types__item--video, .point-types__item--video-selected {
+    background-image: url('../../../../imgs/upload_video_on.png');
+}
+
+
+/*音频*/
+
+.point-types__item--audio {
+    background-image: url('../../../../imgs/upload_audio.png');
+}
+
+.pt-selected .point-types__item--audio, .point-types__item--audio-selected {
+    background-image: url('../../../../imgs/upload_audio_on.png');
+}
+
+
+/*图文*/
+
+.point-types__item--imgtext {
+    background-image: url('../../../../imgs/upload_imgtext.png');
+}
+
+.pt-selected .point-types__item--imgtext, .point-types__item--imgtext-selected {
+    background-image: url('../../../../imgs/upload_imgtext_on.png');
+}
+
+
+/*音频图片[目前未使用]*/
+
+.point-types__item--audioimg {
+    background-image: url('../../../../imgs/upload_audioimg.png');
+}
+
+.pt-selected .point-types__item--audioimg, .point-types__item--audioimg-selected {
+    background-image: url('../../../../imgs/upload_audioimg_on.png');
+}
+
+
+/*考试*/
+
+.point-types__item--exam {
+    background-image: url('../../../../imgs/upload_exam.png');
+}
+
+.pt-selected .point-types__item--exam, .point-types__item--exam-selected {
+    background-image: url('../../../../imgs/upload_exam_on.png');
+}
+
+
+/*开关图*/
+
+.point-types__item--on-off {
+    background-image: url('../../../../imgs/onoff.png');
+}
+
+.pt-selected .point-types__item--on-off, .point-types__item--on-off-selected {
+    background-image: url('../../../../imgs/onoff_on.png');
+}
+
+
+/*超链接*/
+
+.point-types__item--set-url {
+    background-image: url('../../../../imgs/seturl.png');
+}
+
+.pt-selected .point-types__item--set-url, .point-types__item--set-url-selected {
+    background-image: url('../../../../imgs/seturl_on.png');
+}
+
+
+/*摇摆图*/
+
+.point-types__item--sway {
+    background-image: url('../../../../imgs/sway.png');
+}
+
+.pt-selected .point-types__item--sway, .point-types__item--sway-selected {
+    background-image: url('../../../../imgs/sway_on.png');
+}

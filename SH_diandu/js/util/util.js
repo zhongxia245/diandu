@@ -156,6 +156,19 @@ window.Util = (function () {
   }
 
   /**
+   * 获取当前脚本文件路径
+   * @param {any} currentPath 
+   * @returns 
+   */
+  function getBasePath(currentPath) {
+    // 兼容Chrome 和 FF
+    var currentPath = currentPath || ''
+    var paths = currentPath.split('/')
+    paths.pop()
+    return paths.join('/')
+  }
+
+  /**
    * 检查样式里面是否存在某个样式名
    * @param string className 
    * @param array  not_allow_drag_class
@@ -277,6 +290,20 @@ window.Util = (function () {
     }
   }
 
+  /**
+   * 获取模板
+   * @param {any} url 
+   * @param {any} callback 
+   */
+  function getTpl(url, callback) {
+    $.ajax({
+      url: url,
+      success: function (tpl) {
+        callback(tpl)
+      }
+    })
+  }
+
 
   return {
     getImageWH: getImageWH,
@@ -288,10 +315,12 @@ window.Util = (function () {
     getPointDataByIds: getPointDataByIds,
     loadCSS: loadCSS,
     loadJS: loadJS,
+    getBasePath: getBasePath,
     touchDrag: touchDrag,
     mouseDrag: mouseDrag,
     drag: drag,
-    getImageBase64: getImageBase64
+    getImageBase64: getImageBase64,
+    getTpl: getTpl
   }
 })()
 

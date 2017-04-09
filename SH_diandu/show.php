@@ -170,7 +170,6 @@
   //获取用户id
   window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<script src="./js/util/log.js"></script>
 <script src="./js/lib/zepto.js"></script>
 <script src="./js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
@@ -200,6 +199,7 @@
 <script src="./js/page/show/pointEffect/pointEffect.js"></script>
 <script src="./js/page/show/picScale/PicScale.js"></script>
 <script src="./js/page/show/audioPanel/audioPanel.js"></script>
+<script src="./js/page/show/swayEffect/swayEffect.js"></script>
 <!--<script src="./js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
 <script src="./js/show.js?v=3"></script>

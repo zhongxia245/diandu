@@ -246,6 +246,7 @@ function init() {
 
   initAudio();
   initVideo();
+
   /**
    * 获取点读数据
    */
@@ -872,7 +873,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
     2: "m-audio",
     3: "m-imgtext",
     4: "m-exam",
-    6: "m-seturl"
+    6: "m-seturl",
+    7: 'm-sway'
   };
 
   var html = "";
@@ -1136,9 +1138,15 @@ function customPng2Gif($cTar, pointData, flag) {
 function closeVideoOrAudio(flag) {
   if (flag === undefined) flag = true;
 
+  // 音频面板
   if (window.GLOBAL.audio_panel) {
     $('.m-audio .audio-panel__flag').remove()
     window.GLOBAL.audio_panel.close()
+  }
+
+  // 摇摆图音频
+  if (window._swayAudio) {
+    _swayAudio.pause();
   }
 
   //停止音频
@@ -1505,6 +1513,42 @@ function bindEvent() {
         _playShowAudio(false, mp3Path);
         $hideImgBg.hide()
       }
+    }
+  })
+
+  //摇摆图
+  $('.m-sway').off().on(click, function (e) {
+    closeVideoOrAudio(true);
+
+    var $tar = $(e.target);
+    var ids = $tar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, ids);
+    var swayData = JSON.parse(pointData.pic)
+
+    if ($tar.attr('data-add-effect') === '1') {
+      $tar.attr('data-add-effect', 0)
+      SwayEffect.removeAnimation(e)
+      if (window._swayAudio) {
+        _swayAudio.pause();
+      }
+    } else {
+      //移除其他点读点的摇摆效果
+      $('.m-sway').removeClass('sway-effect')
+      for (var i = 0; i < $('.m-sway').length; i++) {
+        $('.m-sway').eq(i).attr('data-add-effect', 0)
+      }
+      if (window._swayAudio) {
+        _swayAudio.pause();
+      }
+      if (swayData.audio && swayData.audio.src) {
+        window._swayAudio = document.createElement('audio');
+        window._swayAudio.src = swayData.audio.src;
+        // _swayAudio.src = '/uploads/01d34068c7.mp3';
+        _swayAudio.play();
+      }
+
+      $tar.attr('data-add-effect', 1)
+      SwayEffect.addAnimation(e)
     }
   })
 

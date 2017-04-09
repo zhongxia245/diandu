@@ -1,0 +1,55 @@
+<div class="sway-container">
+    <div class="sway-header">{{title}}</div>
+    <div class="sway-content">
+        <div class="sway-content__left">
+            <h4>上传摆动图图片</h4> <em>(请采用背景色透明的png图片文件)</em>
+            <div id="sway-upload-img">点击上传</br>点读点按钮</br>图片</div>
+            <div class="sway-show-img" style="display: none;"></div>
+            <ul class="sway-show-color">
+                <li tabindex="1" style="background-color:#FB0006;" class="sway-show-color-active"></li>
+                <li tabindex="2" style="background-color:#15A53F;"></li>
+                <li tabindex="3" style="background-color:#0A5AB2;"></li>
+                <li tabindex="4" style="background-color:#FFFF0B;"></li>
+                <li tabindex="5" style="background-color:#CA0081;"></li>
+                <li tabindex="6" style="background-color:#1D1D1D;"></li>
+            </ul>
+            <div class="sway-show-color-size">
+                <input id="swayColorSetting" type="text" data-slider-handle="square" />
+            </div>
+        </div>
+        <ul class="sway-content__right">
+            {{#each items}}
+            <li class="sway-content__op-item">
+                <span class="sway-content__op-item-label">
+                    {{label}}
+                    {{#if unit}}
+                    <span class="sway-content__op-item-unit">({{unit}})</span> {{/if}}
+                </span>
+                {{#if html}}
+                    {{{html}}}
+                {{else}}
+                <input name="{{name}}" value="{{defaultValue}}" type="text" data-slider-handle="square" />
+                {{/if}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="sway-submit js-submit">提交</div>
+</div>
+<div class="sway-audio-container">
+    <div class="sway-audio-main">
+        <div class="sway-upload-audio-container">
+            <div class="webuploader-progress" id="sway__progress"></div>
+            <div class="sway-upload-audio" id="sway-upload-audio">上传其他音频</div>
+        </div>
+        <ul class="sway-audios js-audios">
+            {{#each audios}}
+            <li class="sway-audios__item" data-src="{{src}}" data-label="{{label}}">
+                <img src="imgs/audio-icon.png" alt="音效">
+                <p>{{label}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="sway-audio-submit js-audio-submit">提交</div>
+</div>

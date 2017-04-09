@@ -1,0 +1,48 @@
+
+.sway-effect-pause {
+  animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+}
+
+.sway-effect-pause {
+  transform: rotate( attr(title));
+}
+
+
+/*定义一个动画效果*/
+
+
+/*
+@-webkit-keyframes sway {
+  0%, 25%, 50%, 100% {
+    -webkit-filter: drop-shadow(red 0px 0px 5px);
+    filter: drop-shadow(red 0px 0px 5px);
+  }
+  12.5%, 37.5%, 75% {
+    -webkit-filter: drop-shadow(red 0px 0px 15px);
+    filter: drop-shadow(red 0px 0px 15px);
+  }
+}*/
+
+/*@keyframes sway-ratate {
+  0% {
+    transform: rotate(attr(data-min-deg)) scale(1)
+  }
+  50% {
+    transform: rotate(attr(data-max-deg)) scale(2)
+  }
+  100% {
+    transform: rotate(attr(data-min-deg)) scale(1)
+  }
+}*/
+
+/*@keyframes sway-blink {
+  0%, 50%, 100% {
+    -webkit-filter: drop-shadow(red 0px 0px 5px);
+    filter: drop-shadow(red 0px 0px 5px);
+  }
+  25%, 75% {
+    -webkit-filter: drop-shadow(red 0px 0px 15px);
+    filter: drop-shadow(red 0px 0px 15px);
+  }
+}*/

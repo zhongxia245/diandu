@@ -162,7 +162,7 @@ if ($id > 0) {
         <div class="form-group">
             <label for="intro">简介<span>( 选填 )</span></label>
             <textarea class="form-control" id="intro" rows="5"
-                      placeholder="介绍测试的相关内容、注意点等,简洁不能超过100字"><?php echo $video['saytext']; ?></textarea>
+                      placeholder="介绍测试的相关内容、注意点等,简洁不能超过300字"><?php echo $video['saytext']; ?></textarea>
         </div>
         <div class="form-group div_keyword">
             <label for="name">关键词</label><span style="color:#8E8E8E;">(多个关键词之间用空格分割，为便于扩大影响力，请点击长尾关键词查询，尽量选择引擎排名靠前的长尾关键词)</span>
@@ -292,135 +292,179 @@ if ($id > 0) {
   <!-- setting end -->
 </div>
 <!--创建考试-->
-<div id="_examCreate"></div>
-<!--点读点大小设置-->
-<div id="dianduPointSetting"></div>
-
-<!--点读点大小设置-->
-<div id="globalAudioSetting" style="display: none;"></div>
-<!--自定义点读点-->
-<div id="customPointSetting" style="display: none;"></div>
-<!--上传文件类型选择，显示隐藏，删除 模版 START-->
-<script id="tpl_uploadSetting" type="text/x-handlebars-template">
-  <li class="upload-item item{{index}}" data-index="{{index}}">
-    <div class="upload-radius">
-      <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
-      <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
-    </div>
-    <div class="upload-type">
-      <ul data-id="{{id}}">
-        <li title="点读点大小"  class="number-container"></li>
-        <li title="视频" class="video" data-type="uploadType" data-file-type="video"
-            data-text="点击上传MP4格式的视频文件"></li>
-        <li title="音频" class="audio" data-type="uploadType" data-file-type="audio"
-            data-text="点击上传MP3格式的音频文件"></li>
-        <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext"
-            data-text="点击上传图文(支持文字和图片)"></li>
-        <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
-        <li title="开关" class="on-off" data-type="uploadType" data-file-type="on-off" data-text="点击设置开关"></li>
-        <li title="超链接" class="set-url" data-type="uploadType" data-file-type="set-url" data-text="点击设置超级链接"></li>
-      </ul>
-    </div>
-    <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
-      <div class="upload-right-name notselect">
-        <span>{{fileName}}</span>
-
-        <div class="div-file">
-          <div class="div-file-mask" style="display:none"></div>
-          <div class="webuploader-progress" id="file__progress{{id}}"></div>
-          <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload" ></div>
+    <div id="_examCreate"></div>
+    <!--点读点大小设置-->
+    <div id="dianduPointSetting"></div>
+    <!--点读点大小设置-->
+    <div id="globalAudioSetting" style="display: none;"></div>
+    <!--自定义点读点-->
+    <div id="customPointSetting" style="display: none;"></div>
+    <!--上传文件类型选择，显示隐藏，删除 模版 START-->
+    <script id="tpl_uploadSetting" type="text/x-handlebars-template">
+        <li class="upload-item item{{index}}" data-index="{{index}}">
+            <div class="upload-radius">
+                <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
+                <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
+            </div>
+            <div class="upload-type">
+                <ul data-id="{{id}}">
+                    <li title="点读点大小" class="number-container"></li>
+                    {{#if type}}
+                    <li data-type="selectType" class="point-types__item--{{type}}-selected"></li>
+                    {{else}}
+                    <li data-type="selectType" class="point-types__item--noselect">类型选择</li>
+                    {{/if}}
+                </ul>
+                <div class="upload-file-name notselect">
+                    <span>{{fileName}}</span>
+                    <div class="div-file">
+                        <div class="div-file-mask" style="display:none"></div>
+                        <div class="webuploader-progress" id="file__progress{{id}}"></div>
+                        <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"></div>
+                    </div>
+                    <img data-type="download" class="download" src="imgs/download.png" alt="download">
+                </div>
+                <div class='point-types__setting'>
+                    <div class='point-types-setting__area' data-type="setting-area">区域</div>
+                    <div class='point-types-setting__title'>激发模式</div>
+                    <div class='point-types-setting__point' data-type="point-setting">点</div>
+                </div>
+            </div>
+            <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
+                <div class="upload-right-btn">
+                    <ul data-id="{{id}}" data-index="{{index}}">
+                        <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+                        <li title="删除" class="img-delete" data-type="delete"></li>
+                        <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
+                        <li style="display:none" title="设置全程音频" class="img-global-audio-setting" data-type="global-audio-setting"></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </script>
+    <!--上传文件类型选择，显示隐藏，删除 模版 END-->
+    <!--旧版（旧版暂时）  上传文件类型选择，显示隐藏，删除 模版  START-->
+    <script id="tpl_uploadSetting_old" type="text/x-handlebars-template">
+        <li class="upload-item item{{index}}" data-index="{{index}}">
+            <div class="upload-radius">
+                <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
+                <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
+            </div>
+            <div class="upload-type">
+                <ul data-id="{{id}}">
+                    <li title="点读点大小" class="number-container"></li>
+                    <li title="视频" class="video" data-type="uploadType" data-file-type="video" data-text="点击上传MP4格式的视频文件"></li>
+                    <li title="音频" class="audio" data-type="uploadType" data-file-type="audio" data-text="点击上传MP3格式的音频文件"></li>
+                    <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext" data-text="点击上传图文(支持文字和图片)"></li>
+                    <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
+                    <li title="开关" class="on-off" data-type="uploadType" data-file-type="on-off" data-text="点击设置开关"></li>
+                    <li title="超链接" class="set-url" data-type="uploadType" data-file-type="set-url" data-text="点击设置超级链接"></li>
+                </ul>
+            </div>
+            <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
+                <div class="upload-file-name notselect">
+                    <span>{{fileName}}</span>
+                    <div class="div-file">
+                        <div class="div-file-mask" style="display:none"></div>
+                        <div class="webuploader-progress" id="file__progress{{id}}"></div>
+                        <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"></div>
+                    </div>
+                    <img class="download" src="imgs/download.png" alt="download">
+                </div>
+                <div class="upload-right-btn">
+                    <ul data-id="{{id}}" data-index="{{index}}">
+                        <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
+                        <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
+                        <li title="删除" class="img-delete" data-type="delete"></li>
+                        <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
+                        <li title="设置全程音频" class="img-global-audio-setting" data-type="global-audio-setting" style="display:none"></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </script>
+    <!--旧版（暂时保存） 上传文件类型选择，显示隐藏，删除 模版 END-->
+    <!--背景图模板 START-->
+    <script id="tpl_bg" type="text/x-handlebars-template">
+        <hr/>
+        <div class="diandupageitem" data-index="{{index}}">
+            <div class="setting-bigimg">
+                <div class="setting-bigimg-header">
+                    <div class="sort-info">
+                        <span class="sort">{{index}}</span>
+                        <span class="filename"></span>
+                    </div>
+                    <div id="file_bg{{index}}" class="file_bg"></div>
+                    <span class="h-tip">横屏背景图比例 16:9</span>
+                    <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
+                    <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
+                    <ul class="bigimg-h">
+                        <li class="down hide"></li>
+                        <li class="up hide"></li>
+                        <li class="hide1 hide"></li>
+                        <li class="show1" style="display:none;"></li>
+                        <li class="del"></li>
+                    </ul>
+                </div>
+                <div class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
+                    <div class="_mask"></div>
+                    <div class="diandu-img btn_start" style="display:none;"></div>
+                    <div class="setting-bigimg-tip-h bigimg-tip">
+                        <h3>提示</h3>
+                        <p style="font-size:16px">手机横屏比例为16:9，对应像素通常为1920*1080。建议上传小于此分辨率的图片作为背景图</p>
+                        <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a 选择一个文件夹下的所有图片)
+                            <p/>
+                    </div>
+                </div>
+            </div>
+            <ul class="draw-custom-area js-draw-custom-area">
+                <li>请直接在图片上绘制区域</li>
+                <li data-type="rect" class="draw-custom-area__item area__rect"></li>
+                <li data-type="roundrect" class="draw-custom-area__item area__roud"></li>
+                <li data-type="circle" class="draw-custom-area__item area__circle"></li>
+                <li data-type="oval" class="draw-custom-area__item area__oval"></li>
+                <li data-type="triangle" class="draw-custom-area__item area__triangle"></li>
+            </ul>
+            <ul class="setting-upload" id="uploadSetting{{index}}">
+            </ul>
         </div>
-        <img class="download" src="imgs/download.png" alt="download">
-      </div>
-      <div class="upload-right-btn">
-        <ul data-id="{{id}}" data-index="{{index}}">
-          <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
-          <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
-          <li title="删除" class="img-delete" data-type="delete"></li>
-          <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
-          <li title="设置全程音频" class="img-global-audio-setting"
-              data-type="global-audio-setting"
-              style="display:none"></li>
-        </ul>
-      </div>
-    </div>
-  </li>
-</script>
-<!--上传文件类型选择，显示隐藏，删除 模版 END-->
-<!--背景图模板 START-->
-<script id="tpl_bg" type="text/x-handlebars-template">
-  <hr/>
-  <div class="diandupageitem" data-index="{{index}}">
-    <div class="setting-bigimg">
-      <div class="setting-bigimg-header">
-        <div class="sort-info">
-          <span class="sort">{{index}}</span>
-          <span class="filename"></span>
-        </div>
-        <div id="file_bg{{index}}" class="file_bg"></div>
-        <span class="h-tip">横屏背景图比例 16:9</span>
-        <span class="v-tip" style="display:none;">竖屏背景图比例 9:16</span>
-        <span style="display:none">点击确定点读位置，根据对应的编号在图片下方列表中设置点读素材</span>
-        <ul class="bigimg-h">
-          <li class="down hide"></li>
-          <li class="up hide"></li>
-          <li class="hide1 hide"></li>
-          <li class="show1" style="display:none;"></li>
-          <li class="del"></li>
-        </ul>
-      </div>
-      <div style="{{style}}" class="setting-bigimg-img id_bg" id="id_bg{{index}}" data-index="{{index}}">
-        <div class="_mask"></div>
-        <div class="diandu-img btn_start" style="display:none;"></div>
-        <div class="setting-bigimg-tip-h bigimg-tip">
-          <h3>提示</h3>
-          <p style="font-size:16px">手机横屏比例为16:9，对应像素通常为1920*1080。建议上传小于此分辨率的图片作为背景图</p>
-          <p style="font-size:16px;margin-top:10px">选择图片时,可批量上传,按CTRL键加选,按shift链选(第一个和最后一个之间的所有,可以按ctrl+a
-            选择一个文件夹下的所有图片)
-          <p/>
-        </div>
-      </div>
-    </div>
-    <ul class="setting-upload" id="uploadSetting{{index}}">
-    </ul>
-  </div>
-</script>
-<!--背景图模板 END -->
+    </script>
+    <!--背景图模板 END -->
 <!--lib-->
-<script src="./js/util/log.js"></script>
-<script src="./js/lib/jquery.min.js"></script>
-<script src="./js/lib/handlebars.min.js"></script>
-<script src="./js/lib/autosize.min.js"></script>
-<script src="./js/lib/layer/layer.js"></script>
-<script src="./js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
-<script src="./js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
-<script src="./js/lib/webuploader/webuploader.min.js"></script>
-<script src="./js/lib/kindeditor/kindeditor-min.js"></script>
-<script src="./js/lib/kindeditor/lang/zh_CN.js"></script>
-<script src="./js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
-
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/handlebars.min.js"></script>
+<script src="js/lib/autosize.min.js"></script>
+<script src="js/lib/layer/layer.js"></script>
+<script src="js/lib/jcrop/js/jquery.Jcrop.min.js"></script>
+<script src="js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<script src="js/lib/webuploader/webuploader.min.js"></script>
+<script src="js/lib/kindeditor/kindeditor-min.js"></script>
+<script src="js/lib/kindeditor/lang/zh_CN.js"></script>
+<script src="js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
+<!--图片截图-->
 <link rel="stylesheet" type="text/css" href="./js/lib/uploadify/uploadify.css"/>
 <script type="text/javascript" src="/edu/course/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/edu/course/js/resumable.js"></script>
 <script type="text/javascript" src="/edu/course/js/common_tool.js"></script>
 <!--custom-->
-<script src="./js/model/model.js"></script>
-<script src="./js/util/arrayUtil.js"></script>
-<script src="./js/util/util.js"></script>
-<script src="./js/util/drag.js"></script>
-
+<script src="js/model/model.js"></script>
+<script src="js/util/arrayUtil.js"></script>
+<script src="js/util/util.js"></script>
+<script src="js/util/drag.js"></script>
+<script src="js/util/draw.js"></script>
 <!--组件-->
-<script src="./js/components/imgtext/ImgText2.js"></script>
-<script src="./js/components/examcreate/ExamCreate.js"></script>
-<script src="./js/components/pointsetting/PointSetting.js"></script>
-<script src="./js/components/number/CNumber.js"></script>
-<script src="./js/components/globalaudio/GlobalAudio.js"></script>
-<script src="./js/components/custompointsetting/CustomPointSetting.js"></script>
-<script src="./js/page/common/CreatePoint/CreatePoint.js"></script>
-<script src="./js/page/create/OnOffImg/OnOffImg.js"></script>
-<script src="./js/page/create/UrlPoint/UrlPoint.js"></script>
-
-<script src="./js/index.js"></script>
+<script src="js/components/imgtext/ImgText2.js"></script>
+<script src="js/components/examcreate/ExamCreate.js"></script>
+<script src="js/components/pointsetting/PointSetting.js"></script>
+<script src="js/components/number/CNumber.js"></script>
+<script src="js/components/globalaudio/GlobalAudio.js"></script>
+<script src="js/components/custompointsetting/CustomPointSetting.js"></script>
+<script src="js/page/common/CreatePoint/CreatePoint.js"></script>
+<script src="js/page/create/OnOffImg/OnOffImg.js"></script>
+<script src="js/page/create/UrlPoint/UrlPoint.js"></script>
+<script src="js/page/create/PointTypes/PointTypes.js"></script>
+<script src="js/page/create/SwayPoint/SwayPoint.js"></script>
+<script src="js/index.js"></script>
 
 
 <script>
