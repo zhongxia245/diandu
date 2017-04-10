@@ -33,7 +33,6 @@ function PointSetting(selector, config) {
     size: config.size || 100,
     color: config.color || 'rgb(255,255,255)'
   };
-  Logger.log("data", this.data)
   this.render();
 }
 
@@ -103,8 +102,6 @@ PointSetting.prototype.init = function () {
 
   var tempColor = parseInt(that.data.color.replace('rgb', '').replace('(', '').replace(')', '').split(',')[0]);
   tempColor = 1 - tempColor / 255;
-
-  Logger.log("tempColor", tempColor)
 
   var slideColor = new Slider('#dpsColor', {
     step: 0.05,
