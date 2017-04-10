@@ -71,14 +71,14 @@ var ExamCreate = function (selector, data, fn_submit) {
       text: '',
       type: 'radio',
       answers: [
-        {}, {}, {placeholder: "输入选项,少于三个请留空"}, {placeholder: "输入选项,少于四个请留空"}
+        {}, {}, { placeholder: "输入选项,少于三个请留空" }, { placeholder: "输入选项,少于四个请留空" }
       ]
     },
     checkbox: {
       text: '',
       type: 'checkbox',
       answers: [
-        {}, {}, {}, {placeholder: "输入选项,少于四个请留空"}
+        {}, {}, {}, { placeholder: "输入选项,少于四个请留空" }
       ]
     }
     ,
@@ -86,7 +86,7 @@ var ExamCreate = function (selector, data, fn_submit) {
       text: '',
       type: 'bool',
       answers: [
-        {text: "对 (True)"}, {text: "错 (False)"}
+        { text: "对 (True)" }, { text: "错 (False)" }
       ]
     }
 
@@ -301,7 +301,7 @@ ExamCreate.prototype.bindEvent = function () {
    */
   this.$addItem.off().on('click', function () {
     that.getValue2Data();
-    that.data.questions[that.currentIndex - 1].answers.push({text: ''});
+    that.data.questions[that.currentIndex - 1].answers.push({ text: '' });
     that.render();
     autosize($(that.selector).find('textarea'));
   });
@@ -311,7 +311,9 @@ ExamCreate.prototype.bindEvent = function () {
    */
   this.$submit.off().on('click', function () {
     that.getValue2Data();
-    that.fn_submit && that.fn_submit(that.data);
+    if (that.checkSettingAnswer()) {
+      that.fn_submit && that.fn_submit(that.data);
+    }
   });
 
 }
@@ -382,4 +384,34 @@ ExamCreate.prototype.getValue2Data = function (flag) {
  */
 ExamCreate.prototype.getQuestionItemByType = function (type) {
   return $.extend(true, {}, this.questionItem[type]);
+}
+
+
+/**
+ * 检查所有题目是否设置了答案
+ * 如果未设置答案，不允许提交
+ */
+ExamCreate.prototype.checkSettingAnswer = function () {
+  var flag = []
+  var questions = this.data.questions;
+  for (var i = 0; i < questions.length; i++) {
+    var question = questions[i];
+    for (var j = 0; j < question.answers.length; j++) {
+      if (question.answers[j].answer) {
+        flag.push(true)
+        break;
+      }
+      if (j === question.answers.length - 1) {
+        flag.push(false)
+      }
+    }
+  }
+
+  for (var i = 0; i < flag.length; i++) {
+    if (!flag[i]) {
+      alert('第' + (i + 1) + '道题目未设置答案，请检查下题目答案哦！')
+      return false;
+    }
+  }
+  return true;
 }
