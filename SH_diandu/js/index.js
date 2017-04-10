@@ -2113,6 +2113,14 @@ function getGlobalAudioConfig() {
  * 提交
  */
 function handleSubmit(e) {
+  var $cTar = $(e.currentTarget);
+  // 禁止重复提交
+  if ($cTar.attr('data-flag') === '1') {
+    console.warn('请勿重复提交...')
+    return
+  }
+  $cTar.attr('data-flag', 1);
+
   var pagesInfo = _data.getValidItems()
   var globalAudioContent = getGlobalAudioConfig()
 
