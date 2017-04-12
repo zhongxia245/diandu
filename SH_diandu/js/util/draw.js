@@ -6,89 +6,110 @@
  * square 正方形
  */
 window.Draw = (function () {
-  function drawCustomArea(options) {
-    var id = options.pageId
-    var type = options.type
-    var radius = options.radius
-    var callback = options.callback
-    var oCanvas = document.getElementById(id)
+  function DrawCustomArea(options) {
+    var that = this
+    that.data = options
+    this.data.enable = options.enable || true;
+
+    var oCanvas = document.getElementById(that.data.pageId)
 
     oCanvas.onmousedown = function (ev) {
-      if (oCanvas.setCapture) {
-        oCanvas.setCapture();
-      }
-      var oEv = ev || window.event;
-      var dragging = false;
-      var disX = oEv.layerX;
-      var disY = oEv.layerY;
-
-      var oR = document.createElement('div');
-      oR.setAttribute('id', '__drawarea__')
-      oR.id = "div";
-      oR.style.top = disY + 'px';
-      oR.style.left = disX + 'px';
-      oR.style.backgroundColor = '#5b9bd5';
-      oR.style.position = 'absolute';
-      oCanvas.appendChild(oR);
-
-      document.onmousemove = function (ev) {
-        ev.stopPropagation()
-        ev.preventDefault()
-
-        var oEv = ev || window.event;
-        var x = oEv.layerX;
-        var y = oEv.layerY;
-        // if (x < oCanvas.offsetLeft) {
-        //   x = oCanvas.offsetLeft;
-        // }
-        // else if (x > oCanvas.offsetLeft + oCanvas.offsetWidth) {
-        //   x = oCanvas.offsetLeft + oCanvas.offsetWidth
-        // }
-        // if (y < oCanvas.offsetTop) {
-        //   y = oCanvas.offsetTop;
-        // }
-        // else if (y > oCanvas.offsetTop + oCanvas.offsetHeight) {
-        //   y = oCanvas.offsetTop + oCanvas.offsetHeight
-        // }
-        oR.style.width = Math.abs(x - disX) + 'px';
-        oR.style.top = Math.min(disY, y) + 'px';
-        oR.style.left = Math.min(disX, x) + 'px';
-        switch (type) {
-          case 'roud':
-            oR.style.height = Math.abs(y - disY) + 'px';
-            oR.style.borderRadius = radius + 'px';
-            break;
-          case 'circle':
-            oR.style.height = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
-            oR.style.width = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
-            oR.style.borderRadius = '50%'
-            break;
-          case 'rect':
-            oR.style.height = Math.abs(y - disY) + 'px';
-            break;
-          case 'square':
-            oR.style.height = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
-            oR.style.width = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
+      oCanvas.style.cursor = 'se-resize'
+      // 是否允许绘制,默认为true
+      if (that.data.enable) {
+        if (oCanvas.setCapture) {
+          oCanvas.setCapture();
         }
-      }
-      document.onmouseup = function () {
+        var oEv = ev || window.event;
+        var dragging = false;
+        var disX = oEv.layerX;
+        var disY = oEv.layerY;
+
+        var oR = document.createElement('div');
+        oR.setAttribute('id', '__drawarea__')
+        oR.id = that.data.pointId;
+        oR.style.top = disY + 'px';
+        oR.style.left = disX + 'px';
+        oR.style.backgroundColor = '#5b9bd5';
+        oR.style.position = 'absolute';
+        oR.style.cursor = 'move';
+        oCanvas.appendChild(oR);
+
+        document.onmousemove = function (ev) {
+          ev.stopPropagation()
+          ev.preventDefault()
+
+          var oEv = ev || window.event;
+          var x = oEv.layerX;
+          var y = oEv.layerY;
+          // if (x < oCanvas.offsetLeft) {
+          //   x = oCanvas.offsetLeft;
+          // }
+          // else if (x > oCanvas.offsetLeft + oCanvas.offsetWidth) {
+          //   x = oCanvas.offsetLeft + oCanvas.offsetWidth
+          // }
+          // if (y < oCanvas.offsetTop) {
+          //   y = oCanvas.offsetTop;
+          // }
+          // else if (y > oCanvas.offsetTop + oCanvas.offsetHeight) {
+          //   y = oCanvas.offsetTop + oCanvas.offsetHeight
+          // }
+          oR.style.width = Math.abs(x - disX) + 'px';
+          oR.style.top = Math.min(disY, y) + 'px';
+          oR.style.left = Math.min(disX, x) + 'px';
+          switch (that.data.type) {
+            case 'roud':
+              oR.style.height = Math.abs(y - disY) + 'px';
+              oR.style.borderRadius = that.data.radius + 'px';
+              break;
+            case 'circle':
+              oR.style.height = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
+              oR.style.width = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
+              oR.style.borderRadius = '50%'
+              break;
+            case 'oval':
+              oR.style.height = Math.abs(y - disY) + 'px';
+              oR.style.borderRadius = '50%'
+              break;
+            case 'rect':
+              oR.style.height = Math.abs(y - disY) + 'px';
+              break;
+            case 'square':
+              oR.style.height = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
+              oR.style.width = Math.min(Math.abs(x - disX), Math.abs(y - disY)) + 'px';
+          }
+        }
+        document.onmouseup = function () {
+          oCanvas.style.cursor = 'pointer'
+          document.onmousemove = null;
+          document.onmouseout = null;
+          if (oCanvas.releaseCapture) {
+            oCanvas.releaseCapture();
+          }
+          if (that.data.callback) {
+            that.data.callback({
+              left: parseInt(oR.style.left),
+              top: parseInt(oR.style.top),
+              width: parseInt(oR.style.width),
+              height: parseInt(oR.style.height)
+            })
+          }
+        }
+        return false;
+      } else {
+        oCanvas.onmousedown = null;
         document.onmousemove = null;
         document.onmouseout = null;
-        if (oCanvas.releaseCapture) {
-          oCanvas.releaseCapture();
-        }
-        if (callback) {
-          callback({
-            left: parseInt(oR.style.left),
-            top: parseInt(oR.style.top),
-            width: parseInt(oR.style.width),
-            height: parseInt(oR.style.height)
-          })
-        }
       }
-      return false;
     }
+    return that;
   }
+
+  DrawCustomArea.prototype.setEnable = function (enable) {
+    this.data.enable = enable;
+  }
+
+
 
   function drawCustomArea1(options) {
     var id = options.pageId
@@ -168,7 +189,7 @@ window.Draw = (function () {
   }
 
   return {
-    drawCustomArea: drawCustomArea,
+    DrawCustomArea: DrawCustomArea,
     drawCustomArea1: drawCustomArea1,
   }
 })()

@@ -304,6 +304,39 @@ window.Util = (function () {
     })
   }
 
+  /**
+   * 绘制区域的时候使用，避免绘制图形后还触发点击事件
+   * 鼠标拖动还是点击
+   * @param {any} selector 
+   * @param {any} onClick 
+   * @param {any} onMove 
+   */
+  function MoveOrClick(selector, onClick, onMove) {
+    var Mouse = {
+      x: 0,
+      y: 0,
+      mousedown: function (event) {
+        Mouse.y = event.clientY;
+        Mouse.x = event.clientX;
+      },
+      mouseup: function (event) {
+        if (event.clientX != Mouse.x || event.clientY != Mouse.y) {
+          console.log('slide');
+          if (onMove) {
+            onMove(event);
+          }
+        } else {
+          console.log('click');
+          if (onClick) {
+            onClick(event)
+          }
+        }
+      }
+    }
+    $('body').on('mousedown', selector, Mouse.mousedown)
+    $('body').on('mouseup', selector, Mouse.mouseup);
+  }
+
 
   return {
     getImageWH: getImageWH,
@@ -320,7 +353,8 @@ window.Util = (function () {
     mouseDrag: mouseDrag,
     drag: drag,
     getImageBase64: getImageBase64,
-    getTpl: getTpl
+    getTpl: getTpl,
+    MoveOrClick: MoveOrClick
   }
 })()
 
