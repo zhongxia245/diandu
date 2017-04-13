@@ -343,47 +343,6 @@ if ($id > 0) {
         </li>
     </script>
     <!--上传文件类型选择，显示隐藏，删除 模版 END-->
-    <!--旧版（旧版暂时）  上传文件类型选择，显示隐藏，删除 模版  START-->
-    <script id="tpl_uploadSetting_old" type="text/x-handlebars-template">
-        <li class="upload-item item{{index}}" data-index="{{index}}">
-            <div class="upload-radius">
-                <img src="imgs/hide_t.png" class="upload-radius-img" style="position: relative;visibility: hidden;">
-                <div class="upload-radius-in" id="item{{id}}">{{index}}</div>
-            </div>
-            <div class="upload-type">
-                <ul data-id="{{id}}">
-                    <li title="点读点大小" class="number-container"></li>
-                    <li title="视频" class="video" data-type="uploadType" data-file-type="video" data-text="点击上传MP4格式的视频文件"></li>
-                    <li title="音频" class="audio" data-type="uploadType" data-file-type="audio" data-text="点击上传MP3格式的音频文件"></li>
-                    <li title="图文" class="imgtext" data-type="uploadType" data-file-type="imgtext" data-text="点击上传图文(支持文字和图片)"></li>
-                    <li title="考试" class="exam" data-type="uploadType" data-file-type="exam" data-text="点击上传试卷"></li>
-                    <li title="开关" class="on-off" data-type="uploadType" data-file-type="on-off" data-text="点击设置开关"></li>
-                    <li title="超链接" class="set-url" data-type="uploadType" data-file-type="set-url" data-text="点击设置超级链接"></li>
-                </ul>
-            </div>
-            <div class="upload-right" data-type="{{type}}" data-upload="{{upload}}">
-                <div class="upload-file-name notselect">
-                    <span>{{fileName}}</span>
-                    <div class="div-file">
-                        <div class="div-file-mask" style="display:none"></div>
-                        <div class="webuploader-progress" id="file__progress{{id}}"></div>
-                        <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"></div>
-                    </div>
-                    <img class="download" src="imgs/download.png" alt="download">
-                </div>
-                <div class="upload-right-btn">
-                    <ul data-id="{{id}}" data-index="{{index}}">
-                        <li title="点读点设置" class="img-point-setting" data-type="point-setting"></li>
-                        <li title="隐藏" class="img-hide" data-type="hide" data-show="0"></li>
-                        <li title="删除" class="img-delete" data-type="delete"></li>
-                        <li title="全程音频" class="img-global-audio" data-type="global-audio"></li>
-                        <li title="设置全程音频" class="img-global-audio-setting" data-type="global-audio-setting" style="display:none"></li>
-                    </ul>
-                </div>
-            </div>
-        </li>
-    </script>
-    <!--旧版（暂时保存） 上传文件类型选择，显示隐藏，删除 模版 END-->
     <!--背景图模板 START-->
     <script id="tpl_bg" type="text/x-handlebars-template">
         <hr/>

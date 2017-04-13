@@ -52,7 +52,7 @@ if (!empty($_FILES)) {
 		$tempFile = $_FILES['file']['tmp_name'];
 	
 	//允	许的文件后缀
-		$fileTypes = array('jpg','jpeg','gif','png','mp3','mp4','lrc');
+		$fileTypes = array('jpg','jpeg','gif','png','mp3','mp4','lrc','obj');
 	
 	//图	片文件后缀
 		$imgFile = array('jpg','jpeg','png');

@@ -813,11 +813,51 @@ function bindEvent() {
   })
   // 点读点大小设置 END
 
+
+  // 添加点读点 START
+  Util.MoveOrClick('.setting-bigimg-img',
+    //点击处理 
+    function (e) {
+      onAddPoint(e)
+    },
+    // 拖动处理
+    function (e) {
+
+    })
+
+  // 绘制自定义图形
   $('body').on('click', '.js-draw-custom-area', function (e) {
+    var $cTar = $(e.currentTarget)
     var $tar = $(e.target)
-    console.log($tar.data())
+    var config = $tar.data()
+    // 获取当前点读页的数据
+    var pageIndex = $cTar.data('index');
+    var _page = window.DD.items[pageIndex - 1]
+    var DDPageItems = _page['data']
+    var dataid = pageIndex + '_' + (DDPageItems.length + 1)
+
+    // 自定义绘制图形  START 
+    var drawCustomArea = new Draw.DrawCustomArea({
+      pageId: 'id_bg' + pageIndex,
+      pointId: dataid,
+      type: config.type,
+      radius: 5,
+      callback: function (data) {
+        DDPageItems.push({
+          x: data.left,
+          y: data.top,
+          w: data.width,
+          h: data.height,
+          id: dataid
+        })
+        // 禁用绘制功能
+        drawCustomArea.setEnable(false);
+        new Drag('#' + dataid, function (x, y) {
+        })
+      }
+    })
+    // 自定义绘制图形  END
   })
-  // 自定义绘制图形  END
 }
 
 /**
@@ -860,18 +900,6 @@ function addDianDuPageTpl() {
   GLOBAL.PAGECOUNT++
 
   setBackColor(GLOBAL.BACK_COLOR)
-
-  // 自定义绘制图形  START 
-  Draw.drawCustomArea({
-    pageId: 'id_bg1',
-    type: 'roud',
-    radius: 5,
-    callback: function (data) {
-      new Drag('#div', function (x, y) {
-
-      })
-    }
-  })
 }
 
 /**
@@ -1109,9 +1137,10 @@ function getImageScaleWH(w, h) {
  * @return {[type]} [description]
  */
 function bindDianDuPageEvent() {
-  // 2016-08-14 21:56:13 这里不能使用 off() , 否则编辑的时候, 点读点的mouesdown事件被清除掉, 无法移动
-  $('.setting-bigimg-img').off()
-    .on('click', addDianDuLocation)
+  // 区分点击还是绘制图形  TODO 
+  // 添加点读点
+  // $('.setting-bigimg-img').off()
+  //   .on('click', onAddPoint)
 
   // 点读页上下移动操作
   $('.setting-bigimg-header ul').off()
@@ -1203,23 +1232,13 @@ function getValidXY(ex, ey, w, h) {
   }
 }
 
-/**
- * 下载文件
- */
-function downloadFile(e) {
-  var src = $(e.target).parent().data().src
-  window.open(src)
-}
-
 /*************************************************************
  *              逻辑部分【重点】  START
  *************************************************************/
 /**
  * 添加点读位置
  */
-function addDianDuLocation(e) {
-  // e.stopPropagation(); // 阻止冒泡，否则背景会触发点击事件
-
+function onAddPoint(e) {
   var $tar = $(e.target)
   var w = $tar.width()
   var h = $tar.height()
@@ -1270,15 +1289,8 @@ function handleUploadItem(e) {
     case 'setting-area':
       alert('点读点区域设置功能正在开发中...')
       break
-    case 'download':
-      downloadFile(e)
-      break
     case 'selectType':
       selectTypeClick(e)
-      break
-    // 如果是点击上传的类型,视频或者音频【TODO：REMOVE 后期移除掉】
-    case 'uploadType':
-      fileTypeItemClick(e)
       break
     // 点读点设置（点读点上加图片，自定义图片等功能）
     case 'point-setting':
@@ -1530,9 +1542,9 @@ function _selectTypeHandle(e, data) {
   // 设置上传类型的默认图标--》设置选中的图片
   setUnSelectImgSrc($currentTarget)
   setHoverImgSrcx($target)
-
+  
   // 加上点读点类型【用于hover出现全局音频按钮】
-  $uploadRight.attr('data-type', data.fileType)
+  $uploadRight.attr('data-type', data.type)
 
   $rightName.find('span').html(data.text)
   // 未上传文件，设置上传文件的样式
@@ -1553,9 +1565,12 @@ function _selectTypeHandle(e, data) {
       fileTypeExts = 'audio/mpeg'
       fileTypeDesc = 'MP3文件'
       $webuploaderDiv.show()
-
-      //TODO：可以优化
-      $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
+      $target.parents('.upload-item').find('.upload-right').attr('data-upload', 0)
+      break
+    case '3dviewer': //3D观察期
+      fileTypeExts = 'obj/*'
+      fileTypeDesc = 'Obj Files'
+      $webuploaderDiv.show()
       break
     case 'imgtext': // 图文
       $filemask.show().off().on('click', fn2_uploadImgText)
@@ -1586,10 +1601,11 @@ function _selectTypeHandle(e, data) {
     onUploadSuccess: function (file, resultPath) {
       resultPath = resultPath._raw
       if (resultPath.indexOf('error') === -1) {
-        var $rightName = $('#__file' + id).parent().parent()
-        var fileSrc = resultPath
-        $rightName.attr('data-src', fileSrc)
+        $('#download_' + id).attr('href', resultPath).attr('download', file.name)
 
+        var $rightName = $('#__file' + id).parents('.upload-file-name')
+
+        $rightName.attr('data-src', resultPath)
         $rightName.removeClass('upload').addClass('uploaded')
         $rightName.find('span').html(file.name)
 
@@ -1597,10 +1613,9 @@ function _selectTypeHandle(e, data) {
 
         // 如果是视频点读点,则获取视频的宽高
         if (data.type === 'video') {
-          Util.getVideoWH(fileSrc, function (obj) {
-            console.log('Audio', obj)
+          Util.getVideoWH(resultPath, function (obj) {
             _data.setDDItems(_dataid, {
-              url: fileSrc,
+              url: resultPath,
               filename: file.name,
               area: {
                 w: obj.w, h: obj.h,
@@ -1609,122 +1624,12 @@ function _selectTypeHandle(e, data) {
             })
           })
         } else {
-          _data.setDDItems(_dataid, { url: fileSrc, filename: file.name })
+          _data.setDDItems(_dataid, { url: resultPath, filename: file.name })
         }
       }
     }
   })
 
-}
-
-/**
- * TODO：REMOVE 这个是页面改版之前的 类型选择事件，后期将移除掉
- * 点图文件上传，文件类型选择，上传框，序号小圆圈样式管理
- * @param  {[type]} e [点击事件对象]
- */
-function fileTypeItemClick(e) {
-  var $currentTarget = $(e.currentTarget)
-  var $target = $(e.target)
-  var $filemask = $currentTarget.find('.div-file-mask'); // 文件上传按钮的遮罩层，用于图文
-  var $webuploaderDiv = $currentTarget.find('[data-fileid]');
-
-  var data = $target.data(); // 文件类型，和提示信息（上传什么类型文件）
-  var pdata = $target.parent().data(); // 点读位文件类型列表data-数据(文件列表的ul)
-  var id = pdata.id
-  var _dataid = id
-  var fileTypeDesc, fileTypeExts
-
-  // 设置右边上传位置文字，以及背景颜色
-  var $rightName = $currentTarget.find('.upload-file-name')
-
-  // 上传文件名称，以及点读点操作按钮区域
-  var $uploadRight = $currentTarget.find('.upload-right')
-
-  // 设置上传类型的默认图标--》设置选中的图片
-  setUnSelectImgSrc($currentTarget)
-  setHoverImgSrcx($target)
-
-  // 加上点读点类型【用于hover出现全局音频按钮】
-  $uploadRight.attr('data-type', data.fileType)
-
-  $rightName.find('span').html(data.text)
-  // 未上传文件，设置上传文件的样式
-  $rightName.removeClass('notselect').addClass('upload')
-  // 已经上传文件，修改成 需要上传新的文件
-  $rightName.removeClass('uploaded').addClass('upload')
-  // 已经上传图文文件[二期]
-  $rightName.removeClass('uploaded-imgtext').addClass('upload')
-
-  // 用来遮住uploadify 组件的, 图文和试卷 不需要直接使用上传功能
-  $filemask.hide()
-
-  switch (data.fileType) {
-    case 'video': // 视频
-      fileTypeExts = 'audio/mp4,video/mp4'
-      fileTypeDesc = 'MP4文件'
-      $webuploaderDiv.show()
-      break
-    case 'audio': // 音频
-      fileTypeExts = 'audio/mpeg'
-      fileTypeDesc = 'MP3文件'
-      $webuploaderDiv.show()
-      $target.parent().parent().parent().find('.upload-right').attr('data-upload', 0)
-      break
-    case 'imgtext': // 图文
-      $filemask.show().off().on('click', fn2_uploadImgText)
-      break
-    case 'exam': // 考试
-      $filemask.show().off().on('click', fn2_examCreate)
-      break
-    case 'on-off': // 开关图
-      $filemask.show().off().on('click', fn3_onoffImgCreate)
-      break
-    case 'set-url': //设置超链接
-      $filemask.show().off().on('click', fn3_setUrl)
-      break
-
-  }
-
-  // 把文件类型，保存到变量里面
-  _data.setDDItems(_dataid, { type: data.fileType })
-
-  $('#__file' + id + '-queue').remove()
-
-  _upload.initWebUpload('#__file' + id, {
-    id: id,
-    fileTypeExts: fileTypeExts,
-    fileTypeDesc: fileTypeDesc,
-    onUploadSuccess: function (file, resultPath) {
-      resultPath = resultPath._raw
-      if (resultPath.indexOf('error') === -1) {
-        var $rightName = $('#__file' + id).parent().parent()
-        var fileSrc = resultPath
-        $rightName.attr('data-src', fileSrc)
-
-        $rightName.removeClass('upload').addClass('uploaded')
-        $rightName.find('span').html(file.name)
-
-        $uploadRight.attr('data-upload', 1); // 标记已经上传文件
-
-        // 如果是视频点读点,则获取视频的宽高
-        if (data.fileType === 'video') {
-          Util.getVideoWH(fileSrc, function (obj) {
-            console.log('Audio', obj)
-            _data.setDDItems(_dataid, {
-              url: fileSrc,
-              filename: file.name,
-              area: {
-                w: obj.w, h: obj.h,
-                videoW: obj.w, videoH: obj.h
-              }
-            })
-          })
-        } else {
-          _data.setDDItems(_dataid, { url: fileSrc, filename: file.name })
-        }
-      }
-    }
-  })
 }
 
 /**
@@ -2114,12 +2019,6 @@ function getGlobalAudioConfig() {
  */
 function handleSubmit(e) {
   var $cTar = $(e.currentTarget);
-  // 禁止重复提交
-  if ($cTar.attr('data-flag') === '1') {
-    console.warn('请勿重复提交...')
-    return
-  }
-  $cTar.attr('data-flag', 1);
 
   var pagesInfo = _data.getValidItems()
   var globalAudioContent = getGlobalAudioConfig()
@@ -2166,6 +2065,12 @@ function handleSubmit(e) {
   if (data.pages.length === 0 || !data.pages[0]['pic']) {
     alert('至少需要有一个点读页!')
   } else {
+    // 禁止重复提交
+    if ($cTar.attr('data-flag') === '1') {
+      console.warn('请勿重复提交...')
+      return
+    }
+    $cTar.attr('data-flag', 1);
     Model.addDianduPage(data, qrcode, function (result) {
       var msg = '创建成功,点击确定返回单元列表!'
       var returnUrl = '/edu/course/unit_video.php?unitid=' + data.unitid

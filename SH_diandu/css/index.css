@@ -323,7 +323,7 @@ header {
     background-color: #000;
     background-repeat: no-repeat;
     background-position: center;
-    cursor: pointer;
+    /*cursor: pointer;*/
     position: relative;
 }
 
@@ -583,7 +583,7 @@ header {
 
 /*图文上传成功*/
 
-.uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url, .uploaded-sway {
+.uploaded-content, .uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url, .uploaded-sway, .uploaded-3dviewer {
     background: #7F7F7F;
     position: relative;
     cursor: pointer;
@@ -637,13 +637,13 @@ header {
 }
 
 .upload-right-btn .img-global-audio {
-    background-image: url('../imgs/img-global-audio.png') no-repeat center;
+    background: url('../imgs/img-global-audio.png') no-repeat center;
     background-size: 100% 100%;
     visibility: hidden;
 }
 
 .upload-right-btn .img-global-audio-setting {
-    background-image: url('../imgs/img-global-audio-setting.png') no-repeat center;
+    background: url('../imgs/img-global-audio-setting.png') no-repeat center;
     background-size: 100% 100%;
 }
 
@@ -952,7 +952,7 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
     height: 50px;
     margin: 10px auto;
     border-radius: 5px;
-    display: none;
+    /*display: none;*/
 }
 
 .draw-custom-area__item {

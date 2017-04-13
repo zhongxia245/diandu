@@ -41,6 +41,7 @@
     margin-right: 20px;
     margin-bottom: 40px;
     cursor: pointer;
+    font-size: 12px;
 }
 
 .point-types__icon {
@@ -138,5 +139,16 @@
 }
 
 .pt-selected .point-types__item--sway, .point-types__item--sway-selected {
+    background-image: url('../../../../imgs/sway_on.png');
+}
+
+
+/*3D观察器*/
+
+.point-types__item--3dviewer {
+    background-image: url('../../../../imgs/sway.png');
+}
+
+.pt-selected .point-types__item--3dviewer, .point-types__item--3dviewer-selected {
     background-image: url('../../../../imgs/sway_on.png');
 }

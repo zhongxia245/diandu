@@ -1,0 +1,73 @@
+<div class="cps-container">
+  <div class="cps-tabs">
+    <div class="cps-tab-point cps-tab-active">点</div>
+    <div class="cps-tab-playarea">播放区</div>
+    <div class="cps-tab-audio">高级</div>
+  </div>
+  <div class="cps-header">点读点设置</div>
+  <!--自定义点读点设置区域-->
+  <div class="cps-content-point">
+    <div class="cps-content-left">
+      <h4>设置点读点的注释文件</h4>
+      <em>(建议不超过10个字)</em>
+      <div class="cps-point">
+        <div class="cps-point-img {{pointTypeClass}}"></div>
+        <div class="cps-point-line"></div>
+        <div class="cps-point-text" contenteditable="true">{{title}}</div>
+      </div>
+    </div>
+    <div class="cps-content-right">
+      <h4>自定制点读点按钮图案</h4>
+      <em>(请采用背景色透明的png图片文件)</em>
+      <div id="cps-upload-img">点击上传</br>点读点按钮</br>图片</div>
+      <div class="cps-show-img" style="display: none;"></div>
+      <div class="cps-img-dynamic js-img-dynamic"></div>
+      <ul class="cps-show-color">
+        <li tabindex="1" style="background-color:#FB0006;"></li>
+        <li tabindex="2" style="background-color:#15A53F;"></li>
+        <li tabindex="3" style="background-color:#0A5AB2;"></li>
+        <li tabindex="4" style="background-color:#FFFF0B;"></li>
+        <li tabindex="5" style="background-color:#CA0081;"></li>
+        <li tabindex="6" style="background-color:#1D1D1D;"></li>
+      </ul>
+      <div style="clear:both"></div>
+      <div class="cps-show-color-size"><input id="cpsColorSize" type="text" data-slider-handle="square" /></div>
+    </div>
+  </div>
+
+  <!--自定义视频播放区域设置-->
+  <div class="cps-content-playarea" style="display:none;">
+    <p>请设置视频播放区域的长度和高度</p>
+    <div class="cps-content-video-size">
+      <input name="width" type="number" class="cps-video-width" />
+      <div class="cps-video-size-title">长度</div>
+      <div class="cps-video-size-relate"></div>
+      <div class="cps-video-size-title">高度</div>
+      <input name="height" type="number" class="cps-video-height" />
+    </div>
+    <p>请拖动改变播放区的位置<em>背景图宽高:{{subTip}}(相对1200大小)</em></p>
+    <div class="cps-content-video-area" style="background:url({{bgPath}}) +  no-repeat; background-size:contain;background-position: center;">
+      <div class="cps-video-point"></div>
+      <div class="cps-video-location-area" style="{{locationStyle}}">
+        <div class="cps-video-location"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 设置音频歌词等功能-->
+  <div class="cps-content-audio" style="display:none;">
+    <em>当前音频时长为<span class="cps-audio-time"></span></em>
+    <em>默认音频控制面板为显示，如需修改，请点击切换</em>
+    <div class="cps-audio-switch  js-audio-switch">
+      <div class="cps-audio-switch-content ">音频面板</div>
+      <div class="cps-audio-on">开</div>
+      <div class="cps-audio-off">关</div>
+    </div>
+    <div id="cps-upload-audio" class="cps-upload-audio">上传音频字幕文件(限LRC格式)</div>
+  </div>
+
+  <audio preload="auto" class="cps-audio"></audio>
+
+  <div class="cps-submit">提交</div>
+</div>

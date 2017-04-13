@@ -44,21 +44,17 @@
   font-size: 30px;
   color: #000;
   text-align: center;
-
   border: 5px solid #0CC688;
   border-radius: 10px;
-
   background: #FFF;
-
   overflow: auto;
   width: 250%;
   max-height: 150px;
   margin-left: -75%;
-
-
 }
 
 .create-point-img {
   width: 150px;
   height: 150px;
+  cursor: move;
 }
