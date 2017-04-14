@@ -850,10 +850,17 @@ function bindEvent() {
           h: data.height,
           id: dataid
         })
-        // 禁用绘制功能
-        drawCustomArea.setEnable(false);
+
+        drawCustomArea.setEnable(false)
+
         new Drag('#' + dataid, function (x, y) {
+          var _page = window.DD.items[pageIndex - 1]
+          var location = getLocation(_page.w, _page.h, x, y)
+          _data.setDDItems(dataid, { x: location.x, y: location.y })
         })
+        //创建绘制区域内部的内容
+        new DrawAreaPoint({ id: '#' + dataid })
+
       }
     })
     // 自定义绘制图形  END
@@ -1542,7 +1549,7 @@ function _selectTypeHandle(e, data) {
   // 设置上传类型的默认图标--》设置选中的图片
   setUnSelectImgSrc($currentTarget)
   setHoverImgSrcx($target)
-  
+
   // 加上点读点类型【用于hover出现全局音频按钮】
   $uploadRight.attr('data-type', data.type)
 

@@ -317,7 +317,7 @@ window.SwayPoint = (function () {
   }
 
   /**
-   * 编辑设置数据
+   * 关闭弹窗
    */
   SwayPoint.prototype.close = function () {
     layer.closeAll()

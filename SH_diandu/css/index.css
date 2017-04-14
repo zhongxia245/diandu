@@ -955,6 +955,10 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
     /*display: none;*/
 }
 
+.draw-custom-area li:first-child {
+    font-size: 18px;
+}
+
 .draw-custom-area__item {
     border: 1px solid #FFF;
     width: 50px;
@@ -998,4 +1002,15 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
     content: '';
     display: block;
     background: #000;
+}
+
+.draw-area-container {
+    background-color: #5b9bd5;
+    position: absolute;
+    cursor: move;
+    border: 2px solid #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
