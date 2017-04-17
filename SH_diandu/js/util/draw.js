@@ -26,7 +26,6 @@ window.Draw = (function () {
         var disY = oEv.layerY;
 
         var oR = document.createElement('div');
-        oR.setAttribute('id', '__drawarea__')
         oR.id = that.data.pointId;
         oR.className = 'draw-area-container'
         oR.style.top = disY + 'px';

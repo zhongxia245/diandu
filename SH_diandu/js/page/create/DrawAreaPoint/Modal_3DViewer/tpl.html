@@ -1,0 +1,47 @@
+<div class="ds-container">
+  <div class="ds-header">{{title}}</div>
+  <div class="ds-content">
+    <div class="ds-content__upload">
+      <div class="ds-content__upload--left">
+        <div class="ds-content__upload-img js-ds-upload-img"></div>
+        <div id="ds-content-img" class="ds-content__upload-btn">上传新的3D背景图</div>
+      </div>
+      <div class="ds-content__upload--right">
+        <div class="ds-content__upload-color js-ds-btn-img-color"></div>
+        <input type="color" name="bgColor" style="display:none;">
+        <p>背景区域颜色</br>（点击修改）</p>
+      </div>
+      <div>
+
+      </div>
+    </div>
+    <div class="ds-content__setting">
+      <table>
+        <tr>
+          <td>
+            <div class="ds-content__setting-label">边线透明度</div>
+            <input name="{{slides.borderOpacity.name}}" type="text" data-slider-handle="square" />
+          </td>
+          <td>
+            <div class="ds-content__setting-label">按钮透明度</div>
+            <input name="{{slides.btnOpacity.name}}" type="text" data-slider-handle="square" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ds-content__setting-label">边线宽度</div>
+            <input name="{{slides.borderWidth.name}}" type="text" data-slider-handle="square" />
+          </td>
+          <td>
+            <div class="ds-content__setting-label">
+              边线颜色
+              <span>（点击修改）</span>
+              <input name="borderColor" value="#a5a5a5" type="color" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="ds-submit js-submit">提交</div>
+</div>

@@ -496,6 +496,10 @@ header {
     background-image: url('../imgs/seturl.png');
 }
 
+.upload-type .viewer3d {
+    background-image: url('../imgs/viewer3d.png');
+}
+
 .upload-right {
     width: 250px;
     height: 55px;
@@ -583,7 +587,7 @@ header {
 
 /*图文上传成功*/
 
-.uploaded-content, .uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url, .uploaded-sway, .uploaded-3dviewer {
+.uploaded-content, .uploaded-imgtext, .uploaded-exam, .uploaded-on-off, .uploaded-set-url, .uploaded-sway, .uploaded-viewer3d {
     background: #7F7F7F;
     position: relative;
     cursor: pointer;
@@ -943,7 +947,6 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
 }
 
 .draw-custom-area {
-    display: flex;
     background: #000;
     justify-content: center;
     align-items: center;
@@ -952,7 +955,7 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
     height: 50px;
     margin: 10px auto;
     border-radius: 5px;
-    /*display: none;*/
+    display: none;
 }
 
 .draw-custom-area li:first-child {
@@ -1012,5 +1015,5 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
 }

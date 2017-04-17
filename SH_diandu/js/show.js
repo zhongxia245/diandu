@@ -874,7 +874,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
     3: "m-imgtext",
     4: "m-exam",
     6: "m-seturl",
-    7: 'm-sway'
+    7: 'm-sway',
+    8: 'm-viewer3d'
   };
 
   var html = "";
@@ -1550,6 +1551,16 @@ function bindEvent() {
       $tar.attr('data-add-effect', 1)
       SwayEffect.addAnimation(e)
     }
+  })
+
+  //3D模型文件
+  $('.m-viewer3d').off().on(click, function (e) {
+    closeVideoOrAudio(true);
+
+    var $tar = $(e.target);
+    var ids = $tar.attr('data-id');
+    var pointData = Util.getPointDataByIds(DATA, ids);
+    new Modal_3DViewer({ url: pointData.url })
   })
 
 

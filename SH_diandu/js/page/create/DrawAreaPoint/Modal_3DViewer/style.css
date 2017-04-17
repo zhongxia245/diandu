@@ -1,0 +1,125 @@
+.layui-layer {
+  border-radius: 10px;
+}
+
+.ds-container {
+  position: relative;
+  overflow: hidden;
+  color: #6c6c6c;
+}
+
+.ds-header {
+  height: 60px;
+  line-height: 60px;
+  background: #FE4E00;
+  font-size: 30px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 10px 10px 0 0;
+}
+
+.ds-content {
+  height: 430px;
+  background: #EFEFEF;
+}
+
+.ds-content__upload {
+  display: flex;
+  padding-top: 20px;
+}
+
+.ds-content__upload--left {
+  width: 70%;
+  text-align: center;
+}
+
+.ds-content__upload-img {
+  width: 230px;
+  height: 230px;
+  background-color: #003232;
+  background-image: url('../imgs/viewer3d_point.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 4px solid #7d8a8a;
+  border-radius: 10px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.ds-content__upload-btn {
+  background: #ff5050;
+  color: #FFF;
+  margin: 0 auto;
+  width: 200px;
+  height: 30px;
+  margin-top: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.ds-content__upload-btn .webuploader-pick {
+  background: transparent;
+  line-height: 30px;
+}
+
+.ds-content__upload-btn div[id] {
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.ds-content__upload-color {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #003232;
+  cursor: pointer;
+  margin: 80px auto 5px;
+}
+
+.ds-content__upload--right p {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.ds-submit {
+  height: 60px;
+  line-height: 60px;
+  background: #FF636B;
+  color: #FFF;
+  text-align: center;
+  font-size: 32px;
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+}
+
+.ds-content__setting table {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.ds-content__setting-label {
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.ds-content__setting-label span {
+  font-size: 12px;
+}
+
+.slider-horizontal .slider-handle {
+  color: #cfcf0f !important;
+  background: #3f3f3f !important;
+  border-radius: 3px !important;
+  border: 1px solid #CCC !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin-left: -15px !important;
+  margin-top: -10px !important;
+  line-height: 30px !important;
+}

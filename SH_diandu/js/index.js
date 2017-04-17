@@ -20,7 +20,8 @@ var TYPE = {
   4: 'exam',
   5: 'on-off',
   6: 'set-url',
-  7: 'sway'
+  7: 'sway',
+  8: 'viewer3d'
 }
 
 /******************************************
@@ -292,6 +293,8 @@ var _data = (function () {
         return 6
       case 'sway':
         return 7
+      case 'viewer3d':
+        return 8
       default:
         return 1
     }
@@ -470,7 +473,6 @@ var _edit = (function () {
       title: title,
       pic: pic
     }
-
     createPoint(dataid, type, config)
     addDianDu(dataid, point)
 
@@ -506,7 +508,8 @@ var _edit = (function () {
 
     $filemask.attr('data-type', type)
     $rightName.removeClass('notselect')
-
+    $rightName.find('.download').parent().attr('download', fileName).attr('href', url)
+    
     switch (type) {
       case '1':
         className = '.video'
@@ -547,6 +550,12 @@ var _edit = (function () {
         point['type'] = 'sway'
         $rightName.addClass('uploaded-sway').find('span').eq(0).text('摇摆图已设置(点击编辑)')
         $filemask.show().off().on('click', fn_sway)
+        break;
+      case '8': //上传文件的点击类型
+        className = '.viewer3d'
+        point['type'] = 'viewer3d'
+        $rightName.addClass('uploaded').attr('data-src', url).find('span').eq(0).text(fileName)
+        // 3DObj
         break;
     }
 
@@ -858,8 +867,19 @@ function bindEvent() {
           var location = getLocation(_page.w, _page.h, x, y)
           _data.setDDItems(dataid, { x: location.x, y: location.y })
         })
+
         //创建绘制区域内部的内容
-        new DrawAreaPoint({ id: '#' + dataid })
+        DDPageItems[DDPageItems.length - 1].areaData = {}
+        new DrawAreaPoint({
+          id: '#' + dataid,
+          pointIndex: DDPageItems.length,
+          dataid: dataid,
+          data: DDPageItems[DDPageItems.length - 1].areaData,
+          callback: function (data) {
+            console.log('callback', DDPageItems[DDPageItems.length - 1].areaData)
+            DDPageItems[DDPageItems.length - 1].areaData = data;
+          }
+        })
 
       }
     })
@@ -1294,7 +1314,12 @@ function handleUploadItem(e) {
 
   switch (data.type) {
     case 'setting-area':
-      alert('点读点区域设置功能正在开发中...')
+      $currentTarget
+        .parents('.diandupageitem')
+        .find('.js-draw-custom-area').css({
+          display: 'flex'
+        })
+      // alert('点读点区域设置功能正在开发中...')
       break
     case 'selectType':
       selectTypeClick(e)
@@ -1574,7 +1599,7 @@ function _selectTypeHandle(e, data) {
       $webuploaderDiv.show()
       $target.parents('.upload-item').find('.upload-right').attr('data-upload', 0)
       break
-    case '3dviewer': //3D观察期
+    case 'viewer3d': //3D观察期
       fileTypeExts = 'obj/*'
       fileTypeDesc = 'Obj Files'
       $webuploaderDiv.show()

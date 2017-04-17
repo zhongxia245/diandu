@@ -1,11 +1,4 @@
-body,
-div,
-span,
-p,
-img,
-ul,
-li,
-a {
+body, div, span, p, img, ul, li, a {
     -webkit-touch-callout: none;
     /*系统默认菜单被禁用*/
     -webkit-user-select: none;
@@ -19,23 +12,18 @@ a {
     user-select: none;
 }
 
-html,
-body,
-#main {
+html, body, #main {
     height: 100%;
     width: 100%;
 }
 
-body,
-ul,
-li {
+body, ul, li {
     padding: 0;
     margin: 0;
     font-family: "Microsoft YaHei", "微软雅黑";
 }
 
-ul,
-li {
+ul, li {
     list-style: none;
 }
 
@@ -90,8 +78,7 @@ li {
         .gallery-main {
             height: 335px !important;
         }
-        .gallery-main-switch,
-        .opacity-scroll-bar {
+        .gallery-main-switch, .opacity-scroll-bar {
             height: 100px !important;
             font-size: 20px;
         }
@@ -121,8 +108,7 @@ li {
         .gallery-main {
             height: 410px !important;
         }
-        .gallery-main-switch,
-        .opacity-scroll-bar {
+        .gallery-main-switch, .opacity-scroll-bar {
             height: 100px !important;
         }
         .control-audios {
@@ -166,9 +152,7 @@ li {
     background-size: contain;
 }
 
-.m-dd-start,
-.m-dd-start-hide,
-.m-dd-start-comment {
+.m-dd-start, .m-dd-start-hide, .m-dd-start-comment {
     height: 72px;
     width: 72px;
     position: absolute;
@@ -222,12 +206,7 @@ li {
 
 /*新增一个点读位类型，要在这里添加样式*/
 
-.m-video,
-.m-audio,
-.m-imgtext,
-.m-exam,
-.m-global-audio,
-.m-seturl {
+.m-video, .m-audio, .m-imgtext, .m-exam, .m-global-audio, .m-seturl, .m-viewer3d, .m-sway {
     height: 72px;
     width: 72px;
     position: absolute;
@@ -272,8 +251,12 @@ li {
     background-size: 100% 100%;
 }
 
-.global-audio-other-page-off,
-.global-audio-other-page-on {
+.m-viewer3d {
+    background: url('../imgs/seturl_default.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.global-audio-other-page-off, .global-audio-other-page-on {
     position: absolute;
     z-index: 3;
     top: 5px;
@@ -398,8 +381,7 @@ li {
     margin-right: auto;
 }
 
-.swiper-container .swiper-button-next,
-.swiper-container .swiper-button-prev {
+.swiper-container .swiper-button-next, .swiper-container .swiper-button-prev {
     background-size: 100% 100%;
     width: 54px;
     height: 88px;
@@ -444,13 +426,11 @@ li {
     margin-bottom: 10px;
 }
 
-.control-bg-audio,
-.control-global-audio {
+.control-bg-audio, .control-global-audio {
     height: 100%;
 }
 
-.gallery-main-switch,
-.opacity-scroll-bar {
+.gallery-main-switch, .opacity-scroll-bar {
     height: 60px;
 }
 
@@ -512,8 +492,7 @@ li {
     background: #00cc99;
 }
 
-.slider,
-.slider-bar {
+.slider, .slider-bar {
     height: 30px;
     margin: 0px;
 }
@@ -576,8 +555,7 @@ li {
     height: 80%;
 }
 
-.ga-modal-content-audio-on,
-.ga-modal-content-audio-off {
+.ga-modal-content-audio-on, .ga-modal-content-audio-off {
     width: 75px;
     height: 66px;
     cursor: pointer;
@@ -594,8 +572,7 @@ li {
     background-size: 100% 100%;
 }
 
-.ga-modal-content-btn-off,
-.ga-modal-content-btn-on {
+.ga-modal-content-btn-off, .ga-modal-content-btn-on {
     width: 150px;
     height: 50px;
     cursor: pointer;

@@ -1,10 +1,11 @@
-var currentScriptSrc = Util.getBasePath(document.currentScript.src);
-
 (function () {
+  var currentScriptSrc = Util.getBasePath(document.currentScript.src);
   Util.loadCSS(currentScriptSrc + '/style.css')
+  Util.loadJS(currentScriptSrc + '/Modal_3DViewer/Modal_3DViewer.js')
 })()
 
 window.DrawAreaPoint = (function () {
+  var currentScriptSrc = Util.getBasePath(document.currentScript.src);
   /**
    * 点读点类型弹窗
    * @param {any} selector 弹窗对应的点读点
@@ -12,11 +13,14 @@ window.DrawAreaPoint = (function () {
    */
   function DrawAreaPoint(options) {
     var that = this
+    that.options = options;
+    that.submitCallback = options.callback;
 
+    that.data = options.data || {}
     // 根据模板引擎生成页面
     Util.getTpl(currentScriptSrc + '/tpl.html', function (tpl) {
       var tpls = Handlebars.compile(tpl)
-      $(options.id).append(tpls({ index: 4, type: '3dobj' }))
+      $(options.id).append(tpls({ index: options.pointIndex }))
       that.bindEvent()
     })
 
@@ -24,38 +28,12 @@ window.DrawAreaPoint = (function () {
 
   // 绑定事件
   DrawAreaPoint.prototype.bindEvent = function () {
-    $('.js-da-point-setting').on('click', function (e) {
-      Util.getTpl(currentScriptSrc + '/tpl_modal.html', function (tpl) {
-        var div = document.createElement('div')
-        div.setAttribute('id', '__drawAreaSetting__')
-        document.body.append(div)
-
-        var tpls = Handlebars.compile(tpl)
-        $(div).append(tpls({ title: '区域设置' }))
-
-        _layer = layer.open({
-          type: 1,
-          scrollbar: false,
-          area: ['600px', '550px'],
-          title: false,
-          shadeClose: false,
-          content: $(div),
-          cancel: function () {
-            that.close();
-          }
-        })
-      })
+    var that = this
+    // 区域点读点设置
+    $(that.options.id).find('.js-da-point-setting').on('click', function (e) {
+      new Modal_3DViewer(that.options)
     })
   }
-
-  /**
-   * 关闭弹窗
-   */
-  DrawAreaPoint.prototype.close = function () {
-    layer.closeAll()
-    this.$container.remove()
-  }
-
 
   return DrawAreaPoint
 })()

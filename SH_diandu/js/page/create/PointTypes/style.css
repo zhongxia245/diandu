@@ -145,10 +145,14 @@
 
 /*3D观察器*/
 
-.point-types__item--3dviewer {
-    background-image: url('../../../../imgs/sway.png');
+.point-types__item--viewer3d {
+    background-image: url('../../../../imgs/viewer3d.png');
 }
 
-.pt-selected .point-types__item--3dviewer, .point-types__item--3dviewer-selected {
-    background-image: url('../../../../imgs/sway_on.png');
+.point-types__item--viewer3d:hover {
+    background-image: url('../../../../imgs/viewer3d_hover.png');
+}
+
+.pt-selected .point-types__item--viewer3d, .point-types__item--viewer3d-selected {
+    background-image: url('../../../../imgs/viewer3d_on.png');
 }

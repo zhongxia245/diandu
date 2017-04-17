@@ -171,6 +171,7 @@
   window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
 <script src="./js/lib/zepto.js"></script>
+<script src="js/lib/handlebars.min.js"></script>
 <script src="./js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
   window._load = $.loading({content: '加载中...'});
@@ -179,6 +180,8 @@
 <script src="./js/lib/webuploader/webuploader.html5only.min.js"></script>
 <script src="./js/util/scale.js"></script>
 <script src="./js/lib/hammer.min.js"></script>
+<script src="./js/lib/three.min.js"></script>
+<script src="./js/lib/OBJLoader.js"></script>
 <!--custom-->
 <script src="./js/util/util.js"></script>
 <script src="./js/util/arrayUtil.js"></script>
@@ -200,6 +203,8 @@
 <script src="./js/page/show/picScale/PicScale.js"></script>
 <script src="./js/page/show/audioPanel/audioPanel.js"></script>
 <script src="./js/page/show/swayEffect/swayEffect.js"></script>
+<script src="./js/page/common/ObjViewer/ObjViewer.js"></script>
+<script src="./js/page/show/modal_3dviewer/Modal_3DViewer.js"></script>
 <!--<script src="./js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
 <script src="./js/show.js?v=3"></script>
