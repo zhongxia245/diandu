@@ -20,7 +20,7 @@ window.DrawAreaPoint = (function () {
     // 根据模板引擎生成页面
     Util.getTpl(currentScriptSrc + '/tpl.html', function (tpl) {
       var tpls = Handlebars.compile(tpl)
-      $(options.id).append(tpls({ index: options.pointIndex }))
+      $(options.id).append(tpls({ index: options.pointIndex, type: options.type }))
       that.bindEvent()
     })
 
@@ -31,6 +31,7 @@ window.DrawAreaPoint = (function () {
     var that = this
     // 区域点读点设置
     $(that.options.id).find('.js-da-point-setting').on('click', function (e) {
+      that.options.data = _data.getDDItems(that.options.dataid).drawcustomarea || {}
       new Modal_3DViewer(that.options)
     })
   }

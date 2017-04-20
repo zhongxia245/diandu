@@ -252,7 +252,7 @@ ul, li {
 }
 
 .m-viewer3d {
-    background: url('../imgs/seturl_default.png') no-repeat;
+    background: url('../imgs/viewer3d_point.png') no-repeat;
     background-size: 100% 100%;
 }
 
@@ -718,4 +718,12 @@ ul, li {
 
 .normal-screen {
     background-image: url(../imgs/normalscreen.png);
+}
+
+
+/*3d模型*/
+
+.draw-custom-area {
+    position: absolute;
+    border-radius: 0;
 }

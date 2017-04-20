@@ -423,6 +423,7 @@ if ($id > 0) {
 <script src="js/page/create/UrlPoint/UrlPoint.js"></script>
 <script src="js/page/create/PointTypes/PointTypes.js"></script>
 <script src="js/page/create/SwayPoint/SwayPoint.js"></script>
+<script src="js/page/create/DrawAreaPoint/DrawAreaPoint.js"></script>
 <script src="js/index.js"></script>
 
 

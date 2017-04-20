@@ -22,7 +22,7 @@ window.Modal_3DViewer = (function () {
       $('body').append(div)
 
       var tpls = Handlebars.compile(tpl)
-      $(div).append(tpls({}))
+      $(div).append(tpls())
 
       that.initVar();
       that.bindEvent();
@@ -42,7 +42,7 @@ window.Modal_3DViewer = (function () {
    */
   Modal_3DViewer.prototype.bindEvent = function () {
     var that = this
-    new ObjViewer('scene', { url: this.options.url, width: 300, height: 400 })
+    new ObjViewer('scene', { url: this.options.url, width: 300, height: 400, data: that.options.data })
 
     $('.js-viewer3d-wrapper').on('touchstart', function (e) {
       if ($(e.target).hasClass('js-viewer3d-wrapper')) {

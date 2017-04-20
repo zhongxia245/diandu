@@ -5,8 +5,6 @@
  *      1. fn+数字 表示第几期的函数
  *      2. 共用的方法，会抽取出来，放到一个个闭包里面【每一个类型，一个闭包】
  *      3. 通用的组件，可能封装成一个 组件类，目前有 图文上传 ImgText
- *
- *  TODO : 1. 已经选中一个全局音频之后,不能修改点读点类型, 否则会有问题
  */
 /*==========================变量定义 START==================================*/
 window.DD = window.DD || {}
@@ -215,6 +213,8 @@ var _data = (function () {
         for (var j = 0; j < items.length; j++) {
           if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
             var obj = {
+              data: JSON.stringify(items[j]),  //保存点读点的所有数据
+
               x: items[j].x,
               y: items[j].y,
               point_size: items[j]['point_size'],
@@ -460,18 +460,22 @@ var _edit = (function () {
       id: dataid
     })
 
-    // 默认为普通点读点,  1 普通点读点  2: 自定义标题   3. 自定义图片
+    // 默认为普通点读点,  1 普通点读点  2: 自定义标题   3. 自定义图片  6. 区域点读点 [4,5是展示页面的]
     var type = 1
     var pic = JSON.parse(point.pic || '{}')
     var title = JSON.parse(point.custom || '{}')
-    if (pic && pic.src) type = 3
+    // TODO:待修改字段
+    var drawAreaData = JSON.parse(point.area || '{}')
     if (title && title.title) type = 2
+    if (pic && pic.src) type = 3
+    if (drawAreaData && drawAreaData.pointType === 'drawcustomarea') type = 6
 
     var config = {
       left: left,
       top: top,
       title: title,
-      pic: pic
+      pic: pic,
+      drawAreaData: drawAreaData
     }
     createPoint(dataid, type, config)
     addDianDu(dataid, point)
@@ -509,7 +513,7 @@ var _edit = (function () {
     $filemask.attr('data-type', type)
     $rightName.removeClass('notselect')
     $rightName.find('.download').parent().attr('download', fileName).attr('href', url)
-    
+
     switch (type) {
       case '1':
         className = '.video'
@@ -602,6 +606,9 @@ var _edit = (function () {
 
         window.DD.items[i]['data'][j]['linkurl'] = JSON.parse(obj['linkurl'] || '{}')   //开关图数据,暂时保存在这
         window.DD.items[i]['data'][j]['onoff'] = JSON.parse(obj['onoff'] || '{}')   //开关图数据,暂时保存在这
+
+        window.DD.items[i]['data'][j]['data'] = JSON.parse(obj['data'] || '{}')
+        window.DD.items[i]['data'][j]['drawcustomarea'] = window.DD.items[i]['data'][j]['data']['drawcustomarea']
       }
     }
   }
@@ -840,10 +847,13 @@ function bindEvent() {
     var $tar = $(e.target)
     var config = $tar.data()
     // 获取当前点读页的数据
-    var pageIndex = $cTar.data('index');
-    var _page = window.DD.items[pageIndex - 1]
-    var DDPageItems = _page['data']
-    var dataid = pageIndex + '_' + (DDPageItems.length + 1)
+    var pageIndex = window.temp_draw_point_data.pageIndex
+    var pointIndex = window.temp_draw_point_data.pointIndex
+    var dataid = window.temp_draw_point_data.id
+    var pointData = _data.getDDItems(dataid)
+    var _pageData = window.DD.items[pageIndex - 1]
+
+    console.log(window.temp_draw_point_data)
 
     // 自定义绘制图形  START 
     var drawCustomArea = new Draw.DrawCustomArea({
@@ -851,36 +861,45 @@ function bindEvent() {
       pointId: dataid,
       type: config.type,
       radius: 5,
+      beforeDrawCallback: function () {
+        $('#' + dataid).remove()
+      },
       callback: function (data) {
-        DDPageItems.push({
-          x: data.left,
-          y: data.top,
-          w: data.width,
-          h: data.height,
-          id: dataid
+        $cTar.hide()
+
+        // 修改点读点的数据
+        var location = getLocation(_pageData.w, _pageData.h, data.left, data.top)
+        _data.setDDItems(dataid, {
+          x: location.x,
+          y: location.y,
+          w: data.width / _pageData.w,
+          h: data.height / _pageData.h,
+          pointType: 'drawcustomarea'
         })
 
         drawCustomArea.setEnable(false)
 
-        new Drag('#' + dataid, function (x, y) {
-          var _page = window.DD.items[pageIndex - 1]
-          var location = getLocation(_page.w, _page.h, x, y)
-          _data.setDDItems(dataid, { x: location.x, y: location.y })
-        })
-
         //创建绘制区域内部的内容
-        DDPageItems[DDPageItems.length - 1].areaData = {}
         new DrawAreaPoint({
           id: '#' + dataid,
-          pointIndex: DDPageItems.length,
+          pointIndex: pointIndex,
           dataid: dataid,
-          data: DDPageItems[DDPageItems.length - 1].areaData,
+          data: _data.getDDItems(dataid).drawcustomarea,
+          type: window.temp_draw_point_data.pointType,
           callback: function (data) {
-            console.log('callback', DDPageItems[DDPageItems.length - 1].areaData)
-            DDPageItems[DDPageItems.length - 1].areaData = data;
+
+            //注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
+            var tempPointData = _data.getDDItems(dataid)
+            data = $.extend(_data.getDDItems(dataid).drawcustomarea, data)
+            tempPointData.drawcustomarea = data;
           }
         })
 
+        //设置区域可以移动
+        new Drag('#' + dataid, function (x, y) {
+          var location = getLocation(_pageData.w, _pageData.h, x, y)
+          _data.setDDItems(dataid, { x: location.x, y: location.y })
+        })
       }
     })
     // 自定义绘制图形  END
@@ -945,8 +964,26 @@ function createPoint(pointId, type, config) {
   var pid = '#id_bg' + pageIndex
   var style = "style='position:absolute; left:" + config.left + 'px; top :' + config.top + "px;'"
 
+  // TODO
   var html = CreatePoint.initPoint(type, config)
   $(pid).append(html)
+
+  if (type === 6) {
+    //创建绘制区域内部的内容
+    new DrawAreaPoint({
+      id: '#' + config.pointId,
+      pointIndex: pageIndex,
+      dataid: config.pointId,
+      data: _data.getDDItems(config.pointId).drawcustomarea,
+      type: config.drawAreaData.pointType,
+      callback: function (data) {
+        //注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
+        var tempPointData = _data.getDDItems(config.pointId)
+        data = $.extend(_data.getDDItems(config.pointId).drawcustomarea, data)
+        tempPointData.drawcustomarea = data;
+      }
+    })
+  }
 
   new Drag('#' + pointId, function (x, y) {
     var _page = window.DD.items[pageIndex - 1]
@@ -1314,11 +1351,7 @@ function handleUploadItem(e) {
 
   switch (data.type) {
     case 'setting-area':
-      $currentTarget
-        .parents('.diandupageitem')
-        .find('.js-draw-custom-area').css({
-          display: 'flex'
-        })
+      fn_settingArea(e, data)
       // alert('点读点区域设置功能正在开发中...')
       break
     case 'selectType':
@@ -1356,6 +1389,36 @@ function handleUploadItem(e) {
       break
     default:
       break
+  }
+}
+
+
+/**
+ * 设置区域点读点（展示绘制区域的类型）
+ */
+function fn_settingArea(e, data) {
+  var $cTar = $(e.currentTarget)
+  var pointType = $cTar.find('.upload-right').data('type')
+  var pointIndex = $cTar.data('index')
+  var pageIndex = $cTar.parents('.diandupageitem').data('index')
+
+  //  记录绘制区域点读点的数据
+  window.temp_draw_point_data = {
+    id: pageIndex + '_' + pointIndex,
+    pageIndex: pageIndex,
+    pointIndex: pointIndex,
+    pointType: pointType
+  }
+
+  var $drawCustomArea = $cTar.parents('.diandupageitem').find('.js-draw-custom-area')
+  if ($drawCustomArea.css('display') === 'none') {
+    $drawCustomArea.css({
+      display: 'flex'
+    })
+  } else {
+    $drawCustomArea.css({
+      display: 'none'
+    })
   }
 }
 
@@ -1468,7 +1531,6 @@ function addCustomPointSetting(e) {
       var top = $point.css('top')
 
       // 把音频面板设置保存到变量[直接保存到点配置里面]
-      /*TODO:后期移除掉，让后端新增一个字段，保存音频面板设置参数*/
       data.title = data.title || {};
 
       // 保存视频播放区域的数据
@@ -1489,6 +1551,7 @@ function addCustomPointSetting(e) {
         var type = 1
         if (data.pic.src) type = 3   //自定义图片
         if (data.title.title) type = 2  //自定义标题
+        if (data.area.type === 'drawcustomarea') type = 6  //自定义区域
 
         var config = {
           left: left,
@@ -1797,7 +1860,7 @@ function fn2_uploadImgText(e) {
 }
 
 /**
- * 上传试卷[20150507], TODO:编辑的时候如果从非考试转成考试有问题
+ * 上传试卷[20150507]
  */
 function fn2_examCreate(e) {
   var ids = CommonUtil.getIds(e)

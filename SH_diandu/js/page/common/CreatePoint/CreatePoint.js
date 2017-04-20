@@ -80,6 +80,10 @@ window.CreatePoint = (function () {
       case 5:
         html = initMCustomImgPoint(pointId, style, pic, className, outHTML, scale)
         break;
+      // 创建页面 自定义绘制区域
+      case 6:
+        html = initDrawAreaPoint(pointId, style, data)
+        break;
       default:
         html = initCustomImgPoint(pointId, pointIndex, style);
     }
@@ -213,6 +217,19 @@ window.CreatePoint = (function () {
 
     html.push('<div ' + dynamicAttr + ' data-filter="' + dropFilter + '"  data-type="pointImg" ' + id + '  style="' + style + '" class="content-center create-point-img ' + outClassName + '">' + outHTML + '</div>');
     return html.join('');
+  }
+
+  /**
+   * 创建页面，自定义绘制区域
+   */
+  function initDrawAreaPoint(pointId, style, data) {
+    var drawAreaData = data.drawAreaData || {}
+    if (drawAreaData.w && drawAreaData.h) {
+      var width = drawAreaData.w * 1200;
+      var height = drawAreaData.h * 675;
+      style += 'width:' + width + 'px;height:' + height + 'px';
+    }
+    return '<div id="' + pointId + '" data-type="drawcustomarea"  style="' + style + '" class="draw-area-container"></div>'
   }
 
   return {

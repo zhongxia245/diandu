@@ -901,6 +901,11 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       //开关图
       var switchImg = JSON.parse(pointDatas[i]['onoff'] || '{}')
 
+      //点读点的所有数据，会保存在data字段里面
+      var _pointData = JSON.parse(pointDatas[i]['data'] || '{}')
+      // 3d模型点读点
+      var drawCustomArea = _pointData.drawcustomarea
+
       var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
       var mediaImg = "";
@@ -968,6 +973,15 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
             html += '<div data-target="' + pointId + '" class="on-off-switch-area" style="' + css + '"></div>'
           }
         }
+      }
+      // 3d模型
+      else if (drawCustomArea) {
+        var w = imgW * parseFloat(_pointData.w || 0.2);
+        var h = imgH * parseFloat(_pointData.h || 0.2);
+        var x = imgW * parseFloat(_pointData.x);
+        var y = imgH * parseFloat(_pointData.y);
+        var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none;';
+        html += '<div data-id="' + pointId + '"  class="m-viewer3d draw-custom-area" style="' + css + '"></div>'
       }
       //普通点读点
       else {
@@ -1560,7 +1574,9 @@ function bindEvent() {
     var $tar = $(e.target);
     var ids = $tar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, ids);
-    new Modal_3DViewer({ url: pointData.url })
+    pointData = JSON.parse(pointData.data || "{}")
+
+    new Modal_3DViewer({ url: pointData.url, data: pointData.drawcustomarea })
   })
 
 

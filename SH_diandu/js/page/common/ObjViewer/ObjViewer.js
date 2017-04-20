@@ -9,6 +9,7 @@ window.ObjViewer = (function () {
   function ObjViewer(id, options) {
     options = options || {}
     var objUrl = options.url;
+    var data = options.data || {}
 
     var scene = new THREE.Scene();
     var renderer, camera, banana, cameraHeight;
@@ -24,6 +25,20 @@ window.ObjViewer = (function () {
     });
 
     renderer.setSize(ww, wh);
+
+    // if (data.bgImgUrl) {
+    //   var manager = new THREE.LoadingManager();
+    //   manager.onProgress = function (item, loaded, total) {
+    //     console.log(item, loaded, total);
+    //   };
+    //   var texture = new THREE.Texture();
+    //   var loader = new THREE.ImageLoader(manager);
+    //   loader.load(data.bgImgUrl, function (image) {
+    //     texture.image = image;
+    //     texture.needsUpdate = true;
+    //     renderer.setTexture2D(texture)
+    //   });
+    // }
 
     camera = new THREE.PerspectiveCamera(50, ww / wh, 0.1, cameraHeight);
     camera.position.set(0, 0, cameraHeight);

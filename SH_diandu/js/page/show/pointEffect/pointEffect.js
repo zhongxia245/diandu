@@ -41,6 +41,7 @@ window.diandu = (function (dd) {
     //开关图闪烁,然后隐藏,如果默认显示,则闪烁,不隐藏
     var $hideImgs = $page.find('.on-off-hideimg');
     var $hideArea = $page.find('.on-off-switch-area');
+    var $drawCustomArea = $page.find('.draw-custom-area')
 
     for (var i = 0; i < $hideImgs.length; i++) {
       var $hideImg = $($hideImgs[i])
@@ -51,6 +52,7 @@ window.diandu = (function (dd) {
       }
     }
     _effect($hideArea, 2);
+    _effect($drawCustomArea, 2);
 
   }
 
@@ -118,12 +120,12 @@ window.diandu = (function (dd) {
           size -= gap;
         }
         var css = tmpStyle + size + 'px)';
-        $selector.css({'-webkit-filter': css, filter: css})
+        $selector.css({ '-webkit-filter': css, filter: css })
       }, duration)
     } else {
       clearTimeout(playTimer)
       var css = $selector.attr('data-filter');
-      $selector.css({'-webkit-filter': css, filter: css})
+      $selector.css({ '-webkit-filter': css, filter: css })
     }
   }
 

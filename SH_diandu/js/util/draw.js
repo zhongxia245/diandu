@@ -17,6 +17,10 @@ window.Draw = (function () {
       oCanvas.style.cursor = 'se-resize'
       // 是否允许绘制,默认为true
       if (that.data.enable) {
+        // 绘制之前的回调
+        if (options.beforeDrawCallback) {
+          options.beforeDrawCallback()
+        }
         if (oCanvas.setCapture) {
           oCanvas.setCapture();
         }
@@ -24,7 +28,6 @@ window.Draw = (function () {
         var dragging = false;
         var disX = oEv.layerX;
         var disY = oEv.layerY;
-
         var oR = document.createElement('div');
         oR.id = that.data.pointId;
         oR.className = 'draw-area-container'
@@ -40,6 +43,9 @@ window.Draw = (function () {
           var x = oEv.layerX;
           var y = oEv.layerY;
 
+          /**
+           * 限制绘制的区域限制
+           */
           // if (x < oCanvas.offsetLeft) {
           //   x = oCanvas.offsetLeft;
           // }
@@ -113,6 +119,9 @@ window.Draw = (function () {
     return that;
   }
 
+  /**
+   * 绘制一个图形之后，就默认不允许继续绘制，需要重新点击一下绘制的图形
+   */
   DrawCustomArea.prototype.setEnable = function (enable) {
     this.data.enable = enable;
   }
