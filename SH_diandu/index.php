@@ -379,7 +379,7 @@ if ($id > 0) {
             <ul class="draw-custom-area js-draw-custom-area">
                 <li>请直接在图片上绘制区域</li>
                 <li data-type="rect" class="draw-custom-area__item area__rect"></li>
-                <li data-type="roundrect" class="draw-custom-area__item area__roud"></li>
+                <li data-type="roud" class="draw-custom-area__item area__roud"></li>
                 <li data-type="circle" class="draw-custom-area__item area__circle"></li>
                 <li data-type="oval" class="draw-custom-area__item area__oval"></li>
                 <li data-type="triangle" class="draw-custom-area__item area__triangle"></li>

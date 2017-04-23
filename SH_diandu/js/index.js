@@ -464,11 +464,11 @@ var _edit = (function () {
     var type = 1
     var pic = JSON.parse(point.pic || '{}')
     var title = JSON.parse(point.custom || '{}')
-    // TODO:待修改字段
-    var drawAreaData = JSON.parse(point.area || '{}')
+
+    var drawAreaData = JSON.parse(point.data || '{}').drawcustomarea
     if (title && title.title) type = 2
     if (pic && pic.src) type = 3
-    if (drawAreaData && drawAreaData.pointType === 'drawcustomarea') type = 6
+    if (drawAreaData && drawAreaData.bgColor) type = 6
 
     var config = {
       left: left,
@@ -860,21 +860,24 @@ function bindEvent() {
       pageId: 'id_bg' + pageIndex,
       pointId: dataid,
       type: config.type,
-      radius: 5,
       beforeDrawCallback: function () {
         $('#' + dataid).remove()
       },
       callback: function (data) {
         $cTar.hide()
-
         // 修改点读点的数据
         var location = getLocation(_pageData.w, _pageData.h, data.left, data.top)
         _data.setDDItems(dataid, {
           x: location.x,
           y: location.y,
-          w: data.width / _pageData.w,
-          h: data.height / _pageData.h,
-          pointType: 'drawcustomarea'
+          drawcustomarea: {
+            w: data.width / 1200,
+            h: data.height / 675,
+            pointType: config.type,
+            // 下面的是默认值
+            bgColor: '#999999',
+            modelColor: '#14f506'
+          }
         })
 
         drawCustomArea.setEnable(false)
@@ -1551,7 +1554,7 @@ function addCustomPointSetting(e) {
         var type = 1
         if (data.pic.src) type = 3   //自定义图片
         if (data.title.title) type = 2  //自定义标题
-        if (data.area.type === 'drawcustomarea') type = 6  //自定义区域
+        if (data.drawcustomarea.type === 'drawcustomarea') type = 6  //自定义区域
 
         var config = {
           left: left,

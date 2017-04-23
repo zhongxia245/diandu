@@ -32,6 +32,10 @@ window.Modal_3DViewer = (function () {
 
   Modal_3DViewer.prototype.initVar = function () {
     this.$container = $('#__modal_3dviewer__')
+    this.$wrapper = this.$container.find('.js-viewer3d-wrapper')
+    this.$btnScale = this.$container.find('.js-viewer3d-scale')
+    this.$scene = this.$container.find('#scene')
+    this.$help = this.$container.find('.js-viewer3d-help')
   }
 
   Modal_3DViewer.prototype.initData = function () {
@@ -44,18 +48,42 @@ window.Modal_3DViewer = (function () {
     var that = this
     new ObjViewer('scene', { url: this.options.url, width: 300, height: 400, data: that.options.data })
 
-    $('.js-viewer3d-wrapper').on('touchstart', function (e) {
+    that.$wrapper.on('click', function (e) {
       if ($(e.target).hasClass('js-viewer3d-wrapper')) {
         that.close()
       }
     })
+
+    that.$btnScale.on('click', function () {
+      if (that.$btnScale.attr('data-max') === '1') {
+        that.$btnScale.attr('data-max', 0).removeClass('viewer3d-btns__scale--normal')
+        that.$scene.css({
+          width: '80%',
+          height: '80%'
+        })
+      } else {
+        that.$btnScale.attr('data-max', 1).addClass('viewer3d-btns__scale--normal')
+        that.$scene.css({
+          width: '100%',
+          height: '100%'
+        })
+      }
+    })
+
+    that.$help.on('click', function () {
+      that.$help.hide()
+    })
+
+    setTimeout(function () {
+      that.$help.hide()
+    }, 3000)
   }
 
   /**
    * 关闭弹窗
    */
   Modal_3DViewer.prototype.close = function () {
-    $('#__modal_3dviewer__').remove()
+    this.$container.remove()
   }
 
   return Modal_3DViewer

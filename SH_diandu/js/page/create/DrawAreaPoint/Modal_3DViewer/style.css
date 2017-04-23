@@ -36,7 +36,7 @@
 .ds-content__upload-img {
   width: 230px;
   height: 230px;
-  background-color: #003232;
+  background-color: #999;
   background-image: url('../imgs/viewer3d_point.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -75,14 +75,15 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: #003232;
+  background: #999;
   cursor: pointer;
-  margin: 80px auto 5px;
+  margin: 20px auto 5px;
 }
 
 .ds-content__upload--right p {
   font-size: 12px;
   font-style: italic;
+  text-align: center;
 }
 
 .ds-submit {

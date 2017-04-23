@@ -38,6 +38,7 @@ window.Modal_3DViewer = (function () {
     var that = this
     that.options = options;
     that.data = options.data || {}
+
     that.submitCallback = options.callback;
 
     this.setUploadify = options.setUploadify || (_upload && _upload.initWebUpload)
@@ -77,13 +78,26 @@ window.Modal_3DViewer = (function () {
     this.$btnBorderColor = this.$container.find('input[name="borderColor"]')
     this.$btnSubmit = this.$container.find('.js-submit')
     this.$uploadImg = this.$container.find('.js-ds-upload-img')
-    this.$btnBgColor = this.$container.find('.js-ds-btn-img-color')
+    this.$btnBgColor = this.$container.find('.js-ds-btn-bg-color')
     this.$bgColor = this.$container.find('input[name="bgColor"]')
+    this.$btnModelColor = this.$container.find('.js-ds-btn-model-color')
+    this.$modelColor = this.$container.find('input[name="modelColor"]')
   }
 
   Modal_3DViewer.prototype.initData = function () {
     if (this.data.borderColor) {
       this.$btnBorderColor[0].value = this.data.borderColor
+    }
+
+    if (this.data.btn_opacity) {
+      this.$uploadImg.css({
+        opacity: this.data.btn_opacity
+      })
+    }
+    if (this.data.border_width) {
+      this.$uploadImg.css({
+        borderWidth: this.data.border_width
+      })
     }
 
     this.$uploadImg.css({
@@ -100,6 +114,10 @@ window.Modal_3DViewer = (function () {
 
     this.$btnBgColor.css({
       backgroundColor: this.data.bgcolor
+    })
+
+    this.$btnModelColor.css({
+      backgroundColor: this.data.modelColor
     })
   }
 
@@ -135,6 +153,7 @@ window.Modal_3DViewer = (function () {
 
       that.data['bgColor'] = $('#__modal_3dviewer__ input[name="bgColor"]').val()
       that.data['borderColor'] = $('#__modal_3dviewer__ input[name="borderColor"]').val()
+      that.data['modelColor'] = $('#__modal_3dviewer__ input[name="modelColor"]').val()
 
       that.close()
       if (that.submitCallback) {
@@ -156,12 +175,24 @@ window.Modal_3DViewer = (function () {
 
     that.$bgColor.on('change', function (e) {
       var color = $(e.target).val()
-      that.data['bgcolor'] = color
+      that.data['bgColor'] = color
       that.$uploadImg.css({
         backgroundColor: color
       })
 
       that.$btnBgColor.css({
+        backgroundColor: color
+      })
+    })
+
+    that.$btnModelColor.on('click', function () {
+      that.$modelColor.click()
+    })
+
+    that.$modelColor.on('change', function (e) {
+      var color = $(e.target).val()
+      that.data['modelColor'] = color
+      that.$btnModelColor.css({
         backgroundColor: color
       })
     })
@@ -190,9 +221,9 @@ window.Modal_3DViewer = (function () {
             that.data[name] = slideEvt.value;
             switch (name) {
               case 'border_opacity':
-                that.$uploadImg.css({
-                  opacity: slideEvt.value
-                })
+                // that.$uploadImg.css({
+                //   opacity: slideEvt.value
+                // })
                 break
               case 'border_width':
                 that.$uploadImg.css({

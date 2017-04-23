@@ -980,8 +980,18 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         var h = imgH * parseFloat(_pointData.h || 0.2);
         var x = imgW * parseFloat(_pointData.x);
         var y = imgH * parseFloat(_pointData.y);
-        var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none;';
-        html += '<div data-id="' + pointId + '"  class="m-viewer3d draw-custom-area" style="' + css + '"></div>'
+        // 圆型,宽高一样，按小的算
+        if (drawCustomArea.pointType === 'circle') {
+          if (w > h) {
+            w = h;
+          } else {
+            h = w;
+          }
+        }
+        var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
+        css += 'border-color:' + drawCustomArea.borderColor + '; border-width:' + drawCustomArea.border_width + 'px;';
+        css += 'opacity:' + drawCustomArea.btn_opacity + ';'
+        html += '<div data-id="' + pointId + '" data-opacity="' + drawCustomArea.btn_opacity + '"  class="m-viewer3d draw-custom-area draw-custom-area__' + drawCustomArea.pointType + ' " style="' + css + '"></div>'
       }
       //普通点读点
       else {

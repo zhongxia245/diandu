@@ -321,7 +321,6 @@ window.Util = (function () {
       },
       mouseup: function (event) {
         if (event.clientX != Mouse.x || event.clientY != Mouse.y) {
-          console.log('slide');
           if (onMove) {
             onMove(event);
           }

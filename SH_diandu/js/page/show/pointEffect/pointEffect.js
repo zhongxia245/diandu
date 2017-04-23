@@ -52,7 +52,7 @@ window.diandu = (function (dd) {
       }
     }
     _effect($hideArea, 2);
-    _effect($drawCustomArea, 2);
+    _effect($drawCustomArea, 3);
 
   }
 
@@ -66,7 +66,11 @@ window.diandu = (function (dd) {
     switch (flag) {
       case 1:
       case 3:
-        $dom.css('opacity', 1);
+        var opacity = 1;
+        if ($dom.data('opacity')) {
+          opacity = parseFloat($dom.data('opacity'))
+        }
+        $dom.css('opacity', opacity);
         break;
       case 2:
         $dom.css('border', '3px solid red');

@@ -58,7 +58,6 @@ window.CreatePoint = (function () {
     var pic = data.pic || { src: '', color: '', colorSize: '' };  //自定义图片需要 图片地址,发光颜色,光圈大小
 
     var style = "position:absolute; left:" + left + "px; top :" + top + "px;";
-
     switch (type) {
       //常规点读点
       case 1:
@@ -80,7 +79,7 @@ window.CreatePoint = (function () {
       case 5:
         html = initMCustomImgPoint(pointId, style, pic, className, outHTML, scale)
         break;
-      // 创建页面 自定义绘制区域
+      // 创建页面 自定义绘制区域[展示页面]
       case 6:
         html = initDrawAreaPoint(pointId, style, data)
         break;
@@ -220,7 +219,7 @@ window.CreatePoint = (function () {
   }
 
   /**
-   * 创建页面，自定义绘制区域
+   * 创建页面，自定义绘制区域[没用到,直接写在show.js里面了]
    */
   function initDrawAreaPoint(pointId, style, data) {
     var drawAreaData = data.drawAreaData || {}
@@ -229,7 +228,7 @@ window.CreatePoint = (function () {
       var height = drawAreaData.h * 675;
       style += 'width:' + width + 'px;height:' + height + 'px';
     }
-    return '<div id="' + pointId + '" data-type="drawcustomarea"  style="' + style + '" class="draw-area-container"></div>'
+    return '<div id="' + pointId + '" data-type="drawcustomarea"  style="' + style + '" class="draw-area-container draw-custom-area__' + drawAreaData.pointType + '"></div>'
   }
 
   return {

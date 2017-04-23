@@ -58,3 +58,18 @@
   height: 150px;
   cursor: move;
 }
+
+
+/*绘制图形的样式，区分椭圆，圆，长方形等*/
+
+.draw-custom-area__roud {
+  border-radius: 5px;
+}
+
+.draw-custom-area__circle {
+  border-radius: 50%;
+}
+
+.draw-custom-area__oval {
+  border-radius: 50%;
+}

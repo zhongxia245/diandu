@@ -12,9 +12,69 @@
 }
 
 .viewer3d-container {
-  width: 75%;
-  height: 75%;
+  width: 80%;
+  height: 80%;
   background: #003232;
   border: 2px solid #a5a5a5;
   border-radius: 3px;
+  z-index: 9;
+}
+
+.viewer3d-btns__scale {
+  position: absolute;
+  right: 12%;
+  top: 12%;
+  width: 30px;
+  height: 30px;
+  background-image: url('./imgs/scale_max.png');
+  background-size: 100%;
+  cursor: pointer;
+  z-index: 11;
+}
+
+.viewer3d-btns__scale--normal {
+  right: 10px;
+  top: 10px;
+  background-image: url('./imgs/scale_normal.png');
+}
+
+.viewer3d__help {
+  position: absolute;
+  z-index: 10;
+  width: 80%;
+  height: 80%;
+  left: 10%;
+  top: 10%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.viewer3d-help__right {
+  right: 5px;
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  background: url('./imgs/scale.png') 100% no-repeat;
+  background-position: center;
+}
+
+.viewer3d-help__bottom {
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  bottom: 80px;
+  left: 0;
+  background: url('./imgs/ralate.png') 100% no-repeat;
+  background-position: center;
+}
+
+.viewer3d-help__tip {
+  position: absolute;
+  bottom: 0;
+  background: #262626;
+  color: #FFF;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.5;
+  padding: 10px;
 }
