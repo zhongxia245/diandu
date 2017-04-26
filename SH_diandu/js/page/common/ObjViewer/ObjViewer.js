@@ -153,15 +153,11 @@ window.ObjViewer = (function () {
       render()
     })
 
-    dom_scene.addEventListener('mousewheel', mousewheel, false);
-
     mc.on('panleft', function (e) {
-      e.srcEvent.stopPropagation()
       banana.rotation.z += 0.1;
       render()
     })
     mc.on("panright", function (e) {
-      e.srcEvent.stopPropagation()
       banana.rotation.z -= 0.1;
       render()
     });
@@ -174,6 +170,7 @@ window.ObjViewer = (function () {
       render()
     });
 
+    dom_scene.addEventListener('mousewheel', mousewheel, false);
 
     //鼠标滑轮
     function mousewheel(e) {
