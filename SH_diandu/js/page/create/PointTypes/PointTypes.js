@@ -43,6 +43,8 @@ window.PointTypes = (function () {
       var configData = POINTTYPES || { types: [] }
       configData.selected = options.selectedType
 
+      $('#__pointTypes__').remove()
+
       var div = document.createElement('div')
       div.setAttribute('id', '__pointTypes__')
       document.body.append(div)
@@ -62,11 +64,16 @@ window.PointTypes = (function () {
     this.$container = $('#__pointTypes__')
     this.$pointTypeItem = this.$container.find('.point-types__item')
     this.$tip = this.$container.find('.js-pt-tip')
+    this.$wrapper = this.$container.find('.js-point-types-wrapper')
   }
 
   // 绑定点击事件
   PointTypes.prototype.bindEvent = function () {
     var that = this
+
+    this.$wrapper.on('click', function () {
+      that.close()
+    })
 
     // 点读类型点击事件
     this.$pointTypeItem
