@@ -11,11 +11,11 @@ window.ObjViewer = (function () {
     var objUrl = options.url;
     var data = options.data || {}
     var modelColor = 0X00FF00;
-    var renderer, camera, banana, cameraHeight;
+    var renderer, camera, banana, cameraHeight, ambientLight, directionalLight;
     var dom_scene = document.getElementById(id)
 
-    var ww = window.innerWidth * 0.8;
-    var wh = window.innerHeight * 0.8;
+    var ww = options.width || window.innerWidth * 0.8;
+    var wh = options.height || window.innerHeight * 0.8;
 
     renderer = new THREE.WebGLRenderer({
       canvas: dom_scene
@@ -33,11 +33,14 @@ window.ObjViewer = (function () {
     camera.position.set(0, 0, 300);
     scene.add(camera);
 
-    //灯光位置
+    //平行光
     directionalLight = new THREE.DirectionalLight(0xffffff);
     directionalLight.position.set(0, 0, 200);
     directionalLight.lookAt(new THREE.Vector3(0, 0, 0));
     scene.add(directionalLight);
+    // 环境光【】
+    // ambientLight = new THREE.AmbientLight(0xffffff)
+    // scene.add(ambientLight);
 
     /**
      * 每次修改参数后，都需要重新render，才会起作用
@@ -68,6 +71,26 @@ window.ObjViewer = (function () {
     /************************************************************************
      * 加载Obj文件
      ************************************************************************/
+    /**
+     * 使模型在视野中居中
+     * @param {any} aroundObject3D 
+     */
+    function centerCam(aroundObject3D) {
+      //calc cam pos from Bounding Box
+      var BB = new THREE.Box3().setFromObject(aroundObject3D);
+      var centerpoint = BB.center();
+      var size = BB.size();
+      var backup = (size.y / 2) / Math.sin((camera.fov / 2) * (Math.PI / 180));
+
+      // 这边加100的目的是让模型只占视野的75%左右（100只是一个随便的数组）
+      var camZpos = BB.max.z + backup + camera.near + 100;
+      console.log(size)
+      //move cam
+      camera.position.set(centerpoint.x, centerpoint.y, camZpos);
+      camera.far = camera.near + 10 * size.z;
+      camera.updateProjectionMatrix();
+
+    }
     var loadOBJ = function () {
       var manager = new THREE.LoadingManager();
       var loader = new THREE.OBJLoader(manager);
@@ -93,6 +116,7 @@ window.ObjViewer = (function () {
             }
           }
         });
+        centerCam(banana)
         scene.add(banana);
         render();
       });
@@ -131,11 +155,13 @@ window.ObjViewer = (function () {
 
     dom_scene.addEventListener('mousewheel', mousewheel, false);
 
-    mc.on('panleft', function () {
+    mc.on('panleft', function (e) {
+      e.srcEvent.stopPropagation()
       banana.rotation.z += 0.1;
       render()
     })
-    mc.on("panright", function () {
+    mc.on("panright", function (e) {
+      e.srcEvent.stopPropagation()
       banana.rotation.z -= 0.1;
       render()
     });

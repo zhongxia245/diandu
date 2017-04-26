@@ -42,6 +42,7 @@ window.Draw = (function () {
         oR.id = that.data.pointId;
         oR.className = 'draw-area-container'
         oR.style.cursor = 'se-resize'
+        oR.setAttribute('data-type', 'drawcustomarea')
         oR.style.top = disY + 'px';
         oR.style.left = disX + 'px';
         oR.style.background = '#5b9bd5';

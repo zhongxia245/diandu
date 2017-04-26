@@ -750,10 +750,46 @@ function initPage(id, data) {
     $wrap.append(initPoints(i, pages[i], wrapWidth, wrapHeight, _pointSizeScale))
 
     setPointSizeScale('#' + subid, _pointSizeScale);
+
+    // 初始化视窗
+    initWindow(i, pages[i], wrapWidth, wrapHeight)
   }
 
   //控制点读页的缩放,以及点读点的大小控制  END
   initGlobalAudio(DATA, pages[i]);
+}
+
+/**
+ * 初始化视窗 
+ * @param {any} pageIndex  点读点的id标记，早期用这个+点读点下标[懒得切割，所以传过来] 
+ * @param {any} pageData 
+ * @param {int} ingW 图片的宽(不包括黑色区域)
+ * @param {int} ingH 图片的高
+ */
+function initWindow(pageIndex, pageData, imgW, imgH) {
+  var pointsData = pageData['points'];
+  for (var i = 0; i < pointsData.length; i++) {
+    var pointData = JSON.parse(pointsData[i].data);
+    if (pointData.type === 'viewer3d' && pointData.drawcustomarea) {
+      var canvasId = 'viewer3d_' + pageIndex + '_' + i
+      var $canvas = $('#' + canvasId)
+      new ObjViewer(canvasId,
+        {
+          url: $canvas.data('url'),
+          width: $canvas.width(),
+          height: $canvas.height(),
+          data: pointData.drawcustomarea
+        })
+    }
+  }
+
+  /**
+   * 视窗上面的点读点类型图标
+   */
+  $('body').on('click', '.js-viewer3d-point', function (e) {
+    var $cTar = $(e.currentTarget)
+    $cTar.hide()
+  })
 }
 
 
@@ -976,8 +1012,8 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
       }
       // 3d模型
       else if (drawCustomArea) {
-        var w = imgW * parseFloat(_pointData.w || 0.2);
-        var h = imgH * parseFloat(_pointData.h || 0.2);
+        var w = imgW * parseFloat(drawCustomArea.w || 0.2);
+        var h = imgH * parseFloat(drawCustomArea.h || 0.2);
         var x = imgW * parseFloat(_pointData.x);
         var y = imgH * parseFloat(_pointData.y);
         // 圆型,宽高一样，按小的算
@@ -991,7 +1027,11 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
         css += 'border-color:' + drawCustomArea.borderColor + '; border-width:' + drawCustomArea.border_width + 'px;';
         css += 'opacity:' + drawCustomArea.btn_opacity + ';'
-        html += '<div data-id="' + pointId + '" data-opacity="' + drawCustomArea.btn_opacity + '"  class="m-viewer3d draw-custom-area draw-custom-area__' + drawCustomArea.pointType + ' " style="' + css + '"></div>'
+
+        html += '<div data-id="' + pointId + '" data-opacity="' + drawCustomArea.btn_opacity + '"  class="draw-custom-area draw-custom-area__' + drawCustomArea.pointType + ' " style="' + css + '">'
+        html += '   <div class="m-viewer3d__point js-viewer3d-point"></div>'
+        html += '   <canvas class="m-viewer3d__canvas" data-url="' + _pointData.url + '" id="viewer3d_' + pointId + '"></canvas>'
+        html += '</div>'
       }
       //普通点读点
       else {
@@ -1580,8 +1620,7 @@ function bindEvent() {
   //3D模型文件
   $('.m-viewer3d').off().on(click, function (e) {
     closeVideoOrAudio(true);
-
-    var $tar = $(e.target);
+    var $tar = $(e.currentTarget);
     var ids = $tar.attr('data-id');
     var pointData = Util.getPointDataByIds(DATA, ids);
     pointData = JSON.parse(pointData.data || "{}")

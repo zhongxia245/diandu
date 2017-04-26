@@ -382,7 +382,6 @@ if ($id > 0) {
                 <li data-type="roud" class="draw-custom-area__item area__roud"></li>
                 <li data-type="circle" class="draw-custom-area__item area__circle"></li>
                 <li data-type="oval" class="draw-custom-area__item area__oval"></li>
-                <li data-type="triangle" class="draw-custom-area__item area__triangle"></li>
             </ul>
             <ul class="setting-upload" id="uploadSetting{{index}}">
             </ul>

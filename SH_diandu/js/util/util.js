@@ -305,6 +305,23 @@ window.Util = (function () {
   }
 
   /**
+   * 从模板文件获取指定的模板（一个文件中有多个模板）
+   * @param {any} url 模板地址
+   * @param {string} id 模板的id
+   * @param {any} callback 
+   */
+  function getTplById(url, id, callback) {
+    $.ajax({
+      url: url,
+      success: function (tpl) {
+        var sub_tpl = $('<div></div>').html(tpl).find('#' + id).html()
+        callback(sub_tpl)
+      }
+    })
+  }
+
+
+  /**
    * 绘制区域的时候使用，避免绘制图形后还触发点击事件
    * 鼠标拖动还是点击
    * @param {any} selector 
@@ -376,6 +393,7 @@ window.Util = (function () {
     drag: drag,
     getImageBase64: getImageBase64,
     getTpl: getTpl,
+    getTplById: getTplById,
     MoveOrClick: MoveOrClick
   }
 })()

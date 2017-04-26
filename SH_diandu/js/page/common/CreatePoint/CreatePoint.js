@@ -28,6 +28,7 @@
 
 
 window.CreatePoint = (function () {
+  var currentScriptSrc = Util.getBasePath(document.currentScript.src);
   //带有标题的点读点类型样式, 音频,视频,图文, 考试
   var POINTTITLECLASS = {
     audio: 'create-point-title-audio',
@@ -42,6 +43,14 @@ window.CreatePoint = (function () {
    * @param data 点读点的数据
    */
   function initPoint(type, data) {
+
+    /** 
+     * TODO: 单独把模板抽离出来，后期可以修改成这样 
+     **/
+    // Util.getTplById(currentScriptSrc + '/tpl.html', 'tpl_show_viewer3d', function (tpl) {
+    //   var tpls = Handlebars.compile(tpl)
+    // })
+
     var html = "";
     var pointId = data.pointId;
     var pointIndex = data.pointId && data.pointId.split('_')[1];
