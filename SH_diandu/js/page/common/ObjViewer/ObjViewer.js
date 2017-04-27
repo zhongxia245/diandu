@@ -6,17 +6,30 @@
  */
 window.ObjViewer = (function () {
 
+  // 方位
+  var DIRECTION = {
+    left: 'left',
+    top: 'top',
+    bottom: 'bottom',
+    right: 'right',
+    center: 'center'
+  }
+
   function ObjViewer(id, options) {
     options = options || {}
     var objUrl = options.url;
     var data = options.data || {}
     var modelColor = 0X00FF00;
-    var renderer, camera, banana, cameraHeight, ambientLight, directionalLight;
+    var renderer, camera, banana, cameraHeight;
     var dom_scene = document.getElementById(id)
 
     var ww = options.width || window.innerWidth * 0.8;
     var wh = options.height || window.innerHeight * 0.8;
 
+
+    /************************************************************************
+     * 初始化场景（摄像机，光源）
+     ************************************************************************/
     renderer = new THREE.WebGLRenderer({
       canvas: dom_scene
     });
@@ -34,13 +47,30 @@ window.ObjViewer = (function () {
     scene.add(camera);
 
     //平行光
-    directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(0, 0, 200);
-    directionalLight.lookAt(new THREE.Vector3(0, 0, 0));
-    scene.add(directionalLight);
-    // 环境光【】
-    // ambientLight = new THREE.AmbientLight(0xffffff)
-    // scene.add(ambientLight);
+    var directionalLightY = new THREE.DirectionalLight(0xffffff);
+    directionalLightY.position.set(50, 50, 100);
+    directionalLightY.intensity = 0.5;
+    directionalLightY.lookAt(new THREE.Vector3(0, 0, 0));
+    scene.add(directionalLightY);
+
+    var directionalLightX = new THREE.DirectionalLight(0xffffff);
+    directionalLightX.intensity = 0.5;
+    directionalLightX.position.set(100, 100, 100);
+    directionalLightX.rotation.y = Math.PI / 4
+    directionalLightX.lookAt(new THREE.Vector3(0, 0, 0));
+    scene.add(directionalLightX);
+
+    var directionalLightZ = new THREE.DirectionalLight(0xffffff);
+    directionalLightZ.intensity = 0.3;
+    directionalLightZ.position.set(0, 0, 200);
+    directionalLightX.rotation.y = -Math.PI / 4
+    directionalLightZ.lookAt(new THREE.Vector3(0, 0, 0));
+    scene.add(directionalLightZ);
+
+    // // 环境光【】
+    var ambientLight = new THREE.AmbientLight(0x0c0c0c)
+    ambientLight.intensity = 0.2
+    scene.add(ambientLight);
 
     /**
      * 每次修改参数后，都需要重新render，才会起作用
@@ -55,6 +85,9 @@ window.ObjViewer = (function () {
     // 设置背景颜色
     if (data.bgColor) {
       renderer.setClearColor(data.bgColor, 1);
+    }
+    if (data.bg_opacity) {
+      renderer.setClearAlpha(data.bg_opacity)
     }
     if (data.modelColor) {
       modelColor = data.modelColor;
@@ -117,6 +150,7 @@ window.ObjViewer = (function () {
           }
         });
         centerCam(banana)
+        rotateDefault()
         scene.add(banana);
         render();
       });
@@ -126,46 +160,60 @@ window.ObjViewer = (function () {
     /************************************************************************
      * 放大缩小,旋转等功能
      ************************************************************************/
-    var mc = new Hammer.Manager(dom_scene);
-    mc.add(new Hammer.Pinch({ threshold: 0 }));
-    mc.add(new Hammer.Pan({ threshold: 0 }));
+    var hammerDom = new Hammer(dom_scene, {
+      domEvents: true
+    });
+    hammerDom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 
-    mc.on('pinchstart pinchmove', function (ev) {
+    hammerDom.on('pinchstart pinchmove', function (ev) {
       banana.position.y += -ev.deltaY / 10
       banana.position.x += ev.deltaX / 10
       render()
     })
 
-    // mc.on('pinchin pinchout', function (ev) {
+
+    hammerDom.on('press', function (ev) {
+      var offset = {
+        w: $(ev.target).width(),
+        h: $(ev.target).height(),
+        x: ev.pointers[0].offsetX,
+        y: ev.pointers[0].offsetY
+      }
+      customRotate(getLocation(offset.w, offset.h, offset.x, offset.y))
+    })
+
+    // hammerDom.on('pinchin pinchout', function (ev) {
     //   banana.scale.x = ev.scale;
     //   banana.scale.y = ev.scale;
     //   banana.scale.z = ev.scale;
     // })
 
-    mc.on('pinchin', function () {
+    hammerDom.on('pinchin', function () {
       camera.position.z += 3;
       camera.updateProjectionMatrix()
       render()
     })
-    mc.on('pinchout', function () {
+    hammerDom.on('pinchout', function () {
       camera.position.z -= 3;
       camera.updateProjectionMatrix()
       render()
     })
 
-    mc.on('panleft', function (e) {
-      banana.rotation.z += 0.1;
+    hammerDom.on('panleft', function (e) {
+      banana.rotation.y += 0.1;
       render()
     })
-    mc.on("panright", function (e) {
-      banana.rotation.z -= 0.1;
+    hammerDom.on("panright", function (e) {
+      banana.rotation.y -= 0.1;
       render()
     });
-    mc.on("panup", function () {
+    hammerDom.on("panup", function () {
+      console.log('up')
       banana.rotation.x -= 0.1;
       render()
     });
-    mc.on("pandown", function () {
+    hammerDom.on("pandown", function () {
+      console.log('down')
       banana.rotation.x += 0.1;
       render()
     });
@@ -194,6 +242,116 @@ window.ObjViewer = (function () {
       camera.updateProjectionMatrix();
       render()
     }
+
+    /**
+     * top right bottom left center
+     * 判断坐标在区域内，上下左右中，什么方位
+     * @param {any} w 
+     * @param {any} h 
+     * @param {any} x 
+     * @param {any} y 
+     */
+    function getLocation(w, h, x, y) {
+      // 上下左右30%，算上下左右，去掉右上角，左上角，左下角，右下角。 30% 之外算中间
+      var range = 0.3;
+
+      // top
+      var maxTopY = h * range;
+      var minTopX = w * range;
+      var maxTopX = w * (1 - range);
+      if (x >= minTopX && x <= maxTopX && y <= maxTopY) {
+        return DIRECTION.top;
+      }
+
+      // bottom
+      var minBottomY = h * (1 - range)
+      var minBottomX = w * range;
+      var maxBottomX = w * (1 - range);
+      if (x >= minBottomX && x <= maxBottomX && y >= minBottomY) {
+        return DIRECTION.bottom;
+      }
+
+      // left
+      var minLeftY = h * range
+      var maxLeftY = h * (1 - range)
+      var maxLeftX = w * range;
+      if (y >= minLeftY && y <= maxLeftY && x <= maxLeftX) {
+        return DIRECTION.left;
+      }
+
+      // right
+      var minRightY = h * range
+      var maxRightY = h * (1 - range)
+      var minRightX = w * (1 - range);
+      if (y >= minRightY && y <= maxRightY && x >= minRightX) {
+        return DIRECTION.right;
+      }
+
+      return DIRECTION.center
+    }
+
+    /*************** 上下左右视图旋转 START ***************************** */
+
+    function customRotate(direction) {
+      setEmptyPosition()
+      switch (direction) {
+        case DIRECTION.left:
+          rotateLeft()
+          break;
+        case DIRECTION.right:
+          rotateRight()
+          break;
+        case DIRECTION.top:
+          rotateTop()
+          break;
+        case DIRECTION.bottom:
+          rotateBottom()
+          break;
+        case DIRECTION.center:
+          rotateCenter()
+          break;
+      }
+    }
+
+    function setEmptyPosition() {
+      banana.rotation.x = 0;
+      banana.rotation.y = 0;
+      banana.rotation.z = 0;
+    }
+
+    //加载模型后的默认位置
+    function rotateDefault() {
+      banana.rotation.y = -Math.PI / 4;
+      // banana.rotation.z = Math.PI / 180 * 35;
+      banana.rotation.x = Math.PI / 180 * 35;
+    }
+
+    function rotateLeft() {
+      banana.rotation.y = (Math.PI / 2)
+      render()
+    }
+
+    function rotateRight() {
+      banana.rotation.y = -(Math.PI / 2)
+      render()
+    }
+
+    function rotateTop() {
+      banana.rotation.x = Math.PI / 2
+      render()
+    }
+
+    function rotateBottom() {
+      banana.rotation.x = -(Math.PI / 2)
+      render()
+    }
+
+    function rotateCenter() {
+      banana.rotation.x = 0
+      banana.rotation.y = 0
+      render()
+    }
+
   }
 
   return ObjViewer

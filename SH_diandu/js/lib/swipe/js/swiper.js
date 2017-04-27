@@ -472,6 +472,7 @@
             s.params.allowSwipeToPrev = false;
         };
         s.lockSwipes = function () {
+            console.log('lockSwiper')
             s.params.allowSwipeToNext = s.params.allowSwipeToPrev = false;
         };
         s.unlockSwipeToNext = function () {
@@ -481,6 +482,7 @@
             s.params.allowSwipeToPrev = true;
         };
         s.unlockSwipes = function () {
+            console.log('unlockSwipes')
             s.params.allowSwipeToNext = s.params.allowSwipeToPrev = true;
         };
 

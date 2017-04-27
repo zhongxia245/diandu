@@ -26,6 +26,13 @@ window.Modal_3DViewer = (function () {
       step: 0.1,
       min: 0,
       max: 1
+    },
+    bgOpacity: {
+      name: 'bg_opacity',
+      defaultValue: 1,
+      step: 0.1,
+      min: 0,
+      max: 1
     }
   }
   /**
@@ -46,6 +53,7 @@ window.Modal_3DViewer = (function () {
     SLIDES.borderOpacity.value = that.data.border_opacity;
     SLIDES.borderWidth.value = that.data.border_width;
     SLIDES.btnOpacity.value = that.data.btn_opacity;
+    SLIDES.bgOpacity.value = that.data.bg_opacity;
 
     // 区域点读点设置
     Util.getTpl(currentScriptSrc + '/tpl.html', function (tpl) {
@@ -94,6 +102,7 @@ window.Modal_3DViewer = (function () {
         opacity: this.data.btn_opacity
       })
     }
+
     if (this.data.border_width) {
       this.$uploadImg.css({
         borderWidth: this.data.border_width
@@ -101,8 +110,8 @@ window.Modal_3DViewer = (function () {
     }
 
     this.$uploadImg.css({
-      borderColor: this.data.borderColor,
-      backgroundColor: this.data.bgcolor,
+      borderColor: Util.hex2RGBA(this.data.borderColor, this.data.border_opacity),
+      backgroundColor: Util.hex2RGBA(this.data.bgColor, this.data.bg_opacity),
       borderWidth: this.data.border_width,
     })
 
@@ -221,9 +230,9 @@ window.Modal_3DViewer = (function () {
             that.data[name] = slideEvt.value;
             switch (name) {
               case 'border_opacity':
-                // that.$uploadImg.css({
-                //   opacity: slideEvt.value
-                // })
+                that.$uploadImg.css({
+                  borderColor: Util.hex2RGBA(that.data.borderColor, slideEvt.value)
+                })
                 break
               case 'border_width':
                 that.$uploadImg.css({
@@ -233,6 +242,11 @@ window.Modal_3DViewer = (function () {
               case 'btn_opacity':
                 that.$uploadImg.css({
                   opacity: slideEvt.value
+                })
+                break
+              case 'bg_opacity':
+                that.$uploadImg.css({
+                  backgroundColor: Util.hex2RGBA(that.data.bgColor, slideEvt.value),
                 })
                 break
             }

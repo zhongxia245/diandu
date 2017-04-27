@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="./js/components/questionslist/QuestionsList.css">
   <link rel="stylesheet" href="./js/components/examcomment/ExamComment.css?v=26">
   <script>
+    document.oncontextmenu = function(){return false;}; 
     // 动态计算rem的大小，参照基准 iphone6  375px
     (function (doc, win) {
       let docEl = doc.documentElement

@@ -338,6 +338,7 @@ function bgScaleOp(currentIndex) {
   GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.wrap', _width, _height,
     /**
      * 移动时禁用swiper和上滑动能
+     * TODO： 模型视窗的移动和Swiper的移动冲突，在这里出现问题，这里查看如何处理
      */
     function () {
       if (this.scale > 1) {
@@ -345,7 +346,7 @@ function bgScaleOp(currentIndex) {
         GLOBAL.allowSwiperUp = false;
       } else {
         GLOBAL.allowSwiperUp = true;
-        window.galleryTop.unlockSwipes();
+        // window.galleryTop.unlockSwipes();
       }
     },
     /**
@@ -359,7 +360,7 @@ function bgScaleOp(currentIndex) {
       } else {
         GLOBAL.picScale.hideTip();
         GLOBAL.allowSwiperUp = true;
-        window.galleryTop.unlockSwipes();
+        // window.galleryTop.unlockSwipes();
       }
     }
   );
@@ -538,6 +539,14 @@ function initSwipe() {
       effect: 'fade',
       fade: {
         crossFade: true,
+      },
+      onTouchStart: function (swiper, event) {
+        // 加上no-swiper 样式，如果是上面的事件，则不滑动swiper
+        if (event.target.className.indexOf('no-swiper') !== -1) {
+          swiper.lockSwipes()
+        } else {
+          swiper.unlockSwipes()
+        }
       },
       onTransitionEnd: function (swiper) {  //没有切换到另外一个点读页也会触发
         //切换了点读页
@@ -767,6 +776,7 @@ function initPage(id, data) {
  * @param {int} ingH 图片的高
  */
 function initWindow(pageIndex, pageData, imgW, imgH) {
+
   var pointsData = pageData['points'];
   for (var i = 0; i < pointsData.length; i++) {
     var pointData = JSON.parse(pointsData[i].data);
@@ -782,14 +792,28 @@ function initWindow(pageIndex, pageData, imgW, imgH) {
         })
     }
   }
-
   /**
    * 视窗上面的点读点类型图标
    */
-  $('body').on('click', '.js-viewer3d-point', function (e) {
+  $('.js-viewer3d-point').off().on('click', function (e) {
+    var $cTar = $(e.currentTarget)
+    $cTar.hide()
+
+    var $operator = $(e.target).parent().find('.js-viewer3d-operator')
+    $operator.show()
+    setTimeout(function () {
+      $operator.hide()
+    }, 3000)
+  })
+
+  /**
+   * 三视图提示图片点击关闭
+   */
+  $('.js-viewer3d-operator').off().on('click', function (e) {
     var $cTar = $(e.currentTarget)
     $cTar.hide()
   })
+
 }
 
 
@@ -1016,6 +1040,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
         var h = imgH * parseFloat(drawCustomArea.h || 0.2);
         var x = imgW * parseFloat(_pointData.x);
         var y = imgH * parseFloat(_pointData.y);
+
         // 圆型,宽高一样，按小的算
         if (drawCustomArea.pointType === 'circle') {
           if (w > h) {
@@ -1024,14 +1049,17 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
             h = w;
           }
         }
+
         var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
-        css += 'border-color:' + drawCustomArea.borderColor + '; border-width:' + drawCustomArea.border_width + 'px;';
+        css += 'border-color:' + Util.hex2RGBA(drawCustomArea.borderColor, drawCustomArea.border_opacity) + '; border-width:' + drawCustomArea.border_width + 'px;';
         css += 'opacity:' + drawCustomArea.btn_opacity + ';'
 
         html += '<div data-id="' + pointId + '" data-opacity="' + drawCustomArea.btn_opacity + '"  class="draw-custom-area draw-custom-area__' + drawCustomArea.pointType + ' " style="' + css + '">'
         html += '   <div class="m-viewer3d__point js-viewer3d-point"></div>'
-        html += '   <canvas class="m-viewer3d__canvas" data-url="' + _pointData.url + '" id="viewer3d_' + pointId + '"></canvas>'
+        html += '   <div class="m-viewer3d__operator js-viewer3d-operator"></div>'
+        html += '   <canvas class="m-viewer3d__canvas no-swiper" data-url="' + _pointData.url + '" id="viewer3d_' + pointId + '"></canvas>'
         html += '</div>'
+
       }
       //普通点读点
       else {

@@ -28,8 +28,8 @@
   padding-top: 20px;
 }
 
-.ds-content__upload--left {
-  width: 70%;
+.ds-content__upload--left, .ds-content__upload--right {
+  width: 50%;
   text-align: center;
 }
 
@@ -84,6 +84,15 @@
   font-size: 12px;
   font-style: italic;
   text-align: center;
+}
+
+.ds-content__upload--right-top {
+  display: flex;
+  padding: 0 20px;
+}
+
+.ds-content__upload-item {
+  flex: 1;
 }
 
 .ds-submit {

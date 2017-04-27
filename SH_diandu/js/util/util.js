@@ -376,6 +376,21 @@ window.Util = (function () {
     }
   };
 
+  /**
+   * 把16进制颜色转换成rgba的颜色
+   * #000000 + 0.5 = rgba(0,0,0,0.5)
+   * @param {any} colorStr 
+   * @param {any} opacity 
+   * @returns 
+   */
+  function hex2RGBA(colorStr, opacity) {
+    var rgb = colorStr || '#000000';
+    var a = opacity || 0;
+    var matches = rgb.match(/#([\da-f]{2})([\da-f]{2})([\da-f]{2})/i);
+    var rgba = 'rgba(' + matches.slice(1).map(function (m) { return parseInt(m, 16); }).concat(a) + ')';
+    return rgba;
+  }
+
 
   return {
     getImageWH: getImageWH,
@@ -394,7 +409,8 @@ window.Util = (function () {
     getImageBase64: getImageBase64,
     getTpl: getTpl,
     getTplById: getTplById,
-    MoveOrClick: MoveOrClick
+    MoveOrClick: MoveOrClick,
+    hex2RGBA: hex2RGBA
   }
 })()
 

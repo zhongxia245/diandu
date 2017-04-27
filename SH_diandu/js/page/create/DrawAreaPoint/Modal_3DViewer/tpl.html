@@ -6,17 +6,27 @@
         <div class="ds-content__upload-img js-ds-upload-img"></div>
         <div id="ds-content-img" class="ds-content__upload-btn">上传新的3D背景图</div>
       </div>
+
       <div class="ds-content__upload--right">
-        <div>
-          <div class="ds-content__upload-color js-ds-btn-bg-color"></div>
-          <input type="color" name="bgColor" value="#999999" style="display:none;">
-          <p>背景区域颜色</br>（点击修改）</p>
+
+        <div class="ds-content__upload--right-top">
+          <div class="ds-content__upload-item">
+            <div class="ds-content__upload-color js-ds-btn-bg-color"></div>
+            <input type="color" name="bgColor" value="#999999" style="display:none;">
+            <p>背景区域颜色</br>（点击修改）</p>
+          </div>
+          <div class="ds-content__upload-item">
+            <div class="ds-content__upload-color js-ds-btn-model-color" style="background: #14f506;"></div>
+            <input type="color" name="modelColor" value="#14f506" style="display:none;">
+            <p>模型颜色</br>（点击修改）</p>
+          </div>
         </div>
-        <div>
-          <div class="ds-content__upload-color js-ds-btn-model-color" style="background: #14f506;"></div>
-          <input type="color" name="modelColor" value="#14f506" style="display:none;">
-          <p>模型颜色</br>（点击修改）</p>
+
+        <div class="ds-content__upload--right-bottom">
+          <div class="ds-content__setting-label">背景透明度</div>
+          <input name="{{slides.bgOpacity.name}}" type="text" data-slider-handle="square" />
         </div>
+
       </div>
       <div>
 
