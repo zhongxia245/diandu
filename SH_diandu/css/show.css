@@ -222,22 +222,26 @@ ul, li {
 }
 
 .m-video {
-    background-image: url('../imgs/video.png');
+    /*background-image: url('../imgs/video.png');*/
+    background-image: url('../imgs/dian_point_icon/icondian_movie.png');
     background-size: 100%;
 }
 
 .m-audio {
-    background-image: url('../imgs/audio.png');
+    /*background-image: url('../imgs/audio.png');*/
+    background-image: url('../imgs/dian_point_icon/icondian_audio.png');
     background-size: 100%;
 }
 
 .m-imgtext {
-    background-image: url('../imgs/m_imgtext.png');
+    /*background-image: url('../imgs/m_imgtext.png');*/
+    background-image: url('../imgs/dian_point_icon/icondian_intro.png');
     background-size: 100%;
 }
 
 .m-exam {
-    background-image: url('../imgs/m_exam.png');
+    /*background-image: url('../imgs/m_exam.png');*/
+    background-image: url('../imgs/dian_point_icon/icondian_exam.png');
     background-size: 100%;
 }
 
@@ -247,7 +251,8 @@ ul, li {
 }
 
 .m-seturl {
-    background: url('../imgs/seturl_default.png') no-repeat;
+    /*background-image: url('../imgs/seturl_default.png');*/
+    background-image: url('../imgs/dian_point_icon/icondian_link.png');
     background-size: 100% 100%;
 }
 
