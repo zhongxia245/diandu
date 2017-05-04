@@ -20,6 +20,7 @@
   <!--上线后去掉注释-->
   <!--<base href="/edu/course/diandu/"></base>-->
   <title></title>
+  <link rel="stylesheet" href="./css/common.css"/>
   <link rel="stylesheet" href="./css/font-awesome.min.css"/>
   <link rel="stylesheet" href="./js/lib/frozen/css/frozen.css"/>
   <link rel="stylesheet" href="./js/lib/modal/css/style.css">
@@ -177,7 +178,7 @@
 <script type="text/javascript">
   window._load = $.loading({content: '加载中...'});
 </script>
-<script src="./js/lib/swipe/js/swiper.js"></script>
+<script src="./js/lib/swipe/js/swiper.min.js"></script>
 <script src="./js/lib/webuploader/webuploader.html5only.min.js"></script>
 <script src="./js/util/scale.js"></script>
 <script src="./js/lib/hammer.min.js"></script>

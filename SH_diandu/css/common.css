@@ -13,3 +13,7 @@
   border: 1px dashed #27d427;
   left: 0px;
 }
+
+.u-hide {
+  display: none !important;
+}

@@ -19,6 +19,8 @@ window.ObjViewer = (function () {
 		options = options || {}
 		var objUrl = options.url;
 		var data = options.data || {}
+		var canvasEventAreaId = options.canvasEventAreaId
+
 		var modelColor = 0X00FF00;
 		var renderer, camera, banana, cameraHeight;
 		var dom_scene = document.getElementById(id)
@@ -78,6 +80,20 @@ window.ObjViewer = (function () {
 		var render = function () {
 			renderer.render(scene, camera);
 		};
+
+		/**
+		 * 设置模型视窗的大小
+		 * @param {*} w 
+		 * @param {*} h 
+		 */
+		var setRenderSize = function (w, h) {
+			renderer.setSize(w, h);
+			
+			// 加上这一句，模型就不会变形
+			camera.aspect = w / h;
+			camera.updateProjectionMatrix();
+			render()
+		}
 
     /************************************************************************
      * 根据配置设置背景颜色，边框宽度，边框颜色
@@ -157,26 +173,44 @@ window.ObjViewer = (function () {
 		};
 		loadOBJ();
 
-		initOperatorEvent(dom_scene)
+		//如果有指定的操作区域，则不需要在模型视窗中进行操作
+		if (canvasEventAreaId) {
+			initOperatorEvent(canvasEventAreaId, id)
+		} else {
+			initOperatorEvent(id, id)
+		}
+
 
 		/************************************************************************
 		 * 放大缩小,旋转等功能
 		 * 如何使用，查看文档 http://hammerjs.github.io/getting-started/
 		 ************************************************************************/
-		function initOperatorEvent(dom) {
+		/**
+		 * 模型操作的区域DOM节点，可以是自身展示的Canvas，也可以是随意指定的DOM区域
+		 * @param {any} id  //操作区域的id
+		 * @param {any} canvasId //模型canvas的id
+		 */
+		function initOperatorEvent(id, canvasId) {
+			var dom = document.getElementById(id)
 			var hammerDom = new Hammer(dom, {
 				domEvents: true
 			});
+
 			hammerDom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 			hammerDom.get('pinch').set({ enable: true });
 
+			hammerDom.on('tap', function (ev) {
+				if (options.cbCloseEventArea) {
+					options.cbCloseEventArea(ev, dom, canvasId, setRenderSize)
+				}
+			})
+
 			hammerDom.on('press', function (ev) {
-				console.log('press')
 				var offset = {
-					w: $(ev.target).width(),
-					h: $(ev.target).height(),
-					x: ev.pointers[0].offsetX,
-					y: ev.pointers[0].offsetY
+					w: $(dom).width(),
+					h: $(dom).height(),
+					x: ev.center.x,
+					y: ev.center.y,
 				}
 				customRotate(getLocation(offset.w, offset.h, offset.x, offset.y))
 			})
@@ -205,10 +239,12 @@ window.ObjViewer = (function () {
 			})
 
 			hammerDom.on('panleft', function (e) {
+				console.log('panleft')
 				banana.rotation.y += 0.1;
 				render()
 			})
 			hammerDom.on("panright", function (e) {
+				console.log('panright')
 				banana.rotation.y -= 0.1;
 				render()
 			});
