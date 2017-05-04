@@ -335,17 +335,13 @@ function bgScaleOp(currentIndex) {
 
 	GLOBAL.picScale = null;
 	GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.wrap', _width, _height,
-    /**
-     * 移动时禁用swiper和上滑动能
-     * TODO： 模型视窗的移动和Swiper的移动冲突，在这里出现问题，这里查看如何处理
-     */
 		function (ev) {
 			if (this.scale > 1) {
 				window.galleryTop.lockSwipes();
 				GLOBAL.allowSwiperUp = false;
 			} else {
 				GLOBAL.allowSwiperUp = true;
-				// window.galleryTop.unlockSwipes();
+				window.galleryTop.unlockSwipes();
 			}
 		},
     /**
@@ -359,19 +355,8 @@ function bgScaleOp(currentIndex) {
 			} else {
 				GLOBAL.picScale.hideTip();
 				GLOBAL.allowSwiperUp = true;
-				// window.galleryTop.unlockSwipes();
+				window.galleryTop.unlockSwipes();
 			}
-		},
-
-		/**
-		 * 是否允许放大缩小
-		 */
-		function (ev) {
-			console.log('picscale')
-			if (ev.target.className.indexOf('no-scale') !== -1) {
-				return false
-			}
-			return true
 		}
 	);
 }
@@ -549,14 +534,6 @@ function initSwipe() {
 			effect: 'fade',
 			fade: {
 				crossFade: true,
-			},
-			onTouchStart: function (swiper, event) {
-				// 加上no-swiper 样式，如果是上面的事件，则不滑动swiper
-				if (event.target.className.indexOf('no-swiper') !== -1) {
-					swiper.lockSwipes()
-				} else {
-					swiper.unlockSwipes()
-				}
 			},
 			onTransitionEnd: function (swiper) {  //没有切换到另外一个点读页也会触发
 				//切换了点读页
