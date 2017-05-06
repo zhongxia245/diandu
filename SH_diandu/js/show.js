@@ -761,7 +761,7 @@ function initWindow(pageIndex, pageData, imgW, imgH) {
 
 	var pointsData = pageData['points'];
 	for (var i = 0; i < pointsData.length; i++) {
-		var pointData = JSON.parse(pointsData[i].data);
+		var pointData = JSON.parse(pointsData[i].data || "{}");
 		if (pointData.type === 'viewer3d' && pointData.drawcustomarea) {
 			/**
 			 * 只能在点读区域中进行对模型进行操作

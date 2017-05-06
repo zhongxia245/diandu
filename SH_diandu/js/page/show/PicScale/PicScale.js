@@ -40,7 +40,7 @@ window.PicScale = (function () {
 		this._oldScale = 1;
 		this.cbStart = cbStart; //开始滑动的回调
 		this.cbEnd = cbEnd; //滑动结束的回调
-		this.cbAllowScale = cbAllowScale || true;   //是否允许放大缩小
+		this.cbAllowScale = cbAllowScale || function () { };   //是否允许放大缩小
 		this.picInit();
 	}
 
