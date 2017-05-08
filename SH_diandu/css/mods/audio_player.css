@@ -1,0 +1,99 @@
+.audio-player {
+  padding: 15px;
+}
+
+
+/*覆盖range组件样式 START*/
+
+.audio-player .mt-range-thumb {
+  background-color: #00cc99;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 15px;
+  width: 15px;
+}
+
+.audio-player .mt-range-progress {
+  background-color: #00cc99;
+}
+
+.audio-player .mt-range-content {
+  margin-right: 15px;
+}
+
+.audio-player .mt-range-runway {
+  right: -15px;
+}
+
+
+/*覆盖range组件样式 END*/
+
+.audio-player__progress {
+  display: flex;
+  align-items: center;
+}
+
+.audio-player__progress span {
+  width: auto;
+}
+
+.audio-player__range {
+  flex: 1;
+  padding: 0 15px;
+}
+
+.audio-player__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  font-size: 24px;
+  color: #cacaca;
+}
+
+.audio-player__control--left {
+  width: auto;
+  text-align: left;
+}
+
+.audio-player__control--center {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.audio-player__control--right {
+  width: auto;
+  text-align: right;
+}
+
+.audio-player-control_btn {
+  width: 0.54rem;
+  height: 0.54rem;
+  cursor: pointer;
+}
+
+.audio-player-control__pre {
+  background: url(../../imgs/mods/audio_player/icon_pre_15.png) no-repeat left center;
+  background-size: 70% auto;
+}
+
+.audio-player-control--play {
+  background: url(../../imgs/mods/audio_player/icon_play.png) no-repeat center;
+  background-size: 100% 100%;
+}
+
+.audio-player-control--pause {
+  background-image: url(../../imgs/mods/audio_player/icon_pause.png);
+}
+
+.audio-player-control__next {
+  background: url(../../imgs/mods/audio_player/icon_next_15.png) no-repeat right center;
+  background-size: 70% auto;
+}
+
+.audio-player-control__setting {
+  background: url(../../imgs/mods/audio_player/icon_setting.png) no-repeat center;
+  background-size: 80% auto;
+}

@@ -1,0 +1,35 @@
+.diandu__header {
+  position: fixed;
+  height: 45px;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #FAFAFA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 10000;
+  font-size: 20px;
+}
+
+.diandu__header img {
+  width: 20px;
+  height: 20px;
+}
+
+.diandu__header--left {
+  width: auto;
+  text-align: left;
+  color: #c0c0c0;
+}
+
+.diandu__header--center {
+  flex: 1;
+  text-align: center;
+}
+
+.diandu__header--right {
+  width: auto;
+  text-align: right;
+}

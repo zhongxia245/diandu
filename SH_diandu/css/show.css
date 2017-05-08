@@ -1,3 +1,5 @@
+@import 'mods/index.css';
+
 body, div, span, p, img, ul, li, a {
     -webkit-touch-callout: none;
     /*系统默认菜单被禁用*/
@@ -398,7 +400,7 @@ ul, li {
     background-position: center;
 }
 
-.gallery-top {
+.dandu-pages {
     height: 100%;
     width: 100%;
 }

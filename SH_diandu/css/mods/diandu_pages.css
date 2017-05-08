@@ -1,0 +1,69 @@
+.diandu__pages {
+  width: 100%;
+  height: 100%;
+  background: #EEE;
+  padding: 10px;
+  padding-top: 55px;
+  display: flex;
+  flex-direction: column;
+}
+
+.diandu-pages__top {
+  border-bottom: 1px solid #CCC;
+  padding: 10px 0;
+  height: auto;
+  height: 95px;
+  display: flex;
+}
+.diandu-pages__top>img{
+  height: 70px;
+}
+
+.diandu-pages__top-info {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.diandu-pages__top-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.diandu-pages__main {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.diandu-pages__item {
+  width: 20%;
+  height: 100px;
+  margin-bottom: 10px;
+  margin-right: 5%;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-align: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.diandu-pages__item>p {
+  margin-bottom: -25px;
+}
+
+.diandu-pages__item--active {
+  border: 2px solid #00CC99;
+  box-shadow: 0 0 5px #CCC;
+  color: #00CC99;
+  font-weight: bold;
+}
+
+.diandu-pages__item:last-child {
+  margin-right: 0;
+}

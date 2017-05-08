@@ -213,8 +213,6 @@ var _data = (function () {
 				for (var j = 0; j < items.length; j++) {
 					if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
 						var obj = {
-							data: JSON.stringify(items[j]),  //保存点读点的所有数据
-
 							x: items[j].x,
 							y: items[j].y,
 							point_size: items[j]['point_size'],
@@ -229,13 +227,15 @@ var _data = (function () {
 
 							content: items[j].content,
 							hide: items[j].hide ? 1 : 0,
-							questions: typeof items[j]['questions'] !== 'string' ? JSON.stringify(items[j].questions) : items[j].questions,
+							questions: JSON.stringify(items[j].questions),
 							type: _data.getTypeByName(items[j].type),
 
 							remarks: JSON.stringify(items[j].remarks),
 
 							onoff: JSON.stringify(items[j].onoff),
 							linkurl: JSON.stringify(items[j].linkurl),
+
+							data: JSON.stringify(items[j]),  //保存点读点的所有数据
 						}
 
 						if (items[j]['oldId']) obj['id'] = items[j]['oldId']
@@ -603,9 +603,9 @@ var _edit = (function () {
 				window.DD.items[i]['data'][j]['title'] = obj['title']
 				window.DD.items[i]['data'][j]['content'] = obj['content']
 				window.DD.items[i]['data'][j]['type'] = obj['type']
-				window.DD.items[i]['data'][j]['questions'] = obj['questions']
 				window.DD.items[i]['data'][j]['hide'] = (obj['hide'] == '1' ? true : false)
 
+				window.DD.items[i]['data'][j]['questions'] = JSON.parse(obj['questions'] || '{}')
 				window.DD.items[i]['data'][j]['audio_panel'] = JSON.parse(obj['audio_panel'] || '{}')
 				window.DD.items[i]['data'][j]['custom'] = JSON.parse(obj['custom'] || '{}')
 				window.DD.items[i]['data'][j]['pic'] = JSON.parse(obj['pic'] || '{}')
@@ -1882,27 +1882,6 @@ function fn2_examCreate(e) {
 	var ids = CommonUtil.getIds(e)
 	// 试卷数据
 	var examData = _data.getDDItems(ids.id) || {}
-
-  /**
-   * 编辑时,从其他点读类型(图文,视频,音频==>考试), 设置 examData 为 {}, 否则报错
-   * 因为其他类型的点读中,examData["question"]为null, 不能
-   **/
-	if (examData['questions'] === '') {
-		examData = {}
-	} else {
-    /**
-     * 如果不是字符串就一直解析, 解析10次不行就跳过
-     * 解决多次序列化的问题,导致JSON字符串多许序列化问题
-     * */
-		var _count = 0
-		while (typeof examData['questions'] === 'string' && _count < 10) {
-			_count++
-			examData['questions'] = JSON.parse(examData['questions'])
-		}
-		if (_count > 10) {
-			alert('解析题目JSON字符串报错,请查看数据库中,数据是否有问题')
-		}
-	}
 
 	new ExamCreate('#_examCreate', examData, function (submitData) {
 		// 标识试卷已经上传
