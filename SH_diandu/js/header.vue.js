@@ -1,5 +1,12 @@
 /**
- * 初始化Vue组件
+ * @time 2017-05-08 22:58:44
+ * @author zhongxia
+ * VUE组件,每一个vue不要有太多功能，最好是单独功能抽离出来
+ * 目前包含：
+ * 1. 全程音频播放
+ * 2. 点读列表
+ * 3. 评论弹窗
+ * 4. 左侧目录列表 [TODO]
  * @param {any} data 
  */
 function initVue(data) {
@@ -13,8 +20,9 @@ function initVue(data) {
 			popup_pagelist: false,
 			popup_audioplayer: false,
 			pageActiveIndex: 0,
-			hasGlobalAudio: !!globalAudioConfig.id,
-			popup_audioplayer_flag: false, //音频播放器如果默认没有点击过，没有点击过，3s后自动关闭
+			// 评论弹窗是否展示
+			show_page_comment: false,
+			page_comment_count: 0,
 			// 点读页列表
 			pagelist: {
 				rate: 3,
@@ -37,6 +45,21 @@ function initVue(data) {
 			}
 		},
 		computed: {
+			// 是否有全程音频
+			hasGlobalAudio: function () {
+				var pageTimes = JSON.parse(DATA.content).pageConfig
+				return !!globalAudioConfig.id && !!pageTimes[this.pageActiveIndex]
+			},
+			globalAudioIconPath: function () {
+				if (this.audioplayer.play) {
+					return './imgs/mods/header/global_audio_play.gif'
+				} else {
+					return './imgs/mods/header/global_audio.png'
+				}
+			},
+			page_comment_count_str: function () {
+				return this.page_comment_count === 0 ? '' : this.page_comment_count
+			},
 			pageCount: function () {
 				return this.pagelist.data.length
 			},
@@ -81,6 +104,35 @@ function initVue(data) {
 
 		},
 		methods: {
+			// 打开评论
+			handleOpenComment: function () {
+				var that = this
+				var pageid = that.pagelist.data[that.pageActiveIndex].id
+
+				if (!that.show_page_comment) {
+					Model.getComment(pageid, function (result) {
+						that.show_page_comment = true
+						that.page_comment_count = result.length
+						new PageComment('.m-bg[data-id="' + pageid + '"] .m-dd-start-comment-div', {
+							data: result,
+							pageid: pageid,
+							videoid: GLOBAL.videoid,
+							userid: window.__userid,
+							startRecordCallback: function () {
+								//开始录音结束背景音乐
+								GLOBAL.BGAUDIO.pause();
+							},
+							stopRecordCallback: function () {
+								GLOBAL.BGAUDIO.setTimePlay();
+							}
+						})
+					})
+				} else {
+					that.show_page_comment = false
+					that.page_comment_count = 0
+					$('.m-bg[data-id="' + pageid + '"] .m-dd-start-comment-div').html('')
+				}
+			},
 			// 展开目录列表
 			handleOpenSideBar: function () {
 				this.popup_sidebar = !this.popup_sidebar
@@ -99,11 +151,6 @@ function initVue(data) {
 				this.popup_sidebar = false
 				this.popup_pagelist = false
 				this.popup_audioplayer = !this.popup_audioplayer
-				setTimeout(function () {
-					if (!that.popup_audioplayer_flag) {
-						that.popup_audioplayer = false
-					}
-				}, 3000)
 			},
 			// 选择点读页
 			handleSelectedPage: function (e) {
@@ -113,14 +160,10 @@ function initVue(data) {
 			handleAudioPlayerSetting: function () {
 				alert('正在建设中...')
 			},
-			handleAudioPlayerClick: function () {
-				this.popup_audioplayer_flag = true
-			},
 			// ====================== 全程音频 =======================
 			handleAudioPlayerPlay: function () {
 				var that = this;
-				that.audioplayer.play = !that.audioplayer.play
-				if (that.audioplayer.play) {
+				if (!that.audioplayer.play) {
 					that.playAudio()
 				} else {
 					that.pauseAudio()
@@ -156,8 +199,7 @@ function initVue(data) {
 
 
 				that.globalAudio.addEventListener('ended', function () {
-					that.audioplayer.play = false
-					that.globalAudio.pause()
+					that.pauseAudio()
 					that.audioplayer.currentTime = 0
 					clearInterval(this.globalAudioTimer)
 				})
@@ -166,11 +208,13 @@ function initVue(data) {
 				if (this.globalAudio.paused) {
 					this.globalAudio.play()
 				}
+				this.audioplayer.play = true
 			},
 			pauseAudio: function () {
 				if (!this.globalAudio.paused) {
 					this.globalAudio.pause()
 				}
+				this.audioplayer.play = false
 			},
 			/**
 			 * 设置播放器的总时长
@@ -188,39 +232,21 @@ function initVue(data) {
 				index = index || 0
 				var startTime = 0
 				var endTime = 0
-				var startIndex = index
 				var endIndex = index + 1
 
-				// 获取开始的时间
-				while (true) {
-					if (startIndex === 0) {
-						startTime = this.pageTimes[0]
-						break
-					} else {
-						var _startTime = this.pageTimes[startIndex]
-						if (_startTime) {
-							startTime = _startTime
-							break
-						} else {
-							startIndex--
-						}
-					}
+				if (this.pageTimes[index] === null) {
+					this.pauseAudio()
 				}
 
-				//获取下一页的时间
-				while (true) {
-					var _endTime
-					if (endIndex < this.pageTimes.length) {
-						_endTime = this.pageTimes[endIndex]
-						if (_endTime) {
-							endTime = _endTime
-							break
-						} else {
-							endIndex++
-						}
-					} else {
+				startTime = this.pageTimes[index]
+
+				if (endIndex < this.pageTimes.length) {
+					endTime = this.pageTimes[endIndex]
+
+					// 没有下一页的话，播放结束就不跳转到下一页
+					if (!endTime) {
 						endTime = parseInt(this.globalAudio.duration)
-						break
+						endIndex = index
 					}
 				}
 

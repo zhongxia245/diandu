@@ -1144,68 +1144,6 @@ function closeVideoOrAudio(flag) {
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/
 function bindEvent() {
-	// 启动开关
-	$('.m-dd-start').off().on(click, function (e) {
-		e.preventDefault();
-		e.stopPropagation(); //阻止冒泡，否则背景会触发点击事件
-
-		var $cTar = $(e.currentTarget);
-		//var $allRadius = $('div[data-id="all-radius"]');  //隐藏点读页
-		var $allRadius = $cTar.parent().find('div[data-id="all-radius"]');  //隐藏当前点读页
-		var hideClassName = $allRadius.attr('data-hide');
-		var type = $cTar.attr('data-type') || 2;
-		var pageid = $cTar.parent().attr('data-id');
-		var _dianduid = $cTar.parent().attr('id');
-		var div_comment = '#' + _dianduid + " .m-dd-start-comment-div";
-		$(div_comment).hide()
-
-		switch (type) {
-			//隐藏
-			case 0:
-			case "0":
-				$cTar.attr('class', 'm-dd-start-hide')
-				$allRadius.addClass(hideClassName);
-				closeVideoOrAudio(false);
-				break;
-
-			//显示点读
-			case 1:
-			case "1":
-				$cTar.attr('class', 'm-dd-start')
-				$allRadius.removeClass();
-				break;
-
-			//评论
-			case 2:
-			case "2":
-				$(div_comment).show()
-				$cTar.attr('class', 'm-dd-start-comment')
-
-				Model.getComment(pageid, function (result) {
-					new ExamComment('#' + _dianduid + " .m-dd-start-comment-div", {
-						data: result,
-						pageid: pageid,
-						videoid: GLOBAL.videoid,
-						userid: window.__userid,
-						startRecordCallback: function () {
-							//开始录音结束背景音乐
-							GLOBAL.BGAUDIO.pause();
-						},
-						stopRecordCallback: function () {
-							GLOBAL.BGAUDIO.setTimePlay();
-						}
-					})
-				})
-
-				//关闭自动播放,超出最大范围值, 就显示为关闭
-				window.silideBar.setValue(110);
-				break;
-		}
-		$cTar.attr('data-type', (parseInt(type) + 1) % 3)
-
-		return false;
-	});
-
   /**
    * 背景音乐开关按钮
    */

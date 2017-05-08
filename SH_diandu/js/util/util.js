@@ -414,7 +414,9 @@ window.Util = (function () {
 	 * @param {any} timeStr 
 	 */
 	function time2num(timeStr) {
-		timeStr = timeStr || '00:00'
+		if (!timeStr) {
+			return null
+		}
 		var time = 0;
 		var _times = timeStr.split(':');
 

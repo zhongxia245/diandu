@@ -19,17 +19,39 @@
 }
 
 .diandu__header--left {
-  width: auto;
+  flex: 1;
   text-align: left;
   color: #c0c0c0;
 }
 
 .diandu__header--center {
-  flex: 1;
+  flex: 3;
   text-align: center;
 }
 
 .diandu__header--right {
-  width: auto;
+  flex: 1;
   text-align: right;
+}
+
+.diandu-header-right__comment {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+  display: inline-block;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url('../../imgs/mods/header/icon_comment.png')
+}
+
+.diandu-header-right__comment:after {
+  content: attr(title);
+  position: absolute;
+  bottom: 30%;
+  left: 60%;
+  color: #00CC99;
+  font-size: 12px;
+  background: #FAFAFA;
+  padding: 3px;
 }
