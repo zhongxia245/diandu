@@ -18,7 +18,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <!--上线后去掉注释-->
-  <base href="/edu/course/diandu/"></base>
+  <!--<base href="/edu/course/diandu/"></base>-->
   <title></title>
   <link rel="stylesheet" href="./js/lib/vue/MINT/style.css">
   <link rel="stylesheet" href="./css/common.css" />
