@@ -73,7 +73,7 @@ window.diandu = (function (dd) {
         $dom.css('opacity', opacity);
         break;
       case 2:
-        $dom.css('border', '3px solid red');
+        $dom.css('border', '3px solid #00CC99');
     }
     $dom.addClass('custom-point-blink')
 

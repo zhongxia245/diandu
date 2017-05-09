@@ -1,34 +1,6 @@
-<!--获取wiki帐号-->
-<?php
-session_start();
-include_once('../course_common.php');
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
-	require_once "php/jssdk.php";
-	$jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
-	$signPackage = $jssdk->GetSignPackage();
-}
-//brian 2017-05-08
-$videoid=intval($_GET['videoid']);
-$team_video=$_COURSE->GetInfo("team_video",0,"videoid=$videoid");
-$videoinfo=$_COURSE->GetInfo("video",$videoid);
-$team_role=get_team_role($team_video['teamid']);
-if($team_video['isprivate']==1 && $team_role<1)
-{
-  if(isMobile())
-      header("Location:/edu/course/mobile/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/m/point-read/$videoid.html"));
-  else
-      header("Location:/edu/course/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/point-read/{$team_video['id']}.html"));
-  exit();
-}
-$noneedpay=true;
-if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $team_role>2))
-{
-    $noneedpay=$_COURSE->Study($_SESSION['G']['userid'],$videoid,0);
-}
-//brian 2017-05-08
-?>
 <!DOCTYPE html>
 <html lang="en" style="font-size: 100px">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
@@ -37,7 +9,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <!--上线后去掉注释-->
-  <base href="/edu/course/diandu/"></base>
+  <!--<base href="/edu/course/diandu/"></base>-->
   <title></title>
   <link rel="stylesheet" href="./js/lib/vue/MINT/style.css">
   <link rel="stylesheet" href="./css/common.css" />
@@ -72,6 +44,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
     })(document, window)
   </script>
 </head>
+
 <body>
   <div id="container" class="m-bgs page-swipe">
     <!--header START-->
@@ -124,7 +97,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
       </div>
     </mt-popup>
     <!--音乐播放器-->
-    <mt-popup  v-cloak v-model="popup_audioplayer"  position="bottom" style="width:101%; height:25%;">
+    <mt-popup  v-cloak v-model="popup_audioplayer" position="bottom" style="width:101%; height:25%;">
       <div class="audio-player">
         <div class="audio-player__progress">
           <span>{{currentTimeStr}}</span>
@@ -190,16 +163,6 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   </section>
   <!--考试 END-->
   <!--lib-->
-<!--brian 2017-05-08-->
-<?php if(!$noneedpay):?>
-    <script type="text/javascript" src="/edu/course/js/jquery.min.js"></script>
-    <script src="/edu/course/mobile/js/common.js"></script>
-    <style>#pay_dialog{z-index:9999;}</style>
-<?php
-    include "../mobile/public/pay_dialog.php";
-endif;
-?>
-<!--brian 2017-05-08-->
   <!--微信录音-->
   <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
   <script>
@@ -218,11 +181,7 @@ endif;
       // 在这里调用 API
       console.log("微信录音初始化成功")
     });
-    //获取用户id
-    window.__userid ='<?php echo intval($_SESSION['G']['userid']);?>';
   </script>
-<!--brian 2017-05-08-->
-<?php if($noneedpay):?>
   <script src="./js/lib/vue/vue.min.js"></script>
   <script src="./js/lib/vue/MINT/index.js"></script>
   <script src="./js/lib/zepto.js"></script>
@@ -272,21 +231,6 @@ endif;
       }
     })
   </script>
-<?php else:?>
-  <script>
-      var teamid="<?php echo $team_video['teamid'];?>";
-      var userfen="<?php echo $uinfo['userfen'];?>";
-      var pay_videoid="<?php echo  $videoid;?>";
-      var cur_url="<?php echo urlencode('/m/point-read/$videoid.html');?>";
-      var money="<?php echo $videoinfo['cost']?>";
-      var islogin=window.__userid;
-      <?php if($videoinfo['charge']==2 && $team_role==2):?>
-      money="<?php echo $videoinfo['cost']/2;?>";
-      <?php endif;?>
-      pay_dialog.find("#content_fee").text(money);
-      center_dialog(pay_dialog);
-  </script>
-<?php endif;?>
-<!--brian 2017-05-08-->
 </body>
+
 </html>
