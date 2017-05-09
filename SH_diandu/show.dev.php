@@ -85,8 +85,7 @@
           <img :src="pagelist.pic" alt="点读页图片">
           <div class="diandu-pages__top-info">
             <p class="diandu-pages__top-title">{{pagelist.title}}</p>
-            <!--数据不知道从哪里来，后期可以考虑加上-->
-            <p v-if="false">{{pagelist.rate}}</p>
+            <div class="diandu-pages__top-intro">{{pagelist.intro}}</div>
           </div>
         </div>
         <ul class="diandu-pages__main">

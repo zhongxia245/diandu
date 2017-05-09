@@ -49,7 +49,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   <link rel="stylesheet" href="./js/components/slide/slide.css">
   <link rel="stylesheet" href="./js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="./js/components/questionslist/QuestionsList.css">
-  <link rel="stylesheet" href="./js/components/examcomment/ExamComment.css?v=26">
+  <link rel="stylesheet" href="./js/components/pagecomment/pagecomment.css">
   <script>
     document.oncontextmenu = function () { return false; };
     // 动态计算rem的大小，参照基准 iphone6  375px
@@ -112,8 +112,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
           <img :src="pagelist.pic" alt="点读页图片">
           <div class="diandu-pages__top-info">
             <p class="diandu-pages__top-title">{{pagelist.title}}</p>
-            <!--数据不知道从哪里来，后期可以考虑加上-->
-            <p v-if="false">{{pagelist.rate}}</p>
+            <div class="diandu-pages__top-intro">{{pagelist.intro}}</div>
           </div>
         </div>
         <ul class="diandu-pages__main">
@@ -125,7 +124,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
       </div>
     </mt-popup>
     <!--音乐播放器-->
-    <mt-popup :modal="false" v-cloak v-model="popup_audioplayer"  position="bottom" style="width:101%; height:25%;">
+    <mt-popup  v-cloak v-model="popup_audioplayer"  position="bottom" style="width:101%; height:25%;">
       <div class="audio-player">
         <div class="audio-player__progress">
           <span>{{currentTimeStr}}</span>
@@ -250,8 +249,8 @@ endif;
   <script src="./js/components/slide/slide.js"></script>
   <script src="./js/components/examshowlist/ExamShowList.js"></script>
   <script src="./js/components/questionslist/QuestionsList.js"></script>
-  <script src="./js/components/examcomment/ExamComment.js?v=1"></script>
-  <script src="./js/page/show/globalAudio.js?v=20161011"></script>
+  <script src="./js/components/pagecomment/PageComment.js"></script>
+  <script src="./js/page/show/globalAudio.js"></script>
   <script src="./js/page/show/pointOpacity.js"></script>
   <script src="./js/page/common/CreatePoint/CreatePoint.js"></script>
   <script src="./js/page/show/playVideo/playVideo.js"></script>
@@ -263,7 +262,7 @@ endif;
   <script src="./js/page/show/modal_3dviewer/Modal_3DViewer.js"></script>
   <!--页面入口-->
   <script src="./js/page/show/fullscreen.js"></script>
-  <script src="./js/show.vue.js"></script>
+  <script src="./js/header.vue.js"></script>
   <script src="./js/show.js"></script>
   <script>
     $(function () {

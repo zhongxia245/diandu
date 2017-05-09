@@ -25,7 +25,7 @@ function initVue(data) {
 			page_comment_count: 0,
 			// 点读页列表
 			pagelist: {
-				rate: 3,
+				intro: data.saytext,
 				pic: data.pic || '',
 				title: data.title || '',
 				data: data.pages || []

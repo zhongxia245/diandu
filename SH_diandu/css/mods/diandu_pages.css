@@ -15,13 +15,16 @@
   height: 95px;
   display: flex;
 }
-.diandu-pages__top>img{
+
+.diandu-pages__top>img {
   height: 70px;
 }
 
 .diandu-pages__top-info {
+  flex: 1;
   margin-left: 10px;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
 
 .diandu-pages__top-title {
@@ -29,32 +32,38 @@
   font-weight: bold;
 }
 
+.diandu-pages__top-intro {
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+
 .diandu-pages__main {
-  display: flex;
-  flex-wrap: wrap;
   padding: 20px 0;
   flex: 1;
   overflow: auto;
 }
 
 .diandu-pages__item {
+  position: relative;
   width: 20%;
   height: 100px;
-  margin-bottom: 10px;
-  margin-right: 5%;
+  margin-bottom: 20px;
+  margin-right: 3%;
+  margin-left: 2%;
+  display: inline-block;
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: center;
   border: 1px solid #ccc;
   border-radius: 3px;
-  text-align: center;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
 }
 
 .diandu-pages__item>p {
-  margin-bottom: -25px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate3d(-50%, 0%, 0);
 }
 
 .diandu-pages__item--active {
