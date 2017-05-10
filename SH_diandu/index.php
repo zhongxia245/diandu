@@ -324,7 +324,7 @@ if ($id > 0) {
                     </div>
                     <img data-type="download" class="download" src="imgs/download.png" alt="download">
                 </div>
-                <div class='point-types__setting'>
+                <div class='point-types__setting' data-id="{{id}}">
                     <div class='point-types-setting__area' data-type="setting-area">区域</div>
                     <div class='point-types-setting__title'>激发模式</div>
                     <div class='point-types-setting__point' data-type="point-setting">点</div>

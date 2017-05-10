@@ -58,6 +58,7 @@
           v-if="hasGlobalAudio" 
           @click="handleOpenAudio" 
           :src="globalAudioIconPath" 
+          class="diandu-header__global-audio"
           alt="全程音频">
       </div>
       <div class="diandu__header--right">

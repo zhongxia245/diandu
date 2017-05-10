@@ -462,10 +462,11 @@ var _edit = (function () {
 
 		// 默认为普通点读点,  1 普通点读点  2: 自定义标题   3. 自定义图片  6. 区域点读点 [4,5是展示页面的]
 		var type = 1
+
 		var pic = JSON.parse(point.pic || '{}')
 		var title = JSON.parse(point.custom || '{}')
-
 		var drawAreaData = JSON.parse(point.data || '{}').drawcustomarea
+
 		if (title && title.title) type = 2
 		if (pic && pic.src) type = 3
 		if (drawAreaData && drawAreaData.bgColor) type = 6
@@ -483,10 +484,9 @@ var _edit = (function () {
 
 		// 设置了自定义图片,自定义标题,或者视频播放区域, 则设置 自定义点读点 为 激活状态
 		if (type !== 1 || (point.area && JSON.parse(point.area).w)) {
-			$('.upload-right-btn')
-				.find('[data-id="' + dataid + '"]')
-				.find('.img-point-setting')
-				.addClass('img-point-setting-on')
+			$('.point-types__setting[data-id="' + dataid + '"]')
+				.find('.point-types-setting__point')
+				.addClass('point-types-setting__point--active')
 		}
 
 		// 设置3D模型点读点的选中状态
@@ -1410,6 +1410,11 @@ function fn_settingArea(e, data) {
 	var pointIndex = $cTar.data('index')
 	var pageIndex = $cTar.parents('.diandupageitem').data('index')
 
+	// TODO:目前只开发了3D模型的区域，其他还未开发
+	if (pointType !== 'viewer3d') {
+		alert('该点读点类型，区域触发功能尚未开发，请稍后')
+		return
+	}
 	//设置区域设置按钮 选中状态
 	var $settingArea = $cTar.find('.point-types-setting__area')
 	if ($settingArea.hasClass('point-types-setting__area--active')) {
@@ -1525,7 +1530,6 @@ function addCustomPointSetting(e) {
 	_data.custom = _data.custom || {}
 	_data.custom.type = pointType
 
-
 	// 实例化 点读点大小设置页面
 	new CustomPointSetting('#customPointSetting', {
 		dataId: dataId,
@@ -1567,7 +1571,7 @@ function addCustomPointSetting(e) {
 				var type = 1
 				if (data.pic.src) type = 3   //自定义图片
 				if (data.title.title) type = 2  //自定义标题
-				if (data.drawcustomarea.type === 'drawcustomarea') type = 6  //自定义区域
+				if (data.drawcustomarea && data.drawcustomarea.type === 'drawcustomarea') type = 6  //自定义区域
 
 				var config = {
 					left: left,

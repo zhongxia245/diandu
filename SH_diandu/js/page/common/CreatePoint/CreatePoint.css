@@ -9,6 +9,7 @@
   border-radius: 50%;
   background: #009EEF;
   margin: 0 auto;
+  cursor: move;
 }
 
 .create-point-title-audio {

@@ -84,7 +84,8 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
           v-cloak 
           v-if="hasGlobalAudio" 
           @click="handleOpenAudio" 
-          :src="globalAudioIconPath" 
+          :src="globalAudioIconPath"
+          class="diandu-header__global-audio" 
           alt="全程音频">
       </div>
       <div class="diandu__header--right">
