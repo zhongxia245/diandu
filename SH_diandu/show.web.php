@@ -3,9 +3,9 @@
 session_start();
 include_once('../course_common.php');
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
-    require_once "php/jssdk.php";
-    $jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
-    $signPackage = $jssdk->GetSignPackage();
+	require_once "php/jssdk.php";
+	$jssdk = new JSSDK("wx226ae435e99fe5a6", "354fe7648b0c7188d7e0a65e7f600a11");
+	$signPackage = $jssdk->GetSignPackage();
 }
 //brian 2017-05-08
 $videoid=intval($_GET['videoid']);
@@ -14,11 +14,11 @@ $videoinfo=$_COURSE->GetInfo("video",$videoid);
 $team_role=get_team_role($team_video['teamid']);
 if($team_video['isprivate']==1 && $team_role<1)
 {
-    if(isMobile())
-        header("Location:/edu/course/mobile/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/m/point-read/$videoid.html"));
-    else
-        header("Location:/edu/course/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/point-read/{$team_video['id']}.html"));
-    exit();
+  if(isMobile())
+      header("Location:/edu/course/mobile/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/m/point-read/$videoid.html"));
+  else
+      header("Location:/edu/course/notfound.php?act=attend_group&teamid={$team_video['teamid']}&error_info=".urlencode("本内容仅限本组成员访问，您确定加入本小组吗?")."&jump_url=".urlencode("/point-read/{$team_video['id']}.html"));
+  exit();
 }
 $noneedpay=true;
 if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $team_role>2))
@@ -198,9 +198,9 @@ endif;
   //获取用户id
   window.__userid =<?php echo intval($_SESSION['G']['userid']);?>;
 </script>
-<script src="./js/util/log.js"></script>
 <!--brian 2017-05-08-->
 <?php if($noneedpay):?>
+<script src="./js/util/log.js"></script>
 <script src="./js/lib/zepto.js"></script>
 <script src="./js/lib/frozen/js/frozen.js"></script>
 <script type="text/javascript">
@@ -232,9 +232,7 @@ endif;
 <script src="./js/page/show/audioPanel/audioPanel.js"></script>
 <!--<script src="./js/lib/vconsole.min.js"></script>-->
 <!--页面入口-->
-
 <script src="./js/show.js?v=3"></script>
-
 <script>
   $(function () {
     var _isDebug = Util.getQueryStringByName('debug');
@@ -271,20 +269,19 @@ endif;
   })
 </script>
 <?php else:?>
-
-    <script>
-        var teamid="<?php echo $team_video['teamid'];?>";
-        var userfen="<?php echo $uinfo['userfen'];?>";
-        var pay_videoid="<?php echo  $videoid;?>";
-        var cur_url="<?php echo urlencode("/m/point-read/$videoid.html");?>";
-        var money="<?php echo $videoinfo['cost']?>";
-        var islogin=window.__userid;
-        <?php if($videoinfo['charge']==2 && $team_role==2):?>
-        money="<?php echo $videoinfo['cost']/2;?>";
-        <?php endif;?>
-        pay_dialog.find("#content_fee").text(money);
-        center_dialog(pay_dialog);
-    </script>
+  <script>
+      var teamid="<?php echo $team_video['teamid'];?>";
+      var userfen="<?php echo $uinfo['userfen'];?>";
+      var pay_videoid="<?php echo  $videoid;?>";
+      var cur_url="<?php echo urlencode('/m/point-read/$videoid.html');?>";
+      var money="<?php echo $videoinfo['cost']?>";
+      var islogin=window.__userid;
+      <?php if($videoinfo['charge']==2 && $team_role==2):?>
+      money="<?php echo $videoinfo['cost']/2;?>";
+      <?php endif;?>
+      pay_dialog.find("#content_fee").text(money);
+      center_dialog(pay_dialog);
+  </script>
 <?php endif;?>
 <!--brian 2017-05-08-->
 </body>

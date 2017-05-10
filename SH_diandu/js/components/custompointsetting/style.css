@@ -23,14 +23,12 @@
     border-radius: 10px 10px 0 0;
 }
 
-.cps-content-point,
-.cps-content-playarea {
+.cps-content-point, .cps-content-playarea {
     height: 450px;
     background: #EFEFEF;
 }
 
-.cps-content-left,
-.cps-content-right {
+.cps-content-left, .cps-content-right {
     height: 100%;
     width: 295px;
     float: left;
@@ -99,8 +97,7 @@
 
 /*uploadify只能用id选择器,so...*/
 
-#cps-upload-img,
-.cps-show-img {
+#cps-upload-img, .cps-show-img {
     position: relative;
     opacity: 1;
     background: #CCC;
@@ -220,9 +217,8 @@
     width: 100%;
 }
 
-.cps-tab-point,
-.cps-tab-playarea,
-.cps-tab-audio {
+.cps-tab-point, .cps-tab-playarea, .cps-tab-audio {
+    display: none;
     float: left;
     width: 80px;
     height: 40px;
@@ -249,8 +245,7 @@
 
 /*自定义视频播放区域*/
 
-.cps-tab-playarea,
-.cps-tab-audio {
+.cps-tab-playarea, .cps-tab-audio {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -269,8 +264,7 @@
     color: #AAA;
 }
 
-.cps-video-width,
-.cps-video-height {
+.cps-video-width, .cps-video-height {
     height: 100%;
     width: 115px;
     border: 1px solid #CBCBCB;
@@ -388,8 +382,7 @@
     flex: 1;
 }
 
-.cps-audio-on,
-.cps-audio-off {
+.cps-audio-on, .cps-audio-off {
     width: 70px;
     height: 70px;
     background: #00cc99;
