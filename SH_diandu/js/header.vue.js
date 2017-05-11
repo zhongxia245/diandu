@@ -16,7 +16,9 @@ function initVue(data) {
 		el: '#container',
 		data: {
 			id: data.id,
+			bg_audio_src: data.background,
 			popup_sidebar: false,
+			popup_setting: false,
 			popup_pagelist: false,
 			popup_audioplayer: false,
 			pageActiveIndex: 0,
@@ -37,14 +39,26 @@ function initVue(data) {
 				currentTime: 0,
 				totalTime: 0,
 				play: false
-			}
+			},
+			// 设置页面
+			setting_opacity: 100,
+			setting_gap: 5,
+			setting_bgaudio_enable: !!globalAudioConfig.src,
+			setting_bgaudio_play: false
 		},
 		created: function () {
 			if (!this.globalAudio) {
 				this.initGlobalAudio()
 			}
+			if (!this.bgAudio && !!this.bg_audio_src) {
+				this.initBgAudio()
+			}
 		},
 		computed: {
+			// 是否有背景音乐
+			hasBgAudio: function () {
+				return !!this.bg_audio_src
+			},
 			// 是否有全程音频
 			hasGlobalAudio: function () {
 				var pageTimes = JSON.parse(DATA.content).pageConfig
@@ -93,15 +107,41 @@ function initVue(data) {
 				this.setAudioPlayerTotalTime()
 
 				if (this.globalAudio) {
+					if (this.pageTimes[this.pageActiveIndex] === null) {
+						this.pauseAudio()
+					}
 					var currentPageTime = this.getPageTime(this.pageActiveIndex)
 					this.globalAudio.currentTime = currentPageTime.startTime
 				}
 
-				if (window.galleryTop) {
+				if (window.galleryTop && !window.galleryTop.autoplaying) {
 					window.galleryTop.slideTo(this.pageActiveIndex);
 				}
-			}
+			},
 
+			// 设置相关
+			setting_opacity: function () {
+				$('.wrap div[data-id]').css({
+					opacity: this.setting_opacity / 100
+				})
+			},
+			setting_gap: function () {
+				this.swiperAutoPlay(true)
+			},
+			setting_bgaudio_enable: function () {
+				if (this.setting_bgaudio_enable) {
+					this.setting_bgaudio_play = true
+				} else {
+					this.setting_bgaudio_play = false
+				}
+			},
+			setting_bgaudio_play: function () {
+				if (this.setting_bgaudio_enable && this.setting_bgaudio_play) {
+					this.bgAudio.play()
+				} else {
+					this.bgAudio.pause()
+				}
+			},
 		},
 		methods: {
 			// 打开评论
@@ -120,10 +160,10 @@ function initVue(data) {
 							userid: window.__userid,
 							startRecordCallback: function () {
 								//开始录音结束背景音乐
-								GLOBAL.BGAUDIO.pause();
+								that.pauseBgAudio()
 							},
 							stopRecordCallback: function () {
-								GLOBAL.BGAUDIO.setTimePlay();
+								that.restartPlayBgAudio()
 							}
 						})
 					})
@@ -138,18 +178,26 @@ function initVue(data) {
 				this.popup_sidebar = !this.popup_sidebar
 				this.popup_pagelist = false
 				this.popup_audioplayer = false
+				this.popup_setting = false
+			},
+			handleOpenSetting: function () {
+				this.popup_pagelist = false
+				this.popup_sidebar = false
+				this.popup_audioplayer = false
+				this.popup_setting = !this.popup_setting
 			},
 			// 展示点读页列表
 			handleOpenPageList: function () {
 				this.popup_sidebar = false
 				this.popup_audioplayer = false
+				this.popup_setting = false
 				this.popup_pagelist = !this.popup_pagelist
 			},
 			// 显示音频播放列表
 			handleOpenAudio: function () {
-				var that = this
 				this.popup_sidebar = false
 				this.popup_pagelist = false
+				this.popup_setting = false
 				this.popup_audioplayer = !this.popup_audioplayer
 			},
 			// 选择点读页
@@ -175,6 +223,7 @@ function initVue(data) {
 			handleAudioPlayerNext: function () {
 				this.globalAudio.currentTime += 15
 			},
+			/*============= 全程音频相关 START==================*/
 			initGlobalAudio: function () {
 				var that = this
 				that.globalAudio = new Audio(that.audioplayer.src)
@@ -209,12 +258,14 @@ function initVue(data) {
 					this.globalAudio.play()
 				}
 				this.audioplayer.play = true
+				this.setting_bgaudio_play = false
 			},
 			pauseAudio: function () {
 				if (!this.globalAudio.paused) {
 					this.globalAudio.pause()
 				}
 				this.audioplayer.play = false
+				this.restartPlayBgAudio()
 			},
 			/**
 			 * 设置播放器的总时长
@@ -234,10 +285,6 @@ function initVue(data) {
 				var endTime = 0
 				var endIndex = index + 1
 
-				if (this.pageTimes[index] === null) {
-					this.pauseAudio()
-				}
-
 				startTime = this.pageTimes[index]
 
 				if (endIndex < this.pageTimes.length) {
@@ -249,14 +296,66 @@ function initVue(data) {
 						endIndex = index
 					}
 				}
-
 				return {
 					startTime: startTime,
 					endTime: endTime,
 					nextPageIndex: endIndex,
 					duration: endTime - startTime
 				}
+			},
+			/*============= 全程音频相关 END==================*/
+
+			/*============= 背景音乐 START==================*/
+			initBgAudio: function () {
+				var that = this
+				that.bgAudio = new Audio(that.bg_audio_src)
+
+				if (Util.IsPC()) {
+					that.playBgAudio()
+				} else {
+					// 移动端不能自动播放，只能点击屏幕开始播放
+					$(document).one("touchstart", that.playBgAudio, false)
+				}
+			},
+			playBgAudio: function () {
+				this.setting_bgaudio_play = true
+				this.swiperAutoPlay()
+			},
+			pauseBgAudio: function () {
+				this.setting_bgaudio_play = false
+				this.swiperStopAutoPlay()
+			},
+			swiperAutoPlay: function (flag) {
+				flag = flag || this.setting_bgaudio_enable
+				if (window.galleryTop) {
+					if (this.setting_gap > 0 && flag) {
+						window.galleryTop.params.autoplay = this.setting_gap * 1000
+						window.galleryTop.startAutoplay()
+						console.log(window.galleryTop.autoplaying)
+					}
+				}
+			},
+			swiperStopAutoPlay: function () {
+				if (window.galleryTop) {
+					window.galleryTop.stopAutoplay()
+				}
+			},
+			restartPlayBgAudio: function () {
+				var that = this
+				/**
+				 * 如果在其他音频或者视频播放之前，背景音乐就是关闭的，
+				 * 那么其他音频或者视频播放结束，背景音频不继续播放，
+				 * 需要手动打开
+				 * */
+				clearTimeout(that.bgAudioTimer)
+				if (that.setting_bgaudio_enable) {
+					that.bgAudioTimer = setTimeout(function () {
+						that.bgAudio.play()
+						that.setting_bgaudio_play = true
+					}, 5000)
+				}
 			}
+			/*============= 背景音乐 END==================*/
 		}
 	})
 }
