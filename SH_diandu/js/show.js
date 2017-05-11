@@ -379,10 +379,10 @@ function afterRenderOp(data) {
 		if (!globalAudioConfig.id) {
 			//PC端直接设置自动播放
 			if (Util.IsPC()) {
-				GLOBAL.BGAUDIO.play();
+				// GLOBAL.BGAUDIO.play();
 			} else {
 				//移动端
-				document.addEventListener("touchstart", playBgAduio, false);
+				// document.addEventListener("touchstart", playBgAduio, false);
 			}
 		} else {
 			GLOBAL.BGAUDIO.pause();
@@ -1061,7 +1061,8 @@ function playOrPaused(e, pointData) {
 		diandu.customPlay($cTar, false);
 
 		//关闭音频的时候,间隔自动播放的时间在启动
-		GLOBAL.BGAUDIO.setTimePlay();
+		// GLOBAL.BGAUDIO.setTimePlay();
+		VueApp.restartPlayBgAudio()
 	}
 	//未播放
 	else {
@@ -1077,7 +1078,8 @@ function playOrPaused(e, pointData) {
 		}
 
 		//关闭背景音乐
-		GLOBAL.BGAUDIO.pause();
+		// GLOBAL.BGAUDIO.pause();
+		VueApp.pauseBgAudio()
 	}
 }
 
@@ -1138,7 +1140,8 @@ function closeVideoOrAudio(flag) {
 	}
 
 	if (flag) {
-		GLOBAL.BGAUDIO.pause();
+		// GLOBAL.BGAUDIO.pause();
+		VueApp.pauseBgAudio()
 	}
 }
 /*=======================音频视频播放相关 END====================*/
@@ -1199,7 +1202,8 @@ function bindEvent() {
 		PlayVideo.show($cTar.parents('.wrap'), url, area, wrapTop, function () {
 			closeVideoOrAudio();
 			//关闭音频的时候,间隔自动播放的时间在启动
-			GLOBAL.BGAUDIO.setTimePlay()
+			// GLOBAL.BGAUDIO.setTimePlay()
+			VueApp.restartPlayBgAudio()
 		});
 		return false;
 	});
@@ -1356,6 +1360,9 @@ function bindEvent() {
 		return false;
 	});
 
+	/**
+	 * TODO:这个和移动端自动播放有冲突，因为设置自动播放后，这边点击又给停止了
+	*/
 	//点击背景图,停止自动播放
 	$('#pages').off().on(click, function (ev) {
 		window.galleryTop.stopAutoplay();

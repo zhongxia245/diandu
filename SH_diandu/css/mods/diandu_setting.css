@@ -1,0 +1,65 @@
+.diandu__setting {
+  width: 100%;
+  height: 100%;
+  background: #EEE;
+  padding: 10px;
+  color: #666;
+}
+
+
+/*覆盖range组件样式 START*/
+
+.diandu__setting .mt-range-thumb {
+  background-color: #00cc99;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 15px;
+  width: 15px;
+}
+
+.diandu__setting .mt-range-progress {
+  background-color: #00cc99;
+}
+
+.diandu__setting .mt-range-content {
+  margin-right: 15px;
+}
+
+.diandu__setting .mt-range-runway {
+  right: -15px;
+}
+
+
+/*覆盖range组件样式 END*/
+
+.diandu-setting__range-tip {
+  float: right;
+  margin-right: 15px;
+  color: #00cc99;
+  font-size: 14px;
+}
+
+.diandu-setting__item {
+  margin-bottom: 35px;
+}
+
+.diandu-setting__flex {
+  display: flex;
+  align-items: center;
+}
+
+.diandu-setting__flex>span {
+  margin-right: 10px;
+}
+
+.range__min, .range__max {
+  position: absolute;
+  top: 25px;
+  line-height: 20px;
+  height: 20px;
+  color: #999;
+}
+
+.range__max {
+  right: 15px;
+}

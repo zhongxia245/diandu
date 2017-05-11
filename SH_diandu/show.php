@@ -95,6 +95,11 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
           @click="handleOpenComment">
         </div>
         <img 
+          src="./imgs/mods/header/icon_setting.png" 
+          alt="点读页列表" 
+          class="diandu-header-right__setting"
+          @click="handleOpenSetting">
+        <img 
           src="./imgs/mods/header/icon_pages.png" 
           alt="点读页列表" 
           @click="handleOpenPageList">
@@ -106,6 +111,7 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
     <mt-popup v-cloak v-model="popup_sidebar" position="left" style="width:70%; height:100%;">
       <p style="margin-top:45px;">目录列表[待实现]</p>
     </mt-popup>
+
     <!--点读页列表-->
     <mt-popup v-cloak v-model="popup_pagelist" position="bottom" style="width:101%; height:100%;">
       <div class="diandu__pages">
@@ -124,6 +130,37 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
         </ul>
       </div>
     </mt-popup>
+
+    <!--设置页面-->
+    <mt-popup v-cloak v-model="popup_setting" position="bottom" style="width:101%;">
+      <div class="diandu__setting">
+        <div class="diandu-setting__item">
+          <p>
+            点读点透明度
+            <span class="diandu-setting__range-tip">{{setting_opacity}}%</span>
+          </p>
+          <mt-range :min="0" :max="100" class="audio-player__range" v-model="setting_opacity">
+            <div class="range__min" slot="start">0</div>
+            <div class="range__max" slot="end">100</div>
+          </mt-range>
+        </div>
+        <div class="diandu-setting__item">
+          <p>
+            连播间隔
+            <span class="diandu-setting__range-tip">{{setting_gap}}秒</span>
+          </p>
+          <mt-range :min="0" :max="30" class="audio-player__range" v-model="setting_gap">
+            <div class="range__min" slot="start">0</div>
+            <div class="range__max" slot="end">30</div>
+          </mt-range>
+        </div>
+        <div v-if="hasBgAudio" class="diandu-setting__item diandu-setting__flex">
+          <span>背景音乐</span>
+          <mt-switch v-model="setting_bgaudio_enable"></mt-switch>
+        </div>
+      </div>
+    </mt-popup>
+
     <!--音乐播放器-->
     <mt-popup  v-cloak v-model="popup_audioplayer"  position="bottom" style="width:101%; height:25%;">
       <div class="audio-player">

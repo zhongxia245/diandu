@@ -19,7 +19,7 @@
 }
 
 .diandu__header--left {
-  flex: 1;
+  flex: 2;
   text-align: left;
   color: #c0c0c0;
 }
@@ -30,7 +30,7 @@
 }
 
 .diandu__header--right {
-  flex: 1;
+  flex: 2;
   text-align: right;
 }
 
@@ -54,4 +54,8 @@
   font-size: 12px;
   background: #FAFAFA;
   padding: 3px;
+}
+
+.diandu-header-right__setting {
+  margin-right: 13px;
 }
