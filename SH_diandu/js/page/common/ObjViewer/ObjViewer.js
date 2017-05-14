@@ -220,8 +220,8 @@ window.ObjViewer = (function () {
 			})
 
 			hammerDom.on('pinchstart pinchmove', function (ev) {
-				banana.position.y += -ev.deltaY / 20
-				banana.position.x += ev.deltaX / 20
+				banana.position.y += -ev.deltaY / 40
+				banana.position.x += ev.deltaX / 40
 				render()
 			})
 
