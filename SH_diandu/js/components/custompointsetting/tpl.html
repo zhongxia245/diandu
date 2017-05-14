@@ -1,12 +1,13 @@
 <div class="cps-container">
   <div class="cps-tabs">
     <div class="cps-tab-point cps-tab-active">点</div>
-    <div class="cps-tab-playarea">播放区</div>
+    <div class="cps-tab-video">播放区</div>
+    <div class="cps-tab-viewer3d">播放区</div>
     <div class="cps-tab-audio">高级</div>
   </div>
   <div class="cps-header">点读点设置</div>
 
-  
+
   <!--自定义点读点设置区域 START-->
   <div class="cps-content-point">
     <div class="cps-content-left">
@@ -40,7 +41,7 @@
 
 
   <!--自定义视频播放区域设置 START-->
-  <div class="cps-content-playarea" style="display:none;">
+  <div class="cps-content-video" style="display:none;">
     <p>请设置视频播放区域的长度和高度</p>
     <div class="cps-content-video-size">
       <input name="width" type="number" class="cps-video-width" />
@@ -74,6 +75,11 @@
   <audio preload="auto" class="cps-audio"></audio>
   <!-- 设置音频歌词等功能 END-->
 
+  <!--3d模型点模式 START-->
+  <div id="cps-content-viewer3d" class="cps-content-viewer3d" style="display:none;">
 
-  <div class="cps-submit">提交</div>
+  </div>
+</div>
+<!--3d模型点模式 END-->
+<div class="cps-submit">提交</div>
 </div>

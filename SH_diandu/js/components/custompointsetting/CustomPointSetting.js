@@ -36,7 +36,7 @@ window.CustomPointSetting = (function () {
 	function CustomPointSetting(selector, config) {
 		var that = this
 		config = config || {}
-
+		this._config = config
 		this.selector = selector
 		this.data = {}
 		this.data.area = this.data.area || {}
@@ -90,7 +90,8 @@ window.CustomPointSetting = (function () {
 			audio: 'cps-point-audio',
 			video: 'cps-point-video',
 			imgtext: 'cps-point-imgtext',
-			exam: 'cps-point-exam'
+			exam: 'cps-point-exam',
+			viewer3d: 'cps-point-viewer3d'
 		}
 
     /**
@@ -129,6 +130,7 @@ window.CustomPointSetting = (function () {
 				break;
 			case 'viewer3d':
 				this.$tabPoint.show()
+				this.$tabViewer3d.show()
 				break;
 		}
 	}
@@ -179,10 +181,12 @@ window.CustomPointSetting = (function () {
 
 		this.$tabPoint = this.$container.find('.cps-tab-point');
 		this.$divPoint = this.$container.find('.cps-content-point');
-		this.$tabVideo = this.$container.find('.cps-tab-playarea');
-		this.$divVideo = this.$container.find('.cps-content-playarea');
+		this.$tabVideo = this.$container.find('.cps-tab-video');
+		this.$divVideo = this.$container.find('.cps-content-video');
 		this.$tabAudio = this.$container.find('.cps-tab-audio');
 		this.$divAudio = this.$container.find('.cps-content-audio');
+		this.$tabViewer3d = this.$container.find('.cps-tab-viewer3d');
+		this.$divViewer3d = this.$container.find('.cps-content-viewer3d');
 
 		this.$inputWidth = this.$container.find('input[name="width"]')
 		this.$inputHeight = this.$container.find('input[name="height"]')
@@ -220,10 +224,12 @@ window.CustomPointSetting = (function () {
 		that.$tabPoint.off().on('click', function (e) {
 			that.$tabVideo.removeClass('cps-tab-active');
 			that.$tabAudio.removeClass('cps-tab-active');
+			that.$tabViewer3d.removeClass('cps-tab-active');
 			that.$tabPoint.addClass('cps-tab-active');
 			that.$divPoint.show();
 			that.$divVideo.hide();
 			that.$divAudio.hide();
+			that.$divViewer3d.hide()
 		})
 
     /**
@@ -245,6 +251,21 @@ window.CustomPointSetting = (function () {
 			that.$tabAudio.addClass('cps-tab-active')
 			that.$divPoint.hide();
 			that.$divAudio.show();
+		})
+
+		/**
+		 * 3D模型
+		*/
+		that.$tabViewer3d.off().on('click', function (e) {
+			that.$tabPoint.removeClass('cps-tab-active');
+			that.$tabViewer3d.addClass('cps-tab-active');
+			that.$divPoint.hide();
+			that.$divViewer3d.show();
+			
+			if (!that.Modal_Viewer3d) {
+				var modal_data = _data.getDDItems(that._config.dataId).drawcustomarea || {}
+				that.Modal_Viewer3d = new Modal_3DViewer({ data: modal_data }, 'cps-content-viewer3d')
+			}
 		})
 
     /**
@@ -452,7 +473,9 @@ window.CustomPointSetting = (function () {
      * 提交[保存到点读点数据里面]
      */
 		that.$submit.off().on('click', function () {
-
+			if (that.Modal_Viewer3d) {
+				that.data.viewer3d = that.Modal_Viewer3d.getData()
+			}
 			that.data.title.title = that.$text.text();
 
 			if (that.$inputWidth.val()) {
@@ -472,7 +495,7 @@ window.CustomPointSetting = (function () {
 				that.data.area = {};
 			}
 			//是否编辑了数据
-			var isEdit = !!(that.data.title.title || that.data.pic.src || that.data.area.w);
+			var isEdit = !!(that.data.title.title || that.data.pic.src || that.data.area.w || that.data.viewer3d.bgColor);
 
 			that.submitCallback && that.submitCallback(that.data, isEdit);
 		})

@@ -1,0 +1,11 @@
+@media all and (orientation: landscape) {
+  .pages_pagination {
+    right: 10px;
+    left: inherit !important;
+  }
+  .m-dd-start-comment-div {
+    left: 65px !important;
+    top: 15px !important;
+    bottom: 15px !important;
+  }
+}

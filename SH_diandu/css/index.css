@@ -1,6 +1,7 @@
 /***********************************************************
  * global cssnor
 ************************************************************/
+
 @import './common.css';
 body {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
@@ -930,6 +931,11 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
 .point-types-setting__area, .point-types-setting__point {
     flex: 3;
     cursor: pointer;
+}
+
+.point-typs-setting--disabled {
+    background: #CCC;
+    cursor: not-allowed;
 }
 
 .point-types-setting__area--active, .point-types-setting__point--active {

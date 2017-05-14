@@ -1,4 +1,5 @@
 /*定义一个动画效果*/
+
 @-webkit-keyframes blink {
   0%, 25%, 50%, 100% {
     -webkit-filter: drop-shadow(#0c9 0px 0px 5px);
@@ -24,4 +25,37 @@
 .custom-point-blink {
   -webkit-animation: 2s blink 1 ease-out;
   animation: 2s blink 1 ease-out;
+}
+
+
+/************* 针对音频播放闪烁****************/
+
+
+/*定义一个动画效果*/
+
+@-webkit-keyframes audio_blink {
+  0%, 50%, 100% {
+    -webkit-filter: drop-shadow(#FF9966 0px 0px 15px);
+    filter: drop-shadow(#FF9966 0px 0px 15px);
+  }
+  25%, 75% {
+    -webkit-filter: drop-shadow(#FF9966 0px 0px 30px);
+    filter: drop-shadow(#FF9966 0px 0px 30px);
+  }
+}
+
+@keyframes audio_blink {
+  0%, 50%, 100% {
+    -webkit-filter: drop-shadow(#FF9966 0px 0px 15px);
+    filter: drop-shadow(#FF9966 0px 0px 15px);
+  }
+  25%, 75% {
+    -webkit-filter: drop-shadow(#FF9966 0px 0px 30px);
+    filter: drop-shadow(#FF9966 0px 0px 30px);
+  }
+}
+
+.audio-point-blink {
+  -webkit-animation: 2s audio_blink infinite ease-out;
+  animation: 2s audio_blink infinite ease-out;
 }

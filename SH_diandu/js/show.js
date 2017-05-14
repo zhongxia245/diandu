@@ -251,6 +251,9 @@ function init() {
 	Model.getList(id, function (data) {
 		$('title').text(data.title);
 		DATA = data;
+
+		initVue(data)
+
 		//排序点读页顺序
 		ArrayUtil.sortByKey(data.pages, 'seq');
 		data['pages'] = data['pages'] || []
@@ -261,7 +264,7 @@ function init() {
 				setTimeout(function () {
 					fn_onResize();
 					window._load.loading("hide");
-					diandu.blink(0);
+					DianduEffect.blink(0);
 
 					//自定义GIF图片，获取第一帧，展示  zhongxia
 					var $customGifPoints = $('.create-point-img[data-dynamic="true"]');
@@ -298,8 +301,6 @@ function init() {
  */
 function initDiandu(data) {
 	$('#pages').html('');
-
-	initVue(data)
 
 	initPage('pages', data);
 
@@ -474,7 +475,7 @@ function initSwipe() {
 					//背景缩放移动
 					bgScaleOp(swiper.activeIndex);
 					//添加点读点闪烁效果
-					diandu.blink(swiper.activeIndex);
+					DianduEffect.blink(swiper.activeIndex);
 
 					GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
@@ -680,7 +681,7 @@ function initWindow(pageIndex, pageData, imgW, imgH) {
 	var pointsData = pageData['points'];
 	for (var i = 0; i < pointsData.length; i++) {
 		var pointData = JSON.parse(pointsData[i].data || "{}");
-		if (pointData.type === 'viewer3d' && pointData.drawcustomarea) {
+		if (pointData.type === 'viewer3d' && pointData.drawcustomarea && pointData.drawcustomarea.type === 'area') {
 			/**
 			 * 只能在点读区域中进行对模型进行操作
 			 */
@@ -842,7 +843,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 			//点读点的所有数据，会保存在data字段里面
 			var _pointData = JSON.parse(pointDatas[i]['data'] || '{}')
 			// 3d模型点读点
-			var drawCustomArea = _pointData.drawcustomarea
+			var drawCustomArea = _pointData.drawcustomarea || {}
 
 			var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
@@ -913,7 +914,7 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 				}
 			}
 			// 3d模型
-			else if (drawCustomArea) {
+			else if (drawCustomArea.type && drawCustomArea.type !== 'point') {
 				var w = imgW * parseFloat(drawCustomArea.w || 0.2);
 				var h = imgH * parseFloat(drawCustomArea.h || 0.2);
 				var x = imgW * parseFloat(_pointData.x);
@@ -986,17 +987,19 @@ function audioPlay(e, url) {
 	if ($cTar.attr('isLoad')) {
 		window.audio.play();
 		if ($cTar.attr('data-type') === 'pointImg') {
-			diandu.customPlay($cTar, true)
+			DianduEffect.customPlay($cTar, true)
 		} else {
 			$cTar.attr('data-play', true)
-			$cTar.find('.audio-play').show();
+			// $cTar.find('.audio-play').show();
+			DianduEffect.audio_blink($cTar, true)
 		}
 		$cTar.find('.audio-load').hide();
 	}
 	//音频还未加载
 	else {
 		if ($cTar.attr('data-type') !== 'pointImg') {
-			$cTar.find('.audio-play').hide();
+			// $cTar.find('.audio-play').hide();
+			DianduEffect.audio_blink($cTar, false)
 		}
 		$cTar.find('.audio-load').show();
 		$cTar.css('background-size', '0')
@@ -1019,11 +1022,12 @@ function audioPlay(e, url) {
 				window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
 
 				$cTar.find('.audio-load').hide();
-				$cTar.find('.audio-play').show();
+				// $cTar.find('.audio-play').show();
+				DianduEffect.audio_blink($cTar, true)
 				$cTar.css('background-size', '100%')
 
 				if ($cTar.attr('data-type') === 'pointImg') {
-					diandu.customPlay($cTar, true)
+					DianduEffect.customPlay($cTar, true)
 				}
 
 				$cTar.attr('isLoad', true)   //加载结束标记
@@ -1050,7 +1054,8 @@ function playOrPaused(e, pointData) {
 	}
 	//正在播放
 	else if ($cTar.attr('data-play') === 'true') {
-		$cTar.find('.audio-play').hide();
+		// $cTar.find('.audio-play').hide();
+		DianduEffect.audio_blink($cTar, false)
 		$cTar.attr('data-play', false);
 
 		//自定义点读点，有静态图
@@ -1058,10 +1063,9 @@ function playOrPaused(e, pointData) {
 
 		window.audio.pause();
 
-		diandu.customPlay($cTar, false);
+		DianduEffect.customPlay($cTar, false);
 
 		//关闭音频的时候,间隔自动播放的时间在启动
-		// GLOBAL.BGAUDIO.setTimePlay();
 		VueApp.restartPlayBgAudio()
 	}
 	//未播放
@@ -1069,8 +1073,8 @@ function playOrPaused(e, pointData) {
 		customPng2Gif($cTar, pointData, true)
 		$('.m-audio[data-play]').removeAttr('data-play')
 		$cTar.attr('data-play', true)
+		$cTar.attr('data-play', true)
 		if (getAudioSource(window.audio) !== url) {
-			// window.audio.setAttribute('src', url);
 			setAudioSource(window.audio, url)
 		}
 		if (window.audio.paused) {
@@ -1119,14 +1123,18 @@ function closeVideoOrAudio(flag) {
 
 	//停止音频
 	window.audio.pause();
-	$('.m-audio img').hide(); //隐藏所有的播放GIF图
+
+	//隐藏所有的播放GIF图
+	DianduEffect.audio_blink($('.m-audio'), false)
+
+	$('.m-audio img').hide(); 
 	$('.m-audio').css('background-size', '100%')
 
 	//清除闪烁
 	var $customImgs = $('[data-type="pointImg"]');
 	for (var i = 0; i < $customImgs.length; i++) {
 		var $customImg = $($customImgs[i]);
-		diandu.customPlay($customImg, false);
+		DianduEffect.customPlay($customImg, false);
 	}
 
 	//停止视频
@@ -1225,7 +1233,7 @@ function bindEvent() {
 				window._audioEnded = false
 				$cTar.find('img').hide()
 				$cTar.attr('data-play', false)
-				diandu.customPlay($cTar, false)
+				DianduEffect.customPlay($cTar, false)
 
 				if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
 					window.galleryTop.startAutoplay();
@@ -1253,12 +1261,14 @@ function bindEvent() {
 					// 关闭音频面板的回调
 					closeCallback: function () {
 						window.GLOBAL.audio_panel = null
-						$cTar.find('.audio-play').hide()
+						// $cTar.find('.audio-play').hide()
+						DianduEffect.audio_blink($cTar, false)
 						$cTar.find('.audio-panel__flag').remove()
 					},
 					// 音频还在播放，关闭后，展示标识
 					showFlag: function () {
-						$cTar.find('.audio-play').show()
+						// $cTar.find('.audio-play').show()
+						DianduEffect.audio_blink($cTar, false)
 						$cTar.append('<div class="audio-panel__flag"></div>')
 						//点击出现音频面板
 						$cTar.find('.audio-panel__flag').on(click, function (e) {

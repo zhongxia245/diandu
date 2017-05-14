@@ -63,3 +63,17 @@
 .range__max {
   right: 15px;
 }
+
+@media all and (orientation: landscape) {
+  .diandu__setting {
+    display: flex;
+  }
+  .diandu-setting__item {
+    flex: 2;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .diandu-setting__flex {
+    flex: 1;
+  }
+}

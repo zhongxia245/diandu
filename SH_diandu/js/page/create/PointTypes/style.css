@@ -67,101 +67,120 @@
 /*视频*/
 
 .point-types__item--video {
-    background-image: url('../../../../imgs/upload_video.png');
+    /*background-image: url('../../../../imgs/upload_video.png');*/
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_video.png');
+}
+
+.point-types__item--video:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_video_hover.png');
 }
 
 .pt-selected .point-types__item--video, .point-types__item--video-selected {
-    background-image: url('../../../../imgs/upload_video_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_video_on.png');
 }
 
 
 /*音频*/
 
 .point-types__item--audio {
-    background-image: url('../../../../imgs/upload_audio.png');
+    /*background-image: url('../../../../imgs/upload_audio.png');*/
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_audio.png');
+}
+
+.point-types__item--audio:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_audio_hover.png');
 }
 
 .pt-selected .point-types__item--audio, .point-types__item--audio-selected {
-    background-image: url('../../../../imgs/upload_audio_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_audio_on.png');
 }
 
 
 /*图文*/
 
 .point-types__item--imgtext {
-    background-image: url('../../../../imgs/upload_imgtext.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_intro.png');
+}
+
+.point-types__item--imgtext:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_intro_hover.png');
 }
 
 .pt-selected .point-types__item--imgtext, .point-types__item--imgtext-selected {
-    background-image: url('../../../../imgs/upload_imgtext_on.png');
-}
-
-
-/*音频图片[目前未使用]*/
-
-.point-types__item--audioimg {
-    background-image: url('../../../../imgs/upload_audioimg.png');
-}
-
-.pt-selected .point-types__item--audioimg, .point-types__item--audioimg-selected {
-    background-image: url('../../../../imgs/upload_audioimg_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_intro_on.png');
 }
 
 
 /*考试*/
 
 .point-types__item--exam {
-    background-image: url('../../../../imgs/upload_exam.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_exam.png');
+}
+
+.point-types__item--exam:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_exam_hover.png');
 }
 
 .pt-selected .point-types__item--exam, .point-types__item--exam-selected {
-    background-image: url('../../../../imgs/upload_exam_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_exam_on.png');
 }
 
 
 /*开关图*/
 
 .point-types__item--on-off {
-    background-image: url('../../../../imgs/onoff.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_kaiguan.png');
+}
+
+.point-types__item--on-off:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_kaiguan_hover.png');
 }
 
 .pt-selected .point-types__item--on-off, .point-types__item--on-off-selected {
-    background-image: url('../../../../imgs/onoff_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_kaiguan_on.png');
 }
 
 
 /*超链接*/
 
 .point-types__item--set-url {
-    background-image: url('../../../../imgs/seturl.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_link.png');
+}
+
+.point-types__item--set-url:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_link_hover.png');
 }
 
 .pt-selected .point-types__item--set-url, .point-types__item--set-url-selected {
-    background-image: url('../../../../imgs/seturl_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_link_on.png');
 }
 
 
 /*摇摆图*/
 
 .point-types__item--sway {
-    background-image: url('../../../../imgs/sway.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_sway.png');
+}
+
+.point-types__item--sway:hover {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_sway_hover.png');
 }
 
 .pt-selected .point-types__item--sway, .point-types__item--sway-selected {
-    background-image: url('../../../../imgs/sway_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_sway_on.png');
 }
 
 
 /*3D观察器*/
 
 .point-types__item--viewer3d {
-    background-image: url('../../../../imgs/viewer3d.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_3d.png');
 }
 
 .point-types__item--viewer3d:hover {
-    background-image: url('../../../../imgs/viewer3d_hover.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_3d_hover.png');
 }
 
 .pt-selected .point-types__item--viewer3d, .point-types__item--viewer3d-selected {
-    background-image: url('../../../../imgs/viewer3d_on.png');
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_3d_on.png');
 }

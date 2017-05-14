@@ -24,7 +24,6 @@ window.ObjViewer = (function () {
 		var modelColor = 0X00FF00;
 		var renderer, camera, banana, cameraHeight;
 		var dom_scene = document.getElementById(id)
-
 		var ww = options.width || window.innerWidth * 0.8;
 		var wh = options.height || window.innerHeight * 0.8;
 
@@ -88,7 +87,7 @@ window.ObjViewer = (function () {
 		 */
 		var setRenderSize = function (w, h) {
 			renderer.setSize(w, h);
-			
+
 			// 加上这一句，模型就不会变形
 			camera.aspect = w / h;
 			camera.updateProjectionMatrix();
@@ -144,10 +143,15 @@ window.ObjViewer = (function () {
 			var manager = new THREE.LoadingManager();
 			var loader = new THREE.OBJLoader(manager);
 
+			console.log('start loading...')
+			var $loading = $.loading({ content: '模型加载中...' });
 			// 可以设置一个loading效果
 			manager.onProgress = function (item, loaded, total) {
 				// TODO:增加一个loading效果
-				console.log('progress ：', item, loaded, total);
+				if (loaded === total) {
+					console.log('3d模型加载结束....')
+					$loading.loading("hide")
+				}
 			};
 
 			// objUrl = '/assets/basketball.obj'

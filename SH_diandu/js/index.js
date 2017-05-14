@@ -469,7 +469,7 @@ var _edit = (function () {
 
 		if (title && title.title) type = 2
 		if (pic && pic.src) type = 3
-		if (drawAreaData && drawAreaData.bgColor) type = 6
+		if (drawAreaData && drawAreaData.type === 'area') type = 6
 
 		var config = {
 			left: left,
@@ -482,8 +482,11 @@ var _edit = (function () {
 		createPoint(dataid, type, config)
 		addDianDu(dataid, point)
 
-		// 设置了自定义图片,自定义标题,或者视频播放区域, 则设置 自定义点读点 为 激活状态
-		if (type !== 1 || (point.area && JSON.parse(point.area).w)) {
+		/**
+		 * 设置了自定义图片,自定义标题,或者视频播放区域, 则设置 点模式 为 激活状态
+		*/
+		var is_point_mode = type !== 1 || (point.area && JSON.parse(point.area).w) || (drawAreaData && drawAreaData.type === 'point')
+		if (is_point_mode) {
 			$('.point-types__setting[data-id="' + dataid + '"]')
 				.find('.point-types-setting__point')
 				.addClass('point-types-setting__point--active')
@@ -1410,6 +1413,14 @@ function fn_settingArea(e, data) {
 	var pointIndex = $cTar.data('index')
 	var pageIndex = $cTar.parents('.diandupageitem').data('index')
 
+	if (pointType === 'on-off') {
+		console.info('开关图没有点模式和区域模式')
+		return
+	}
+	if (pointType === 'sway') {
+		console.info('摇摆图没有区域模式')
+		return
+	}
 	// TODO:目前只开发了3D模型的区域，其他还未开发
 	if (pointType !== 'viewer3d') {
 		alert('该点读点类型，区域触发功能尚未开发，请稍后')
@@ -1522,8 +1533,18 @@ function addCustomPointSetting(e) {
 	var dataId = $cTar.parent().data().id || '1_1'
 	var pageIndex = parseInt(dataId.split('_')[0]) - 1
 	var pointIndex = parseInt(dataId.split('_')[1]) - 1
-	var pointType = $(e.target).parents('.upload-right').attr('data-type')
-	var audioPath = $(e.target).parents('.upload-right').find('.upload-file-name').attr('data-src')
+	var pointType = $(e.target).parents('.upload-item').find('.upload-right').attr('data-type')
+
+	var audioPath
+
+	if (pointType === 'audio') {
+		audioPath = $(e.target).parents('.upload-item').find('.upload-file-name').attr('data-src')
+	}
+
+	if (pointType === 'on-off') {
+		console.info('开关图没有点模式和区域模式')
+		return
+	}
 
 	// 获取数据,编辑
 	var _data = window.DD.items[pageIndex]['data'][pointIndex] || {}
@@ -1566,12 +1587,12 @@ function addCustomPointSetting(e) {
 				// 保存数据到变量里面
 				window.DD.items[pageIndex].data[pointIndex].pic = data.pic
 				window.DD.items[pageIndex].data[pointIndex].custom = data.title
+				window.DD.items[pageIndex].data[pointIndex].drawcustomarea = data.viewer3d
 
 				// 点读点类型,是自定义图片,还是自定义标题
 				var type = 1
 				if (data.pic.src) type = 3   //自定义图片
 				if (data.title.title) type = 2  //自定义标题
-				if (data.drawcustomarea && data.drawcustomarea.type === 'drawcustomarea') type = 6  //自定义区域
 
 				var config = {
 					left: left,
@@ -1611,6 +1632,7 @@ function addCustomPointSetting(e) {
  */
 function selectTypeClick(e) {
 	var $target = $(e.target)
+	var $uploadItem = $target.parents('.upload-item')
 	new PointTypes({
 		offset: $target.offset(),
 		selectedType: $target.attr('data-point-type'),
@@ -1621,6 +1643,21 @@ function selectTypeClick(e) {
        * 2. 点击弹窗类型（开关图，考试,超链接点读点）
        */
 			_selectTypeHandle(e, data)
+			// 开关图
+			if (data.type === 'on-off') {
+				$uploadItem.find('.point-types-setting__area').addClass('point-typs-setting--disabled')
+				$uploadItem.find('.point-types-setting__point').addClass('point-typs-setting--disabled')
+			} else {
+				$uploadItem.find('.point-types-setting__area').removeClass('point-typs-setting--disabled')
+				$uploadItem.find('.point-types-setting__point').removeClass('point-typs-setting--disabled')
+			}
+			// 摇摆图
+			if (data.type === 'sway') {
+				$uploadItem.find('.point-types-setting__area').addClass('point-typs-setting--disabled')
+			} else if (data.type !== 'on-off') {
+				$uploadItem.find('.point-types-setting__area').removeClass('point-typs-setting--disabled')
+			}
+
 
 			$target
 				.attr('data-point-type', data.type)
@@ -2171,8 +2208,8 @@ function handleSubmit(e) {
 
 			if (GLOBAL.ISEDIT.flag) {
 				msg = '保存成功!点击确定返回展示页面!'
-				returnUrl = '/edu/course/diandu.php?id=' + id
-				// 这里的id 是 diandu.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
+				returnUrl = '/edu/course/DianduEffect.php?id=' + id
+				// 这里的id 是 DianduEffect.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
 			}
 
 			alert(msg)
