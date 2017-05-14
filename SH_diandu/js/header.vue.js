@@ -13,16 +13,19 @@ function initVue(data) {
 	data = data || {}
 	var globalAudioConfig = JSON.parse(data.content || '{}')
 	window.VueApp = new Vue({
-		el: '#container',
+		el: '#header_vue',
 		data: {
 			id: data.id,
 			bg_audio_src: data.background,
+			show_fullscreen: true,
+			is_fullscreen: false,
 			popup_sidebar: false,
 			popup_setting: false,
 			popup_pagelist: false,
 			popup_audioplayer: false,
 			pageActiveIndex: 0,
 			// 评论弹窗是否展示
+			show_page_comment_btn: true,
 			show_page_comment: false,
 			page_comment_count: 0,
 			// 点读页列表
@@ -44,7 +47,19 @@ function initVue(data) {
 			setting_opacity: 100,
 			setting_gap: 5,
 			setting_bgaudio_enable: !!globalAudioConfig.src,
-			setting_bgaudio_play: false
+			setting_bgaudio_play: false,
+			//侧边栏 by brian 20170511 START
+			teamid: 0,
+			logoid: 0,
+			logoname: '',
+			team_video_id: window.team_video_id,
+			show_unit: 0,//正在展示的unit
+			first_show: 0,
+			unit_list: [],
+			group_name: '',
+			search: "",
+			userid: window.__userid
+			//侧边栏 by brian 20170511 END
 		},
 		created: function () {
 			if (!this.globalAudio) {
@@ -52,6 +67,14 @@ function initVue(data) {
 			}
 			if (!this.bgAudio && !!this.bg_audio_src) {
 				this.initBgAudio()
+			}
+			// 判断iframe是否被嵌套，如果不是则不显示全屏按钮功能
+			if (self === top) {
+				this.show_fullscreen = false
+			}
+			// PC端评论使用嵌套点读页面的评论
+			if (Util.IsPC()) {
+				this.show_page_comment_btn = false
 			}
 		},
 		computed: {
@@ -118,7 +141,14 @@ function initVue(data) {
 					window.galleryTop.slideTo(this.pageActiveIndex);
 				}
 			},
-
+			//by brian 20170511 START
+			first_show: function (v, v1) {
+				var h = $("#weight_h").height();
+				var full_w = $(window).height();
+				var left_h = full_w - h - 35 - $(".team_name").height();
+				$(".unit_list").height(left_h);
+			},
+			//by brian 20170511 END
 			// 设置相关
 			setting_opacity: function () {
 				$('.wrap div[data-id]').css({
@@ -144,6 +174,17 @@ function initVue(data) {
 			},
 		},
 		methods: {
+			// 全屏
+			handleFullPanel: function () {
+				if (!this.is_fullscreen) {
+					this.is_fullscreen = true
+					// 如果这边补全
+					Util.requestFullScreen($('body')[0])
+				} else {
+					this.is_fullscreen = false
+					Util.exitFullScreen()
+				}
+			},
 			// 打开评论
 			handleOpenComment: function () {
 				var that = this
@@ -192,6 +233,9 @@ function initVue(data) {
 				this.popup_audioplayer = false
 				this.popup_setting = false
 				this.popup_pagelist = !this.popup_pagelist
+			},
+			handleClosePageList: function () {
+				this.popup_pagelist = false
 			},
 			// 显示音频播放列表
 			handleOpenAudio: function () {

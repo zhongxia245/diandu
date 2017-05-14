@@ -262,7 +262,7 @@ function init() {
 				setTimeout(function () {
 					fn_onResize();
 					window._load.loading("hide");
-					diandu.blink(0);
+					DianduEffect.blink(0);
 
 					//自定义GIF图片，获取第一帧，展示  zhongxia
 					var $customGifPoints = $('.create-point-img[data-dynamic="true"]');
@@ -541,7 +541,7 @@ function initSwipe() {
 					//背景缩放移动
 					bgScaleOp(swiper.activeIndex);
 					//添加点读点闪烁效果
-					diandu.blink(swiper.activeIndex);
+					DianduEffect.blink(swiper.activeIndex);
 
 					GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
@@ -1129,7 +1129,7 @@ function audioPlay(e, url) {
 	if ($cTar.attr('isLoad')) {
 		window.audio.play();
 		if ($cTar.attr('data-type') === 'pointImg') {
-			diandu.customPlay($cTar, true)
+			DianduEffect.customPlay($cTar, true)
 		} else {
 			$cTar.attr('data-play', true)
 			$cTar.find('.audio-play').show();
@@ -1166,7 +1166,7 @@ function audioPlay(e, url) {
 				$cTar.css('background-size', '100%')
 
 				if ($cTar.attr('data-type') === 'pointImg') {
-					diandu.customPlay($cTar, true)
+					DianduEffect.customPlay($cTar, true)
 				}
 
 
@@ -1207,7 +1207,7 @@ function playOrPaused(e, isGlobalAudio, pointData) {
 		} else {
 			window.audio.pause();
 
-			diandu.customPlay($cTar, false);
+			DianduEffect.customPlay($cTar, false);
 
 			//关闭音频的时候,间隔自动播放的时间在启动
 			GLOBAL.BGAUDIO.setTimePlay();
@@ -1280,7 +1280,7 @@ function closeVideoOrAudio(flag) {
 	var $customImgs = $('[data-type="pointImg"]');
 	for (var i = 0; i < $customImgs.length; i++) {
 		var $customImg = $($customImgs[i]);
-		diandu.customPlay($customImg, false);
+		DianduEffect.customPlay($customImg, false);
 	}
 
 	//停止视频
@@ -1442,7 +1442,7 @@ function bindEvent() {
 				window._audioEnded = false
 				$cTar.find('img').hide()
 				$cTar.attr('data-play', false)
-				diandu.customPlay($cTar, false)
+				DianduEffect.customPlay($cTar, false)
 
 				if (GLOBAL.AUTOPLAYINTERVAL !== 0) {
 					window.galleryTop.startAutoplay();

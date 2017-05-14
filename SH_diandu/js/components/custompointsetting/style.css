@@ -7,7 +7,7 @@
 }
 
 .cps-container {
-    height: 600px;
+    /*height: 600px;*/
     width: 600px;
     position: relative;
     overflow: hidden;
@@ -23,7 +23,7 @@
     border-radius: 10px 10px 0 0;
 }
 
-.cps-content-point, .cps-content-playarea {
+.cps-content-point, .cps-content-video, .cps-content-viewer3d {
     height: 450px;
     background: #EFEFEF;
 }
@@ -217,7 +217,7 @@
     width: 100%;
 }
 
-.cps-tab-point, .cps-tab-playarea, .cps-tab-audio {
+.cps-tab-point, .cps-tab-video, .cps-tab-audio, .cps-tab-viewer3d {
     display: none;
     float: left;
     width: 80px;
@@ -245,12 +245,12 @@
 
 /*自定义视频播放区域*/
 
-.cps-tab-playarea, .cps-tab-audio {
+.cps-tab-video, .cps-tab-audio, .cps-content-viewer3d {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.cps-content-playarea {
+.cps-content-video, .cps-content-viewer3d {
     padding: 20px 60px;
 }
 
@@ -259,7 +259,7 @@
     margin: 15px 0;
 }
 
-.cps-content-playarea em {
+.cps-content-video em {
     float: right;
     color: #AAA;
 }
@@ -433,4 +433,15 @@
     right: 0;
     top: -2px;
     z-index: 999;
+}
+
+
+/*3d模型选项卡*/
+
+.cps-content-viewer3d .ds-header {
+    display: none;
+}
+
+.cps-content-viewer3d .ds-submit {
+    display: none;
 }

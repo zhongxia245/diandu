@@ -46,7 +46,7 @@
 </head>
 
 <body>
-  <div id="container" class="m-bgs page-swipe">
+  <div id="header_vue">
     <!--header START-->
     <header class="diandu__header">
       <div class="diandu__header--left" @click="handleOpenSideBar">
@@ -63,25 +63,34 @@
       </div>
       <div class="diandu__header--right">
         <div 
+          v-if="show_page_comment_btn"
+          alt="点读页评论"
           :title="page_comment_count_str"
           class="diandu-header-right__comment" 
           @click="handleOpenComment">
         </div>
         <img 
           src="./imgs/mods/header/icon_setting.png" 
-          alt="点读页列表" 
+          alt="点读设置" 
           class="diandu-header-right__setting"
           @click="handleOpenSetting">
         <img 
-          src="./imgs/mods/header/icon_pages.png" 
+          v-cloak 
+          :src="popup_pagelist?'./imgs/mods/header/icon_pages_active.png':'./imgs/mods/header/icon_pages.png'" 
           alt="点读页列表" 
           @click="handleOpenPageList">
+        <img 
+          v-cloak 
+          v-if="show_fullscreen"
+          :src="is_fullscreen?'./imgs/mods/header/icon_screen_n.png':'./imgs/mods/header/icon_screen_f.png'" 
+          alt="PC全屏" 
+          @click="handleFullPanel">
       </div>
     </header>
     <!--header END-->
     <!--POPUP COMPONENT START-->
     <!--右侧目录列表 START-->
-    <mt-popup v-cloak v-model="popup_sidebar" position="left" style="width:70%; height:100%;">
+    <mt-popup v-cloak v-model="popup_sidebar" position="left" style="width:70%; height:101%;">
       <p style="margin-top:45px;">目录列表[待实现]</p>
     </mt-popup>
 
@@ -118,6 +127,7 @@
     <!--点读页列表 START-->
     <mt-popup v-cloak v-model="popup_pagelist" position="bottom" style="width:101%; height:100%;">
       <div class="diandu__pages">
+        <div class="diandu-pages__close" @click="handleClosePageList"></div>
         <div class="diandu-pages__top">
           <img :src="pagelist.pic" alt="点读页图片">
           <div class="diandu-pages__top-info">
@@ -137,7 +147,7 @@
     </mt-popup>
 
     <!--音乐播放器 START-->
-    <mt-popup  v-cloak v-model="popup_audioplayer" position="bottom" style="width:101%; height:25%;">
+    <mt-popup  v-cloak v-model="popup_audioplayer" position="bottom" style="width:101%;">
       <div class="audio-player">
         <div class="audio-player__progress">
           <span>{{currentTimeStr}}</span>
@@ -161,6 +171,10 @@
       </div>
     </mt-popup>
     <!--POPUP COMPONENT END-->
+  </div>
+  
+
+  <div id="container" class="m-bgs page-swipe">
     <div class="swiper-container dandu-pages">
       <div id="pages" class="swiper-wrapper">
       </div>
@@ -196,10 +210,6 @@
   <section class="sec-exam" style="display: none;">
     <div class="exam-list" style="height: 100%;"></div>
     <div class="question-list" style="height: 100%;"></div>
-  </section>
-  <!--考试 END-->
-  <!--考试 START-->
-  <section class="btn-fullscreen">
   </section>
   <!--考试 END-->
   <!--lib-->
@@ -260,7 +270,6 @@
   <script src="./js/page/common/ObjViewer/ObjViewer.js"></script>
   <script src="./js/page/show/modal_3dviewer/Modal_3DViewer.js"></script>
   <!--页面入口-->
-  <script src="./js/page/show/fullscreen.js"></script>
   <script src="./js/header.vue.js"></script>
   <script src="./js/show.js"></script>
   <script>

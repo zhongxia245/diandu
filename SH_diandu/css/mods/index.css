@@ -3,7 +3,13 @@
 @import './diandu_setting.css';
 @import './audio_player.css';
 @import './global_audio.css';
-
+@import './layout.css';
 [v-cloak] {
   display: none;
+}
+
+@media all and (orientation: landscape) {
+  .mint-popup {
+    padding-left: 45px;
+  }
 }

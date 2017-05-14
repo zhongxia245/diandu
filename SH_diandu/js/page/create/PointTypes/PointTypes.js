@@ -22,12 +22,12 @@ window.PointTypes = (function () {
     types: [
       { label: '视频', type: 'video', text: '点击上传MP4格式的视频文件', tip: '视频须为AVC（h264)编码格式的MP4文件<br/>视频点设置可定制图片和播放区域' },
       { label: '音频', type: 'audio', text: '点击上传MP3格式的音频文件', tip: 'MP3文件音频点设置可定制图片和播放区域' },
-      { label: '注解', type: 'imgtext', text: '点击上传图文', tip: '视频须为AVC（h264)编码格式的MP4文件视频点设置可定制图片和播放区域' },
-      { label: '测试', type: 'exam', text: '点击上传试卷', tip: '视频须为AVC（h264)编码格式的MP4文件视频点设置可定制图片和播放区域' },
-      { label: '开关图', type: 'on-off', text: '点击设置开关', tip: '视频须为AVC（h264)编码格式的MP4文件视频点设置可定制图片和播放区域' },
-      { label: '超链接', type: 'set-url', text: '点击设置超级链接', tip: '视频须为AVC（h264)编码格式的MP4文件视频点设置可定制图片和播放区域' },
+      { label: '注解', type: 'imgtext', text: '点击上传注解', tip: '注解可以使用图片和文字来展示一些需要描述的文案' },
+      { label: '测试', type: 'exam', text: '点击上传测试考题', tip: '点读里面的测试考题，分为单选，多选，判断题' },
+      { label: '开关图', type: 'on-off', text: '点击设置开关', tip: '设置最初隐藏或显示的图片，在图片位置或其他指定位置，点击后切换显隐状态。' },
+      { label: '超链接', type: 'set-url', text: '点击设置超级链接', tip: '超链接就是点击点读点，跳转到指定的链接地址' },
       { label: '摇摆图', type: 'sway', text: '请直接采用点触发进行设置', tip: '摇摆图是简单的动画，就是点击图片后，图片摆动或者适当缩放，并可配置音效' },
-      { label: '3D观察器', type: 'viewer3d', text: '上传相关文件', tip: '3D文件限定为obj模型文件，可以进行缩放和旋转操作' },
+      { label: '3D观察器', type: 'viewer3d', text: '请上传obj模型文件', tip: '3D文件限定为obj模型文件，可以进行缩放和旋转操作' },
     ]
   }
   /**

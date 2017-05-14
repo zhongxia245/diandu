@@ -11,6 +11,7 @@
   transform: translateY(-50%);
   height: 15px;
   width: 15px;
+  box-shadow: 0 0 10px #00cc99;
 }
 
 .audio-player .mt-range-progress {

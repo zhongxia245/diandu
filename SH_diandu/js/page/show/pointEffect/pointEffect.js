@@ -6,7 +6,7 @@
  * 2.  先展示点读点, 在展示背景图片[觉得不可取]
  *
  * 使用说明:
- * diandu.blank(0) ; 表示第一个点读页下的所有点读点,闪烁
+ * DianduEffect.blank(0) ; 表示第一个点读页下的所有点读点,闪烁
  ***************************************************/
 //加载依赖的脚本和样式
 (function () {
@@ -24,7 +24,9 @@
 
 	Util.loadCSS(getBasePath() + '/style.css');
 })()
-window.diandu = (function (dd) {
+
+
+window.DianduEffect = (function (dd) {
   /**
    * 闪烁效果[发光效果,针对透明图片]
    * 提示时间为2秒，闪烁3个来回，头两个为0.5秒，最后一个为1秒
@@ -85,6 +87,7 @@ window.diandu = (function (dd) {
 				break;
 			case 2:
 				$dom.css('border', '3px solid #00CC99');
+				break;
 		}
 		$dom.addClass('custom-point-blink')
 
@@ -102,6 +105,20 @@ window.diandu = (function (dd) {
 
 	dd.showEffect = function ($dom) {
 		_effect($dom);
+	}
+
+
+	/**
+	 * 音频播放闪烁
+	 * @param $dom 需要闪烁的元素
+	 * @param flag true 闪烁， false：关闭闪烁
+	 */
+	dd.audio_blink = function ($dom, flag) {
+		if (flag === true) {
+			$dom.addClass('audio-point-blink')
+		} else {
+			$dom.removeClass('audio-point-blink')
+		}
 	}
 
 

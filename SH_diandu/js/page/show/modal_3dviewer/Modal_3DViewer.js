@@ -58,6 +58,7 @@ window.Modal_3DViewer = (function () {
 		})
 
 		that.$btnScale.on('click', function () {
+			that.$help.hide()
 			if (that.$btnScale.attr('data-max') === '1') {
 				that.$btnScale.attr('data-max', 0).removeClass('viewer3d-btns__scale--normal')
 				that.$scene.css({

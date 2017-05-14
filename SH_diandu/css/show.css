@@ -196,7 +196,7 @@ ul, li {
     bottom: 40px;
     left: 20px;
     right: 20px;
-    overflow: hidden;
+    /*overflow: hidden;*/
     display: none;
 }
 
