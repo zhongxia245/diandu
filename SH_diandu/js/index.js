@@ -2208,8 +2208,8 @@ function handleSubmit(e) {
 
 			if (GLOBAL.ISEDIT.flag) {
 				msg = '保存成功!点击确定返回展示页面!'
-				returnUrl = '/edu/course/DianduEffect.php?id=' + id
-				// 这里的id 是 DianduEffect.php 需要用的 , 而videoid 是点读这边需要用的. [备注下]
+				// 注意，如果静态话页面的地址修改了，这里也要跟着修改地址
+				returnUrl = '/point-read/' + id + '.html'
 			}
 
 			alert(msg)

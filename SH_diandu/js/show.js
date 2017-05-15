@@ -42,7 +42,6 @@ var GLOBAL = {
 	GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
 	BACK_COLOR: 'rgb(0,0,0)', //背景图片空白区域颜色
 	CurrentPageIndex: 0, //当前点读页下标
-	allowSwiperUp: true, //上滑缩略图用
 }
 /**
  * 背景音乐相关操作
@@ -338,23 +337,16 @@ function bgScaleOp(currentIndex) {
 		function (ev) {
 			if (this.scale > 1) {
 				window.galleryTop.lockSwipes();
-				GLOBAL.allowSwiperUp = false;
 			} else {
-				GLOBAL.allowSwiperUp = true;
 				window.galleryTop.unlockSwipes();
 			}
 		},
-    /**
-     * 放大结束后的回调
-     */
 		function () {
 			if (this.scale > 1) {
 				GLOBAL.picScale.showTip();
 				window.galleryTop.lockSwipes();
-				GLOBAL.allowSwiperUp = false;
 			} else {
 				GLOBAL.picScale.hideTip();
-				GLOBAL.allowSwiperUp = true;
 				window.galleryTop.unlockSwipes();
 			}
 		}
@@ -990,16 +982,16 @@ function audioPlay(e, url) {
 			DianduEffect.customPlay($cTar, true)
 		} else {
 			$cTar.attr('data-play', true)
-			// $cTar.find('.audio-play').show();
-			DianduEffect.audio_blink($cTar, true)
+			$cTar.find('.audio-play').show();
+			// DianduEffect.audio_blink($cTar, true)
 		}
 		$cTar.find('.audio-load').hide();
 	}
 	//音频还未加载
 	else {
 		if ($cTar.attr('data-type') !== 'pointImg') {
-			// $cTar.find('.audio-play').hide();
-			DianduEffect.audio_blink($cTar, false)
+			$cTar.find('.audio-play').hide();
+			// DianduEffect.audio_blink($cTar, false)
 		}
 		$cTar.find('.audio-load').show();
 		$cTar.css('background-size', '0')
@@ -1022,8 +1014,8 @@ function audioPlay(e, url) {
 				window.audio.volume = window.audio.getAttribute('data-volume') || 0.5;
 
 				$cTar.find('.audio-load').hide();
-				// $cTar.find('.audio-play').show();
-				DianduEffect.audio_blink($cTar, true)
+				$cTar.find('.audio-play').show();
+				// DianduEffect.audio_blink($cTar, true)
 				$cTar.css('background-size', '100%')
 
 				if ($cTar.attr('data-type') === 'pointImg') {
@@ -1054,8 +1046,8 @@ function playOrPaused(e, pointData) {
 	}
 	//正在播放
 	else if ($cTar.attr('data-play') === 'true') {
-		// $cTar.find('.audio-play').hide();
-		DianduEffect.audio_blink($cTar, false)
+		$cTar.find('.audio-play').hide();
+		// DianduEffect.audio_blink($cTar, false)
 		$cTar.attr('data-play', false);
 
 		//自定义点读点，有静态图
@@ -1125,7 +1117,7 @@ function closeVideoOrAudio(flag) {
 	window.audio.pause();
 
 	//隐藏所有的播放GIF图
-	DianduEffect.audio_blink($('.m-audio'), false)
+	// DianduEffect.audio_blink($('.m-audio'), false)
 
 	$('.m-audio img').hide(); 
 	$('.m-audio').css('background-size', '100%')
@@ -1261,14 +1253,14 @@ function bindEvent() {
 					// 关闭音频面板的回调
 					closeCallback: function () {
 						window.GLOBAL.audio_panel = null
-						// $cTar.find('.audio-play').hide()
-						DianduEffect.audio_blink($cTar, false)
+						$cTar.find('.audio-play').hide()
+						// DianduEffect.audio_blink($cTar, false)
 						$cTar.find('.audio-panel__flag').remove()
 					},
 					// 音频还在播放，关闭后，展示标识
 					showFlag: function () {
-						// $cTar.find('.audio-play').show()
-						DianduEffect.audio_blink($cTar, false)
+						$cTar.find('.audio-play').show()
+						// DianduEffect.audio_blink($cTar, false)
 						$cTar.append('<div class="audio-panel__flag"></div>')
 						//点击出现音频面板
 						$cTar.find('.audio-panel__flag').on(click, function (e) {

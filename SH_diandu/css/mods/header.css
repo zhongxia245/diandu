@@ -30,7 +30,7 @@
 }
 
 .diandu__header--right {
-  flex: 2;
+  width: auto;
   text-align: right;
 }
 
