@@ -41,7 +41,8 @@ function initVue(data) {
 				src: globalAudioConfig.src,
 				currentTime: 0,
 				totalTime: 0,
-				play: false
+				play: false,
+				isPlayGoToNext: false  		// 是否因为播放自动跳转到下一页
 			},
 			// 设置页面
 			setting_opacity: 100,
@@ -126,6 +127,7 @@ function initVue(data) {
 				}
 			},
 			pageActiveIndex: function () {
+				// 翻页后，重置当前点读页设置全程音频的时间
 				this.audioplayer.currentTime = 0
 				this.setAudioPlayerTotalTime()
 
@@ -133,8 +135,11 @@ function initVue(data) {
 					if (this.pageTimes[this.pageActiveIndex] === null) {
 						this.pauseAudio()
 					}
-					var currentPageTime = this.getPageTime(this.pageActiveIndex)
-					this.globalAudio.currentTime = currentPageTime.startTime
+					if (!this.isPlayGoToNext) {
+						var currentPageTime = this.getPageTime(this.pageActiveIndex)
+						this.globalAudio.currentTime = currentPageTime.startTime
+						this.isPlayGoToNext = false
+					}
 				}
 
 				if (window.galleryTop && !window.galleryTop.autoplaying) {
@@ -247,6 +252,7 @@ function initVue(data) {
 			// 选择点读页
 			handleSelectedPage: function (e) {
 				this.pageActiveIndex = parseInt($(e.target).data('index'))
+				this.isPlayGoToNext = false
 				this.popup_pagelist = false
 			},
 			handleAudioPlayerSetting: function () {
@@ -285,6 +291,7 @@ function initVue(data) {
 							// 处理是否需要点读页跳转的逻辑
 							if (that.pageActiveIndex + 1 < that.pageCount) {
 								that.pageActiveIndex = currentPageTime.nextPageIndex
+								that.isPlayGoToNext = true
 							}
 						}
 					}, 500)
@@ -303,6 +310,7 @@ function initVue(data) {
 				}
 				this.audioplayer.play = true
 				this.setting_bgaudio_play = false
+				clearTimeout(this.bgAudioTimer)
 			},
 			pauseAudio: function () {
 				if (!this.globalAudio.paused) {
@@ -375,7 +383,6 @@ function initVue(data) {
 					if (this.setting_gap > 0 && flag) {
 						window.galleryTop.params.autoplay = this.setting_gap * 1000
 						window.galleryTop.startAutoplay()
-						console.log(window.galleryTop.autoplaying)
 					}
 				}
 			},

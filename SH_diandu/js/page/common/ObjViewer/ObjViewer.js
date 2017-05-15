@@ -243,13 +243,11 @@ window.ObjViewer = (function () {
 			})
 
 			hammerDom.on('panleft', function (e) {
-				console.log('panleft')
-				banana.rotation.y += 0.1;
+				banana.rotation.y -= 0.1;
 				render()
 			})
 			hammerDom.on("panright", function (e) {
-				console.log('panright')
-				banana.rotation.y -= 0.1;
+				banana.rotation.y += 0.1;
 				render()
 			});
 			hammerDom.on("panup", function () {

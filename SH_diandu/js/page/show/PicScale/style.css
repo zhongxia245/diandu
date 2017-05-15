@@ -5,7 +5,7 @@
 .pic-scale-full-btn {
   position: absolute;
   z-index: 9997;
-  top: 10px;
+  top: 50px;
   left: 90px;
   width: 192px;
   height: 65px;
@@ -87,3 +87,14 @@
 }
 
 
+@media all and (orientation: landscape) {
+  .pic-scale-full-btn {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .pic-scale-tip{
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
