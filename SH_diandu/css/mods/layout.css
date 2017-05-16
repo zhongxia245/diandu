@@ -1,4 +1,7 @@
 @media all and (orientation: landscape) {
+  body {
+    display: flex;
+  }
   .pages_pagination {
     right: 10px;
     left: inherit !important;

@@ -127,10 +127,19 @@ $(function () {
 });
 
 /*========================页面缩放,横竖屏切换事件 START=====================*/
+// if (window.onorientationchange) {
+// 	window.onorientationchange = function () {
+// 		fn_onResize();
+// 	};
+// } else {
+
+// }
+
+/*后期改掉这部分操作*/
 $(window).on('resize', function (e) {
 	setTimeout(function () {
 		//主要用户移动端,弹出输入法面板,导致触发 resize. 如果是输入法触发的resize,不做处理
-		if (!window.SHOWINPUT) {
+		if (!window.SHOWINPUT && !window.SHOWVIDEO) {
 			fn_onResize();
 		}
 	}, 10)
@@ -142,6 +151,11 @@ $(window).on('resize', function (e) {
 function fn_onResize() {
 	window.W = $(window).width();
 	window.H = $(window).height();
+	if (window.W > window.H) {
+		window.W -= $('#header_vue').width();
+	} else {
+		window.H -= $('#header_vue').height();
+	}
 
 	$('#container').css({
 		height: window.H,
@@ -466,12 +480,13 @@ function initSwipe() {
 				if (GLOBAL.CurrentPageIndex !== swiper.activeIndex) {
 					//背景缩放移动
 					bgScaleOp(swiper.activeIndex);
-					//添加点读点闪烁效果
-					DianduEffect.blink(swiper.activeIndex);
 
 					GLOBAL.CurrentPageIndex = swiper.activeIndex;
 
 					window.VueApp.$data.pageActiveIndex = swiper.activeIndex
+
+					//添加点读点闪烁效果
+					DianduEffect.blink(swiper.activeIndex);
 
 					$('#id_pagination_cur').text(swiper.activeIndex + 1);
 
@@ -775,7 +790,7 @@ function getPointSizeScale(imgW, imgH) {
  */
 function initDianDuPage(data, id) {
 	var bgPath = data['pic'];
-	var h = $(window).height()
+	var h = window.H
 	var html = "";
 	html += '<div id="' + id + '" data-id="' + data['id'] + '" class="m-bg swiper-slide swiper-lazy" style="height:' + h + 'px;">'
 	html += '    <div class="m-dd-start-comment-div"></div>'
@@ -1119,7 +1134,7 @@ function closeVideoOrAudio(flag) {
 	//隐藏所有的播放GIF图
 	// DianduEffect.audio_blink($('.m-audio'), false)
 
-	$('.m-audio img').hide(); 
+	$('.m-audio img').hide();
 	$('.m-audio').css('background-size', '100%')
 
 	//清除闪烁
@@ -1198,12 +1213,13 @@ function bindEvent() {
 
 		area.bgW = $cTar.parents('.wrap').width();
 		area.bgH = $cTar.parents('.wrap').height();
-
+		window.SHOWVIDEO = true
 		PlayVideo.show($cTar.parents('.wrap'), url, area, wrapTop, function () {
 			closeVideoOrAudio();
 			//关闭音频的时候,间隔自动播放的时间在启动
 			// GLOBAL.BGAUDIO.setTimePlay()
 			VueApp.restartPlayBgAudio()
+			window.SHOWVIDEO = false
 		});
 		return false;
 	});

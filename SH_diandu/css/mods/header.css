@@ -1,3 +1,8 @@
+#header_vue {
+  height: 45px;
+  width: 100%;
+}
+
 .diandu__header {
   position: fixed;
   height: 45px;
@@ -61,6 +66,10 @@
 }
 
 @media all and (orientation: landscape) {
+  #header_vue {
+    width: 45px;
+    height: 100%;
+  }
   .diandu__header {
     width: 45px;
     height: 100%;
@@ -77,6 +86,6 @@
     align-items: center;
   }
   .diandu-header-right__comment, .diandu-header-right__setting {
-    margin-right: 0;
+    margin: 5px 0;
   }
 }

@@ -63,6 +63,10 @@ function initVue(data) {
 			//侧边栏 by brian 20170511 END
 		},
 		created: function () {
+			var version = Util.getBrowserInfo()
+			if (version.iPhone && version.weixin) {
+				MINT.Toast('请用safari浏览器打开，享受更好体验哦', 3000)
+			}
 			if (!this.globalAudio) {
 				this.initGlobalAudio()
 			}
@@ -276,7 +280,11 @@ function initVue(data) {
 			/*============= 全程音频相关 START==================*/
 			initGlobalAudio: function () {
 				var that = this
+
+				// 加载m3u8的音频文件，解决iphone加载音频特慢问题
 				that.globalAudio = new Audio(that.audioplayer.src)
+				that.globalAudio.load()
+				// Util.setAudioSource(that.globalAudio, that.audioplayer.src)
 
 
 				that.globalAudio.addEventListener('canplaythrough', function (e) {
@@ -360,7 +368,10 @@ function initVue(data) {
 			/*============= 背景音乐 START==================*/
 			initBgAudio: function () {
 				var that = this
+
 				that.bgAudio = new Audio(that.bg_audio_src)
+				that.bgAudio.load()
+				// Util.setAudioSource(that.bgAudio, that.bg_audio_src)
 
 				if (Util.IsPC()) {
 					that.playBgAudio()
