@@ -49,6 +49,9 @@ function initVue(data) {
 			setting_gap: 5,
 			setting_bgaudio_enable: !!globalAudioConfig.src,
 			setting_bgaudio_play: false,
+
+			// 背景图放大
+			hasScale: false,
 			//侧边栏 by brian 20170511 START
 			teamid: 0,
 			logoid: 0,
@@ -181,8 +184,27 @@ function initVue(data) {
 					this.bgAudio.pause()
 				}
 			},
+			hasScale: function () {
+				Vue.nextTick(function () {
+					if (VueApp.$data.hasScale) {
+						var $btnScaleBtn = $('.diandu-header__scale')
+						if ($btnScaleBtn.length) {
+							$btnScaleBtn.addClass('custom-point-blink')
+							setTimeout(function () {
+								$btnScaleBtn.removeClass('custom-point-blink')
+							}, 2000)
+						}
+					}
+				})
+			}
 		},
 		methods: {
+			handleScaleNormal: function () {
+				this.hasScale = false
+				if (GLOBAL.picScale) {
+					GLOBAL.picScale.goToNormal()
+				}
+			},
 			// 全屏
 			handleFullPanel: function () {
 				if (!this.is_fullscreen) {

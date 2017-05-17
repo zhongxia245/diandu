@@ -51,6 +51,7 @@ window.DianduEffect = (function (dd) {
 			}
 		})
 
+
 		//开关图闪烁,然后隐藏,如果默认显示,则闪烁,不隐藏
 		var $hideImgs = $page.find('.on-off-hideimg');
 		var $hideArea = $page.find('.on-off-switch-area');

@@ -349,18 +349,22 @@ function bgScaleOp(currentIndex) {
 	GLOBAL.picScale = null;
 	GLOBAL.picScale = new PicScale('#_diandu' + currentIndex, '.wrap', _width, _height,
 		function (ev) {
+			VueApp.$data.hasScale = true
 			if (this.scale > 1) {
 				window.galleryTop.lockSwipes();
 			} else {
+				VueApp.$data.hasScale = false
 				window.galleryTop.unlockSwipes();
 			}
 		},
 		function () {
 			if (this.scale > 1) {
-				GLOBAL.picScale.showTip();
+				VueApp.$data.hasScale = true
+				// GLOBAL.picScale.showTip();
 				window.galleryTop.lockSwipes();
 			} else {
-				GLOBAL.picScale.hideTip();
+				VueApp.$data.hasScale = false
+				// GLOBAL.picScale.hideTip();
 				window.galleryTop.unlockSwipes();
 			}
 		}

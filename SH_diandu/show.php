@@ -76,8 +76,15 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   <div id="header_vue">
     <!--header START-->
     <header class="diandu__header">
-      <div class="diandu__header--left" @click="handleOpenSideBar">
-        <i class="fa fa-bars"></i>
+      <div class="diandu__header--left">
+        <i class="fa fa-bars" @click="handleOpenSideBar"></i>
+        <img 
+          v-cloak 
+          v-if="hasScale" 
+          @click="handleScaleNormal" 
+          src="./imgs/mods/header/scale.png" 
+          class="diandu-header__scale"
+          alt="放大">
       </div>
       <div class="diandu__header--center">
         <img 

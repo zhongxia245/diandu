@@ -27,6 +27,7 @@
   flex: 2;
   text-align: left;
   color: #c0c0c0;
+  display: flex;
 }
 
 .diandu__header--center {
@@ -63,6 +64,12 @@
 
 .diandu-header-right__setting {
   margin-right: 13px;
+}
+
+.diandu-header__scale {
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
 }
 
 @media all and (orientation: landscape) {

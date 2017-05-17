@@ -40,7 +40,7 @@ window.PicScale = (function () {
 		this._oldScale = 1;
 		this.cbStart = cbStart; //开始滑动的回调
 		this.cbEnd = cbEnd; //滑动结束的回调
-		this.cbAllowScale = cbAllowScale || function () { return true};   //是否允许放大缩小
+		this.cbAllowScale = cbAllowScale || function () { return true };   //是否允许放大缩小
 		this.picInit();
 	}
 
@@ -95,6 +95,12 @@ window.PicScale = (function () {
 					PicScale.prototype.noShowTipText = true; //记录不在提示
 				})
 			}
+		},
+		goToNormal: function () {
+			this.reset();
+			this._selfPosition();
+			this._stopCallback();
+			this.hideTip();
 		},
 
 		hideTip: function () {
