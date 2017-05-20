@@ -750,7 +750,7 @@ ul, li {
     width: 100%;
     height: 100%;
     background-image: url(../imgs/viewer3d_point.png);
-    background-size: 30px 30px;
+    background-size: 30%;
     background-repeat: no-repeat;
     background-position: center;
     z-index: 1;
@@ -775,7 +775,7 @@ ul, li {
 
 .m-viewer3d__event {
     position: fixed;
-    top: 0;
+    top: 45px;
     left: 0;
     bottom: 0;
     right: 0;
@@ -784,6 +784,13 @@ ul, li {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media all and (orientation: landscape) {
+    .m-viewer3d__event {
+        left: 45px;
+        top: 0;
+    }
 }
 
 .m-viewer3d__event-wrap {

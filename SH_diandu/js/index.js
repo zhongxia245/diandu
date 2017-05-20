@@ -114,7 +114,7 @@ var _upload = (function () {
 			accept: {
 				title: config.fileTypeDesc || 'Images',
 				extensions: config.extensions || '',
-				mimeTypes: config.fileTypeExts || 'image/png,image/jpg,image/gif'
+				mimeTypes: config.fileTypeExts || 'image/png,image/jpg,image/gif,image/jpeg'
 			},
 			auto: true,
 			threads: 1,
