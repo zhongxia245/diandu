@@ -1,7 +1,3 @@
-.pic-scale {
-
-}
-
 .pic-scale-full-btn {
   position: absolute;
   z-index: 9997;
@@ -40,19 +36,9 @@
   line-height: 40px;
 }
 
-@media screen and (orientation: landscape) {
-  .pic-scale-tip {
-
-  }
-}
-
-@media screen and (orientation: portrait) {
-  .pic-scale-tip {
-
-  }
-}
 
 /*定义一个动画效果*/
+
 @-webkit-keyframes tipShow {
   0% {
     opacity: 0;
@@ -86,14 +72,13 @@
   animation: 4s tipShow 1 ease-out;
 }
 
-
 @media all and (orientation: landscape) {
   .pic-scale-full-btn {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
   }
-  .pic-scale-tip{
+  .pic-scale-tip {
     left: 50%;
     transform: translateX(-50%);
   }

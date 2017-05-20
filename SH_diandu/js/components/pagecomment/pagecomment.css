@@ -7,7 +7,7 @@ body {
     font: 400 14px/1.5 "\5FAE\8F6F\96C5\9ED1", Helvetica;
     color: #000;
     background-color: #fff;
-    -webkit-user-select: none;
+    user-select: none;
     -webkit-text-size-adjust: none;
 }
 
@@ -21,7 +21,7 @@ body {
     /*padding-bottom: .44rem !important;*/
     font-size: .14rem;
     color: #1b1b1b;
-    -webkit-user-select: auto !important;
+    user-select: auto !important;
 }
 
 .main-comment-list {
@@ -150,10 +150,6 @@ body {
     margin: .08rem 0;
     line-height: 1.4
 }
-
-.main-comment-list .cmt-content .cmt-comment-audio {}
-
-.main-comment-list .cmt-content .cmt-comment-audio img {}
 
 .main-comment-list.small .cmt-content, .main-comment-list.small2 .cmt-content {
     margin: .05rem 0 -.01rem
