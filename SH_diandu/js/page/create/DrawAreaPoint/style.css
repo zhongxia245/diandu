@@ -40,6 +40,21 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-image: url('./imgs/viewer3d_point.png');
     background-size: 100% 100%;
+}
+
+.draw-area__point-type--audio {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_audio.png');
+}
+
+.draw-area__point-type--video {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_video.png');
+}
+
+.draw-area__point-type--exam {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_exam.png');
+}
+
+.draw-area__point-type--viewer3d {
+    background-image: url('../../../../imgs/diandu_point_icon/icondian_3d.png');
 }

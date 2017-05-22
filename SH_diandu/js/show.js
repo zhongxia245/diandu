@@ -688,61 +688,29 @@ function initPage(id, data) {
  * @param {int} ingH 图片的高
  */
 function initWindow(pageIndex, pageData, imgW, imgH) {
-
+	/**
+	 * 初始化相关的区域设置[视频，音频，3D模型]
+	 */
 	var pointsData = pageData['points'];
 	for (var i = 0; i < pointsData.length; i++) {
 		var pointData = JSON.parse(pointsData[i].data || "{}");
-		if (pointData.type === 'viewer3d' && pointData.drawcustomarea && pointData.drawcustomarea.type === 'area') {
-			/**
-			 * 只能在点读区域中进行对模型进行操作
-			 */
-			var canvasId = 'viewer3d_' + pageIndex + '_' + i
-			var canvasEventAreaId = 'viewer3d_event_' + pageIndex + '_' + i
-			var $canvas = $('#' + canvasId)
-			new ObjViewer(canvasId,
-				{
-					url: $canvas.data('url'),
-					width: $canvas.width(),
-					height: $canvas.height(),
-					data: pointData.drawcustomarea,
-					canvasEventAreaId: canvasEventAreaId,   //获取焦点后，在该区域上操作，作用在模型上
-					cbCloseEventArea: function (ev, dom, temp_canvasId, setRenderSize) {
-						// ev 点击事件源  dom 操作模型的事件区域  canvasId 模型展示区域的id
-						var $temp_canvas = $('#' + temp_canvasId)
-						var $viewer3d_tip = $temp_canvas.parent().find('.js-viewer3d-tip')
-						var $viewer3d_point = $temp_canvas.parent().find('.js-viewer3d-point')
-
-						if (ev.target.className.indexOf('js-viewer3d-event-scale') !== -1) {
-
-							if (!$temp_canvas.parent().hasClass('viewer3d_max')) {
-								$temp_canvas.parent().addClass('viewer3d_max')
-								$(dom).find('.js-viewer3d-event-area').addClass('viewer3d_event_max')
-							} else {
-								$temp_canvas.parent().removeClass('viewer3d_max')
-								$(dom).find('.js-viewer3d-event-area').removeClass('viewer3d_event_max')
-							}
-							setRenderSize($temp_canvas.parent().width(), $temp_canvas.parent().height())
-
-						} else if (ev.target.className.indexOf('js-viewer3d-event-area') === -1) {
-							dom.classList.add('u-hide')
-							$viewer3d_point.show()
-							$viewer3d_tip.hide()
-
-							//  如果已经放大了，则还原到原来大小
-							$temp_canvas.parent().removeClass('viewer3d_max')
-							$(dom).find('.js-viewer3d-event-area').removeClass('viewer3d_event_max')
-							setRenderSize($temp_canvas.parent().width(), $temp_canvas.parent().height())
-						} else {
-							// 如何点击的时候，操作提示图还没有隐藏，则手动关闭（默认3s关闭）
-							if ($viewer3d_tip.css('display') !== 'none') {
-								$viewer3d_tip.hide()
-							}
-						}
-					}
-				})
+		if (pointData.drawcustomarea && pointData.drawcustomarea.type === 'area') {
+			switch (pointData.type) {
+				case 'viewer3d':
+					AreaSetting.initViewer3d(pageIndex, i, pointData)
+					break
+				case 'audio':
+					AreaSetting.initAudio()
+					break
+				case 'video':
+					AreaSetting.initVideo()
+					break
+			}
 		}
 	}
-  /**
+
+
+	/**
    * 视窗上面的点读点类型图标
    */
 	$('.js-viewer3d-point').off().on('click', function (e) {
@@ -757,6 +725,8 @@ function initWindow(pageIndex, pageData, imgW, imgH) {
 
 		var pointId = $cTar.parent().data('id')
 		$('#viewer3d_event_' + pointId).removeClass('u-hide')
+
+		AreaSetting.stopAreaAudio()
 	})
 
   /**
@@ -766,9 +736,7 @@ function initWindow(pageIndex, pageData, imgW, imgH) {
 		var $cTar = $(e.currentTarget)
 		$cTar.hide()
 	})
-
 }
-
 
 /**
  *  取点读点的缩放比例
@@ -855,7 +823,6 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 			var _pointData = JSON.parse(pointDatas[i]['data'] || '{}')
 			// 3d模型点读点
 			var drawCustomArea = _pointData.drawcustomarea || {}
-
 			var style = 'left:' + left + 'px; top:' + top + 'px; transform: scale(' + pointScale + '); transform-origin:left top;-webkit-transform: scale(' + pointScale + '); -webkit-transform-origin:left top;';
 
 			var mediaImg = "";
@@ -925,44 +892,21 @@ function initPoints(pageIndex, data, imgW, imgH, scale) {
 				}
 			}
 			// 3d模型
+			// FIX:这里的判断  不等于point, 是为了兼容旧的点读版本
 			else if (drawCustomArea.type && drawCustomArea.type !== 'point') {
-				var w = imgW * parseFloat(drawCustomArea.w || 0.2);
-				var h = imgH * parseFloat(drawCustomArea.h || 0.2);
-				var x = imgW * parseFloat(_pointData.x);
-				var y = imgH * parseFloat(_pointData.y);
+				switch (_pointData.type) {
+					case 'viewer3d':
+						html += AreaSetting.initHTML_Vierer3d(pointId, drawCustomArea, _pointData, imgW, imgH)
+						break;
 
-				// 圆型,宽高一样，按小的算
-				if (drawCustomArea.pointType === 'circle') {
-					if (w > h) {
-						w = h;
-					} else {
-						h = w;
-					}
+					case 'audio':
+						html += AreaSetting.initHTML_Audio(pointId, drawCustomArea, _pointData, imgW, imgH)
+						break;
+
+					case 'video':
+						html += AreaSetting.initHTML_Video(pointId, drawCustomArea, _pointData, imgW, imgH)
+						break;
 				}
-
-				var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
-				css += 'border-color:' + Util.hex2RGBA(drawCustomArea.borderColor, drawCustomArea.border_opacity) + '; border-width:' + drawCustomArea.border_width + 'px;';
-				css += 'opacity:' + drawCustomArea.btn_opacity + ';'
-
-				html += '<div data-id="' + pointId + '" data-opacity="' + drawCustomArea.btn_opacity + '"  class="draw-custom-area draw-custom-area__' + drawCustomArea.pointType + ' " style="' + css + '">'
-				html += '   <div class="m-viewer3d__point js-viewer3d-point" data-style="' + css + '"></div>'
-				html += '   <div class="m-viewer3d__tip js-viewer3d-tip"></div>'
-				html += '   <canvas class="m-viewer3d__canvas no-swiper no-scale" data-url="' + _pointData.url + '" id="viewer3d_' + pointId + '"></canvas>'
-				html += '</div>'
-
-				// 模型视窗的操作区域，覆盖点读页，让在这上面的操作针对模型
-				var wrapCss = 'width:' + imgW + 'px;height:' + imgH + 'px;';
-				var eventAreaCss = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none;';
-				var eventAreaHtml = ''
-				eventAreaHtml += '<div class="m-viewer3d__event u-hide" id="viewer3d_event_' + pointId + '">'
-				eventAreaHtml += '	<div class="m-viewer3d__event-wrap" style="' + wrapCss + '">'
-				eventAreaHtml += '		<div class="m-viewer3d__event-area js-viewer3d-event-area" style="' + eventAreaCss + '">'
-				eventAreaHtml += '		<div class="viewer3d-btns__scale m-viewer3d__event-scale js-viewer3d-event-scale"></div>'
-				eventAreaHtml += '		</div>'
-				eventAreaHtml += '	</div>'
-				eventAreaHtml += '</div>'
-				$('body').append(eventAreaHtml)
-
 			}
 			//普通点读点
 			else {
@@ -1162,6 +1106,8 @@ function closeVideoOrAudio(flag) {
 		// GLOBAL.BGAUDIO.pause();
 		VueApp.pauseBgAudio()
 	}
+
+	AreaSetting.stopAreaAudio()
 }
 /*=======================音频视频播放相关 END====================*/
 /*=======================点击事件相关 START====================*/

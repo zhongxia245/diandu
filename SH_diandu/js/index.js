@@ -485,13 +485,15 @@ var _edit = (function () {
 		/**
 		 * 设置了自定义图片,自定义标题,或者视频播放区域, 则设置 点模式 为 激活状态
 		*/
-		var is_point_mode = type !== 1 || (point.area && JSON.parse(point.area).w) || (drawAreaData && drawAreaData.type === 'point')
+		var is_point_mode = (type !== 1 && type !== 6) ||
+			(point.area && JSON.parse(point.area).w) ||
+			(drawAreaData && drawAreaData.type === 'point')
+
 		if (is_point_mode) {
 			$('.point-types__setting[data-id="' + dataid + '"]')
 				.find('.point-types-setting__point')
 				.addClass('point-types-setting__point--active')
 		}
-
 		// 设置3D模型点读点的选中状态
 		if (type === 6) {
 			$('.upload-type>[data-id="' + dataid + '"]')
@@ -864,7 +866,6 @@ function bindEvent() {
 		var dataid = window.temp_draw_point_data.id
 		var pointData = _data.getDDItems(dataid)
 		var _pageData = window.DD.items[pageIndex - 1]
-
 		// 自定义绘制图形  START 
 		var drawCustomArea = new Draw.DrawCustomArea({
 			pageId: 'id_bg' + pageIndex,
@@ -883,10 +884,10 @@ function bindEvent() {
 					drawcustomarea: {
 						w: data.width / 1200,
 						h: data.height / 675,
-						pointType: config.type,
-						// 下面的是默认值
-						bgColor: '#999999',
-						modelColor: '#14f506'
+						//FIX: 默认为区域设置模式，（3D模型点模式的设置页面和区域模式设置页面一样，共用了，因此这里设置type（area,point）来区分）
+						type: 'area',
+						// FIX：早期只有一个3D模型区域设置，然后这个名称的含义是：区域展示的类型（矩形，圆角矩形，圆等的类型）
+						pointType: config.type
 					}
 				})
 
@@ -900,7 +901,7 @@ function bindEvent() {
 					data: _data.getDDItems(dataid).drawcustomarea,
 					type: window.temp_draw_point_data.pointType,
 					callback: function (data) {
-
+						debugger
 						//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
 						var tempPointData = _data.getDDItems(dataid)
 						data = $.extend(_data.getDDItems(dataid).drawcustomarea, data)
@@ -989,6 +990,7 @@ function createPoint(pointId, type, config) {
 			data: _data.getDDItems(config.pointId).drawcustomarea,
 			type: config.drawAreaData.pointType,
 			callback: function (data) {
+				debugger
 				//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
 				var tempPointData = _data.getDDItems(config.pointId)
 				data = $.extend(_data.getDDItems(config.pointId).drawcustomarea, data)
@@ -1422,7 +1424,7 @@ function fn_settingArea(e, data) {
 		return
 	}
 	// TODO:目前只开发了3D模型的区域，其他还未开发
-	if (pointType !== 'viewer3d') {
+	if (pointType !== 'viewer3d' && pointType !== 'audio') {
 		alert('该点读点类型，区域触发功能尚未开发，请稍后')
 		return
 	}

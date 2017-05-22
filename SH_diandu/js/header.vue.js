@@ -70,7 +70,7 @@ function initVue(data) {
 			if (version.iPhone && version.weixin) {
 				MINT.Toast('请用safari浏览器打开，享受更好体验哦', 3000)
 			}
-			if (!this.globalAudio) {
+			if (!this.globalAudio && !!this.audioplayer.src) {
 				this.initGlobalAudio()
 			}
 			if (!this.bgAudio && !!this.bg_audio_src) {
@@ -304,9 +304,10 @@ function initVue(data) {
 				var that = this
 
 				// 加载m3u8的音频文件，解决iphone加载音频特慢问题
-				that.globalAudio = new Audio(that.audioplayer.src)
+				// that.globalAudio = new Audio(that.audioplayer.src)
+				that.globalAudio = new Audio()
 				that.globalAudio.load()
-				// Util.setAudioSource(that.globalAudio, that.audioplayer.src)
+				Util.setAudioSource(that.globalAudio, that.audioplayer.src)
 
 
 				that.globalAudio.addEventListener('canplaythrough', function (e) {
@@ -335,7 +336,7 @@ function initVue(data) {
 				})
 			},
 			playAudio: function () {
-				if (this.globalAudio.paused) {
+				if (this.globalAudio && this.globalAudio.paused) {
 					this.globalAudio.play()
 				}
 				this.audioplayer.play = true
@@ -343,7 +344,7 @@ function initVue(data) {
 				clearTimeout(this.bgAudioTimer)
 			},
 			pauseAudio: function () {
-				if (!this.globalAudio.paused) {
+				if (this.globalAudio && !this.globalAudio.paused) {
 					this.globalAudio.pause()
 				}
 				this.audioplayer.play = false
@@ -391,9 +392,10 @@ function initVue(data) {
 			initBgAudio: function () {
 				var that = this
 
-				that.bgAudio = new Audio(that.bg_audio_src)
+				// that.bgAudio = new Audio(that.bg_audio_src)
+				that.bgAudio = new Audio()
 				that.bgAudio.load()
-				// Util.setAudioSource(that.bgAudio, that.bg_audio_src)
+				Util.setAudioSource(that.bgAudio, that.bg_audio_src)
 
 				if (Util.IsPC()) {
 					that.playBgAudio()

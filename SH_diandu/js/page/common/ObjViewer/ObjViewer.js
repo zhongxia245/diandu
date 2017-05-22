@@ -266,6 +266,15 @@ window.ObjViewer = (function () {
 
 			// 三个手指点击，返回默认状态
 			mc.on('trebleTap', function () {
+				defaultStatus()
+			})
+
+			$(dom_scene).on('dblclick', function () {
+				defaultStatus()
+			})
+
+			// 返回默认状态
+			function defaultStatus() {
 				banana.position.x = 0;
 				banana.position.y = 0;
 				banana.position.z = 0;
@@ -273,7 +282,7 @@ window.ObjViewer = (function () {
 				rotateDefault()
 				centerCam(banana);
 				render();
-			})
+			}
 
 			dom_scene.addEventListener('mousewheel', mousewheel, false);
 

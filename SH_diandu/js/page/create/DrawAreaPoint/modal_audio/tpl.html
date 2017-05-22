@@ -1,0 +1,33 @@
+<div class="ds-audio__container">
+  <div class="ds-audio__header">{{title}}</div>
+  <div class="ds-audio">
+    <!--FIX：这里设置高度，解决边框宽度变大后，撑开高度,下面内容往下退-->
+    <div class="ds-audio__item" style="height:70px;">
+      <div class="ds-audio__show-page" :style="{ border:border_style}">
+        中间显示框里的页面
+      </div>
+    </div>
+    <div class="ds-audio__item">
+      <div class="ds-audio__item-range">
+        <p>边线透明度</p>
+        <mt-range :min="0" :max="100" class="audio-player__range" v-model="border_opacity">
+        </mt-range>
+      </div>
+    </div>
+    <div class="ds-audio__item">
+      <div class="ds-audio__item-range">
+        <p>边线宽度</p>
+        <mt-range :min="0" :max="10" class="audio-player__range" v-model="border_width">
+        </mt-range>
+      </div>
+    </div>
+    <div class="ds-audio__item">
+      <div class="ds-audio__item-color">
+        <p>边线颜色<span>（点击修改）</span></p>
+        <p class="ds-audio__color" :style="{ background:border_color}" @click="handleBorderColor"></p>
+        <input type="color" name="audio-border-color" value="#ff0065" @change="handleChangeBorderColor">
+      </div>
+    </div>
+  </div>
+  <div class="ds-audio__submit js-submit" @click="handelSubmit">提交</div>
+</div>

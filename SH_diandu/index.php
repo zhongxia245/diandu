@@ -27,6 +27,7 @@ if ($id > 0) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>创建点读页</title>
+    <link rel="stylesheet" href="./js/lib/vue/MINT/style.css">
     <link rel="stylesheet" href="./css/lib/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="./js/lib/bootstrap-slider/bootstrap-slider.min.css"/>
     <link rel="stylesheet" href="./js/lib/uploadify/uploadify.css"/>
@@ -389,6 +390,8 @@ if ($id > 0) {
     </script>
     <!--背景图模板 END -->
 <!--lib-->
+<script src="./js/lib/vue/vue.min.js"></script>
+<script src="./js/lib/vue/MINT/index.js"></script>
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/handlebars.min.js"></script>
 <script src="js/lib/autosize.min.js"></script>

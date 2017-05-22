@@ -65,9 +65,14 @@ window.DianduEffect = (function (dd) {
 				_effect($hideImg, 1);
 			}
 		}
+
 		_effect($hideArea, 2);
 		_effect($drawCustomArea, 3);
 
+
+		// 区域设置
+		var $areaSettingAudio = $page.find('.area-setting__audio ')
+		_effect($areaSettingAudio, 1);
 	}
 
   /**
