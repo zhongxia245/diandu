@@ -151,10 +151,12 @@ $(window).on('resize', function (e) {
 function fn_onResize() {
 	window.W = $(window).width();
 	window.H = $(window).height();
+
+	// FIX BUG 1051：在全屏后，在退出全屏，获取的工具栏宽度可能为0，因为设置一个默认值  
 	if (window.W > window.H) {
-		window.W -= $('#header_vue').width();
+		window.W -= ($('#header_vue').width() || 45);
 	} else {
-		window.H -= $('#header_vue').height();
+		window.H -= ($('#header_vue').height() || 45);
 	}
 
 	$('#container').css({

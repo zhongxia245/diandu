@@ -70,7 +70,7 @@ window.DianduEffect = (function (dd) {
 		_effect($drawCustomArea, 3);
 
 
-		// 区域设置
+		// 音频区域设置
 		var $areaSettingAudio = $page.find('.area-setting__audio ')
 		_effect($areaSettingAudio, 1);
 	}
@@ -101,7 +101,7 @@ window.DianduEffect = (function (dd) {
 			$dom.removeClass('custom-point-blink')
 			switch (flag) {
 				case 1:
-					$dom.css('opacity', 0);
+					$dom.not('[data-show]').css('opacity', 0);
 					break;
 				case 2:
 					$dom.css('border', '0');

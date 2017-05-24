@@ -35,31 +35,19 @@
 
 @-webkit-keyframes audio_blink {
   0%, 50%, 100% {
-    -webkit-filter: drop-shadow(#FF9966 0px 0px 15px);
-    filter: drop-shadow(#FF9966 0px 0px 15px);
-    box-shadow: 0 0 5px red;
-    transform: scale(1.05)
+    transform: scale(1.02);
   }
   25%, 75% {
-    -webkit-filter: drop-shadow(#FF9966 0px 0px 30px);
-    filter: drop-shadow(#FF9966 0px 0px 30px);
-    box-shadow: 0 0 10px red;
-    transform: scale(1)
+    transform: scale(1);
   }
 }
 
 @keyframes audio_blink {
   0%, 50%, 100% {
-    -webkit-filter: drop-shadow(#FF9966 0px 0px 15px);
-    filter: drop-shadow(#FF9966 0px 0px 15px);
-    box-shadow: 0 0 5px red;
-    transform: scale(1.05)
+    transform: scale(1.02);
   }
   25%, 75% {
-    -webkit-filter: drop-shadow(#FF9966 0px 0px 30px);
-    filter: drop-shadow(#FF9966 0px 0px 30px);
-    box-shadow: 0 0 10px red;
-    transform: scale(1)
+    transform: scale(1);
   }
 }
 

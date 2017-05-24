@@ -47,7 +47,7 @@ function initVue(data) {
 			// 设置页面
 			setting_opacity: 100,
 			setting_gap: 5,
-			setting_bgaudio_enable: !!globalAudioConfig.src,
+			setting_bgaudio_enable: !!data.background,
 			setting_bgaudio_play: false,
 
 			// 背景图放大
@@ -374,7 +374,7 @@ function initVue(data) {
 					endTime = this.pageTimes[endIndex]
 
 					// 没有下一页的话，播放结束就不跳转到下一页
-					if (!endTime) {
+					if (!endTime && this.globalAudio) {
 						endTime = parseInt(this.globalAudio.duration)
 						endIndex = index
 					}
@@ -394,9 +394,8 @@ function initVue(data) {
 
 				// that.bgAudio = new Audio(that.bg_audio_src)
 				that.bgAudio = new Audio()
-				that.bgAudio.load()
 				Util.setAudioSource(that.bgAudio, that.bg_audio_src)
-
+				that.bgAudio.load()
 				if (Util.IsPC()) {
 					that.playBgAudio()
 				} else {

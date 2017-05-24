@@ -394,6 +394,7 @@ var _edit = (function () {
 			addDianDuPageTpl()
 			addDianduPageByUpload(pageIndex, picName, picPath)
 			setBgImageScale(picPath, '#id_bg' + pageIndex)
+
 			// 设置上传的图片信息,以及修改提示信息
 			$('.sort-info').show()
 			var _$fileBg = $('#file_bg' + pageIndex)
@@ -470,15 +471,15 @@ var _edit = (function () {
 		if (title && title.title) type = 2
 		if (pic && pic.src) type = 3
 		if (drawAreaData && drawAreaData.type === 'area') type = 6
-
 		var config = {
 			left: left,
 			top: top,
+			w: w,
+			h: h,
 			title: title,
 			pic: pic,
 			drawAreaData: drawAreaData
 		}
-
 		createPoint(dataid, type, config)
 		addDianDu(dataid, point)
 
@@ -693,8 +694,8 @@ var _edit = (function () {
 /*************************编辑页面 END**************************/
 /**
  * 设置背景图的缩放
- * @param path
- * @param id
+ * @param path 背景图路径
+ * @param id 背景图的DOM id
  */
 function setBgImageScale(path, id) {
 	// 获取图片的宽高
@@ -882,8 +883,9 @@ function bindEvent() {
 					x: location.x,
 					y: location.y,
 					drawcustomarea: {
-						w: data.width / 1200,
-						h: data.height / 675,
+						// FIX问题，这里针对图片大小，而不是窗口大小
+						w: data.width / _pageData.w,
+						h: data.height / _pageData.h,
 						//FIX: 默认为区域设置模式，（3D模型点模式的设置页面和区域模式设置页面一样，共用了，因此这里设置type（area,point）来区分）
 						type: 'area',
 						// FIX：早期只有一个3D模型区域设置，然后这个名称的含义是：区域展示的类型（矩形，圆角矩形，圆等的类型）
@@ -892,7 +894,6 @@ function bindEvent() {
 				})
 
 				drawCustomArea.setEnable(false)
-
 				//创建绘制区域内部的内容
 				new DrawAreaPoint({
 					id: '#' + dataid,
@@ -901,7 +902,6 @@ function bindEvent() {
 					data: _data.getDDItems(dataid).drawcustomarea,
 					type: window.temp_draw_point_data.pointType,
 					callback: function (data) {
-						debugger
 						//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
 						var tempPointData = _data.getDDItems(dataid)
 						data = $.extend(_data.getDDItems(dataid).drawcustomarea, data)
@@ -977,7 +977,6 @@ function createPoint(pointId, type, config) {
 	var pageIndex = parseInt(config.pointId.split('_')[0])
 	var pid = '#id_bg' + pageIndex
 	var style = "style='position:absolute; left:" + config.left + 'px; top :' + config.top + "px;'"
-
 	var html = CreatePoint.initPoint(type, config)
 	$(pid).append(html)
 
@@ -985,12 +984,11 @@ function createPoint(pointId, type, config) {
 		//创建绘制区域内部的内容
 		new DrawAreaPoint({
 			id: '#' + config.pointId,
-			pointIndex: pageIndex,
+			pointIndex: config.pointId.split('_')[1],
 			dataid: config.pointId,
 			data: _data.getDDItems(config.pointId).drawcustomarea,
 			type: config.drawAreaData.pointType,
 			callback: function (data) {
-				debugger
 				//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
 				var tempPointData = _data.getDDItems(config.pointId)
 				data = $.extend(_data.getDDItems(config.pointId).drawcustomarea, data)
@@ -1137,7 +1135,7 @@ function setUploadControl(index) {
  * @param fileName 文件名
  * @param resultPath 文件路径
  */
-function addDianduPageByUpload(index, fileName, resultPath) {
+function addDianduPageByUpload(index, fileName, resultPath, callback) {
 	if (resultPath.indexOf('error') === -1) {
 		GLOBAL.SCREENTYPE = GLOBAL.SCREENTYPE || 'h'; // 默认横屏
 
@@ -1167,6 +1165,9 @@ function addDianduPageByUpload(index, fileName, resultPath) {
 			window.DD.items[index - 1]['pic'] = src
 
 			bindDianDuPageEvent()
+			if (callback) {
+				callback(window.DD.items[index - 1])
+			}
 		})
 	}
 }

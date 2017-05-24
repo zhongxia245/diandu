@@ -233,8 +233,8 @@ window.CreatePoint = (function () {
 	function initDrawAreaPoint(pointId, style, data) {
 		var drawAreaData = data.drawAreaData || {}
 		if (drawAreaData.w && drawAreaData.h) {
-			var width = drawAreaData.w * 1200;
-			var height = drawAreaData.h * 675;
+			var width = drawAreaData.w * data.w;
+			var height = drawAreaData.h * data.h;
 			style += 'width:' + width + 'px;height:' + height + 'px';
 		}
 		return '<div id="' + pointId + '" data-type="drawcustomarea"  style="' + style + '" class="draw-area-container draw-custom-area__' + drawAreaData.pointType + '"></div>'

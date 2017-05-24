@@ -132,6 +132,7 @@ window.AreaSetting = (function () {
 
 	/**
 	 * ==============================================================================
+	 * 下一个：音频区域设置相关操作
 	 * ==============================================================================
 	 */
 
@@ -161,13 +162,22 @@ window.AreaSetting = (function () {
 
 			$('.area-setting__audio').removeClass('audio-point-blink')
 			$('.area-setting__audio').css({ opacity: 0 })
+			$('.area-setting__audio').removeAttr('data-show')
 
 			$cTar.css({ opacity: 1 })
 			$cTar.addClass('audio-point-blink')
+			$cTar.attr('data-show', '1')
 
 			playAreaAudio($cTar.data('url'), $cTar)
-		})
 
+			$cTar.parents('.wrap').off().on('click', function (e) {
+				if (!$(e.target).hasClass('area-setting__audio')) {
+					stopAreaAudio()
+					$cTar.parents('.wrap').off()
+					setAreaAudioSrcNull()
+				}
+			})
+		})
 	}
 
 	function playAreaAudio(src, $dom) {
@@ -183,33 +193,43 @@ window.AreaSetting = (function () {
 			})
 
 			window._area_audio_.addEventListener('ended', function () {
-				console.log('end')
-				$dom.removeClass('audio-point-blink')
-				$dom.css({
-					opacity: 0
-				})
+				stopAreaAudio()
+				setAreaAudioSrcNull()
+				$dom.removeAttr('data-show')
 			})
-		} else {
+		} else {  //地址一样，表示点击暂停播放,或者再次点击播放
 			if (window._area_audio_.paused) {
 				window._area_audio_.play()
 			} else {
-				stopAreaAudio()
+				stopAreaAudio(true)
 			}
 		}
 	}
 
-	function stopAreaAudio() {
-		console.log('stop')
+	/**
+	 * 暂停播放
+	 * @param {boolean} flag true,边线不透明
+	 */
+	function stopAreaAudio(flag) {
+		if (!flag) {
+			$('.area-setting__audio').css({ opacity: 0 })
+		}
 		$('.area-setting__audio').removeClass('audio-point-blink')
-		$('.area-setting__audio').css({ opacity: 0 })
 		if (window._area_audio_ && !window._area_audio_.paused) {
 			window._area_audio_.pause()
+		}
+	}
+
+	function setAreaAudioSrcNull() {
+		if (window._area_audio_) {
+			$(window._area_audio_).html('')
 		}
 	}
 
 
 	/**
 	 * ==============================================================================
+	 * 下一个：视频区域设置相关操作
 	 * ==============================================================================
 	 */
 
