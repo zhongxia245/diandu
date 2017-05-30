@@ -1926,7 +1926,7 @@ function fn2_examCreate(e) {
 	var ids = CommonUtil.getIds(e)
 	// 试卷数据
 	var examData = _data.getDDItems(ids.id) || {}
-
+	
 	new ExamCreate('#_examCreate', examData, function (submitData) {
 		// 标识试卷已经上传
 		var $uploadFileName = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-file-name')

@@ -56,7 +56,6 @@ window.DianduEffect = (function (dd) {
 		var $hideImgs = $page.find('.on-off-hideimg');
 		var $hideArea = $page.find('.on-off-switch-area');
 		var $drawCustomArea = $page.find('.draw-custom-area')
-
 		for (var i = 0; i < $hideImgs.length; i++) {
 			var $hideImg = $($hideImgs[i])
 			if ($hideImg.attr('data-show') === 'true') {
@@ -101,7 +100,7 @@ window.DianduEffect = (function (dd) {
 			$dom.removeClass('custom-point-blink')
 			switch (flag) {
 				case 1:
-					$dom.not('[data-show]').css('opacity', 0);
+					$dom.not('.area-setting__audio[data-show]').css('opacity', 0);
 					break;
 				case 2:
 					$dom.css('border', '0');

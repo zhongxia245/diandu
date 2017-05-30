@@ -372,7 +372,6 @@ ExamCreate.prototype.getValue2Data = function (flag) {
           }
         }
       }
-
     }
   }
 }

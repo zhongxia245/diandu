@@ -1278,7 +1278,7 @@ function bindEvent() {
 		$img.show();
 		_title ? $title.html(_title) : $title.hide();
 		_url ? $img.attr('src', _url) : $img.hide();
-		$secImgText.find('.sec-imgtext-content').html(_content);
+		$secImgText.find('.sec-imgtext-content').html(decodeURIComponent(_content));
 
 		//设置内容可以滚动, 由于 zepto 为了搞定 微信向上滑兼容性, 重写了touchmove事件导致
 		$secImgText.find('.sec-imgtext-content').find('*').addClass('sec-scorll')

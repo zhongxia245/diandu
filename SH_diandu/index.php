@@ -214,6 +214,9 @@ if ($id > 0) {
                         <label style="width:300px">
                             <input type="radio" name="permissionType" value="1"> 仅在组内展示(限组内成员展示)
                         </label>
+                        <label style="width:300px">
+                            <input type="radio" name="permissionType" value="2"> 仅限VIP访问
+                        </label>
                     </div>
                 </div>
             </div>

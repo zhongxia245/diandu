@@ -1,3 +1,13 @@
+.ke-dialog {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.ke-content img {
+  max-width: 100%;
+}
+
 textarea, input {
   padding: 0;
   margin: 0;
@@ -133,4 +143,3 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   left: -9999px;
   position: relative;
 }
-
