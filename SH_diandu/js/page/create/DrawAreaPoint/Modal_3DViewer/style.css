@@ -122,7 +122,7 @@
   font-size: 12px;
 }
 
-.slider-horizontal .slider-handle {
+.ds-container .slider-horizontal .slider-handle {
   color: #cfcf0f !important;
   background: #3f3f3f !important;
   border-radius: 3px !important;

@@ -315,11 +315,6 @@ function init() {
  * @param  {[type]} data [description]
  */
 function initDiandu(data) {
-	$('#pages').html('');
-
-	initPage('pages', data);
-
-	initSwipe();
 
 	//针对早期的数据, 由于数据库默认保存 数据为 0 , 因此这边需要做处理
 	if (data['point_size'] !== "0") {
@@ -328,6 +323,13 @@ function initDiandu(data) {
 	if (data['back_color'] !== "0") {
 		GLOBAL.BACK_COLOR = data['back_color'];
 	}
+
+	$('#pages').html('');
+
+	initPage('pages', data);
+
+	initSwipe();
+
 	//设置背景图片空白区域的颜色
 	initPointSizeAndBgColor(GLOBAL.BACK_COLOR);
 

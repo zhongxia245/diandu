@@ -97,7 +97,7 @@
                                 <input type="radio" name="chargeType" value="0" checked> 免费(或由视频收费)
                             </label>
                             <label style="width:300px">
-                                <input type="radio" name="chargeType" value="1"> 收费单对VIP免费
+                                <input type="radio" name="chargeType" value="1"> 收费但对VIP免费
                             </label>
                         </div>
                         <div>
@@ -139,7 +139,9 @@
                         <div class="setting-btn-autovideo" id="btnAutoAudio">
                             <div class="autovideo__btns js-autovideo-btns">
                                 <div class="autovideo__btn-del js-autovideo-del"></div>
-                                <div class="autovideo__btn-download js-autovideo-download"></div>
+                                <a id="download_btnAutoAudio" download href="">
+                                    <div class="autovideo__btn-download"></div>
+                                </a>
                             </div>
                             <div class="autovideo__progress js-autovideo-progress"></div>
                             <span>点击上传自动播放时的背景音乐(MP3格式)</span>

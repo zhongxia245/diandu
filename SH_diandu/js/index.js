@@ -426,6 +426,8 @@ var _edit = (function () {
 			$('#file_btnAutoAudio_path').val(data['background'])
 			$('#btnAutoAudio>span').text(data['bgFileName'])
 			$('.js-autovideo-btns').css({ display: 'flex' })
+
+			$('#download_btnAutoAudio').attr('href', data['background']).attr('download', data['bgFileName'])
 		}
 
 		GLOBAL.POINT_SIZE = parseInt(data['point_size']) || 100
@@ -790,18 +792,9 @@ function bindEvent() {
 	$('.js-autovideo-del').on('click', function () {
 		if (confirm('是否删除背景音乐？')) {
 			$('#file_btnAutoAudio_path').val('');
+			$('#download_btnAutoAudio').removeAttr('href').removeAttr('download')
 			$('#btnAutoAudio>span').text('点击上传自动播放时的背景音乐(MP3格式)');
 			$('.js-autovideo-btns').hide()
-		}
-	})
-
-	// 下载音频
-	$('.js-autovideo-download').on('click', function () {
-		if (confirm('是否下载背景音乐？')) {
-			var autoAudioPath = $('#file_btnAutoAudio_path').val();
-			if (autoAudioPath && autoAudioPath !== '') {
-				window.open(autoAudioPath)
-			}
 		}
 	})
 
@@ -1926,7 +1919,7 @@ function fn2_examCreate(e) {
 	var ids = CommonUtil.getIds(e)
 	// 试卷数据
 	var examData = _data.getDDItems(ids.id) || {}
-	
+
 	new ExamCreate('#_examCreate', examData, function (submitData) {
 		// 标识试卷已经上传
 		var $uploadFileName = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-file-name')

@@ -280,7 +280,9 @@ if ($id > 0) {
           <div class="setting-btn-autovideo" id="btnAutoAudio">
             <div class="autovideo__btns js-autovideo-btns">
                 <div class="autovideo__btn-del js-autovideo-del"></div>
-                <div class="autovideo__btn-download js-autovideo-download"></div>
+                <a download href="">
+                    <div class="autovideo__btn-download"></div>
+                </a>
             </div>
             <div class="autovideo__progress js-autovideo-progress"></div>
             <span>点击上传自动播放时的背景音乐(MP3格式)</span>
@@ -326,7 +328,7 @@ if ($id > 0) {
                         <div class="webuploader-progress" id="file__progress{{id}}"></div>
                         <div id="__file{{id}}" data-fileId="{{id}}" name="upload" class="fileupload"></div>
                     </div>
-                    <img data-type="download" class="download" src="imgs/download.png" alt="download">
+                    <a id="download_{{id}}"><img data-type="download" class="download" src="imgs/download.png" alt="download"></a>
                 </div>
                 <div class='point-types__setting' data-id="{{id}}">
                     <div class='point-types-setting__area' data-type="setting-area">区域</div>
@@ -380,7 +382,7 @@ if ($id > 0) {
                     </div>
                 </div>
             </div>
-            <ul class="draw-custom-area js-draw-custom-area">
+            <ul class="draw-custom-area js-draw-custom-area" data-index="{{index}}">
                 <li>请直接在图片上绘制区域</li>
                 <li data-type="rect" class="draw-custom-area__item area__rect"></li>
                 <li data-type="roud" class="draw-custom-area__item area__roud"></li>
