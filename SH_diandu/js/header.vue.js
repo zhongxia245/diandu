@@ -372,12 +372,12 @@ function initVue(data) {
 
 				if (endIndex < this.pageTimes.length) {
 					endTime = this.pageTimes[endIndex]
-
-					// 没有下一页的话，播放结束就不跳转到下一页
-					if (!endTime && this.globalAudio) {
-						endTime = parseInt(this.globalAudio.duration)
-						endIndex = index
-					}
+				}
+				
+				// 没有下一页的话，播放结束就不跳转到下一页
+				if (!endTime && this.globalAudio) {
+					endTime = parseInt(this.globalAudio.duration)
+					endIndex = index
 				}
 				return {
 					startTime: startTime,
