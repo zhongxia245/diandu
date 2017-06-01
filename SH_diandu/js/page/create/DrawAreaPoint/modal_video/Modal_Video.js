@@ -5,288 +5,122 @@
 
 window.Modal_Video = (function () {
 	var currentScriptSrc = Util.getBasePath(document.currentScript.src);
-	var SLIDES = {
-		borderOpacity: {
-			name: 'border_opacity',
-			defaultValue: 1,
-			step: 0.1,
-			min: 0,
-			max: 1
-		},
-		borderWidth: {
-			name: 'border_width',
-			defaultValue: 5,
-			step: 1,
-			min: 0,
-			max: 10
-		},
-		btnOpacity: {
-			name: 'btn_opacity',
-			defaultValue: 1,
-			step: 0.1,
-			min: 0,
-			max: 1
-		},
-		bgOpacity: {
-			name: 'bg_opacity',
-			defaultValue: 1,
-			step: 0.1,
-			min: 0,
-			max: 1
-		}
-	}
   /**
    * 点读点类型弹窗
    * @param {any} options 弹窗配置
    * @param {any} selector  不使用弹窗，而是添加到指定的dom节点里面 
    */
 	function Modal_Video(options, selectorId) {
-
 		var that = this
-		that.options = options;
-		that.data = options.data || {}
-		that.id = selectorId || '__Modal_Video__'
-
-		that.submitCallback = options.callback;
-
-		this.setUploadify = options.setUploadify || (_upload && _upload.initWebUpload)
-
-		SLIDES.borderOpacity.value = that.data.border_opacity;
-		SLIDES.borderWidth.value = that.data.border_width;
-		SLIDES.btnOpacity.value = that.data.btn_opacity;
-		SLIDES.bgOpacity.value = that.data.bg_opacity;
-
-		// 区域点读点设置
+		that.dom_id = '__modal_video__'
+		that.options = options
+		// 音频区域点读点设置
 		Util.getTpl(currentScriptSrc + '/tpl.html', function (tpl) {
-			var tpls = Handlebars.compile(tpl)
-			if (selectorId) {
-				$('#' + selectorId).append(tpls({ title: '区域设置', slides: SLIDES }))
-				// 点模式
-				that.data.type = 'point'
-			} else {
-				//  区域模式
-				that.data.type = 'area'
-				var div = document.createElement('div')
-				div.setAttribute('id', '__Modal_Video__')
-				document.body.append(div)
-				$(div).append(tpls({ title: '区域设置', slides: SLIDES }))
-				_layer = layer.open({
-					type: 1,
-					scrollbar: false,
-					area: ['600px', '550px'],
-					title: false,
-					shadeClose: false,
-					content: $(div),
-					cancel: function () {
-						that.close();
-					}
-				})
-			}
+			// 1. 添加一个DOM节点，存放弹窗
+			var div = document.createElement('div')
+			div.setAttribute('id', that.dom_id)
+			document.body.append(div)
+			$(div).append(tpl)
 
-			that.initVar();
-			that.bindEvent(SLIDES);
-			that.initData();
+			// 2. 使用一个弹窗来展示
+			_layer = layer.open({
+				type: 1,
+				scrollbar: false,
+				area: ['600px', '550px'],
+				title: false,
+				shadeClose: false,
+				content: $(div),
+				cancel: function () {
+					that.close()
+				}
+			})
+
+			// 3. 初始化Vue组件
+			that.initVue()
 		})
 	}
 
-	Modal_Video.prototype.initVar = function () {
-		this.$container = $('#' + this.id)
-		this.$btnBorderColor = this.$container.find('input[name="borderColor"]')
-		this.$btnSubmit = this.$container.find('.js-submit')
-		this.$uploadImg = this.$container.find('.js-ds-upload-img')
-		this.$btnBgColor = this.$container.find('.js-ds-btn-bg-color')
-		this.$bgColor = this.$container.find('input[name="bgColor"]')
-		this.$btnModelColor = this.$container.find('.js-ds-btn-model-color')
-		this.$modelColor = this.$container.find('input[name="modelColor"]')
-	}
 
-	Modal_Video.prototype.initData = function () {
-		this.data = $.extend({
-			bgColor: '#999999',
-			borderColor: '#a5a5a5',
-			border_opacity: 1,
-			bg_opacity: 1,
-			btn_opacity: 1,
-			border_width: 5
-		}, this.data)
+	/**
+	 * 初始化Vue
+	 */
+	Modal_Video.prototype.initVue = function () {
+		var that = this
 
-		if (this.data.borderColor) {
-			this.$btnBorderColor.val(this.data.borderColor)
-			this.$btnBorderColor[0].value = this.data.borderColor
+		var defaultData = {
+			title: '视频区域设置',
+			border_opacity: 100,
+			border_width: 3,
+			btn_opacity: 100,
+			currentTime: 0,
+			totalTime: 100,
+			border_color: '#ff0065',
 		}
 
-		if (this.data.btn_opacity) {
-			this.$uploadImg.css({
-				opacity: this.data.btn_opacity
-			})
-		}
+		var data = $.extend(defaultData, that.options.data)
 
-		if (this.data.border_width) {
-			this.$uploadImg.css({
-				borderWidth: this.data.border_width
-			})
-		}
+		that.vue = new Vue({
+			el: '#' + this.dom_id,
+			data: data,
+			created: function () {
+				var vue_that = this
 
-		this.$uploadImg.css({
-			borderColor: Util.hex2RGBA(this.data.borderColor, this.data.border_opacity),
-			backgroundColor: Util.hex2RGBA(this.data.bgColor, this.data.bg_opacity),
-			borderWidth: this.data.border_width,
-		})
-
-		if (this.data.bgImgUrl) {
-			this.$uploadImg.css({
-				backgroundImage: 'url(' + this.data.bgImgUrl + ')'
-			})
-		}
-
-		this.$bgColor.val(this.data.bgColor)
-		this.$btnBgColor.css({
-			backgroundColor: this.data.bgColor
-		})
-
-		this.$modelColor.val(this.data.modelColor)
-		this.$btnModelColor.css({
-			backgroundColor: this.data.modelColor
-		})
-	}
-
-  /**
-   * 关闭弹窗
-   */
-	Modal_Video.prototype.bindEvent = function () {
-		var that = this;
-
-    /**
-     * 点读点自定义 图片上传（如果上传gif图则展示上传静态度的按钮）
-     */
-		that.setUploadify('#ds-content-img', {
-			onUploadSuccess: function (file, result) {
-				result = result._raw
-				that.data.bgImgUrl = result;
-				that.$uploadImg.css({
-					backgroundImage: 'url(' + result + ')',
-					backgroundSize: '100%'
-				})
-			}
-		});
-
-		that.$btnSubmit.on('click', function () {
-			that.data = that.getData()
-			that.close()
-			if (that.submitCallback) {
-				that.submitCallback(that.data)
-			}
-		})
-
-		that.$btnBorderColor.on('change', function (e) {
-			var color = $(e.target).val()
-			that.data['borderColor'] = color
-			that.$uploadImg.css({
-				borderColor: color
-			})
-		})
-
-		that.$btnBgColor.on('click', function () {
-			that.$bgColor.click()
-		})
-
-		that.$bgColor.on('change', function (e) {
-			var color = $(e.target).val()
-			that.data['bgColor'] = color
-			that.$uploadImg.css({
-				backgroundColor: color
-			})
-
-			that.$btnBgColor.css({
-				backgroundColor: color
-			})
-		})
-
-		that.$btnModelColor.on('click', function () {
-			that.$modelColor.click()
-		})
-
-		that.$modelColor.on('change', function (e) {
-			var color = $(e.target).val()
-			that.data['modelColor'] = color
-			that.$btnModelColor.css({
-				backgroundColor: color
-			})
-		})
-
-    /**
-     * 初始化滑块组件
-     */
-		for (var key in SLIDES) {
-			if (SLIDES.hasOwnProperty(key)) {
-				var _slideData = SLIDES[key];
-				var _selector = "#" + that.id + " input[name='" + _slideData.name + "']";
-
-				(function (_selector, name) {
-					var _slider = new Slider(_selector, {
-						tooltip: 'hide',
-						step: _slideData.step,
-						min: _slideData.min,
-						max: _slideData.max,
-						value: _slideData.value || _slideData.defaultValue,
-						formatter: function (val) {
-							$(_selector).prev().find('.min-slider-handle').text(val)
-						}
-					});
-
-					_slider.on('slide', function (slideEvt) {
-						that.data[name] = slideEvt.value;
-						switch (name) {
-							case 'border_opacity':
-								that.$uploadImg.css({
-									borderColor: Util.hex2RGBA(that.data.borderColor, slideEvt.value)
-								})
-								break
-							case 'border_width':
-								that.$uploadImg.css({
-									borderWidth: slideEvt.value
-								})
-								break
-							case 'btn_opacity':
-								that.$uploadImg.css({
-									opacity: slideEvt.value
-								})
-								break
-							case 'bg_opacity':
-								that.$uploadImg.css({
-									backgroundColor: Util.hex2RGBA(that.data.bgColor, slideEvt.value),
-								})
-								break
-						}
+				if (that.options.pointData && that.options.pointData.url && this._data.currentTime) {
+					Util.getVideoImage(that.options.pointData.url, this._data.currentTime, function (videoInfo) {
+						vue_that.totalTime = parseInt(videoInfo.totalTime)
+						$('.ds-video__poster').css('backgroundImage', 'url(' + videoInfo.base64 + ')')
 					})
-				})(_selector, _slideData.name)
+				}
+			},
+			computed: {
+				border_style: function () {
+					var color = Util.hex2RGBA(this.border_color, this.border_opacity / 100)
+					return this.border_width + 'px' + ' solid ' + color
+				}
+			},
+			watch: {
+				currentTime: function () {
+					var vue_that = this
+					if (!vue_that.isEnd) {
+						if (that.options.pointData && that.options.pointData.url) {
+							vue_that.isEnd = true
+							Util.getVideoImage(that.options.pointData.url, this._data.currentTime, function (videoInfo) {
+								vue_that.totalTime = parseInt(videoInfo.totalTime)
+								$('.ds-video__poster').css('backgroundImage', 'url(' + videoInfo.base64 + ')')
+								vue_that.isEnd = false
+							})
+						}
+					}
+				}
+			},
+			methods: {
+				handleBorderColor: function () {
+					$('input[name="video-border-color"]').click()
+				},
+				handleChangeBorderColor: function (e) {
+					var border_color = e.target.value;
+					this.border_color = border_color;
+				},
+				handelSubmit: function () {
+					that.close()
+					if (that.options.callback) {
+						var data = $.extend(that.options.data, this.$data)
+						console.log(data)
+						that.options.callback(data)
+					} else {
+						console.warn('未设置视频区域设置的回调函数')
+					}
+				}
 			}
-		}
+		})
 	}
 
-  /**
-   * 关闭弹窗
-   */
+	/**
+	 * 关闭弹窗
+	 */
 	Modal_Video.prototype.close = function () {
 		layer.closeAll()
-		$('#' + this.id).remove()
+		$('#' + this.dom_id).remove()
 	}
-
-	Modal_Video.prototype.getData = function () {
-		for (var key in SLIDES) {
-			if (SLIDES.hasOwnProperty(key)) {
-				var _slideItem = SLIDES[key];
-				var _selector = "#" + this.id + " input[name='" + _slideItem.name + "']";
-				this.data[_slideItem.name] = parseFloat($(_selector).val())
-			}
-		}
-
-		this.data['bgColor'] = this.$bgColor.val()
-		this.data['borderColor'] = this.$btnBorderColor.val()
-		this.data['modelColor'] = this.$modelColor.val()
-
-		return this.data
-	}
-
 	return Modal_Video
 })()

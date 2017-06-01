@@ -1,64 +1,37 @@
-<div class="ds-container">
-  <div class="ds-header">{{title}}</div>
-  <div class="ds-content">
-    <div class="ds-content__upload">
-      <div class="ds-content__upload--left">
-        <div class="ds-content__upload-img js-ds-upload-img"></div>
-        <div id="ds-content-img" class="ds-content__upload-btn">上传新的3D背景图</div>
-      </div>
-
-      <div class="ds-content__upload--right">
-
-        <div class="ds-content__upload--right-top">
-          <div class="ds-content__upload-item">
-            <div class="ds-content__upload-color js-ds-btn-bg-color"></div>
-            <input type="color" name="bgColor" value="#999999" style="display:none;">
-            <p>背景区域颜色</br>（点击修改）</p>
-          </div>
-          <div class="ds-content__upload-item">
-            <div class="ds-content__upload-color js-ds-btn-model-color" style="background: #14f506;"></div>
-            <input type="color" name="modelColor" value="#14f506" style="display:none;">
-            <p>模型颜色</br>（点击修改）</p>
-          </div>
-        </div>
-
-        <div class="ds-content__upload--right-bottom">
-          <div class="ds-content__setting-label">背景透明度</div>
-          <input name="{{slides.bgOpacity.name}}" type="text" data-slider-handle="square" />
-        </div>
-
-      </div>
-      <div>
-
-      </div>
+<div class="ds-video__container">
+  <div class="ds-video__header">{{title}}</div>
+  <div class="ds-video">
+    <div class="ds-video__poster" :style="{ border:border_style, opacity:btn_opacity/100}">
+      默认展示视频的第一帧
+      <div class="ds-video__icon draw-area__point-type--video"></div>
+      <mt-range :min="0" :max="totalTime" class="video__progress" v-model="currentTime">
     </div>
-    <div class="ds-content__setting">
-      <table>
-        <tr>
-          <td>
-            <div class="ds-content__setting-label">边线透明度</div>
-            <input name="{{slides.borderOpacity.name}}" type="text" data-slider-handle="square" />
-          </td>
-          <td>
-            <div class="ds-content__setting-label">按钮透明度</div>
-            <input name="{{slides.btnOpacity.name}}" type="text" data-slider-handle="square" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="ds-content__setting-label">边线宽度</div>
-            <input name="{{slides.borderWidth.name}}" type="text" data-slider-handle="square" />
-          </td>
-          <td>
-            <div class="ds-content__setting-label">
-              边线颜色
-              <span>（点击修改）</span>
-              <input name="borderColor" value="#a5a5a5" type="color" />
-            </div>
-          </td>
-        </tr>
-      </table>
+    <div class="ds-video__controls">
+      <div class="ds-video__item">
+        <div class="ds-video__item-range">
+          <p>边线透明度</p>
+          <mt-range :min="0" :max="100" class="video-player__range" v-model="border_opacity">
+          </mt-range>
+        </div>
+        <div class="ds-video__item-range">
+          <p>按钮透明度</p>
+          <mt-range :min="0" :max="100" class="video-player__range" v-model="btn_opacity">
+          </mt-range>
+        </div>
+      </div>
+      <div class="ds-video__item">
+        <div class="ds-video__item-range">
+          <p>边线宽度</p>
+          <mt-range :min="0" :max="10" class="video-player__range" v-model="border_width">
+          </mt-range>
+        </div>
+        <div class="ds-video__item-color">
+          <p>边线颜色<span>（点击修改）</span></p>
+          <p class="ds-video__color" :style="{ background:border_color}" @click="handleBorderColor"></p>
+          <input type="color" name="video-border-color" value="#ff0065" @change="handleChangeBorderColor">
+        </div>
+      </div>
     </div>
   </div>
-  <div class="ds-submit js-submit">提交</div>
+  <div class="ds-video__submit js-submit" @click="handelSubmit">提交</div>
 </div>

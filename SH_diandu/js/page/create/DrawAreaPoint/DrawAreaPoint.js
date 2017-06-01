@@ -3,6 +3,7 @@
 	Util.loadCSS(currentScriptSrc + '/style.css')
 	Util.loadJS(currentScriptSrc + '/Modal_3DViewer/Modal_3DViewer.js')
 	Util.loadJS(currentScriptSrc + '/modal_audio/Modal_Audio.js')
+	Util.loadJS(currentScriptSrc + '/modal_video/Modal_Video.js')
 })()
 
 window.DrawAreaPoint = (function () {
@@ -33,9 +34,14 @@ window.DrawAreaPoint = (function () {
 		// 区域点读点设置
 		$(that.options.id).find('.js-da-point-setting').on('click', function (e) {
 			that.options.data = that.pointData.drawcustomarea || {}
-			switch (that.options.type) {
+			that.options.pointData = that.pointData
+
+			switch (that.pointData.type) {
 				case 'audio':
 					new Modal_Audio(that.options)
+					break
+				case 'video':
+					new Modal_Video(that.options)
 					break
 				case 'viewer3d':
 					new Modal_3DViewer(that.options)

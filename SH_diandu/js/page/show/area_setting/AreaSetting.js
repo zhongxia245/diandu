@@ -236,26 +236,77 @@ window.AreaSetting = (function () {
 	/**
 	 * 初始化视频的区域设置,以及相关展示页面
 	 */
-	function initHTML_Video() {
+	function initHTML_Video(pointId, drawCustomArea, _pointData, imgW, imgH) {
 		var whxy = getWHXY(drawCustomArea, _pointData, imgW, imgH)
 		var w = whxy.w
 		var h = whxy.h
 		var x = whxy.x
 		var y = whxy.y
 
+		var url = _pointData.url
+		var currentTime = drawCustomArea.currentTime
+
 		var html = ''
 		var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
-		css += 'border-color:' + Util.hex2RGBA(drawCustomArea.borderColor, drawCustomArea.border_opacity / 100) + '; border-width:' + drawCustomArea.border_width + 'px;';
+		css += 'border-color:' + Util.hex2RGBA(drawCustomArea.border_color, drawCustomArea.border_opacity / 100) + '; border-width:' + drawCustomArea.border_width + 'px;';
 		css += 'opacity:' + drawCustomArea.btn_opacity + ';'
 
 		html += '<div data-id="' + pointId + '"  class="draw-custom-area" style="' + css + '">'
+		html += '		<video data-src="' + url + '"></video>'
 		html += '   <div class="area-setting__video js-area-setting-video" data-style="' + css + '"></div>'
+		html += '   <div data-time="' + currentTime + '" data-src="' + url + '" class="area-setting__video-poster" data-style="' + css + '"></div>'
 		html += '</div>'
 		return html
 	}
+
 	function initVideo() {
-		console.log('初始化视频区域设置')
+
+		// 设置视频的背景图片
+		var $areaVideos = $('.area-setting__video-poster')
+		for (var i = 0; i < $areaVideos.length; i++) {
+			var $ele = $areaVideos.eq(i)
+			var url = $ele.data('src')
+			var time = $ele.data('time')
+			if (time !== 'undefined') {
+				Util.getVideoImage(url, time, function (result) {
+					$ele.css('backgroundImage', 'url(' + result.base64 + ')')
+				})
+			}
+		}
+
+		$('.js-area-setting-video').off().on('click', function (e) {
+			var $cTar = $(e.currentTarget)
+			$cTar.css('background', 'initial')
+
+			var $video = $cTar.parent().find('video')
+
+			$video.on('pause', function (e) {
+				$cTar.css('background', '')
+				$video.hide()
+				$cTar.next('.area-setting__video-poster').show()
+				window.SHOWVIDEO = false    //标记，禁止因为视频全屏，触发的onresize事件, 看 show.js 142行
+			})
+
+			if (!$video[0].paused) {
+				$video[0].pause()
+			} else {
+				$video.attr('src', $video.attr('data-src'))
+				window.SHOWVIDEO = true
+				$video[0].play()
+				$video.show()
+				$cTar.next('.area-setting__video-poster').hide()
+			}
+
+			$cTar.parents('.wrap').off().on('click', function (e) {
+				if (!$(e.target).hasClass('js-area-setting-video')) {
+					$video[0].pause()
+					$cTar.parents('.wrap').off()
+				}
+			})
+
+		})
 	}
+
 
 	return {
 		initHTML_Vierer3d: initHTML_Vierer3d,

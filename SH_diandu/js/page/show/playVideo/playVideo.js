@@ -89,8 +89,8 @@ window.PlayVideo = (function (Util) {
 				$container.css({
 					left: _left + 'px',
 					top: _top + 'px',
-					width: config.w * config.bgW,
-					height: config.h * config.bgH,
+					width: config.w * config.bgW || '80%',
+					height: config.h * config.bgH || '80%',
 				})
 			} else {
 				$container.css({

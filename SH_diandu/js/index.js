@@ -489,7 +489,7 @@ var _edit = (function () {
 		 * 设置了自定义图片,自定义标题,或者视频播放区域, 则设置 点模式 为 激活状态
 		*/
 		var is_point_mode = (type !== 1 && type !== 6) ||
-			(point.area && JSON.parse(point.area).w) ||
+			// (point.area && JSON.parse(point.area).w) ||
 			(drawAreaData && drawAreaData.type === 'point')
 
 		if (is_point_mode) {
@@ -887,6 +887,7 @@ function bindEvent() {
 				})
 
 				drawCustomArea.setEnable(false)
+
 				//创建绘制区域内部的内容
 				new DrawAreaPoint({
 					id: '#' + dataid,
@@ -1417,8 +1418,8 @@ function fn_settingArea(e, data) {
 		console.info('摇摆图没有区域模式')
 		return
 	}
-	// TODO:目前只开发了3D模型的区域，其他还未开发
-	if (pointType !== 'viewer3d' && pointType !== 'audio') {
+	// TODO:目前只开发了[3D模型的区域,音频，视频]，其他还未开发
+	if (pointType !== 'viewer3d' && pointType !== 'audio' && pointType !== 'video') {
 		alert('该点读点类型，区域触发功能尚未开发，请稍后')
 		return
 	}

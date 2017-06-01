@@ -517,6 +517,49 @@ window.Util = (function () {
 		return browser.versions
 	}
 
+	/**
+	 * 获取视频指定时间点的截图
+	 * @param {string} src 视频地址
+	 * @param {int} currentTime 指定时间 
+	 * @param {string} output 输出截图的位置
+	 * @param {int} scale 截图的比例
+	 */
+	function getVideoImage(src, currentTime, callback, scale) {
+		scale = scale || 1
+		var video = document.getElementById('__video_img__')
+		if (!video) {
+			video = document.createElement("video")
+			video.setAttribute('id', '__video_img__')
+			video.style.display = 'none'
+
+			document.body.appendChild(video)
+		}
+		if (video.src !== src) {
+			video.setAttribute('src', src)
+			video.load()
+		}
+		video.currentTime = currentTime
+		video.addEventListener('loadeddata', function () {
+			var canvas = document.createElement("canvas")
+			canvas.width = video.videoWidth * scale
+			canvas.height = video.videoHeight * scale
+			canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+			var base64 = canvas.toDataURL("image/png")
+
+			var data = {
+				totalTime: video.duration,
+				currentTime: video.currentTime,
+				videoWidth: video.videoWidth,
+				videoHeight: video.videoHeight,
+				base64: base64
+			}
+
+			if (callback) {
+				callback(data)
+			}
+		});
+	}
+
 	return {
 		getImageWH: getImageWH,
 		getVideoWH: getVideoWH,
@@ -541,7 +584,8 @@ window.Util = (function () {
 		requestFullScreen: requestFullScreen,
 		exitFullScreen: exitFullScreen,
 		setAudioSource: setAudioSource,
-		getBrowserInfo: getBrowserInfo
+		getBrowserInfo: getBrowserInfo,
+		getVideoImage: getVideoImage
 	}
 })()
 
