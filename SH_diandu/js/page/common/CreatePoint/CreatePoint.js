@@ -228,7 +228,7 @@ window.CreatePoint = (function () {
 	}
 
   /**
-   * 创建页面，自定义绘制区域[没用到,直接写在show.js里面了]
+   * 创建页面，自定义绘制区域[and 展示页面没有用到]
    */
 	function initDrawAreaPoint(pointId, style, data) {
 		var drawAreaData = data.drawAreaData || {}

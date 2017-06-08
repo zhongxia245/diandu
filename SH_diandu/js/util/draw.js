@@ -41,13 +41,9 @@ window.Draw = (function () {
 				oR = document.createElement('div');
 				oR.id = that.data.pointId;
 				oR.className = 'draw-area-container'
-				oR.style.cursor = 'se-resize'
 				oR.setAttribute('data-type', 'drawcustomarea')
 				oR.style.top = disY + 'px';
 				oR.style.left = disX + 'px';
-				oR.style.background = '#5b9bd5';
-				oR.style.position = 'absolute';
-				oR.style.border = '2px solid #FFF';
 				oCanvas.appendChild(oR);
 
 				document.onmousemove = function (ev) {
@@ -86,7 +82,6 @@ window.Draw = (function () {
 					oR.style.top = Math.min(disY, y) + 'px';
 					oR.style.left = Math.min(disX, x) + 'px';
 					oR.classList.add('draw-custom-area__' + that.data.type)
-					oR.classList.add('draw-custom-area__' + that.data.pointType)
 
 					switch (that.data.type) {
 						// 圆角矩形

@@ -181,6 +181,15 @@ var _data = (function () {
 		}
 	}
 
+	/**
+	 * 获取指定点读页的数据
+	 * @param {any} pageIndex 
+	 * @returns 
+	 */
+	function getPageData(pageIndex) {
+		return window.DD.items[pageIndex - 1]
+	}
+
   /**
    * 获取有效的点读位
    * @return {[type]} [description]
@@ -315,6 +324,7 @@ var _data = (function () {
 	return {
 		getDDItems: getDDItems,
 		setDDItems: setDDItems,
+		getPageData: getPageData,
 		getValidItems: getValidItems,
 		getTypeByName: getTypeByName
 	}
@@ -600,6 +610,8 @@ var _edit = (function () {
 	function _data2DDItems(data) {
 		$('input[name="pic"]').val(data['pic'])
 		var pages = data.pages
+		window.DD.point_size = data.point_size
+
 		for (var i = 0; i < pages.length; i++) {
 			window.DD.items[i]['oldId'] = pages[i]['id']
 			for (var j = 0; j < pages[i]['points'].length; j++) {
@@ -872,18 +884,38 @@ function bindEvent() {
 				$cTar.hide()
 				// 修改点读点的数据
 				var location = getLocation(_pageData.w, _pageData.h, data.left, data.top)
+
+				var temp_drawcustomarea = {
+					// FIX问题，这里针对图片大小，而不是窗口大小
+					w: data.width / _pageData.w,
+					h: data.height / _pageData.h,
+					//FIX: 默认为区域设置模式，（3D模型点模式的设置页面和区域模式设置页面一样，共用了，因此这里设置type（area,point）来区分）
+					type: 'area',
+					// FIX：早期只有一个3D模型区域设置，然后这个名称的含义是：区域展示的类型（矩形，圆角矩形，圆等的类型）
+					pointType: config.type
+				}
+
+				//设置区域的默认参数，不需要点击设置弹窗后，就能有默认值
+				switch (pointData.type) {
+					case 'audio':
+						temp_drawcustomarea.border_color = '#ff0065'
+						temp_drawcustomarea.border_opacity = 100
+						temp_drawcustomarea.border_width = 3
+						break
+					case 'video':
+						temp_drawcustomarea.btn_opacity = 100
+						temp_drawcustomarea.border_opacity = 100
+						temp_drawcustomarea.border_width = 3
+						break
+					case '3dviewer':
+						break
+				}
+
+
 				_data.setDDItems(dataid, {
 					x: location.x,
 					y: location.y,
-					drawcustomarea: {
-						// FIX问题，这里针对图片大小，而不是窗口大小
-						w: data.width / _pageData.w,
-						h: data.height / _pageData.h,
-						//FIX: 默认为区域设置模式，（3D模型点模式的设置页面和区域模式设置页面一样，共用了，因此这里设置type（area,point）来区分）
-						type: 'area',
-						// FIX：早期只有一个3D模型区域设置，然后这个名称的含义是：区域展示的类型（矩形，圆角矩形，圆等的类型）
-						pointType: config.type
-					}
+					drawcustomarea: temp_drawcustomarea
 				})
 
 				drawCustomArea.setEnable(false)
@@ -991,7 +1023,7 @@ function createPoint(pointId, type, config) {
 		})
 	}
 
-	new Drag('#' + pointId, function (x, y) {
+	new Drag('#' + config.pointId, function (x, y) {
 		var _page = window.DD.items[pageIndex - 1]
 		var location = getLocation(_page.w, _page.h, x, y)
 		_data.setDDItems(pointId, { x: location.x, y: location.y })
@@ -1070,9 +1102,15 @@ function addDianDu(pointId, point) {
  * @param id
  */
 function setPointSize(selector, val) {
+	var $dom = $(selector)
 	var scale = val / 100
+	
 	var style = 'scale(' + scale + ')'
-	$(selector).css({
+	var rotate = $dom.attr('data-rotate')
+	if (rotate) {
+		style += 'rotate(' + rotate + 'deg)'
+	}
+	$dom.css({
 		transform: style,
 		'-webkit-transform': style,
 		'transform-origin': 'left top',
@@ -1406,9 +1444,9 @@ function handleUploadItem(e) {
  */
 function fn_settingArea(e, data) {
 	var $cTar = $(e.currentTarget)
-	var pointType = $cTar.find('.upload-right').data('type')
-	var pointIndex = $cTar.data('index')
-	var pageIndex = $cTar.parents('.diandupageitem').data('index')
+	var pointType = $cTar.find('.upload-right').attr('data-type')
+	var pointIndex = $cTar.attr('data-index')
+	var pageIndex = $cTar.parents('.diandupageitem').attr('data-index')
 
 	if (pointType === 'on-off') {
 		console.info('开关图没有点模式和区域模式')
@@ -1527,7 +1565,7 @@ function addGlobalAudio(e, param) {
 function addCustomPointSetting(e) {
 	var $divGA = $('#customPointSetting')
 	var $cTar = $(e.target)
-	var dataId = $cTar.parent().data().id || '1_1'
+	var dataId = $cTar.parent().attr('data-id') || '1_1'
 	var pageIndex = parseInt(dataId.split('_')[0]) - 1
 	var pointIndex = parseInt(dataId.split('_')[1]) - 1
 	var pointType = $(e.target).parents('.upload-item').find('.upload-right').attr('data-type')
@@ -1834,7 +1872,8 @@ function fn3_setUrl(e) {
 	var dianduId = ids.dianduId
 	var _pointData = window.DD.items[pageId].data[dianduId]
 	new UrlPoint('body', _pointData.linkurl, function (val) {
-		_pointData.linkurl = val;
+		// FIX:这里直接用_pointData.linkurl赋值的时候，有少数时候没有赋值到 window.DD上，因此改为下面这种方式
+		window.DD.items[pageId].data[dianduId].linkurl = val;
 		if (val) {
 			var $uploadFileName = $('#uploadSetting' + (ids.pageId + 1)).find('.item' + (ids.dianduId + 1)).find('.upload-file-name')
 			$uploadFileName.removeClass('upload').addClass('uploaded-set-url')
@@ -2200,17 +2239,26 @@ function handleSubmit(e) {
 		}
 		$cTar.attr('data-flag', 1);
 		Model.addDianduPage(data, qrcode, function (result) {
-			var msg = '创建成功,点击确定返回单元列表!'
-			var returnUrl = '/edu/course/unit_video.php?unitid=' + data.unitid
+			// 开发环境，跳转地址
+			if (window.location.href.indexOf('localhost') !== -1) {
+				if (!GLOBAL.ISEDIT.flag) {
+					window.location.href = window.location.href + '?id=' + result
+				} else {
+					window.location.reload()
+				}
+			} else {
+				var msg = '创建成功,点击确定返回单元列表!'
 
-			if (GLOBAL.ISEDIT.flag) {
-				msg = '保存成功!点击确定返回展示页面!'
-				// 注意，如果静态话页面的地址修改了，这里也要跟着修改地址
-				returnUrl = '/point-read/' + id + '.html'
+				var returnUrl = '/edu/course/unit_video.php?unitid=' + data.unitid
+
+				if (GLOBAL.ISEDIT.flag) {
+					msg = '保存成功!点击确定返回展示页面!'
+					// 注意，如果静态话页面的地址修改了，这里也要跟着修改地址
+					returnUrl = '/point-read/' + id + '.html'
+				}
+				alert(msg)
+				window.location.href = returnUrl
 			}
-
-			alert(msg)
-			window.location.href = returnUrl
 		})
 	}
 }

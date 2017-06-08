@@ -150,6 +150,11 @@ window.AreaSetting = (function () {
 		var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';
 		css += 'border-color:' + Util.hex2RGBA(drawCustomArea.border_color, drawCustomArea.border_opacity / 100) + '; border-width:' + drawCustomArea.border_width + 'px;';
 
+		var rotate = drawCustomArea.rotate
+		if (rotate) {
+			css += 'transform:' + 'rotate(' + rotate + 'deg);'
+		}
+
 		html += '<div data-id="' + pointId + '" data-url="' + _pointData.url + '"  class="area-setting__audio draw-custom-area draw-custom-area__' + drawCustomArea.pointType + '" style="' + css + '">'
 		html += '</div>'
 		return html
@@ -243,6 +248,8 @@ window.AreaSetting = (function () {
 		var x = whxy.x
 		var y = whxy.y
 
+
+
 		var url = _pointData.url
 		var currentTime = drawCustomArea.currentTime
 
@@ -251,7 +258,12 @@ window.AreaSetting = (function () {
 		css += 'border-color:' + Util.hex2RGBA(drawCustomArea.border_color, drawCustomArea.border_opacity / 100) + '; border-width:' + drawCustomArea.border_width + 'px;';
 		css += 'opacity:' + drawCustomArea.btn_opacity + ';'
 
-		html += '<div data-id="' + pointId + '"  class="draw-custom-area" style="' + css + '">'
+		var rotate = drawCustomArea.rotate
+		if (rotate) {
+			css += 'transform:' + 'rotate(' + rotate + 'deg);'
+		}
+
+		html += '<div data-id="' + pointId + '"  class="draw-custom-area draw-custom-area__' + drawCustomArea.pointType + '" style="' + css + '">'
 		html += '		<video data-src="' + url + '"></video>'
 		html += '   <div class="area-setting__video js-area-setting-video" data-style="' + css + '"></div>'
 		html += '   <div data-time="' + currentTime + '" data-src="' + url + '" class="area-setting__video-poster" data-style="' + css + '"></div>'

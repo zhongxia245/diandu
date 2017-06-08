@@ -7,12 +7,26 @@
     position: relative;
     width: 100%;
     height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20%;
+}
+
+.draw-area-point__param--hide .draw-area__param, .draw-area-point__param--hide .draw-area-point__btns, .draw-area-point__param--hide .draw-area__dots {
+    display: none;
+}
+
+.draw-area-point__btns {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    left: 100%;
+    top: 0;
+    padding-left: 10px;
 }
 
 .draw-area__point-index {
-    position: absolute;
-    top: 5px;
-    left: 5px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -22,12 +36,10 @@
     color: #FFF;
     text-align: center;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 .draw-area__point-setting {
-    position: absolute;
-    left: 50px;
-    top: 5px;
     width: 40px;
     height: 40px;
     background-image: url('./imgs/setting.png');
@@ -57,4 +69,112 @@
 
 .draw-area__point-type--viewer3d {
     background-image: url('../../../../imgs/diandu_point_icon/icondian_3d.png');
+}
+
+
+/* 增加改变区域大小的相关参数 */
+
+.draw-area__param {
+    position: absolute;
+    top: 0;
+    right: 101%;
+    padding: 0;
+    margin: 0;
+    width: 140px;
+}
+
+.draw-area-param__item {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.draw-area-param__item>p {
+    flex: 1;
+    text-align: center;
+    background: #00cc99;
+    padding: 0;
+    margin: 0;
+    color: #FFF;
+    line-height: 2;
+    margin-right: 1px;
+}
+
+.draw-area-param__item>input {
+    flex: 3;
+    border: 0;
+    outline: 0;
+    overflow: hidden;
+    background: #d8d8d8;
+    text-align: center;
+}
+
+.draw-area__dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #FFF;
+    border: 1px solid #333;
+}
+
+.draw-area__dot--tl {
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    cursor: nw-resize;
+}
+
+.draw-area__dot--t {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: n-resize;
+}
+
+.draw-area__dot--tr {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    cursor: ne-resize;
+}
+
+.draw-area__dot--r {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+    cursor: e-resize;
+}
+
+.draw-area__dot--br {
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+    cursor: se-resize;
+}
+
+.draw-area__dot--b {
+    bottom: 0;
+    right: 50%;
+    transform: translate(-50%, 50%);
+    cursor: s-resize;
+}
+
+.draw-area__dot--bl {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+    cursor: sw-resize;
+}
+
+.draw-area__dot--l {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    cursor: w-resize;
+}
+
+.draw-area__dot--rotate {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -200%);
+    cursor: pointer;
 }

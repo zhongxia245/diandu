@@ -1,5 +1,28 @@
-<div class="draw-area-point__container">
-  <div class="draw-area__point-index">{{index}}</div>
-  <div class="draw-area__point-setting js-da-point-setting"></div>
-  <div class="draw-area__point-type draw-area__point-type--{{type}}"></div>
+<div :class="{'draw-area-point__container':true,['draw-area__point-type--' + type]:true,'draw-area-point__param--hide':!show_param}"
+  @click="handleShowParam">
+  <!--按钮单独放到区域外，然后跟随控制大小显示隐藏-->
+  <div class="draw-area-point__btns">
+    <div class="draw-area__point-index">{{index}}</div>
+    <div class="draw-area__point-setting js-da-point-setting" @click="handleClickSetting"></div>
+  </div>
+  <!--区域设置参数-->
+  <ul class="draw-area__param">
+    <li class="draw-area-param__item" v-for="item in params">
+      <p>{{item.label}}</p>
+      <input type="text" :name="item.key" v-model="paramsData[item.key]">
+    </li>
+  </ul>
+
+  <!--八个边角的操作点，还有旋转点-->
+  <div class="draw-area__dots">
+    <div class="draw-area__dot draw-area__dot--t" data-type="top" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--tr" data-type="top_right" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--r" data-type="right" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--br" data-type="bottom_right" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--b" data-type="bottom" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--bl" data-type="bottom_left" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--l" data-type="left" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--tl" data-type="top_left" @mousedown="handleMouseDown"></div>
+    <div class="draw-area__dot draw-area__dot--rotate" data-type="rotate" @mousedown="handleMouseDown"></div>
+  </div>
 </div>

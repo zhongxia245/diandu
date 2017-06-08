@@ -1014,10 +1014,10 @@ html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data
 }
 
 .draw-area-container {
-    background-color: #5b9bd5;
+    background-color: rgba(91, 155, 213, 0.5);
     position: absolute;
     cursor: move;
-    border: 2px solid #FFF;
+    border: 2px solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
