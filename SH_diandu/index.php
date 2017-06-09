@@ -266,6 +266,7 @@ if ($id > 0) {
       <div class="baseinfo-title">
         <span>点读页创建</span>
         <div class="setting-diandu-icon" id="pointSetting"><i class="fa fa-cog" aria-hidden="true"></i></div>
+        <div class="setting-diandu-icon" style="color:#FF7C80;" id="audioAreaSetting" title="音频区域设置"><i class="fa fa-cog" aria-hidden="true"></i></div>
       </div>
       <!-- TODO:多个点读页 -->
       <!-- 点读页集合 START -->

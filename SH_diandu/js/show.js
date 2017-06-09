@@ -42,6 +42,12 @@ var GLOBAL = {
 	GLOBAL_POINT_SIZE: 100,  //全局点读点大小比例 %
 	BACK_COLOR: 'rgb(0,0,0)', //背景图片空白区域颜色
 	CurrentPageIndex: 0, //当前点读页下标
+	AUDIO_AREA_SETTING: {    // 全局音频区域设置值
+		title: '全局音频区域设置',
+		border_color: '#ff0065',
+		border_opacity: 100,
+		border_width: 3
+	}
 }
 /**
  * 背景音乐相关操作
@@ -266,6 +272,19 @@ function init() {
 	Model.getList(id, function (data) {
 		$('title').text(data.title);
 		DATA = data;
+
+		// TODO:2017-06-08 23:56:38  改成从返回数据中获取
+		window.GLOBAL.AUDIO_AREA_SETTING = {
+			title: "全局音频区域设置",
+			border_color: "#41ea47",
+			border_opacity: 100,
+			border_width: 10
+		}
+
+		if (data.data) {
+			var tempData = JSON.parse(data.data || '{}')
+			window.GLOBAL.AUDIO_AREA_SETTING = tempData.AUDIO_AREA_SETTING
+		}
 
 		initVue(data)
 

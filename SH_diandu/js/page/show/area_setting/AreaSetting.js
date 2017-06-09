@@ -145,6 +145,8 @@ window.AreaSetting = (function () {
 		var h = whxy.h
 		var x = whxy.x
 		var y = whxy.y
+		
+		drawCustomArea = $.extend({}, window.GLOBAL.AUDIO_AREA_SETTING, drawCustomArea)
 
 		var html = ''
 		var css = 'width:' + w + 'px;height:' + h + 'px;left:' + x + 'px;top:' + y + 'px;' + 'background:none; border:1px solid #000;';

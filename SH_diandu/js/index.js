@@ -42,7 +42,13 @@ var GLOBAL = {
 		flag: false // 是否为编辑页面,默认为false
 	},
 	POINT_SIZE: 100, // 点读点缩放比例(%)
-	BACK_COLOR: 'rgb(0,0,0)' // 背景图之外空白区域的颜色
+	BACK_COLOR: 'rgb(0,0,0)', // 背景图之外空白区域的颜色
+	AUDIO_AREA_SETTING: {    // 全局音频区域设置值
+		title: '全局音频区域设置',
+		border_color: '#ff0065',
+		border_opacity: 100,
+		border_width: 3
+	}
 }
 /***************************************
  * 程序入口 Entry
@@ -381,6 +387,10 @@ var _edit = (function () {
 				id: id
 			}
 
+			if (data.data && data.data.AUDIO_AREA_SETTING) {
+				GLOBAL.AUDIO_AREA_SETTING = data.data.AUDIO_AREA_SETTING
+			}
+
 			// 回显背景图片的空白区域颜色
 			setBackColor(GLOBAL.BACK_COLOR)
 
@@ -614,6 +624,11 @@ var _edit = (function () {
    */
 	function _data2DDItems(data) {
 		$('input[name="pic"]').val(data['pic'])
+
+		var _tempData = data.data || '{}'
+		_tempData = JSON.parse(_tempData)
+		window.GLOBAL.AUDIO_AREA_SETTING = $.extend({}, window.GLOBAL.AUDIO_AREA_SETTING, _tempData.AUDIO_AREA_SETTING)
+
 		var pages = data.pages
 		window.DD.point_size = data.point_size
 
@@ -854,6 +869,17 @@ function bindEvent() {
 	})
 	// 点读点大小设置 END
 
+	// 全局音频区域设置 START
+	$('#audioAreaSetting').on('click', function (e) {
+		new Modal_Audio({
+			data: window.GLOBAL.AUDIO_AREA_SETTING,
+			callback: function (data) {
+				console.log(data)
+				window.GLOBAL.AUDIO_AREA_SETTING = data
+			}
+		})
+	})
+	// 全局音频区域设置 END 
 
 	// 添加点读点 START
 	Util.MoveOrClick('.setting-bigimg-img',
@@ -903,9 +929,11 @@ function bindEvent() {
 				//设置区域的默认参数，不需要点击设置弹窗后，就能有默认值
 				switch (pointData.type) {
 					case 'audio':
-						temp_drawcustomarea.border_color = '#ff0065'
-						temp_drawcustomarea.border_opacity = 100
-						temp_drawcustomarea.border_width = 3
+						// TODO:默认值，变成全局的设置，单独存放起来，因此下面的就不需要了
+						// temp_drawcustomarea = window.GLOBAL.AUDIO_AREA_SETTING || {}
+						// temp_drawcustomarea.border_color = '#ff0065'
+						// temp_drawcustomarea.border_opacity = 100
+						// temp_drawcustomarea.border_width = 3
 						break
 					case 'video':
 						temp_drawcustomarea.btn_opacity = 100
@@ -2209,7 +2237,8 @@ function handleSubmit(e) {
 		delPageIds: pagesInfo.delPageIds,
 		point_size: GLOBAL.POINT_SIZE,
 		back_color: GLOBAL.BACK_COLOR,
-		content: JSON.stringify(globalAudioContent)
+		content: JSON.stringify(globalAudioContent),
+		data: JSON.stringify({ AUDIO_AREA_SETTING: GLOBAL.AUDIO_AREA_SETTING })
 	}
 
 	if (pagesInfo.isDelGlobalAudio) {
