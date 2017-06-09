@@ -221,6 +221,11 @@ var _data = (function () {
 
 				for (var j = 0; j < items.length; j++) {
 					if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
+
+						var _tempData = $.extend({}, items[j])
+						delete _tempData.data
+						_tempData = JSON.stringify(_tempData)
+
 						var obj = {
 							x: items[j].x,
 							y: items[j].y,
@@ -244,7 +249,7 @@ var _data = (function () {
 							onoff: JSON.stringify(items[j].onoff),
 							linkurl: JSON.stringify(items[j].linkurl),
 
-							data: JSON.stringify(items[j]),  //保存点读点的所有数据
+							data: _tempData,  //保存点读点的所有数据
 						}
 
 						if (items[j]['oldId']) obj['id'] = items[j]['oldId']
@@ -1104,7 +1109,7 @@ function addDianDu(pointId, point) {
 function setPointSize(selector, val) {
 	var $dom = $(selector)
 	var scale = val / 100
-	
+
 	var style = 'scale(' + scale + ')'
 	var rotate = $dom.attr('data-rotate')
 	if (rotate) {
