@@ -315,10 +315,10 @@ endif;
   <script src="./js/page/show/swayEffect/swayEffect.js"></script>
   <script src="./js/page/common/ObjViewer/ObjViewer.js"></script>
   <script src="./js/page/show/modal_3dviewer/Modal_3DViewer.js"></script>
-  <script src="./js/page/show/area_setting/AreaSetting.js"></script>
+  <script src="./js/page/show/area_setting/AreaSetting.js?r=20170610"></script>
   <!--页面入口-->
-  <script src="./js/header.vue.js"></script>
-  <script src="./js/show.js"></script>
+  <script src="./js/header.vue.js?r=20170610"></script>
+  <script src="./js/show.js?r=20170610"></script>
   <script>
     $(function () {
       var _isDebug = Util.getQueryStringByName('debug');

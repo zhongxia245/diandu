@@ -778,6 +778,14 @@ function bindEvent() {
 	// 添加点读页
 	$('#btnAdd').on('click', addDianDuPageTpl)
 
+	// 双击点读点的时候，可以出现绘制区域的工具栏  2017-06-11 10:12:44
+	$('body').on('dblclick', '.id_bg .radius', function (e) {
+		var id = $(e.currentTarget).attr('id')
+		var $areaSetting = $('.point-types__setting[data-id="' + id + '"]')
+		var $uploadItem = $areaSetting.parents('.upload-item')
+		fn_settingArea($uploadItem)
+	})
+
 	// 收费标准验证只能输入数字和小数点
 	$('#chargeStandard').on('keyup', function (e) {
 		var $tar = $(e.target)
@@ -1421,18 +1429,16 @@ function onAddPoint(e) {
  * 点读项点击事件处理
  */
 function handleUploadItem(e) {
-	//zhongxia
-	//这里阻止冒泡会防止 webuploader 的input file 弹出文件选择框
-	//e.preventDefault()
-	//e.stopPropagation()
-	var $currentTarget = $(e.currentTarget)
+	var $cTar = $(e.currentTarget)
 	var $target = $(e.target)
 	var data = $target.data()
 
 	switch (data.type) {
+		// 点击区域设置
 		case 'setting-area':
-			fn_settingArea(e, data)
+			fn_settingArea($cTar)
 			break
+		// 选择点读类型
 		case 'selectType':
 			selectTypeClick(e)
 			break
@@ -1448,7 +1454,7 @@ function handleUploadItem(e) {
 		case 'delete':
 			var itemdata = $target.parent().data()
 			$('#' + itemdata.id).remove()
-			$currentTarget.remove()
+			$cTar.remove()
 			// 在本地数据变量里面标注，已经删除
 			var _dataid = itemdata.id
 			_data.setDDItems(_dataid, { isRemove: true })
@@ -1475,8 +1481,7 @@ function handleUploadItem(e) {
 /**
  * 设置区域点读点（展示绘制区域的类型）
  */
-function fn_settingArea(e, data) {
-	var $cTar = $(e.currentTarget)
+function fn_settingArea($cTar) {
 	var pointType = $cTar.find('.upload-right').attr('data-type')
 	var pointIndex = $cTar.attr('data-index')
 	var pageIndex = $cTar.parents('.diandupageitem').attr('data-index')
@@ -1489,9 +1494,9 @@ function fn_settingArea(e, data) {
 		console.info('摇摆图没有区域模式')
 		return
 	}
-	// TODO:目前只开发了[3D模型的区域,音频，视频]，其他还未开发
+	// TODO:目前只开发了[3D模型的区域,音频，视频]，其他的目前还没有规划有区域模式
 	if (pointType !== 'viewer3d' && pointType !== 'audio' && pointType !== 'video') {
-		alert('该点读点类型，区域触发功能尚未开发，请稍后')
+		alert('该点读点类型，尚未规划区域功能，请期待后期功能哦~')
 		return
 	}
 	//设置区域设置按钮 选中状态

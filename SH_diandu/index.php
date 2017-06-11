@@ -431,8 +431,8 @@ if ($id > 0) {
 <script src="js/page/create/UrlPoint/UrlPoint.js"></script>
 <script src="js/page/create/PointTypes/PointTypes.js"></script>
 <script src="js/page/create/SwayPoint/SwayPoint.js"></script>
-<script src="js/page/create/DrawAreaPoint/DrawAreaPoint.js"></script>
-<script src="js/index.js"></script>
+<script src="js/page/create/DrawAreaPoint/DrawAreaPoint.js?r=20170610"></script>
+<script src="js/index.js?r=20170610"></script>
 
 
 <script>
