@@ -25,7 +25,7 @@
 	Util.loadCSS(getBasePath() + '/style.css');
 })()
 
-
+window.BLINK_DURATION = 4000
 window.DianduEffect = (function (dd) {
   /**
    * 闪烁效果[发光效果,针对透明图片]
@@ -38,7 +38,7 @@ window.DianduEffect = (function (dd) {
 		$point.addClass('custom-point-blink')
 		setTimeout(function () {
 			$point.removeClass('custom-point-blink')
-		}, 2000)
+		}, window.BLINK_DURATION)
 
 		// 全程音频闪烁
 		Vue.nextTick(function () {
@@ -47,7 +47,7 @@ window.DianduEffect = (function (dd) {
 				$globalAudioIcon.addClass('custom-point-blink')
 				setTimeout(function () {
 					$globalAudioIcon.removeClass('custom-point-blink')
-				}, 2000)
+				}, window.BLINK_DURATION)
 			}
 		})
 
@@ -105,7 +105,7 @@ window.DianduEffect = (function (dd) {
 				case 2:
 					$dom.css('border', '0');
 			}
-		}, 2000)
+		}, window.BLINK_DURATION)
 	}
 
 	dd.showEffect = function ($dom) {

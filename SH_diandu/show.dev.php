@@ -221,7 +221,7 @@
   <!--考试 END-->
   <!--lib-->
   <!--微信录音-->
-  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  <script src="./js/lib/jweixin.js"></script>
   <script>
     wx.config({
       debug: false,//调试开关

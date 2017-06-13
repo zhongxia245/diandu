@@ -1719,5 +1719,5 @@ function _domShowEffect($dom) {
 	$dom.addClass('custom-point-blink')
 	setTimeout(function () {
 		$dom.removeClass('custom-point-blink')
-	}, 2000)
+	}, window.BLINK_DURATION)
 }

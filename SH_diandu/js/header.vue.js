@@ -192,7 +192,7 @@ function initVue(data) {
 							$btnScaleBtn.addClass('custom-point-blink')
 							setTimeout(function () {
 								$btnScaleBtn.removeClass('custom-point-blink')
-							}, 2000)
+							}, window.BLINK_DURATION)
 						}
 					}
 				})
