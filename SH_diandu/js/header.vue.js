@@ -27,6 +27,7 @@ function initVue(data) {
 			// 评论弹窗是否展示
 			show_page_comment_btn: true,
 			show_page_comment: false,
+			show_audio_area_point: false,
 			page_comment_count: 0,
 			// 点读页列表
 			pagelist: {
@@ -199,6 +200,14 @@ function initVue(data) {
 			}
 		},
 		methods: {
+			handleShowAudioAreaPoint: function () {
+				this.show_audio_area_point = !this.show_audio_area_point
+				if (this.show_audio_area_point) {
+					$('.area-setting__audio').css('opacity', 1)
+				} else {
+					$('.area-setting__audio').css('opacity', 0)
+				}
+			},
 			handleScaleNormal: function () {
 				this.hasScale = false
 				if (GLOBAL.picScale) {
@@ -373,7 +382,7 @@ function initVue(data) {
 				if (endIndex < this.pageTimes.length) {
 					endTime = this.pageTimes[endIndex]
 				}
-				
+
 				// 没有下一页的话，播放结束就不跳转到下一页
 				if (!endTime && this.globalAudio) {
 					endTime = parseInt(this.globalAudio.duration)

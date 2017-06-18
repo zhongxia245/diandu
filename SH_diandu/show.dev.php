@@ -69,6 +69,7 @@
           alt="全程音频">
       </div>
       <div class="diandu__header--right">
+        
         <div 
           v-if="show_page_comment_btn"
           alt="点读页评论"
@@ -76,6 +77,12 @@
           class="diandu-header-right__comment" 
           @click="handleOpenComment">
         </div>
+        <img 
+          v-cloak 
+          :src="show_audio_area_point?'./imgs/mods/header/area_show.png':'./imgs/mods/header/area_hide.png'" 
+          alt="展示音频区域" 
+          class="diandu-header-right__area-show"
+          @click="handleShowAudioAreaPoint">
         <img 
           src="./imgs/mods/header/icon_setting.png" 
           alt="点读设置" 

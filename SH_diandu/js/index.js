@@ -322,11 +322,20 @@ var _data = (function () {
 
   /**
    * 判断创建的点读是否为空[没有上传数据]
+	 * 空点读点不添加到数据库
    * @param item 点读位数据
    */
 	function isEmpty(item) {
 		// 如果这些每一项都为空,则表示为空的点读位
-		if (item.content || item.filename || item.questions || item.title || item.linkurl || item.url || item.remarks || item.onoff || item.pic) {
+		if (item.content ||
+			item.filename ||
+			item.questions ||
+			item.title ||
+			item.linkurl ||
+			item.url ||
+			item.remarks ||
+			item.onoff ||
+			item.pic) {
 			return false
 		}
 		return true
@@ -560,12 +569,16 @@ var _edit = (function () {
 			case '1':
 				className = '.video'
 				point['type'] = 'video'
-				$rightName.addClass('uploaded').attr('data-src', url).find('span').eq(0).text(fileName)
+				if (fileName) {
+					$rightName.addClass('uploaded').attr('data-src', url).find('span').eq(0).text(fileName)
+				}
 				break
 			case '2':
 				className = '.audio'
 				point['type'] = 'audio'
-				$rightName.addClass('uploaded').attr('data-src', url).find('span').eq(0).text(fileName)
+				if (url) {
+					$rightName.addClass('uploaded').attr('data-src', url).find('span').eq(0).text(fileName)
+				}
 				break
 			case '3':
 				className = '.imgtext'

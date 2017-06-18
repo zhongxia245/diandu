@@ -1202,11 +1202,19 @@ function bindEvent() {
 	$('.m-audio').off().on(click, function (e) {
 		e.stopPropagation();
 		var $cTar = $(e.currentTarget);
+		// 获取当前音频数据
+		var dataId = $cTar.attr('data-id');
+		var pointData = Util.getPointDataByIds(DATA, dataId)
+		var mp3_path = pointData.url
+		if (!mp3_path) {
+			return
+		}
 
 		if ($cTar.find('.audio-panel__flag').length == 0) {
 			//关闭视频,并且设置所有的 音频为默认图标状态
 			closeVideoOrAudio(true);
 		}
+
 
 		window._audioEnded = true;
 		audio.addEventListener('ended', function () {
@@ -1224,10 +1232,6 @@ function bindEvent() {
 			}
 		})
 
-		// 获取当前音频数据
-		var dataId = $cTar.attr('data-id');
-		var pointData = Util.getPointDataByIds(DATA, dataId)
-
 		var audioPanelConfig = JSON.parse(pointData['audio_panel'] || "{}")
 		// 需要展示音频面板
 		if (audioPanelConfig.show) {
@@ -1237,7 +1241,7 @@ function bindEvent() {
 				window.GLOBAL.audio_panel.close()
 			} else {
 				window.GLOBAL.audio_panel = new AudioPanel({
-					mp3_path: pointData.url,
+					mp3_path: mp3_path,
 					lrc_path: audioPanelConfig.lrc,
 					// 关闭音频面板的回调
 					closeCallback: function () {

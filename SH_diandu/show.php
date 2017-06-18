@@ -104,6 +104,12 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
           @click="handleOpenComment">
         </div>
         <img 
+          v-cloak 
+          :src="show_audio_area_point?'./imgs/mods/header/area_show.png':'./imgs/mods/header/area_hide.png'" 
+          alt="展示音频区域" 
+          class="diandu-header-right__area-show"
+          @click="handleShowAudioAreaPoint">
+        <img 
           src="./imgs/mods/header/icon_setting.png" 
           alt="点读设置" 
           class="diandu-header-right__setting"
