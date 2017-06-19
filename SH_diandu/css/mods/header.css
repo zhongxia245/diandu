@@ -62,8 +62,12 @@
   padding: 3px;
 }
 
-.diandu-header-right__setting, .diandu-header-right__area-show {
+.diandu-header-right__setting {
   margin-right: 13px;
+}
+
+.diandu-header-right__area-show {
+  margin-left: 13px;
 }
 
 .diandu-header__scale {

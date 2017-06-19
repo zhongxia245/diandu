@@ -27,7 +27,7 @@ function initVue(data) {
 			// 评论弹窗是否展示
 			show_page_comment_btn: true,
 			show_page_comment: false,
-			show_audio_area_point: false,
+			audio_area_point_state: false,
 			page_comment_count: 0,
 			// 点读页列表
 			pagelist: {
@@ -87,6 +87,18 @@ function initVue(data) {
 			}
 		},
 		computed: {
+			hasAudioAreaPoint: function () {
+				var page = data.pages[this.pageActiveIndex]
+				page.points = page.points || []
+				for (var i = 0; i < page.points.length; i++) {
+					var point = page.points[i];
+					var pointData = JSON.parse(point.data || '{}')
+					if (pointData.type === 'audio' && pointData.drawcustomarea && pointData.drawcustomarea.type === 'area') {
+						return true
+					}
+				}
+				return false
+			},
 			// 是否有背景音乐
 			hasBgAudio: function () {
 				return !!this.bg_audio_src
@@ -201,8 +213,8 @@ function initVue(data) {
 		},
 		methods: {
 			handleShowAudioAreaPoint: function () {
-				this.show_audio_area_point = !this.show_audio_area_point
-				if (this.show_audio_area_point) {
+				this.audio_area_point_state = !this.audio_area_point_state
+				if (this.audio_area_point_state) {
 					$('.area-setting__audio').css('opacity', 1)
 				} else {
 					$('.area-setting__audio').css('opacity', 0)
