@@ -11,7 +11,19 @@
  */
 function initVue(data) {
 	data = data || {}
-	var globalAudioConfig = JSON.parse(data.content || '{}')
+	var globalData = JSON.parse(data.data || '{}')
+	var globalAudioData = globalData.globalAudioData || {}
+
+	//兼容旧的（单个全程音频）
+	if (data.content) {
+		var oldGlobalAudioData = JSON.parse(data.content)
+		globalAudioData[oldGlobalAudioData.id] = oldGlobalAudioData
+	}
+
+	globalAudioData = formatGlobalAudioData(globalAudioData)
+	var globalAudioConfig = globalAudioData[0] || {}
+	var origin_pageTimes = mergeGlobalAudioDataTimes(globalAudioData)
+
 	window.VueApp = new Vue({
 		el: '#header_vue',
 		data: {
@@ -24,11 +36,13 @@ function initVue(data) {
 			popup_pagelist: false,
 			popup_audioplayer: false,
 			pageActiveIndex: 0,
+
 			// 评论弹窗是否展示
 			show_page_comment_btn: true,
 			show_page_comment: false,
 			audio_area_point_state: false,
 			page_comment_count: 0,
+
 			// 点读页列表
 			pagelist: {
 				intro: data.saytext,
@@ -36,15 +50,17 @@ function initVue(data) {
 				title: data.title || '',
 				data: data.pages || []
 			},
-			// 音频播放器
+
+			// 全程音频播放器
 			audioplayer: {
-				data: globalAudioConfig,
+				data: origin_pageTimes,
 				src: globalAudioConfig.src,
 				currentTime: 0,
 				totalTime: 0,
 				play: false,
-				isPlayGoToNext: false  		// 是否因为播放自动跳转到下一页
+				isPlayGoToNext: false // 是否因为播放自动跳转到下一页
 			},
+
 			// 设置页面
 			setting_opacity: 100,
 			setting_gap: 5,
@@ -53,24 +69,25 @@ function initVue(data) {
 
 			// 背景图放大
 			hasScale: false,
-			//侧边栏 by brian 20170511 START
+
+			// 侧边栏 by brian 20170511 START
 			teamid: 0,
 			logoid: 0,
 			logoname: '',
 			team_video_id: window.team_video_id,
-			show_unit: 0,//正在展示的unit
+			show_unit: 0, // 正在展示的unit
 			first_show: 0,
 			unit_list: [],
 			group_name: '',
-			search: "",
+			search: '',
 			userid: window.__userid
-			//侧边栏 by brian 20170511 END
+			// 侧边栏 by brian 20170511 END
 		},
 		created: function () {
 			var version = Util.getBrowserInfo()
-			if (version.iPhone && version.weixin) {
-				MINT.Toast('请用safari浏览器打开，享受更好体验哦', 3000)
-			}
+			// if (version.iPhone && version.weixin) {
+			// 	MINT.Toast('请用safari浏览器打开，享受更好体验哦', 3000)
+			// }
 			if (!this.globalAudio && !!this.audioplayer.src) {
 				this.initGlobalAudio()
 			}
@@ -85,13 +102,25 @@ function initVue(data) {
 			if (Util.IsPC()) {
 				this.show_page_comment_btn = false
 			}
+
+			// 获取目录列表
+			$.post("/edu/course/json_result/form_submit.php", { action: "get_teaminfo_by_teamvideoid", id: team_video_id }, function (ret) {
+				if ('success' == ret.flag) {
+					window.VueApp.group_name = ret.group_name
+					window.VueApp.unit_list = ret.unit_list
+					window.VueApp.teamid = ret.group_id
+					window.VueApp.logoid = ret.logoid
+					window.VueApp.logoname = ret.logoname
+				}
+			}, 'json')
+
 		},
 		computed: {
 			hasAudioAreaPoint: function () {
 				var page = data.pages[this.pageActiveIndex]
 				page.points = page.points || []
 				for (var i = 0; i < page.points.length; i++) {
-					var point = page.points[i];
+					var point = page.points[i]
 					var pointData = JSON.parse(point.data || '{}')
 					if (pointData.type === 'audio' && pointData.drawcustomarea && pointData.drawcustomarea.type === 'area') {
 						return true
@@ -105,8 +134,7 @@ function initVue(data) {
 			},
 			// 是否有全程音频
 			hasGlobalAudio: function () {
-				var pageTimes = JSON.parse(DATA.content).pageConfig
-				return !!globalAudioConfig.id && !!pageTimes[this.pageActiveIndex]
+				return !!origin_pageTimes[this.pageActiveIndex]
 			},
 			globalAudioIconPath: function () {
 				if (this.audioplayer.play) {
@@ -127,9 +155,9 @@ function initVue(data) {
 			totalTimeStr: function () {
 				return Util.num2time(this.audioplayer.totalTime)
 			},
-			//全程音频每个点读页对应的时间
+			// 全程音频每个点读页对应的时间
 			pageTimes: function () {
-				var _pageTimes = this.audioplayer.data.pageConfig || []
+				var _pageTimes = this.audioplayer.data || []
 				var _pageTimesNum = []
 				for (var i = 0; i < _pageTimes.length; i++) {
 					_pageTimesNum.push(Util.time2num(_pageTimes[i]))
@@ -147,8 +175,15 @@ function initVue(data) {
 				}
 			},
 			pageActiveIndex: function () {
+				// 多个全程音频，如果切换到下一个音频，则切换
+				var src = getGlobalAudioSrc(globalAudioData, this.pageActiveIndex)
+				if (src) {
+					this.updateGlobalAudioSrc(src)
+				}
+
 				// 翻页后，重置当前点读页设置全程音频的时间
 				this.audioplayer.currentTime = 0
+
 				this.setAudioPlayerTotalTime()
 
 				if (this.globalAudio) {
@@ -157,23 +192,25 @@ function initVue(data) {
 					}
 					if (!this.isPlayGoToNext) {
 						var currentPageTime = this.getPageTime(this.pageActiveIndex)
-						this.globalAudio.currentTime = currentPageTime.startTime
-						this.isPlayGoToNext = false
+						if (currentPageTime.startTime) {
+							this.globalAudio.currentTime = currentPageTime.startTime
+							this.isPlayGoToNext = false
+						}
 					}
 				}
 
 				if (window.galleryTop && !window.galleryTop.autoplaying) {
-					window.galleryTop.slideTo(this.pageActiveIndex);
+					window.galleryTop.slideTo(this.pageActiveIndex)
 				}
 			},
-			//by brian 20170511 START
+			// by brian 20170511 START
 			first_show: function (v, v1) {
-				var h = $("#weight_h").height();
-				var full_w = $(window).height();
-				var left_h = full_w - h - 35 - $(".team_name").height();
-				$(".unit_list").height(left_h);
+				var h = $('#weight_h').height()
+				var full_w = $(window).height()
+				var left_h = full_w - h - 35 - $('.team_name').height()
+				$('.unit_list').height(left_h)
 			},
-			//by brian 20170511 END
+			// by brian 20170511 END
 			// 设置相关
 			setting_opacity: function () {
 				$('.wrap div[data-id]').css({
@@ -252,7 +289,7 @@ function initVue(data) {
 							videoid: GLOBAL.videoid,
 							userid: window.__userid,
 							startRecordCallback: function () {
-								//开始录音结束背景音乐
+								// 开始录音结束背景音乐
 								that.pauseBgAudio()
 							},
 							stopRecordCallback: function () {
@@ -263,7 +300,7 @@ function initVue(data) {
 				} else {
 					that.show_page_comment = false
 					that.page_comment_count = 0
-					$('.m-bg[data-id="' + pageid + '"] .m-dd-start-comment-div').html('')
+					$('.m-bg[data-id="' + pageid + '"] .m-dd-start-comment-div').html('').hide()
 				}
 			},
 			// 展开目录列表
@@ -307,7 +344,7 @@ function initVue(data) {
 			},
 			// ====================== 全程音频 =======================
 			handleAudioPlayerPlay: function () {
-				var that = this;
+				var that = this
 				if (!that.audioplayer.play) {
 					that.playAudio()
 				} else {
@@ -320,16 +357,14 @@ function initVue(data) {
 			handleAudioPlayerNext: function () {
 				this.globalAudio.currentTime += 15
 			},
-			/*============= 全程音频相关 START==================*/
 			initGlobalAudio: function () {
 				var that = this
 
 				// 加载m3u8的音频文件，解决iphone加载音频特慢问题
 				// that.globalAudio = new Audio(that.audioplayer.src)
 				that.globalAudio = new Audio()
-				that.globalAudio.load()
 				Util.setAudioSource(that.globalAudio, that.audioplayer.src)
-
+				that.globalAudio.load()
 
 				that.globalAudio.addEventListener('canplaythrough', function (e) {
 					that.setAudioPlayerTotalTime()
@@ -349,12 +384,26 @@ function initVue(data) {
 					}, 500)
 				})
 
-
 				that.globalAudio.addEventListener('ended', function () {
 					that.pauseAudio()
 					that.audioplayer.currentTime = 0
 					clearInterval(this.globalAudioTimer)
 				})
+			},
+			updateGlobalAudioSrc: function (src) {
+				if (Util.getAudioSource(this.globalAudio) !== src) {
+					Util.setAudioSource(this.globalAudio, src)
+					var currentPageTime = this.getPageTime(this.pageActiveIndex)
+					this.globalAudio.load()
+					this.pauseAudio()
+					try {
+						if (currentPageTime.startTime) {
+							this.globalAudio.currentTime = currentPageTime.startTime
+						}
+					} catch (e) {
+						console.warn('切换多个全程音频地址的时候，重新设置当前页的时间，报错')
+					}
+				}
 			},
 			playAudio: function () {
 				if (this.globalAudio && this.globalAudio.paused) {
@@ -371,18 +420,18 @@ function initVue(data) {
 				this.audioplayer.play = false
 				this.restartPlayBgAudio()
 			},
-			/**
-			 * 设置播放器的总时长
-			 * eg：第二页的音频播放时间 == 第二页音频时间 - 第一页音频时间
-			 */
+      /**
+       * 设置播放器的总时长
+       * eg：第二页的音频播放时间 == 第二页音频时间 - 第一页音频时间
+       */
 			setAudioPlayerTotalTime: function () {
 				var currentPageTime = this.getPageTime(this.pageActiveIndex)
 				this.audioplayer.totalTime = currentPageTime.duration
 			},
-			/**
-			 * 获取指定点读页的上一个时间和下一个时间
-			 * @param index 需要获取点读页的下标
-			 */
+      /**
+       * 获取指定点读页的上一个时间和下一个时间
+       * @param index 需要获取点读页的下标
+       */
 			getPageTime: function (index) {
 				index = index || 0
 				var startTime = 0
@@ -421,7 +470,7 @@ function initVue(data) {
 					that.playBgAudio()
 				} else {
 					// 移动端不能自动播放，只能点击屏幕开始播放
-					$(document).one("touchstart", that.playBgAudio, false)
+					$(document).one('touchstart', that.playBgAudio, false)
 				}
 			},
 			playBgAudio: function () {
@@ -448,11 +497,11 @@ function initVue(data) {
 			},
 			restartPlayBgAudio: function () {
 				var that = this
-				/**
-				 * 如果在其他音频或者视频播放之前，背景音乐就是关闭的，
-				 * 那么其他音频或者视频播放结束，背景音频不继续播放，
-				 * 需要手动打开
-				 * */
+        /**
+         * 如果在其他音频或者视频播放之前，背景音乐就是关闭的，
+         * 那么其他音频或者视频播放结束，背景音频不继续播放，
+         * 需要手动打开
+         * */
 				clearTimeout(that.bgAudioTimer)
 				if (that.setting_bgaudio_enable) {
 					that.bgAudioTimer = setTimeout(function () {
@@ -460,8 +509,225 @@ function initVue(data) {
 						that.setting_bgaudio_play = true
 					}, 5000)
 				}
-			}
+			},
 			/*============= 背景音乐 END==================*/
+			/*============= 目录列表 START==================*/
+			// by bran 20170511
+			showUnitVideo: function (unitid, index) {
+				if (this.show_unit == unitid) {
+					this.show_unit = 0
+					return
+				}
+				if (this.unit_list[index]['videolist'].length == 0) {
+					var that = this
+					$.post('/edu/course/json_result/form_submit.php', { action: 'get_unit_teamvideo', unitid: unitid }, function (ret) {
+						if ('success' == ret['flag']) {
+							that.unit_list[index]['videolist'] = ret['data']
+							that.show_unit = unitid
+						} else {
+							alert(ret['reason'])
+						}
+					}, 'json')
+				} else {
+					this.show_unit = unitid
+				}
+			},
+			jumpTeamPage: function () {
+				window.location.href = '/m/team/' + this.teamid + '.html'
+			},
+			jumpUnitPage: function (unitid) {
+				window.location.href = '/m/unit/' + unitid + '.html'
+			},
+			jumpVideoPage: function (id, istext) {
+				var url = ''
+				if (0 == istext) {
+					url = '/m/video/' + id + '.html'
+				}
+				else if (1 == istext) {
+					url = '/m/graphic-article/' + id + '.html'
+				}
+				else if (2 == istext) {
+					url = '/m/audio/' + id + '.html'
+				}
+				else if (3 == istext) {
+					url = '/m/audio-passage/' + id + '.html'
+				}
+				else if (4 == istext) {
+					url = '/m/exam/' + id + '.html'
+				}
+				else if (5 == istext) {
+					url = '/m/point-read/' + id + '.html'
+				}
+				if ('' != url) {
+					window.location.href = url
+				}
+			},
+			jumpPersonalPage: function () {
+				window.location.href = '/edu/course/mobile/personal.php'
+			},
+			jumpTeamIconPage: function () {
+				window.location.href = '/edu/course/mobile/group_icon_content.php?iconid=' + this.logoid
+			},
+			goSearch: function () {
+				window.location.href = 'edu/course/mobile/search/search_new.php?keyword=' + this.search
+			}
+			/*============= 目录列表 END==================*/
 		}
 	})
+}
+
+/**
+ * 把全程音频数据，解析成按点读页获取的，因为每个点读页，只能有一个全程音频
+ */
+function formatGlobalAudioData(object) {
+	var newObject = {}
+	for (var key in object) {
+		if (object.hasOwnProperty(key)) {
+			// 因为创建的时候，保存时，点读页下标是从1开始的
+			var newKey = parseInt(key.split('_')[0]) - 1
+			newObject[newKey] = object[key]
+		}
+	}
+	return newObject
+}
+
+/**
+ * 把多个全程音频的时间合并成一个数组
+ * @param {any} object 
+ */
+function mergeGlobalAudioDataTimes(object) {
+	var pageTimes = []
+	for (var key in object) {
+		if (object.hasOwnProperty(key)) {
+			var item = object[key]
+			var pageConfig = item.pageConfig
+			for (var i = 0; i < pageConfig.length; i++) {
+				pageTimes[i] = pageTimes[i] || pageConfig[i]
+
+				// 存在多个音频，对同一个页面设置了时间，则后面覆盖前面的
+				if ((pageTimes[i] === null || pageTimes[i] === '00:00') && pageConfig[i] !== null) {
+					pageTimes[i] = pageConfig[i]
+				}
+			}
+		}
+	}
+	return pageTimes
+}
+
+/**
+ * 获取全程音频地址
+ */
+function getGlobalAudioSrc(object, pageIndex) {
+	var src = ''
+	for (var key in object) {
+		if (object.hasOwnProperty(key)) {
+			var item = object[key]
+			if (item.pageConfig[pageIndex]) {
+				return item.src
+			}
+		}
+	}
+	return src
+}
+
+/**
+ * 初始化目录列表（曹同学）
+ */
+function initSideBar() {
+	window.side_bar = new Vue({
+		el: '#side_bar',
+		data: {
+			teamid: 0,
+			logoid: 0,
+			logoname: '',
+			team_video_id: team_video_id,
+			show_unit: 0, // 正在展示的unit
+			first_show: 0,
+			unit_list: [],
+			group_name: '',
+			search: '',
+			userid: window.__userid
+		},
+		mounted: function () {
+			$.post('/edu/course/json_result/form_submit.php', { action: 'get_teaminfo_by_teamvideoid', id: team_video_id }, function (ret) {
+				if ('success' == ret.flag) {
+					side_bar.group_name = ret.group_name
+					side_bar.unit_list = ret.unit_list
+					side_bar.teamid = ret.group_id
+					side_bar.logoid = ret.logoid
+					side_bar.logoname = ret.logoname
+				}
+			}, 'json')
+		},
+		watch: {
+			first_show: function (v, v1) {
+				var h = $('#weight_h').height()
+				var full_w = $(window).height()
+				var left_h = full_w - h - 35 - $('.team_name').height()
+				$('.unit_list').height(left_h)
+			}
+		},
+		methods: {
+			showUnitVideo: function (unitid, index) {
+				if (this.show_unit == unitid) {
+					this.show_unit = 0
+					return
+				}
+				if (this.unit_list[index]['videolist'].length == 0) {
+					var that = this
+					$.post('/edu/course/json_result/form_submit.php', { action: 'get_unit_teamvideo', unitid: unitid }, function (ret) {
+						if ('success' == ret['flag']) {
+							that.unit_list[index]['videolist'] = ret['data']
+							that.show_unit = unitid
+						} else {
+							alert(ret['reason'])
+						}
+					}, 'json')
+				} else {
+					this.show_unit = unitid
+				}
+			},
+			jumpTeamPage: function () {
+				window.location.href = '/m/team/' + this.teamid + '.html'
+			},
+			jumpUnitPage: function (unitid) {
+				window.location.href = '/m/unit/' + unitid + '.html'
+			},
+			jumpVideoPage: function (id, istext) {
+				var url = ''
+				if (0 == istext) {
+					url = '/m/video/' + id + '.html'
+				}
+				else if (1 == istext) {
+					url = '/m/graphic-article/' + id + '.html'
+				}
+				else if (2 == istext) {
+					url = '/m/audio/' + id + '.html'
+				}
+				else if (3 == istext) {
+					url = '/m/audio-passage/' + id + '.html'
+				}
+				else if (4 == istext) {
+					url = '/m/exam/' + id + '.html'
+				}
+				else if (5 == istext) {
+					url = '/m/point-read/' + id + '.html'
+				}
+				if ('' != url) {
+					window.location.href = url
+				}
+			},
+			jumpPersonalPage: function () {
+				window.location.href = '/edu/course/mobile/personal.php'
+			},
+			jumpTeamIconPage: function () {
+				window.location.href = '/edu/course/mobile/group_icon_content.php?iconid=' + this.logoid
+			},
+			goSearch: function () {
+				window.location.href = 'edu/course/mobile/search/search_new.php?keyword=' + this.search
+			}
+		}
+	})
+
+	side_bar.first_show = 1
 }

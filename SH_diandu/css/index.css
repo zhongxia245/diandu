@@ -655,7 +655,10 @@ header {
 
 /*鼠标移入右边音频名称时,显示设置全局按钮*/
 
-html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data-upload="1"] .img-global-audio {
+
+/*html[data-selected="0"] .upload-item:hover .upload-right[data-type="audio"][data-upload="1"] .img-global-audio {*/
+
+.upload-item:hover .upload-right[data-type="audio"][data-upload="1"] .img-global-audio {
     visibility: visible;
 }
 

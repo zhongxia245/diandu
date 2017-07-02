@@ -26,7 +26,7 @@ var TYPE = {
  * 全局对象
  ******************************************/
 var GLOBAL = {
-	PAGECOUNT: 1, // 点读页数量
+	PAGECOUNT: 1, 	// 点读页数量
 	SCREENTYPE: '', // 屏幕类型，横屏，或者竖屏[选中之后，所有点读页都一致]
 	ISSELECTEDSCREENTYPE: false, // 是否选中了点读页类型
 	DIANDUSIZE: 72, // 点读点大小
@@ -68,287 +68,6 @@ $(function () {
 	bindEvent()
 })
 
-/***************************************
- * uploadify 相关的方法
- ***************************************/
-var _upload = (function () {
-  /**
-   * 设置input file 标签，使用 uploadify 插件
-   * @param {[type]}  $file   [file文件标签的Jquery对象]
-   * @param {Boolean} isSetWH [是否设置寛高，上传MP4，MP3等]
-   * @param {[type]}  success [成功回调函数]
-   * @param {[type]}  error   [失败回调函数]
-   */
-	function setUploadify($file, config) {
-		var defaultConfig = {
-			width: 100,
-			height: 30,
-			auto: true, // 关闭自动上传
-			removeTimeout: 1, // 文件队列上传完成1秒后删除
-			swf: 'js/lib/uploadify/uploadify.swf',
-			uploader: 'php/uploadify.php',
-			method: 'post', // 方法，服务端可以用$_POST数组获取数据
-			buttonText: '', // 设置按钮文本
-			multi: true, // 允许同时上传多张图片
-			uploadLimit: 100, // 一次最多只允许上传100张图片
-			fileTypeDesc: 'Image Files',
-			fileTypeExts: '*.gif;*.jpg;*.png;*.jepg',
-			fileSizeLimit: '2GB', // 限制上传的图片不得超过约等于2G
-			onUploadSuccess: function (file, data, response) { // 每次成功上传后执行的回调函数，从服务端返回数据到前端
-			},
-			onError: function (event, queueId, fileObj, errObj) {
-				Logger.log('upload error', event)
-			}
-		}
-		// 合并参数
-		config = $.extend({}, defaultConfig, config)
-		$file.uploadify(config)
-	}
-
-  /**
-   * 初始化 webuploader 组件
-   */
-	function initWebUpload(id, config) {
-		var $progress = $('#file__progress' + config.id);
-		var defaultConfig = {
-			server: 'php/fileupload.php',
-			pick: {
-				id: id,
-				label: config.label || '',
-				multiple: config.multiple || false,
-			},
-			accept: {
-				title: config.fileTypeDesc || 'Images',
-				extensions: config.extensions || '',
-				mimeTypes: config.fileTypeExts || 'image/png,image/jpg,image/gif,image/jpeg'
-			},
-			auto: true,
-			threads: 1,
-			chunked: false,
-			duplicate: true,
-			fileSingleSizeLimit: 1024 * 1024 * 500,
-			onUploadProgress: function (file, percentage) {
-				if ($progress) {
-					$progress.show()
-					var percent = parseInt(percentage * 100);
-					$progress.text(percent + '%')
-					$progress.css('width', percent + '%')
-				}
-			},
-			onUploadComplete: function () {
-				if ($progress) {
-					$progress.hide()
-				}
-			}
-		};
-
-		// 合并参数
-		config = $.extend({}, defaultConfig, config);
-		window.WebUploader.create(config)
-	}
-
-	return {
-		setUploadify: setUploadify,
-		initWebUpload: initWebUpload
-	}
-})()
-
-/***************************************
- * window.DD.items 数据对象方法
- ***************************************/
-var _data = (function () {
-  /**
-   * 根据id，设置数据仓库点读位置数据
-   * @param  id 点读的id ,类似  1_1
-   */
-	function setDDItems(id, config) {
-		// 点读背景默认从1开始，所以，这里减1
-		var index = parseInt(id.split('_')[0])
-		var arr = window.DD.items[index - 1]['data']
-		for (var i = 0; i < arr.length; i++) {
-			if (arr[i].id == id) {
-				arr[i] = $.extend({}, arr[i], config)
-				break
-			}
-		}
-	}
-
-  /**
-   * 根据id 获取 点读位置的数据
-   * @param id  点读位置标识  类似 1_1
-   */
-	function getDDItems(id) {
-		var index = parseInt(id.split('_')[0])
-		var arr = window.DD.items[index - 1]['data']
-		for (var i = 0; i < arr.length; i++) {
-			if (arr[i].id == id) {
-				return arr[i]
-			}
-		}
-	}
-
-	/**
-	 * 获取指定点读页的数据
-	 * @param {any} pageIndex 
-	 * @returns 
-	 */
-	function getPageData(pageIndex) {
-		return window.DD.items[pageIndex - 1]
-	}
-
-  /**
-   * 获取有效的点读位
-   * @return {[type]} [description]
-   */
-	function getValidItems() {
-		var destArr = []
-		var delPageIds = ''
-		var isDelGlobalAudio = false; // 是否删掉了全程音频的点读点
-		var srcArr = window.DD.items
-		ArrayUtil.sortByKey(srcArr, 'sort')
-
-		// 点读页
-		for (var i = 0; i < srcArr.length; i++) {
-			if (!srcArr[i].isRemove) { // 去掉已经删除的点读页
-				var destPage = {
-					name: srcArr[i].name,
-					pic: srcArr[i].pic,
-					h: srcArr[i].h,
-					w: srcArr[i].w,
-					id: srcArr[i]['oldId'],
-					seq: srcArr[i]['sort']
-				}
-
-				// 点读点
-				var destItems = []
-				var items = srcArr[i]['data']
-
-				destPage['delPointIds'] = destPage['delPointIds'] || ''
-
-				for (var j = 0; j < items.length; j++) {
-					if (!items[j].isRemove && !isEmpty(items[j])) { // 去掉删除的点读位
-
-						var _tempData = $.extend({}, items[j])
-						delete _tempData.data
-						_tempData = JSON.stringify(_tempData)
-
-						var obj = {
-							x: items[j].x,
-							y: items[j].y,
-							point_size: items[j]['point_size'],
-							filename: items[j].filename,
-							url: items[j].url,
-							title: items[j].title,
-
-							area: items[j].area && JSON.stringify(items[j].area) || '',
-							custom: items[j].custom && JSON.stringify(items[j].custom) || '',
-							audio_panel: items[j].audio_panel && JSON.stringify(items[j].audio_panel) || '',
-							pic: items[j].pic && JSON.stringify(items[j].pic) || '',
-
-							content: items[j].content,
-							hide: items[j].hide ? 1 : 0,
-							questions: JSON.stringify(items[j].questions),
-							type: _data.getTypeByName(items[j].type),
-
-							remarks: JSON.stringify(items[j].remarks),
-
-							onoff: JSON.stringify(items[j].onoff),
-							linkurl: JSON.stringify(items[j].linkurl),
-
-							data: _tempData,  //保存点读点的所有数据
-						}
-
-						if (items[j]['oldId']) obj['id'] = items[j]['oldId']
-
-						destItems.push(obj)
-					} else {
-						// 记录下删除的点读位ID
-						var _oldid = items[j]['oldId'] ? items[j]['oldId'] : ''
-
-						if (_oldid) {
-							destPage['delPointIds'] += _oldid + ','
-						}
-						// 如果删除点读点的时候,把全程音频删掉了,则需要把全程音频数据清空
-						if ((i + 1) + '_' + (j + 1) === window.DD.globalAudioId) {
-							isDelGlobalAudio = true
-						}
-					}
-				}
-
-				destPage['delPointIds'] = destPage['delPointIds'].length > 0 ? destPage['delPointIds'].substr(0, destPage['delPointIds'].length - 1) : ''
-				destPage['points'] = destItems
-				destArr.push(destPage)
-			} else {
-				if (srcArr[i]['oldId']) {
-					delPageIds += srcArr[i]['oldId'] + ','
-				}
-			}
-		}
-
-		delPageIds = delPageIds.length > 0 ? delPageIds.substr(0, delPageIds.length - 1) : ''
-		return {
-			data: destArr,
-			delPageIds: delPageIds,
-			isDelGlobalAudio: isDelGlobalAudio
-		}
-	}
-
-  /**
-   * 根据类型名字，获取类型的ID
-   * @return {[type]} [description]
-   */
-	function getTypeByName(typeName) {
-		switch (typeName) {
-			case 'video':
-				return 1
-			case 'audio':
-				return 2
-			case 'imgtext':
-				return 3
-			case 'exam':
-				return 4
-			case 'on-off':
-				return 5
-			case 'set-url':
-				return 6
-			case 'sway':
-				return 7
-			case 'viewer3d':
-				return 8
-			default:
-				return 1
-		}
-	}
-
-  /**
-   * 判断创建的点读是否为空[没有上传数据]
-	 * 空点读点不添加到数据库
-   * @param item 点读位数据
-   */
-	function isEmpty(item) {
-		// 如果这些每一项都为空,则表示为空的点读位
-		if (item.content ||
-			item.filename ||
-			item.questions ||
-			item.title ||
-			item.linkurl ||
-			item.url ||
-			item.remarks ||
-			item.onoff ||
-			item.pic) {
-			return false
-		}
-		return true
-	}
-
-	return {
-		getDDItems: getDDItems,
-		setDDItems: setDDItems,
-		getPageData: getPageData,
-		getValidItems: getValidItems,
-		getTypeByName: getTypeByName
-	}
-})()
 
 /***************************************
  * 创建相关操作
@@ -640,6 +359,14 @@ var _edit = (function () {
 
 		var _tempData = data.data || '{}'
 		_tempData = JSON.parse(_tempData)
+		window.DD.globalAudioData = _tempData.globalAudioData || {}
+
+		//兼容旧的（单个全程音频）
+		if (data.content) {
+			var oldGlobalAudioData = JSON.parse(data.content)
+			window.DD.globalAudioData[oldGlobalAudioData.id] = oldGlobalAudioData
+		}
+
 		window.GLOBAL.AUDIO_AREA_SETTING = $.extend({}, window.GLOBAL.AUDIO_AREA_SETTING, _tempData.AUDIO_AREA_SETTING)
 
 		var pages = data.pages
@@ -688,45 +415,49 @@ var _edit = (function () {
 		}
 	}
 
-  /**
+	/**
    * 把全局音频的数据,保存到点读数据里面  DD.items
    * 重置全局音频的数据
    * @param data
    * @private
    */
 	function _resetGlobalAudioData(data) {
-		var globalAudioConfig = JSON.parse(data.content || '{}')
-		if (globalAudioConfig.id) {
-			window.DD.globalAudioId = globalAudioConfig.id
-			window.DD.globalAudioSrc = globalAudioConfig.src
-			window.DD.globalAudioName = globalAudioConfig.name
+		var globalData = JSON.parse(data.data || '{}')
+		var globalAudioData = globalData.globalAudioData || {}
 
-			for (var i = 0; i < globalAudioConfig.pageConfig.length; i++) {
-				window.DD.items[i]['time'] = globalAudioConfig.pageConfig[i]
-			}
+		//兼容旧的（单个全程音频）
+		if (data.content) {
+			var oldGlobalAudioData = JSON.parse(data.content)
+			globalAudioData[oldGlobalAudioData.id] = oldGlobalAudioData
+		}
 
-			// 回显全局音频设置
-			$('html').attr('data-selected', 1)
-			var uploadRightBtns = $('.upload-right-btn').find('ul[data-id="' + globalAudioConfig.id + '"]')
-			uploadRightBtns.find('.img-global-audio').hide()
-			uploadRightBtns.find('.img-global-audio-setting').show()
+		for (var key in globalAudioData) {
+			if (globalAudioData.hasOwnProperty(key)) {
+				var globalAudioItemData = globalAudioData[key] || {}
+				globalAudioItemData.pageConfig = globalAudioItemData.pageConfig || []
+				// 回显全局音频设置
+				var uploadRightBtns = $('.upload-right-btn').find('ul[data-id="' + key + '"]')
+				uploadRightBtns.find('.img-global-audio').hide()
+				uploadRightBtns.find('.img-global-audio-setting').show()
 
-			// 设置点读点是音频的做标记,并且标记已经上传(音频+已经上传, 可以显示出 设置全局音频按钮)
-			var pages = window.DD.items
-			for (var i = 0; i < pages.length; i++) {
-				var points = pages[i].data || []
-				for (var j = 0; j < points.length; j++) {
-					var point = points[j]
-					if (point.type === 'audio' && point.url !== '') {
-						var id = point.id
-						var pageIndex = id.split('_')[0]
-						var pointIndex = id.split('_')[1]
+				// 设置点读点是音频的做标记,并且标记已经上传(音频+已经上传, 可以显示出 设置全局音频按钮)
+				// hover 会显示全程音频的设置按钮
+				var pages = window.DD.items
+				for (var i = 0; i < pages.length; i++) {
+					var points = pages[i].data || []
+					for (var j = 0; j < points.length; j++) {
+						var point = points[j]
+						if (point.type === 'audio' && point.url !== '') {
+							var id = point.id
+							var pageIndex = id.split('_')[0]
+							var pointIndex = id.split('_')[1]
 
-						$('.diandupageitem[data-index="' + pageIndex + '"]')
-							.find('.upload-item[data-index="' + pointIndex + '"]')
-							.find('.upload-right')
-							.attr('data-upload', 1)
-							.attr('data-type', point.type)
+							$('.diandupageitem[data-index="' + pageIndex + '"]')
+								.find('.upload-item[data-index="' + pointIndex + '"]')
+								.find('.upload-right')
+								.attr('data-upload', 1)
+								.attr('data-type', point.type)
+						}
 					}
 				}
 			}
@@ -922,7 +653,7 @@ function bindEvent() {
 		var pageIndex = window.temp_draw_point_data.pageIndex
 		var pointIndex = window.temp_draw_point_data.pointIndex
 		var dataid = window.temp_draw_point_data.id
-		var pointData = _data.getDDItems(dataid)
+		var pointData = data_util.getDDItems(dataid)
 		var _pageData = window.DD.items[pageIndex - 1]
 		// 自定义绘制图形  START 
 		var drawCustomArea = new Draw.DrawCustomArea({
@@ -966,7 +697,7 @@ function bindEvent() {
 				}
 
 
-				_data.setDDItems(dataid, {
+				data_util.setDDItems(dataid, {
 					x: location.x,
 					y: location.y,
 					drawcustomarea: temp_drawcustomarea
@@ -979,12 +710,12 @@ function bindEvent() {
 					id: '#' + dataid,
 					pointIndex: pointIndex,
 					dataid: dataid,
-					data: _data.getDDItems(dataid).drawcustomarea,
+					data: data_util.getDDItems(dataid).drawcustomarea,
 					type: window.temp_draw_point_data.pointType,
 					callback: function (data) {
 						//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
-						var tempPointData = _data.getDDItems(dataid)
-						data = $.extend(_data.getDDItems(dataid).drawcustomarea, data)
+						var tempPointData = data_util.getDDItems(dataid)
+						data = $.extend(data_util.getDDItems(dataid).drawcustomarea, data)
 						tempPointData.drawcustomarea = data;
 					}
 				})
@@ -992,7 +723,7 @@ function bindEvent() {
 				//设置区域可以移动
 				new Drag('#' + dataid, function (x, y) {
 					var location = getLocation(_pageData.w, _pageData.h, x, y)
-					_data.setDDItems(dataid, { x: location.x, y: location.y })
+					data_util.setDDItems(dataid, { x: location.x, y: location.y })
 				})
 			}
 		})
@@ -1066,12 +797,12 @@ function createPoint(pointId, type, config) {
 			id: '#' + config.pointId,
 			pointIndex: config.pointId.split('_')[1],
 			dataid: config.pointId,
-			data: _data.getDDItems(config.pointId).drawcustomarea,
+			data: data_util.getDDItems(config.pointId).drawcustomarea,
 			type: config.drawAreaData.pointType,
 			callback: function (data) {
 				//注意： 保存区域设置的数据字段名，在 DrawAreaPoint.js 文件里面同样有使用
-				var tempPointData = _data.getDDItems(config.pointId)
-				data = $.extend(_data.getDDItems(config.pointId).drawcustomarea, data)
+				var tempPointData = data_util.getDDItems(config.pointId)
+				data = $.extend(data_util.getDDItems(config.pointId).drawcustomarea, data)
 				tempPointData.drawcustomarea = data;
 			}
 		})
@@ -1080,7 +811,7 @@ function createPoint(pointId, type, config) {
 	new Drag('#' + config.pointId, function (x, y) {
 		var _page = window.DD.items[pageIndex - 1]
 		var location = getLocation(_page.w, _page.h, x, y)
-		_data.setDDItems(pointId, { x: location.x, y: location.y })
+		data_util.setDDItems(pointId, { x: location.x, y: location.y })
 	})
 }
 
@@ -1125,7 +856,7 @@ function addDianDu(pointId, point) {
 		pointSelector: '#' + pointId,
 		callback: function (val) {
 			var id = pointId
-			_data.setDDItems(id, { point_size: val })
+			data_util.setDDItems(id, { point_size: val })
 
 			setPointSize('#' + pointId, val)
 		}
@@ -1470,7 +1201,7 @@ function handleUploadItem(e) {
 			$cTar.remove()
 			// 在本地数据变量里面标注，已经删除
 			var _dataid = itemdata.id
-			_data.setDDItems(_dataid, { isRemove: true })
+			data_util.setDDItems(_dataid, { isRemove: true })
 			break
 
 		// 设置全局音频按钮（点击，把全程音频按钮从hover状态展示，到默认展示）
@@ -1478,7 +1209,6 @@ function handleUploadItem(e) {
 			var $tar = $(e.target)
 			$tar.hide()
 			$tar.next().show()
-			$('html').attr('data-selected', 1)
 			break
 
 		// 全程音频设置参数
@@ -1543,6 +1273,7 @@ function fn_settingArea($cTar) {
 /**
  * 设置全程音频
  * 点读页第几秒会跳转
+ * 如何保存数据，在组件里面编写了。
  * @param {any} e 
  * 
  */
@@ -1552,17 +1283,18 @@ function fn_globalAudioSetting(e) {
 	var globalAudioSrc = $tar.parents('.upload-item').find('.upload-file-name').attr('data-src')
 	var globalAudioName = $tar.parents('.upload-item').find('.upload-file-name span').eq(0).text()
 
-	// 保存到window变量里面
-	window.DD.globalAudioId = dataItemId
-	window.DD.globalAudioSrc = globalAudioSrc
-	window.DD.globalAudioName = globalAudioName
+	$tar.attr('data-dataid', dataItemId)
+		.attr('data-src', globalAudioSrc)
+		.attr('data-name', globalAudioName)
 
-	$tar.attr('data-dataid', dataItemId).attr('data-src', globalAudioSrc).attr('data-name', globalAudioName)
+	var data = window.global_audio_util.get(dataItemId)
+	data.id = data.id || dataItemId
+	data.src = data.src || globalAudioSrc
+	data.name = data.name || globalAudioName
+	data.pageConfig = data.pageConfig || []
 
-	addGlobalAudio(e, {
-		id: dataItemId,
-		src: globalAudioSrc,
-		name: globalAudioName,
+	new GlobalAudio({
+		data: data,
 		callback: function (e) {
 			layer.confirm('确定删除该全局音频？', {
 				btn: ['确定', '取消'] // 按钮
@@ -1570,41 +1302,9 @@ function fn_globalAudioSetting(e) {
 				layer.closeAll()
 				$tar.parent().find('.img-global-audio-setting').hide()
 				$tar.parent().find('.img-global-audio').show()
-				$('html').attr('data-selected', 0)
-
-				// 去掉全局音频之后, 去掉之前的配置
-				window.DD.globalAudioId = ''
-				window.DD.globalAudioSrc = ''
-				window.DD.globalAudioName = ''
-				for (var i = 0; i < window.DD.items.length; i++) {
-					var obj = window.DD.items[i]
-					obj.time = ''
-				}
+				window.global_audio_util.remove(data.id)
 			})
 		}
-	})
-}
-
-/**
- * 添加全局音频设置
- * @param e
- */
-function addGlobalAudio(e, param) {
-	var $tar = $(e.target)
-
-	var $divGA = $('#globalAudioSetting')
-	// 实例化 点读点大小设置页面
-	new GlobalAudio('#globalAudioSetting', param)
-
-	layer.open({
-		type: 1,
-		title: false,
-		scrollbar: false,
-		closeBtn: 1,
-		area: ['600px', '600px'], // 宽高
-		shadeClose: false,
-		skin: 'yourclass',
-		content: $divGA
 	})
 }
 
@@ -1828,7 +1528,7 @@ function _selectTypeHandle(e, data) {
 
 	}
 	// 把文件类型，保存到变量里面
-	_data.setDDItems(_dataid, { type: data.type })
+	data_util.setDDItems(_dataid, { type: data.type })
 
 	$('#__file' + id + '-queue').remove()
 
@@ -1852,7 +1552,7 @@ function _selectTypeHandle(e, data) {
 				// 如果是视频点读点,则获取视频的宽高
 				if (data.type === 'video') {
 					Util.getVideoWH(resultPath, function (obj) {
-						_data.setDDItems(_dataid, {
+						data_util.setDDItems(_dataid, {
 							url: resultPath,
 							filename: file.name,
 							area: {
@@ -1862,7 +1562,7 @@ function _selectTypeHandle(e, data) {
 						})
 					})
 				} else {
-					_data.setDDItems(_dataid, { url: resultPath, filename: file.name })
+					data_util.setDDItems(_dataid, { url: resultPath, filename: file.name })
 				}
 			}
 		}
@@ -1979,7 +1679,7 @@ function fn2_uploadImgText(e) {
 
 	if (!window.imgText) {
 		window.imgText = new ImgText('body', data, function (result) {
-			_data.setDDItems(result.id, result)
+			data_util.setDDItems(result.id, result)
 			// 这个不能写外面，否则会被缓存起来
 			var ids = result.id.split('_')
 			var $uploadFileName = $('#uploadSetting' + ids[0]).find('.item' + ids[1]).find('.upload-file-name')
@@ -2009,7 +1709,7 @@ function fn2_uploadImgText(e) {
 function fn2_examCreate(e) {
 	var ids = CommonUtil.getIds(e)
 	// 试卷数据
-	var examData = _data.getDDItems(ids.id) || {}
+	var examData = data_util.getDDItems(ids.id) || {}
 
 	new ExamCreate('#_examCreate', examData, function (submitData) {
 		// 标识试卷已经上传
@@ -2018,7 +1718,7 @@ function fn2_examCreate(e) {
 		$uploadFileName.find('.span').text('试卷已上传(点击编辑)')
 
 		layer.close(_layer)
-		_data.setDDItems(ids.id, submitData)
+		data_util.setDDItems(ids.id, submitData)
 	})
 	var _layer = layer.open({
 		type: 1,
@@ -2103,7 +1803,7 @@ function hideDDLocation(e) {
 
 		$itemSortId.prev().css('visibility', 'initial'); // 隐藏的图片展示出来
 
-		_data.setDDItems(_dataid, { hide: true })
+		data_util.setDDItems(_dataid, { hide: true })
 
 		// 记录旧的样式，等显示在赋值上去
 		for (var i = 0; i < $lis.length; i++) {
@@ -2136,7 +1836,7 @@ function hideDDLocation(e) {
 		}
 		// 还原
 		$rightName.removeClass().addClass($rightName.attr('data-class'))
-		_data.setDDItems(_dataid, { hide: false })
+		data_util.setDDItems(_dataid, { hide: false })
 	}
 }
 
@@ -2212,34 +1912,12 @@ function delDDItem(id) {
 /*=====================二期，点读页上下移动，显示删除隐藏 END==========================*/
 
 /**
- * 获取全局音频的配置数据
- * 全局音频,音频名称,音频地址,每个点读页的出现事件
- */
-function getGlobalAudioConfig() {
-	var pageConfig = []
-	for (var i = 0; i < window.DD.items.length; i++) {
-		var obj = window.DD.items[i]
-		if (!obj.isRemove) {
-			pageConfig.push(obj.time)
-		}
-	}
-	var globalAudioConfig = {
-		id: window.DD.globalAudioId,
-		src: window.DD.globalAudioSrc,
-		name: window.DD.globalAudioName,
-		pageConfig: pageConfig
-	}
-	return globalAudioConfig
-}
-
-/**
  * 提交
  */
 function handleSubmit(e) {
 	var $cTar = $(e.currentTarget);
 
-	var pagesInfo = _data.getValidItems()
-	var globalAudioContent = getGlobalAudioConfig()
+	var pagesInfo = data_util.getValidItems()
 
 	var data = {
 		title: $('#name').val(),
@@ -2255,8 +1933,11 @@ function handleSubmit(e) {
 		delPageIds: pagesInfo.delPageIds,
 		point_size: GLOBAL.POINT_SIZE,
 		back_color: GLOBAL.BACK_COLOR,
-		content: JSON.stringify(globalAudioContent),
-		data: JSON.stringify({ AUDIO_AREA_SETTING: GLOBAL.AUDIO_AREA_SETTING })
+		data: JSON.stringify(
+			{
+				AUDIO_AREA_SETTING: GLOBAL.AUDIO_AREA_SETTING,
+				globalAudioData: DD.globalAudioData
+			})
 	}
 
 	if (pagesInfo.isDelGlobalAudio) {

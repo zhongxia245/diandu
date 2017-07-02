@@ -263,7 +263,7 @@ window.CustomPointSetting = (function () {
 			that.$divViewer3d.show();
 			
 			if (!that.Modal_Viewer3d) {
-				var modal_data = _data.getDDItems(that._config.dataId).drawcustomarea || {}
+				var modal_data = data_util.getDDItems(that._config.dataId).drawcustomarea || {}
 				that.Modal_Viewer3d = new Modal_3DViewer({ data: modal_data }, 'cps-content-viewer3d')
 			}
 		})

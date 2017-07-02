@@ -1,0 +1,179 @@
+.popup-sidebar {
+  padding: 0.6rem 0.1rem;
+  background-color: #00cc99;
+}
+
+.side_bar {
+  background-color: #00cc99;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8rem;
+  height: 100%;
+  font-size: 14px;
+}
+
+.side_bar_width {
+  margin: 0 auto;
+  padding: 0 0.1rem;
+}
+
+.side_search_area {
+  margin: 0 0.1rem;
+  height: 40px;
+  border-radius: 40px;
+  background-color: #1ea583;
+  margin: 0 auto;
+}
+
+.btn_search {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  background: url(/edu/course/mobile/images/gray_search.png) no-repeat center center / 30px 30px;
+  display: inline-block;
+}
+
+.side_search_area input[name='search'] {
+  position: absolute;
+  vertical-align: top;
+  height: 22px;
+  margin-top: 9px;
+  width: 4.5rem;
+  background-color: transparent;
+  border: none;
+  -webkit-appearance: none;
+  color: #fff;
+}
+
+.userinfo {
+  margin-top: 15px;
+  color: #fff;
+}
+
+.userphoto {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  vertical-align: middle;
+}
+
+.group_name {
+  text-align: left;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  background-color: #45c0a4;
+  margin: 0 -0.1rem;
+  margin-top: 15px;
+}
+
+.team_wrapper {
+  margin-top: 15px;
+  color: #fff;
+}
+
+.team_name {
+  height: 0.3rem;
+  line-height: 0.3rem;
+  margin-top: 15px;
+  text-indent: 0.2rem;
+  background: url(/edu/course/mobile/images/iconnav_group.png) no-repeat left center / auto 50%;
+  cursor: pointer;
+}
+
+.unit_list {
+  width: 5.5555rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.unit_name {
+  position: relative;
+  min-height: 0.3rem;
+  line-height: 0.3rem;
+  background: url(/edu/course/mobile/images/iconnav_danyuan.png) no-repeat left center / auto 50%;
+  background-position-x: 0.1rem;
+  text-indent: 0.35rem;
+}
+
+.unit_name span {
+  cursor: pointer;
+}
+
+.unit_content {
+  width: 4.73rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  margin-left: 0.2rem;
+}
+
+.content_info {
+  margin-left: 0.55rem;
+}
+
+.info_icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: url() no-repeat left 0.1rem / auto 0.3rem;
+  float: left;
+}
+
+.info_txt {
+  float: left;
+  width: 3.65rem;
+  line-height: 0.5rem;
+}
+
+.icon_diandu {
+  background-image: url(/edu/course/mobile/images/iconnav_reading.png);
+}
+
+.icon_tuwen {
+  background-image: url(/edu/course/mobile/images/iconnav_picture.png);
+}
+
+.icon_video {
+  background-image: url(/edu/course/mobile/images/iconnav_movie.png);
+}
+
+.icon_audio {
+  background-image: url(/edu/course/mobile/images/iconnav_audio.png);
+}
+
+.icon_exam {
+  background-image: url(/edu/course/mobile/images/iconnav_exam.png);
+}
+
+.icon_hua {
+  background-image: url(/edu/course/mobile/images/iconnav_music.png);
+}
+
+.content_info_cur .icon_audio {
+  background-image: url(/edu/course/mobile/images/iconnav_audio-a.png);
+}
+
+.content_info_cur .icon_diandu {
+  background-image: url(/edu/course/mobile/images/iconnav_reading-a.png);
+}
+
+.content_info_cur .icon_tuwen {
+  background-image: url(/edu/course/mobile/images/iconnav_picture-a.png);
+}
+
+.content_info_cur .icon_video {
+  background-image: url(/edu/course/mobile/images/iconnav_movie-a.png);
+}
+
+.content_info_cur .icon_exam {
+  background-image: url(/edu/course/mobile/images/iconnav_exam-a.png);
+}
+
+.content_info_cur .icon_hua {
+  background-image: url(/edu/course/mobile/images/iconnav_music-a.png);
+}
+
+.content_info_cur .info_txt {
+  color: #fff600;
+}

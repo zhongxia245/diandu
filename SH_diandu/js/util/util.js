@@ -490,6 +490,20 @@ window.Util = (function () {
 	}
 
 	/**
+	 * 获取音频地址
+	 * 地址形式为 source
+	 * 
+	 * @param {any} audio 
+	 */
+	function getAudioSource(audio) {
+		var $sources = $(audio).find('source')
+		if ($sources < 2) {
+			return ''
+		}
+		return $sources.eq(1).attr('src')
+	}
+
+	/**
 	 * 获取手机系统和浏览器类型 
 	 */
 	function getBrowserInfo() {
@@ -584,6 +598,7 @@ window.Util = (function () {
 		requestFullScreen: requestFullScreen,
 		exitFullScreen: exitFullScreen,
 		setAudioSource: setAudioSource,
+		getAudioSource: getAudioSource,
 		getBrowserInfo: getBrowserInfo,
 		getVideoImage: getVideoImage
 	}

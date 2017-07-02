@@ -418,7 +418,10 @@ if ($id > 0) {
 <script src="js/util/arrayUtil.js"></script>
 <script src="js/util/util.js"></script>
 <script src="js/util/drag.js"></script>
-<script src="js/util/draw.js"></script>
+<script src="js/util/create/draw.js"></script>
+<script src="js/util/create/data_util.js"></script>
+<script src="js/util/create/upload.js"></script>
+<script src="js/components/globalaudio/global_audio_util.js"></script>
 <!--组件-->
 <script src="js/components/imgtext/ImgText2.js"></script>
 <script src="js/components/examcreate/ExamCreate.js"></script>

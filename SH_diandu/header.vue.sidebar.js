@@ -46,16 +46,16 @@ function initVue(data) {
 			setting_bgaudio_enable: !!globalAudioConfig.src,
 			setting_bgaudio_play: false,
 			//侧边栏 by brian 20170511
-			teamid: 0,
-			logoid: 0,
-			logoname: '',
-			team_video_id: team_video_id,
-			show_unit: 0,//正在展示的unit
-			first_show: 0,
-			unit_list: [],
-			group_name: '',
-			search: "",
-			userid: window.__userid
+            teamid:0,
+            logoid:0,
+            logoname:'',
+            team_video_id:team_video_id,
+            show_unit:0,//正在展示的unit
+            first_show:0,
+            unit_list:[],
+            group_name:'',
+            search:"",
+            userid:window.__userid
 		},
 		created: function () {
 			if (!this.globalAudio) {
@@ -65,15 +65,15 @@ function initVue(data) {
 				this.initBgAudio()
 			}
 
-			$.post("/edu/course/json_result/form_submit.php", { action: "get_teaminfo_by_teamvideoid", id: team_video_id }, function (ret) {
-				if ('success' == ret.flag) {
-					window.VueApp.group_name = ret.group_name;
-					window.VueApp.unit_list = ret.unit_list;
-					window.VueApp.teamid = ret.group_id;
-					window.VueApp.logoid = ret.logoid;
-					window.VueApp.logoname = ret.logoname;
-				}
-			}, 'json');
+            $.post("/edu/course/json_result/form_submit.php",{action:"get_teaminfo_by_teamvideoid",id:team_video_id},function(ret){
+                if('success'==ret.flag){
+                    window.VueApp .group_name=ret.group_name;
+                    window.VueApp .unit_list=ret.unit_list;
+                    window.VueApp .teamid=ret.group_id;
+                    window.VueApp .logoid=ret.logoid;
+                    window.VueApp .logoname=ret.logoname;
+                }
+            },'json');
 		},
 		computed: {
 			// 是否有背景音乐
@@ -140,12 +140,12 @@ function initVue(data) {
 				}
 			},
 			//by brian 20170511
-			first_show: function (v, v1) {
-				var h = $("#weight_h").height();
-				var full_w = $(window).height();
-				var left_h = full_w - h - 35 - $(".team_name").height();
-				$(".unit_list").height(left_h);
-			},
+            first_show:function(v,v1){
+                var h=$("#weight_h").height();
+                var full_w=$(window).height();
+                var left_h=full_w-h-35-$(".team_name").height();
+                $(".unit_list").height(left_h);
+            },
 			// 设置相关
 			setting_opacity: function () {
 				$('.wrap div[data-id]').css({
@@ -386,166 +386,191 @@ function initVue(data) {
 			},
 			/*============= 背景音乐 END==================*/
 			//by bran 20170511
-			showUnitVideo: function (unitid, index) {
-				if (this.show_unit == unitid) {
-					this.show_unit = 0;
-					return;
-				}
-				if (this.unit_list[index]['videolist'].length == 0) {
-					var that = this;
-					$.post("/edu/course/json_result/form_submit.php", { action: "get_unit_teamvideo", unitid: unitid }, function (ret) {
-						if ("success" == ret['flag']) {
-							that.unit_list[index]['videolist'] = ret['data'];
-							that.show_unit = unitid;
-						}
-						else {
-							alert(ret['reason']);
-						}
-					}, 'json');
-				}
-				else {
-					this.show_unit = unitid;
-				}
-			},
-			jumpTeamPage: function () {
-				window.location.href = "/m/team/" + this.teamid + ".html";
-			},
-			jumpUnitPage: function (unitid) {
-				window.location.href = "/m/unit/" + unitid + ".html";
-			},
-			jumpVideoPage: function (id, istext) {
-				var url = "";
-				if (0 == istext) {
-					url = "/m/video/" + id + ".html"
-				}
-				else if (1 == istext) {
-					url = "/m/graphic-article/" + id + ".html"
-				}
-				else if (2 == istext) {
-					url = "/m/audio/" + id + ".html"
-				}
-				else if (3 == istext) {
-					url = "/m/audio-passage/" + id + ".html"
-				}
-				else if (4 == istext) {
-					url = "/m/exam/" + id + ".html"
-				}
-				else if (5 == istext) {
-					url = "/m/point-read/" + id + ".html"
-				}
-				if ("" != url) {
-					window.location.href = url;
-				}
-			},
-			jumpPersonalPage: function () {
-				window.location.href = "/edu/course/mobile/personal.php";
-			},
-			jumpTeamIconPage: function () {
-				window.location.href = "/edu/course/mobile/group_icon_content.php?iconid=" + this.logoid;
-			},
-			goSearch: function () {
-				window.location.href = "edu/course/mobile/search/search_new.php?keyword=" + this.search;
-			}
+            showUnitVideo:function(unitid,index){
+                if(this.show_unit==unitid)
+                {
+                    this.show_unit=0;
+                    return ;
+                }
+                if(this.unit_list[index]['videolist'].length==0)
+                {
+                    var that=this;
+                    $.post("/edu/course/json_result/form_submit.php",{action:"get_unit_teamvideo",unitid:unitid},function(ret){
+                        if("success"==ret['flag'])
+                        {
+                            that.unit_list[index]['videolist']=ret['data'];
+                            that.show_unit=unitid;
+                        }
+                        else
+                        {
+                            alert(ret['reason']);
+                        }
+                    },'json');
+                }
+                else
+                {
+                    this.show_unit=unitid;
+                }
+            },
+            jumpTeamPage:function(){
+                window.location.href="/m/team/"+this.teamid+".html";
+            },
+            jumpUnitPage:function(unitid){
+                window.location.href="/m/unit/"+unitid+".html";
+            },
+            jumpVideoPage:function(id,istext){
+                var url="";
+                if(0==istext)
+                {
+                    url="/m/video/"+id+".html"
+                }
+                else if(1==istext)
+                {
+                    url="/m/graphic-article/"+id+".html"
+                }
+                else if(2==istext)
+                {
+                    url="/m/audio/"+id+".html"
+                }
+                else if(3==istext)
+                {
+                    url="/m/audio-passage/"+id+".html"
+                }
+                else if(4==istext)
+                {
+                    url="/m/exam/"+id+".html"
+                }
+                else if(5==istext)
+                {
+                    url="/m/point-read/"+id+".html"
+                }
+                if(""!=url)
+                {
+                    window.location.href=url;
+                }
+            },
+            jumpPersonalPage:function(){
+                window.location.href="/edu/course/mobile/personal.php";
+            },
+            jumpTeamIconPage:function(){
+                window.location.href="/edu/course/mobile/group_icon_content.php?iconid="+this.logoid;
+            },
+            goSearch:function(){
+                window.location.href="edu/course/mobile/search/search_new.php?keyword="+this.search;
+            }
 		}
 	})
 }
-function initSideBar() {
-	window.side_bar = new Vue({
-		el: "#side_bar",
-		data: {
-			teamid: 0,
-			logoid: 0,
-			logoname: '',
-			team_video_id: team_video_id,
-			show_unit: 0,//正在展示的unit
-			first_show: 0,
-			unit_list: [],
-			group_name: '',
-			search: "",
-			userid: window.__userid
-		},
-		mounted: function () {
-			$.post("/edu/course/json_result/form_submit.php", { action: "get_teaminfo_by_teamvideoid", id: team_video_id }, function (ret) {
-				if ('success' == ret.flag) {
-					side_bar.group_name = ret.group_name;
-					side_bar.unit_list = ret.unit_list;
-					side_bar.teamid = ret.group_id;
-					side_bar.logoid = ret.logoid;
-					side_bar.logoname = ret.logoname;
-				}
-			}, 'json');
-		},
-		watch: {
-			first_show: function (v, v1) {
-				var h = $("#weight_h").height();
-				var full_w = $(window).height();
-				var left_h = full_w - h - 35 - $(".team_name").height();
-				$(".unit_list").height(left_h);
-			}
-		},
-		methods: {
-			showUnitVideo: function (unitid, index) {
-				if (this.show_unit == unitid) {
-					this.show_unit = 0;
-					return;
-				}
-				if (this.unit_list[index]['videolist'].length == 0) {
-					var that = this;
-					$.post("/edu/course/json_result/form_submit.php", { action: "get_unit_teamvideo", unitid: unitid }, function (ret) {
-						if ("success" == ret['flag']) {
-							that.unit_list[index]['videolist'] = ret['data'];
-							that.show_unit = unitid;
-						}
-						else {
-							alert(ret['reason']);
-						}
-					}, 'json');
-				}
-				else {
-					this.show_unit = unitid;
-				}
-			},
-			jumpTeamPage: function () {
-				window.location.href = "/m/team/" + this.teamid + ".html";
-			},
-			jumpUnitPage: function (unitid) {
-				window.location.href = "/m/unit/" + unitid + ".html";
-			},
-			jumpVideoPage: function (id, istext) {
-				var url = "";
-				if (0 == istext) {
-					url = "/m/video/" + id + ".html"
-				}
-				else if (1 == istext) {
-					url = "/m/graphic-article/" + id + ".html"
-				}
-				else if (2 == istext) {
-					url = "/m/audio/" + id + ".html"
-				}
-				else if (3 == istext) {
-					url = "/m/audio-passage/" + id + ".html"
-				}
-				else if (4 == istext) {
-					url = "/m/exam/" + id + ".html"
-				}
-				else if (5 == istext) {
-					url = "/m/point-read/" + id + ".html"
-				}
-				if ("" != url) {
-					window.location.href = url;
-				}
-			},
-			jumpPersonalPage: function () {
-				window.location.href = "/edu/course/mobile/personal.php";
-			},
-			jumpTeamIconPage: function () {
-				window.location.href = "/edu/course/mobile/group_icon_content.php?iconid=" + this.logoid;
-			},
-			goSearch: function () {
-				window.location.href = "edu/course/mobile/search/search_new.php?keyword=" + this.search;
-			}
-		}
-	});
+function initSideBar()
+{
+    window.side_bar=new Vue({
+        el:"#side_bar",
+        data:{
+            teamid:0,
+            logoid:0,
+            logoname:'',
+            team_video_id:team_video_id,
+            show_unit:0,//正在展示的unit
+            first_show:0,
+            unit_list:[],
+            group_name:'',
+            search:"",
+            userid:window.__userid
+        },
+        mounted:function(){
+            $.post("/edu/course/json_result/form_submit.php",{action:"get_teaminfo_by_teamvideoid",id:team_video_id},function(ret){
+                if('success'==ret.flag){
+                    side_bar.group_name=ret.group_name;
+                    side_bar.unit_list=ret.unit_list;
+                    side_bar.teamid=ret.group_id;
+                    side_bar.logoid=ret.logoid;
+                    side_bar.logoname=ret.logoname;
+                }
+            },'json');
+        },
+        watch:{
+            first_show:function(v,v1){
+                var h=$("#weight_h").height();
+                var full_w=$(window).height();
+                var left_h=full_w-h-35-$(".team_name").height();
+                $(".unit_list").height(left_h);
+            }
+        },
+        methods:{
+            showUnitVideo:function(unitid,index){
+                if(this.show_unit==unitid)
+                {
+                    this.show_unit=0;
+                    return ;
+                }
+                if(this.unit_list[index]['videolist'].length==0)
+                {
+                    var that=this;
+                    $.post("/edu/course/json_result/form_submit.php",{action:"get_unit_teamvideo",unitid:unitid},function(ret){
+                        if("success"==ret['flag'])
+                        {
+                            that.unit_list[index]['videolist']=ret['data'];
+                            that.show_unit=unitid;
+                        }
+                        else
+                        {
+                            alert(ret['reason']);
+                        }
+                    },'json');
+                }
+                else
+                {
+                    this.show_unit=unitid;
+                }
+            },
+            jumpTeamPage:function(){
+                window.location.href="/m/team/"+this.teamid+".html";
+            },
+            jumpUnitPage:function(unitid){
+                window.location.href="/m/unit/"+unitid+".html";
+            },
+            jumpVideoPage:function(id,istext){
+                var url="";
+                if(0==istext)
+                {
+                    url="/m/video/"+id+".html"
+                }
+                else if(1==istext)
+                {
+                    url="/m/graphic-article/"+id+".html"
+                }
+                else if(2==istext)
+                {
+                    url="/m/audio/"+id+".html"
+                }
+                else if(3==istext)
+                {
+                    url="/m/audio-passage/"+id+".html"
+                }
+                else if(4==istext)
+                {
+                    url="/m/exam/"+id+".html"
+                }
+                else if(5==istext)
+                {
+                    url="/m/point-read/"+id+".html"
+                }
+                if(""!=url)
+                {
+                    window.location.href=url;
+                }
+            },
+            jumpPersonalPage:function(){
+                window.location.href="/edu/course/mobile/personal.php";
+            },
+            jumpTeamIconPage:function(){
+                window.location.href="/edu/course/mobile/group_icon_content.php?iconid="+this.logoid;
+            },
+            goSearch:function(){
+                window.location.href="edu/course/mobile/search/search_new.php?keyword="+this.search;
+            }
+        }
+    });
 
-	side_bar.first_show = 1;
+    side_bar.first_show=1;
 }

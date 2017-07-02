@@ -50,6 +50,40 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   <link rel="stylesheet" href="./js/components/examshowlist/ExamShowList.css">
   <link rel="stylesheet" href="./js/components/questionslist/QuestionsList.css">
   <link rel="stylesheet" href="./js/components/pagecomment/pagecomment.css">
+  <style>
+      .side_bar{background-color:#00cc99;position:fixed;top:0;left:0;width:8rem;height:100%;font-size:14px;}
+      .side_bar_width{width:6.6rem;margin:0 auto;}
+      .side_search_area{width:6.6rem;height:40px;border-radius:40px;background-color:#1ea583;margin:0 auto;margin-top:25px;}
+      .btn_search{width:40px;height:40px;margin-left:10px;background:url(images/gray_search.png) no-repeat center center / 30px 30px;display:inline-block;}
+      .side_search_area input[name='search']{display:inline-block;  vertical-align:top;height:22px;margin-top:9px;width:4.5rem;background-color:transparent;border:none;-webkit-appearance: none;color:#fff;}
+
+      .userinfo{margin-top:15px;color:#fff;}
+      .userphoto{width:40px;height:40px;border-radius: 40px;}
+
+      .group_name{text-align:left;height:0.9rem;line-height:0.9rem;border-top:1px solid #fff;border-bottom:1px solid #fff;color:#fff;background-color:#45c0a4;margin-top:15px;}
+      .team_wrapper{margin-top:15px;color:#fff;}
+      .team_name{height:0.9rem;line-height:0.9rem;margin-top:15px;text-indent:0.75rem;background:url(images/iconnav_group.png) no-repeat left center / auto 50%;}
+      .unit_list{margin-left:0.75rem;width:5.5555rem;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+      .unit_name{position:relative;min-height:0.9rem;line-height:0.9rem;background:url(images/iconnav_danyuan.png) no-repeat left 0.225rem / auto 0.45rem;text-indent:0.75rem;}
+      .unit_content{width: 4.73rem;border-left: 1px solid rgba(255,255,255,0.4);margin-left: 0.2rem;}
+      .content_info{margin-left:0.55rem;}
+      .info_icon{width:0.5rem;height:0.5rem;background:url() no-repeat left 0.1rem / auto 0.3rem;float:left;}
+      .info_txt{float:left;width:3.65rem;line-height:0.5rem;}
+      .icon_diandu{background-image:url(/edu/course/mobile/images/iconnav_reading.png);}
+      .icon_tuwen{background-image:url(/edu/course/mobile/images/iconnav_picture.png);}
+      .icon_video{background-image:url(/edu/course/mobile/images/iconnav_movie.png);}
+      .icon_audio{background-image:url(/edu/course/mobile/images/iconnav_audio.png);}
+      .icon_exam{background-image:url(/edu/course/mobile/images/iconnav_exam.png);}
+      .icon_hua{background-image:url(/edu/course/mobile/images/iconnav_music.png);}
+
+      .content_info_cur .icon_audio{background-image:url(/edu/course/mobile/images/iconnav_audio-a.png);}
+      .content_info_cur .icon_diandu{background-image:url(/edu/course/mobile/images/iconnav_reading-a.png);}
+      .content_info_cur .icon_tuwen{background-image:url(/edu/course/mobile/images/iconnav_picture-a.png);}
+      .content_info_cur .icon_video{background-image:url(/edu/course/mobile/images/iconnav_movie-a.png);}
+      .content_info_cur .icon_exam{background-image:url(/edu/course/mobile/images/iconnav_exam-a.png);}
+      .content_info_cur .icon_hua{background-image:url(/edu/course/mobile/images/iconnav_music-a.png);}
+      .content_info_cur .info_txt{color:#fff600;}
+  </style>
   <script>
     document.oncontextmenu = function () { return false; };
     // 动态计算rem的大小，参照基准 iphone6  375px
@@ -73,91 +107,89 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
   </script>
 </head>
 <body>
-  <div id="header_vue">
+  <div id="container" class="m-bgs page-swipe">
     <!--header START-->
     <header class="diandu__header">
-      <div class="diandu__header--left">
-        <i class="fa fa-bars" @click="handleOpenSideBar"></i>
-        <img 
-          v-cloak 
-          v-if="hasScale" 
-          @click="handleScaleNormal" 
-          src="./imgs/mods/header/scale.png" 
-          class="diandu-header__scale"
-          alt="放大">
+      <div class="diandu__header--left" @click="handleOpenSideBar">
+        <i class="fa fa-bars"></i>
       </div>
       <div class="diandu__header--center">
         <img 
           v-cloak 
           v-if="hasGlobalAudio" 
           @click="handleOpenAudio" 
-          :src="globalAudioIconPath" 
-          class="diandu-header__global-audio"
+          :src="globalAudioIconPath"
+          class="diandu-header__global-audio" 
           alt="全程音频">
-        <img 
-          v-cloak
-          v-if="hasAudioAreaPoint" 
-          :src="audio_area_point_state?'./imgs/mods/header/area_show.png':'./imgs/mods/header/area_hide.png'" 
-          alt="展示音频区域" 
-          class="diandu-header-right__area-show"
-          @click="handleShowAudioAreaPoint">
       </div>
       <div class="diandu__header--right">
         <div 
-          v-if="show_page_comment_btn"
-          alt="点读页评论"
           :title="page_comment_count_str"
           class="diandu-header-right__comment" 
           @click="handleOpenComment">
         </div>
         <img 
           src="./imgs/mods/header/icon_setting.png" 
-          alt="点读设置" 
+          alt="点读页列表" 
           class="diandu-header-right__setting"
           @click="handleOpenSetting">
         <img 
-          v-cloak 
-          :src="popup_pagelist?'./imgs/mods/header/icon_pages_active.png':'./imgs/mods/header/icon_pages.png'" 
+          src="./imgs/mods/header/icon_pages.png" 
           alt="点读页列表" 
           @click="handleOpenPageList">
-        <img 
-          v-cloak 
-          v-if="show_fullscreen"
-          :src="is_fullscreen?'./imgs/mods/header/icon_screen_n.png':'./imgs/mods/header/icon_screen_f.png'" 
-          alt="PC全屏" 
-          @click="handleFullPanel">
       </div>
     </header>
     <!--header END-->
     <!--POPUP COMPONENT START-->
-    <!--右侧目录列表 START-->
-    <mt-popup v-cloak v-model="popup_sidebar" position="left" class="popup-sidebar" style="width:70%; height:101%;">
-      <div id="weight_h">
-          <div class="side_search_area">
-              <span class="btn_search" @click="goSearch"></span><input type="search" v-model="search" name="search"/>
-          </div>
-          <div class="userinfo side_bar_width clearfix" v-if="userid>0">
-              <img @click="jumpPersonalPage" class="userphoto" src="<?php echo $uinfo['avatar'];?>"/>
-              <span class="username"><?php echo $uinfo['username'];?></span>
-          </div>
+    <!--右侧目录列表-->
+    <mt-popup v-cloak v-model="popup_sidebar" position="left" style="width:70%; height:100%;">
+      <p style="margin-top:45px;">
+        <div id="weight_h">
+            <div class="side_search_area">
+                <span class="btn_search" @click="goSearch"></span><input type="search" v-model="search" name="search"/>
+            </div>
+            <div class="userinfo side_bar_width clearfix" v-if="userid>0">
+                <img @click="jumpPersonalPage" class="userphoto" src="<?php echo $uinfo['avatar'];?>"/>
+                <span class="username"><?php echo $uinfo['username'];?></span>
+            </div>
 
-          <div class="row group_name" v-if="logoid>0" @click="jumpTeamIconPage()">
-              <div class="side_bar_width">{{logoname}}</div>
+            <div class="row group_name" v-if="logoid>0" @click="jumpTeamIconPage()">
+                <div class="side_bar_width">{{logoname}}</div>
+            </div>
+        </div>
+        <div class="team_wrapper side_bar_width">
+            <div class="team_name" @click="jumpTeamPage()">{{group_name}}</div>
+            <div class="unit_list">
+                <template v-for="(item,index) in unit_list">
+                    <div class="unit_name" @click="jumpUnitPage(item.id)"><div @click.stop="showUnitVideo(item.id,index)" style="width:0.75rem;height:0.9rem;position:absolute;left:0;"></div><span v-html="item.name"></span></div>
+                    <div class="unit_content" v-show="show_unit==item.id">
+                        <div @click="jumpVideoPage(item2.id,item2.istext)" class="content_info clearfix" v-for="(item2,index2) in item.videolist" :class="{content_info_cur:item2.id==team_video_id}">
+                            <div class="info_icon" :class="{icon_video:item2.istext==0,icon_tuwen:item2.istext==1,icon_audio:item2.istext==2,icon_hua:item2.istext==3,icon_exam:item2.istext==4,icon_diandu:item2.istext==5}"></div>
+                            <div class="info_txt" v-html="item2.title"></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+      </p>
+    </mt-popup>
+
+    <!--点读页列表-->
+    <mt-popup v-cloak v-model="popup_pagelist" position="bottom" style="width:101%; height:100%;">
+      <div class="diandu__pages">
+        <div class="diandu-pages__top">
+          <img :src="pagelist.pic" alt="点读页图片">
+          <div class="diandu-pages__top-info">
+            <p class="diandu-pages__top-title">{{pagelist.title}}</p>
+            <div class="diandu-pages__top-intro">{{pagelist.intro}}</div>
           </div>
-      </div>
-      <div class="team_wrapper side_bar_width">
-          <div class="team_name" @click="jumpTeamPage()">{{group_name}}</div>
-          <div class="unit_list">
-              <template v-for="(item,index) in unit_list">
-                  <div class="unit_name" @click="jumpUnitPage(item.id)"><div @click.stop="showUnitVideo(item.id,index)" style="width:0.25rem;height:0.3rem;position:absolute;left:0;"></div><span v-html="item.name"></span></div>
-                  <div class="unit_content" v-show="show_unit==item.id">
-                      <div @click="jumpVideoPage(item2.id,item2.istext)" class="content_info clearfix" v-for="(item2,index2) in item.videolist" :class="{content_info_cur:item2.id==team_video_id}">
-                          <div class="info_icon" :class="{icon_video:item2.istext==0,icon_tuwen:item2.istext==1,icon_audio:item2.istext==2,icon_hua:item2.istext==3,icon_exam:item2.istext==4,icon_diandu:item2.istext==5}"></div>
-                          <div class="info_txt" v-html="item2.title"></div>
-                      </div>
-                  </div>
-              </template>
-          </div>
+        </div>
+        <ul class="diandu-pages__main">
+          <li :class="{'diandu-pages__item':true,'diandu-pages__item--active':index===pageActiveIndex}" @click="handleSelectedPage"
+            v-for="(page,index) in pagelist.data" :data-index="index" :style="{backgroundImage:'url('+page.pic+')'}">
+            <p>{{index + 1}}</p>
+          </li>
+        </ul>
       </div>
     </mt-popup>
 
@@ -191,30 +223,8 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
       </div>
     </mt-popup>
 
-    <!--点读页列表 START-->
-    <mt-popup v-cloak v-model="popup_pagelist" position="bottom" style="width:101%; height:100%;">
-      <div class="diandu__pages">
-        <div class="diandu-pages__close" @click="handleClosePageList"></div>
-        <div class="diandu-pages__top">
-          <img :src="pagelist.pic" alt="点读页图片">
-          <div class="diandu-pages__top-info">
-            <p class="diandu-pages__top-title">{{pagelist.title}}</p>
-            <div class="diandu-pages__top-intro">{{pagelist.intro}}</div>
-          </div>
-        </div>
-        <ul class="diandu-pages__main">
-          <li :class="{'diandu-pages__item':true,'diandu-pages__item--active':index===pageActiveIndex}" @click="handleSelectedPage"
-            v-for="(page,index) in pagelist.data" :data-index="index" :style="{backgroundImage:'url('+page.pic+')'}">
-            <p>{{index + 1}}</p>
-          </li>
-        </ul>
-        <div>
-        </div>
-      </div>
-    </mt-popup>
-
-    <!--音乐播放器 START-->
-    <mt-popup  v-cloak v-model="popup_audioplayer" position="bottom" style="width:101%;">
+    <!--音乐播放器-->
+    <mt-popup  v-cloak v-model="popup_audioplayer"  position="bottom" style="width:101%; height:25%;">
       <div class="audio-player">
         <div class="audio-player__progress">
           <span>{{currentTimeStr}}</span>
@@ -238,8 +248,6 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
       </div>
     </mt-popup>
     <!--POPUP COMPONENT END-->
-  </div>
-  <div id="container" class="m-bgs page-swipe">
     <div class="swiper-container dandu-pages">
       <div id="pages" class="swiper-wrapper">
       </div>
@@ -277,6 +285,10 @@ if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $t
     <div class="question-list" style="height: 100%;"></div>
   </section>
   <!--考试 END-->
+  <!--考试 START-->
+  <section class="btn-fullscreen">
+  </section>
+  <!--考试 END-->
   <!--lib-->
 <!--brian 2017-05-08-->
 <?php if(!$noneedpay):?>
@@ -289,7 +301,7 @@ endif;
 ?>
 <!--brian 2017-05-08-->
   <!--微信录音-->
-  <script src="./js/lib/jweixin.js"></script>
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
   <script>
     wx.config({
       debug: false,//调试开关
@@ -348,10 +360,10 @@ endif;
   <script src="./js/page/show/swayEffect/swayEffect.js"></script>
   <script src="./js/page/common/ObjViewer/ObjViewer.js"></script>
   <script src="./js/page/show/modal_3dviewer/Modal_3DViewer.js"></script>
-  <script src="./js/page/show/area_setting/AreaSetting.js?r=20170610"></script>
   <!--页面入口-->
-  <script src="./js/header.vue.js?r=20170610"></script>
-  <script src="./js/show.js?r=20170610"></script>
+  <script src="./js/page/show/fullscreen.js"></script>
+  <script src="./js/header.vue.sidebar.js"></script>
+  <script src="./js/show.js"></script>
   <script>
     var team_video_id="<?php echo intval($team_video['id']);?>";
     $(function () {

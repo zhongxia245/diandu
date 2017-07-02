@@ -399,28 +399,22 @@ function bgScaleOp(currentIndex) {
  * eg: 是否显示背景音乐按钮,是否显示全程音频按钮, 位置样式调整等
  */
 function afterRenderOp(data) {
-	var globalAudioConfig = JSON.parse(data.content || "{}")
+	var globalData = JSON.parse(data.data || '{}')
+	var globalAudioData = globalData.globalAudioData || {}
+
 	// 存在全程音频，则去掉全程音频的点读点
-	if (globalAudioConfig.id) {
-		var ids = globalAudioConfig.id.split('_')
-		var _id = (parseInt(ids[0]) - 1) + '_' + (parseInt(ids[1]) - 1)
-		$('.m-audio[data-id="' + _id + '"]').remove()
+	for (var key in globalAudioData) {
+		if (globalAudioData.hasOwnProperty(key)) {
+			var element = globalAudioData[key]
+			var ids = element.id.split('_')
+			var _id = (parseInt(ids[0]) - 1) + '_' + (parseInt(ids[1]) - 1)
+			$('.m-audio[data-id="' + _id + '"]').remove()
+		}
 	}
+
 	//存在背景音乐
 	if (data['background']) {
-		GLOBAL.BGAUDIO.setAudio(data['background']);
-		//全程音频和背景音乐只能同时打开一个
-		if (!globalAudioConfig.id) {
-			//PC端直接设置自动播放
-			if (Util.IsPC()) {
-				// GLOBAL.BGAUDIO.play();
-			} else {
-				//移动端
-				// document.addEventListener("touchstart", playBgAduio, false);
-			}
-		} else {
-			GLOBAL.BGAUDIO.pause();
-		}
+		GLOBAL.BGAUDIO.setAudio(data['background'])
 	} else {
 		GLOBAL.BGAUDIO.hideBtn()
 	}
@@ -1322,7 +1316,9 @@ function bindEvent() {
    * 图文展示框,防止弹出图文框之后,可以移动遮罩
    */
 	$('.sec-imgtext-mask').off('touchmove').on('touchmove', function (e) {
-		return false;
+		if ($(e.target).hasClass('sec-imgtext-mask')) {
+			return false;
+		}
 	})
 
   /**

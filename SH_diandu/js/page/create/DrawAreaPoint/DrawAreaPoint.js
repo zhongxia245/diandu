@@ -17,7 +17,7 @@ window.DrawAreaPoint = (function () {
 		var that = this
 		that.options = options;
 		that.submitCallback = options.callback;
-		that.pointData = _data.getDDItems(options.dataid)
+		that.pointData = data_util.getDDItems(options.dataid)
 		that.$container = $(options.id)
 
 
@@ -107,7 +107,7 @@ window.DrawAreaPoint = (function () {
 					this.updateData()
 				},
 				'paramsData.rotate': function () {
-					var _pointData = _data.getDDItems(that.options.dataid)
+					var _pointData = data_util.getDDItems(that.options.dataid)
 					var point_size = parseInt(_pointData.point_size) || parseInt(window.DD.point_size)
 					var css = 'rotate(' + this.paramsData.rotate + 'deg)'
 					if (point_size) {
@@ -245,8 +245,8 @@ window.DrawAreaPoint = (function () {
 
 					var pageIndex = that.options.dataid.split('_')[0]
 					var pointIndex = that.options.dataid.split('_')[1]
-					var _pageData = _data.getPageData(pageIndex)
-					var _pointData = _data.getDDItems(that.options.dataid)
+					var _pageData = data_util.getPageData(pageIndex)
+					var _pointData = data_util.getDDItems(that.options.dataid)
 					var location = getLocation(_pageData.w, _pageData.h, this.paramsData.x, this.paramsData.y)
 
 					_pointData.drawcustomarea.w = this.paramsData.w / _pageData.w
@@ -255,7 +255,7 @@ window.DrawAreaPoint = (function () {
 					_pointData.x = location.x
 					_pointData.y = location.y
 
-					_data.setDDItems(that.options.dataid, _pointData)
+					data_util.setDDItems(that.options.dataid, _pointData)
 				}
 			}
 		})
