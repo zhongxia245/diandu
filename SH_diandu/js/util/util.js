@@ -418,7 +418,12 @@ window.Util = (function () {
 			return null
 		}
 		var time = 0;
-		var _times = timeStr.split(':');
+		var _times
+		if (timeStr.indexOf(':') !== -1) {
+			_times = timeStr.split(':');
+		} else if (timeStr.indexOf('：') !== -1) {
+			_times = timeStr.split('：');
+		}
 
 		//把 00:01:21计算成秒  81
 		var _timesLength = _times.length - 1
