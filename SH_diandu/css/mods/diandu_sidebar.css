@@ -1,6 +1,8 @@
 .popup-sidebar {
-  padding: 0.6rem 0.1rem;
+  padding: 0.6rem 0.1rem 0;
   background-color: #00cc99;
+  display: flex;
+  flex-direction: column;
 }
 
 .side_bar {
@@ -71,8 +73,11 @@
 }
 
 .team_wrapper {
-  margin-top: 15px;
   color: #fff;
+  overflow: auto;
+  padding-bottom: 0.1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .team_name {
@@ -88,6 +93,7 @@
   width: 5.5555rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
 
 .unit_name {

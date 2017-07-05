@@ -351,7 +351,7 @@ endif;
   <script src="./js/page/show/area_setting/AreaSetting.js?r=20170610"></script>
   <!--页面入口-->
   <script src="./js/header.vue.js?r=20170610"></script>
-  <script src="./js/show.js?r=20170610"></script>
+  <script src="./js/show.js?r=20170705_1"></script>
   <script>
     var team_video_id="<?php echo intval($team_video['id']);?>";
     $(function () {

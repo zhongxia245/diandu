@@ -289,6 +289,7 @@
   <script src="./js/header.vue.js"></script>
   <script src="./js/show.js"></script>
   <script>
+    var team_video_id = ''
     $(function () {
       var _isDebug = Util.getQueryStringByName('debug');
       if (_isDebug) {

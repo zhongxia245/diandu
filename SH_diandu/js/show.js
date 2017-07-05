@@ -186,7 +186,12 @@ function fn_onResize() {
 			top: (window.H - GLOBAL.EXAM_H) / 2
 		});
 
-		_size = window.W * 0.28;
+
+		if (Util.IsPC()) {
+			_size = window.W * 0.28;
+		} else {
+			_size = window.W * 0.4;
+		}
 		isVertical = false;
 	}
 	else {
@@ -204,8 +209,11 @@ function fn_onResize() {
 			top: (window.H - GLOBAL.EXAM_H) / 2
 		});
 
-
-		_size = window.W * 0.5;
+		if (Util.IsPC()) {
+			_size = window.W * 0.5;
+		} else {
+			_size = window.W * 0.8;
+		}
 		isVertical = true;
 	}
 
@@ -406,9 +414,11 @@ function afterRenderOp(data) {
 	for (var key in globalAudioData) {
 		if (globalAudioData.hasOwnProperty(key)) {
 			var element = globalAudioData[key]
-			var ids = element.id.split('_')
-			var _id = (parseInt(ids[0]) - 1) + '_' + (parseInt(ids[1]) - 1)
-			$('.m-audio[data-id="' + _id + '"]').remove()
+			if (element && element.id) {
+				var ids = element.id.split('_')
+				var _id = (parseInt(ids[0]) - 1) + '_' + (parseInt(ids[1]) - 1)
+				$('.m-audio[data-id="' + _id + '"]').remove()
+			}
 		}
 	}
 
@@ -676,11 +686,9 @@ function initPage(id, data) {
 
 		//针对小图, 创建的时候, 没有缩放的图片 START
 		if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
-			if (whScale > window.screen.width / window.screen.height) {
-				_pointSizeScale = GLOBAL.SCREEN.W() / w
-			} else {
-				_pointSizeScale = GLOBAL.SCREEN.H() / h
-			}
+			wrapWidth = w
+			wrapHeight = h
+			_pointSizeScale = 1
 		}
 
 		//针对小图, EN
@@ -1526,7 +1534,7 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
 
 	//缩放的大小
 	var scale = GLOBAL.picScale.scale || 1;
-	var moveX = GLOBAL.picScale.maxX - GLOBAL.picScale.translateX || 0
+	var moveX = GLOBAL.picScale.translateX || 0
 	var moveY = GLOBAL.picScale.translateY || 0;
 
 
@@ -1546,14 +1554,13 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
 
 
 	var distTopAndBottom = 30;  //距离顶部,底部小于30px ,考虑图片放其他地方
-	var distLeftAndRight = 40;  //距离左边右边小于40,考虑图文放其他地方
+	var distLeftAndRight = 30;  //距离左边右边小于40,考虑图文放其他地方
 
 
 	//var wrapLeft = css2Float($tar.parents('.wrap').css('margin-left'));  //背景图片黑色区域宽度
 	//var wrapTop = css2Float($tar.parents('.wrap').css('margin-top'));  //黑色区域高度
 	var wrapTop = css2Float($('.sec-imgtext').css('margin-top'));  //黑色区域高度
 	var wrapLeft = css2Float($('.sec-imgtext').css('margin-left'));  //背景图片黑色区域宽度
-
 	var minLeft = distLeftAndRight - wrapLeft;  //图文允许放置的最左边大小
 	var maxLeft = windowW - distLeftAndRight;  //最右边
 	var minTop = distTopAndBottom - wrapTop;  //最上边
@@ -1563,10 +1570,20 @@ function setImgTextLocation_Scale($tar, $secImgTextMain, $wrap) {
 	var minX = left - imgTextW - gap;    //图文最左边位置
 	var centerX = left + -(imgTextW + gap - rW) / 2;  //图文中间位置
 	var maxX = left + rW + gap;  //图文最右边位置
+	if (centerX < 0) {
+		centerX = minLeft
+	} else if (centerX + imgTextW > maxLeft) {
+		centerX = maxLeft - imgTextW
+	}
 
 	var minY = top - imgTextH - gap;  //图文最上边位置
 	var centerY = top - (imgTextH + gap - rH) / 2;  //图文中间位置
 	var maxY = top + rH + gap;  //图文最下边位置
+	if (centerY < 0) {
+		centerY = minTop
+	} else if (centerY + imgTextH > maxTop) {
+		centerY = maxTop - imgTextH
+	}
 
 	var imgTextLeft = left;
 	var imgTextTop = top;
