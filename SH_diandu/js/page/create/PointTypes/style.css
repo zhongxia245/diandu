@@ -14,17 +14,36 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
-.point-types {
+.point-type__categorys {
     position: relative;
     top: 0;
     left: 0;
     width: 320px;
     height: 320px;
-    padding: 20px;
+    height: auto;
     background: #f2f2f2;
     border-radius: 5px;
     text-align: center;
     box-shadow: 0 0 20px #000;
+}
+
+.point-types__category--hide {
+    display: none;
+}
+
+.point-types__category-title {
+    background: #7f7f7f;
+    height: 30px;
+    line-height: 30px;
+    color: #FFF;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.point-types__category-content {
+    overflow: hidden;
+    padding: 20px;
 }
 
 .point-types__tip {

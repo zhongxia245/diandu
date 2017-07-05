@@ -1,15 +1,26 @@
 <div class="point-types-wrapper js-point-types-wrapper"></div>
-<div class="point-types">
-  {{#each types}}
-      <!--equal指令在PointTypes里面设置了-->
-      {{#equal ../selected  type}}
-          <div class="point-types__item pt-selected" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
-      {{else}}
-          <div class="point-types__item" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
-      {{/equal}}
-      <div class="point-types__icon point-types__item--{{type}}"></div>
-      {{label}}
+<div class="point-type__categorys">
+{{#each this}}
+  <div class="point-type-categorys__item">
+    <div class="point-types__category-title">{{title}}</div>
+    {{#if hide}}
+      <div class="point-types__category-content point-types__category--hide">
+    {{else}}
+      <div class="point-types__category-content">
+    {{/if}}
+      {{#each types}}
+          <!--equal指令在PointTypes里面设置了-->
+          {{#equal ../selected  type}}
+            <div class="point-types__item pt-selected" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
+          {{else}}
+            <div class="point-types__item" data-type="{{type}}" data-text="{{text}}" data-tip="{{tip}}">
+          {{/equal}}
+              <div class="point-types__icon point-types__item--{{type}}"></div>
+              {{label}}
+            </div>
+      {{/each}}
+      <div class="point-types__tip js-pt-tip"></div>
+    </div>
   </div>
-  {{/each}}
-  <div class="point-types__tip js-pt-tip"></div>
+{{/each}}
 </div>
