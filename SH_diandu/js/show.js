@@ -410,6 +410,12 @@ function afterRenderOp(data) {
 	var globalData = JSON.parse(data.data || '{}')
 	var globalAudioData = globalData.globalAudioData || {}
 
+	//兼容旧的（单个全程音频）
+	if (data.content) {
+		var oldGlobalAudioData = JSON.parse(data.content)
+		globalAudioData[oldGlobalAudioData.id] = oldGlobalAudioData
+	}
+
 	// 存在全程音频，则去掉全程音频的点读点
 	for (var key in globalAudioData) {
 		if (globalAudioData.hasOwnProperty(key)) {
@@ -685,7 +691,7 @@ function initPage(id, data) {
 		}
 
 		//针对小图, 创建的时候, 没有缩放的图片 START
-		if (w < GLOBAL.PAGESIZE.W && h < GLOBAL.PAGESIZE.H) {
+		if (w < wrapWidth && h < wrapHeight) {
 			wrapWidth = w
 			wrapHeight = h
 			_pointSizeScale = 1

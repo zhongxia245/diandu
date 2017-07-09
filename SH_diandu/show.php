@@ -23,7 +23,12 @@ if($team_video['isprivate']==1 && $team_role<1)
 $noneedpay=true;
 if(!($videoinfo['charge']==0 || ($videoinfo['charge']==1 && $team_role==2) || $team_role>2))
 {
-    $noneedpay=$_COURSE->Study($_SESSION['G']['userid'],$videoid,0);
+  if(empty($_SESSION['G']['userid']))
+  {
+      header("Location:/edu/course/mobile/login.php?ecmsfrom=".urlencode("/point-read/{$team_video['id']}.html"));
+      exit();
+  }
+  $noneedpay=$_COURSE->Study($_SESSION['G']['userid'],$videoid,0);
 }
 //brian 2017-05-08
 ?>
